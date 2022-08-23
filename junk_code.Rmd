@@ -1,0 +1,197 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+
+Create a data stream based on the number of other points within 10 miles for each individual
+Not currently useful
+```{r}
+# pt_ct <- function(.x){
+#   amwo_spring_males_19_20 %>%
+#     filter(ID == .x) %>%
+#     st_as_sf(coords = c("lon", "lat"), crs = 4326) %>%
+#     st_transform(5070) %>%
+#     pull(geometry) ->
+#     iterated_points_all
+#     
+#   map(iterated_points_all, function(.y){
+#     st_sfc(.y, crs = 5070) %>%
+#       st_buffer(dist = 16100) %>%
+#       st_intersection(iterated_points_all) %>%
+#       length() %>%
+#       return()
+# }) %>% unlist()
+#   
+# }
+
+# plan(multisession, workers = 5)
+# 
+# amwo_spring_males_19_20 %>%
+#   pull(ID) %>%
+#   unique() %>%
+#   future_map(.f = pt_ct, .progress = TRUE) %>%
+#   unlist() ->
+#   amwo_spring_males_19_20$pts_10mi
+# 
+# amwo_spring_males_19_20 %>%
+#   mutate(pts_10mi_log = log(pts_10mi) + 1) ->
+#   amwo_spring_males_19_20
+```
+
+Ruleset: classify certain movements as exploratory
+
+Initial parameters: 2 km away for less than 100 days
+```{r include = FALSE}
+#amwo_hmm <- results_initial$results #remove this once this loop is reliable
+
+amwo_hmm$row_number <- 1:nrow(amwo_hmm)
+amwo_hmm$potential_exploratory <- NA
+amwo_spring_expl <- amwo_hmm[NULL,]
+ct_loc_rm <- 1
+
+while (ct_loc_rm > 0) {
+
+  ct_loc_rm <- 0
+
+  for(ind in unique(amwo_hmm$ID)){
+    cat(ind, "\n")
+    
+    ## A bird is considered pre-mig for the purpose of this classification if it returns to within 10 km of its pre-migratory centroid at that time or after
+    amwo_first_centroid <- amwo_hmm %>%
+      filter(ID == ind) %>%
+      filter(point_state == 1) %>%
+      transmute(x = mean(x, na.rm = TRUE, trim = 0.1), y = mean(y, na.rm = TRUE, trim = 0.1)) %>% #calculating the mean while trimming 10% of points from each side of the range of lat and long. This means that a really long distance exploratory movement won't throw off the centroid location, unless there are very few pre-mig points. 
+      st_as_sf(coords = c("x", "y"), crs = 4326)
+    
+    amwo_first_centroid <- amwo_first_centroid[1,]
+    
+    amwo_hmm_ind_potential_premig <- amwo_hmm %>%
+      filter(ID == ind) %>%
+      st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE) %>%
+      mutate(centroid_distance_km = as.numeric(st_distance(geometry, amwo_first_centroid))/1000) %>%
+      st_drop_geometry() %>%
+      mutate(within_ten_miles = centroid_distance_km < 10) #16.1
+    
+    highest_premig_row <- amwo_hmm_ind_potential_premig %>%
+      filter(within_ten_miles == 1) %>%
+      pull(row_number) %>%
+      max()
+    
+    if(highest_premig_row < -1000){
+      cat(crayon::magenta("no points within 10 kilometers of the centroid"))
+      break
+    }
+    
+    amwo_ind_premig <- amwo_hmm_ind_potential_premig %>%
+      mutate(potential_exploratory = if_else(row_number <= highest_premig_row, 1 , 0)) %>%
+      filter(potential_exploratory == 1) %>%
+      mutate(centroid_distance_km = NULL,
+             within_ten_miles = NULL, 
+             potential_exploratory = NULL)
+    
+    if(nrow(amwo_ind_premig) < 1){#if, for whatever reason, the given individual doesn't have a pre-mig state, move to the next individual
+      cat(crayon::cyan("Breaking due to lack of pre-mig state\n"))
+      next
+    }
+    
+    # Determine how far each point was away from the pre-mig centroid
+    
+    amwo_centroid <- amwo_ind_premig %>%
+      transmute(x = mean(x, na.rm = TRUE, trim = 0.1), y = mean(y, na.rm = TRUE, trim = 0.1)) %>% #calculating the mean while trimming 10% of points from each side of the range of lat and long. This means that a really long distance exploratory movement won't throw off the centroid location, unless there are very few pre-mig points. 
+      st_as_sf(coords = c("x", "y"), crs = 4326)
+    
+    amwo_centroid <- amwo_centroid[1,]
+    
+    amwo_further <- amwo_ind_premig %>%
+      st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE) %>%
+      mutate(centroid_distance_km = as.numeric(st_distance(geometry, amwo_centroid))/1000) %>%
+      filter(centroid_distance_km > 2) %>% #2km or more away from the pre-mig centroid
+      st_drop_geometry()
+    
+    if(nrow(amwo_further) < 1){ #if there are no exploratory movements in this state, move to the next individual
+      cat(crayon::cyan("Breaking due to lack of exploratory movements\n"))
+      next
+    }
+    
+    amwo_further$breaks <- NA
+    
+    breaks_i <- 1
+    amwo_further[1, "breaks"] <- 1
+    
+    if(nrow(amwo_further) > 1) {
+      for(k in 2:nrow(amwo_further)){
+        if(amwo_further[k, "row_number"] - amwo_further[k-1, "row_number"] != 1){
+          breaks_i <- breaks_i + 1
+        }
+        amwo_further[k, "breaks"] <- breaks_i
+      }
+    }
+    # Determine the max amount of time the exploratory movement could have lasted
+    
+    breaks_timediff <- amwo_further %>%
+      group_by(breaks) %>%
+      summarise(min_row = min(row_number), max_row = max(row_number)) %>%
+      mutate(min_time = amwo_hmm[min_row - 1, "time"], max_time = amwo_hmm[max_row + 1, "time"]) %>%
+      mutate(time_diff = as.numeric(max_time - min_time)) %>%
+      dplyr::select(breaks, time_diff)
+    
+    amwo_further_longer <- amwo_further %>%
+      left_join(breaks_timediff) %>%
+      filter(time_diff < 100) %>% #exploratory movements can last at most 5 days (changed to 100)
+      filter(row_number != min(amwo_ind_premig$row_number)) #if this is the first point in the bird's pre-mig, it is exempt from classification as exploratory
+    
+    if(nrow(amwo_further_longer) < 1){ #if there are no exploratory movements in this state, move to the next individual
+      cat(crayon::cyan("Breaking due to lack of long term exploratory movements that are not the first step\n"))
+      next
+    }
+    
+    #add the number of exploratory points to the counter. If the counter stays at zero for the whole while loop, the loop completes
+    ct_loc_rm <- ct_loc_rm + nrow(amwo_further_longer) 
+    
+    #save rows for later designation as exploratory movements
+    amwo_spring_expl <- amwo_further_longer %>%
+      mutate(centroid_distance_km = NULL,
+             breaks = NULL,
+             time_diff = NULL) %>%
+      bind_rows(amwo_spring_expl, .)
+    
+    #remove rows before rerunning the HMM
+
+    amwo_hmm <- amwo_hmm %>%
+      filter(!(row_number %in% amwo_further_longer$row_number))
+    cat(crayon::red("exploratory movement removed\n"))
+
+  }
+  if(ct_loc_rm == 0){
+    cat(crayon::bgGreen("All exploratory movements removed\n"))
+    break
+  }
+  cat(crayon::bgYellow("Resetting HMM and cycling\n"))
+  results_expl <- fit_and_predict(amwo_hmm)
+  amwo_hmm <- results_expl$results
+}
+```
+
+Add back amwo_spring_expl as pre-mig movements once this is all over
+
+Initial attempt should fix NC-2020-20-2020
+
+Last attempt should fix AL-2020-04-2020
+
+First attempt:
+Actually removed 2 points, NC-2020-13-2020 and NC-2020-20-2020
+Success! Unclear how many exploratory attempts I've missed; I'll double check after the last attempt
+
+Second attempt:
+AL-2020-05-2020, NC-2020-13-2020, NC-2020-20-2020
+
+Third attempt (widened parameters to accept a max of a 5 day exploratory movement):
+11 locations total from:
+AL-2020-04-2020 AL-2020-05-2020 MD-2020-10-2020 NC-2020-13-2020 NC-2020-20-2020 NJ-2019-18-2020 VA-2019-43-2020
+
+# Note: NC-2020-20-2020 goes directly from exploratory to migratory, which is prob an issue
+NJ-2019-18-2020 should have more; maybe if the centroid weighting was changed?
+
+TLDR; the ruleset is struggling at identifying exploratory movements and differentiating them from other movements. Also, are exploratory movements different enough from other movements to render them distinct?
