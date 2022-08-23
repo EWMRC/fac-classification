@@ -24,7 +24,7 @@ library(furrr)
 
 Extract all locations from 2019, 2020, and 2021 from Jan 5th through June 30th
 ```{r include=FALSE}
-login <- movebankLogin(username = "acfish", password="EPvzvNSUJ8")
+login <- movebankLogin(username = "LA_Berigan", password="33szcNUtv4iyPGU")
 amwo_2018 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = login, timestamp_start = "20180105000000000", timestamp_end = "20180630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
 
 amwo_2019 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = login, timestamp_start = "20190105000000000", timestamp_end = "20190630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
@@ -77,10 +77,10 @@ amwo_spring <- amwo_spring %>%
   dplyr::select(-third)
 ```
 
-Filtering to just females and individuals with unknown sex
+Filtering to just males
 ```{r}
 amwo_spring_males <- amwo_spring %>%
-  filter(sex == "f" | sex == "")
+  filter(sex == "m")
 ```
 
 Account for potential duplicate years by adding a year to the end of the id
@@ -117,7 +117,7 @@ amwo_spring_males <- amwo_spring_males %>%
 
 Flag individuals tagged after February 15th on the year of observation so that I can mark their initial stationary state as uncertain
 ```{r include = FALSE}
-capture_dates <- readxl::read_excel(there::here_file("Data", "Google_drive_downloads","capture_sheet.xlsx"), col_types = c("text", "text", "date", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text")) %>%
+capture_dates <- readxl::read_excel(here::here("capture_sheet.xlsx"), col_types = c("text", "text", "date", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text")) %>%
         mutate(`Argos ID` = as.character(`Argos ID`)) %>%
   transmute(animal_name = `Movebank ID`,
             capture_date = Date)
@@ -140,7 +140,6 @@ individuals_died_too_early <- amwo_spring_males %>%
   filter(max_date < mdy("5/15/2020")) %>%
   pull(ID)
 ```
-
 
 # create momentuHMMData object; would specify covariates if included in the dataset
 ##  basically the step length and turn angles are now included
@@ -169,27 +168,18 @@ amwo_hmm %>%
   amwo_hmm
 ```
 
-#remove early spring movements which throw off the hmm for NJ-2018-08-2019, NJ-2018-13-2019, and NJ-2018-15-2019. Add it back again at the end as a manually-delineated residential movement at the end
+remove a transient summer movement which throws off the hmm for VA-2020-52-2020. Add it back again at the end as a manually-delineated residential movement at the end
 ```{r}
-# early_spring_movement <- amwo_hmm %>%
-#   mutate(id_time = paste(ID, as.character(time))) %>%
-#   filter(id_time == "VA-2020-52-2020 2020-06-18 21:00:00" | id_time == "VA-2020-52-2020 2020-06-28 14:00:00") %>%
-#   mutate(id_time = NULL)
-
-early_spring_movement <- amwo_hmm %>%
-  filter((ID == "NJ-2018-08-2019" & time <= ymd_hms("2019-01-12 14:00:32")) |
-         (ID == "NJ-2018-15-2019" & time <= ymd_hms("2019-01-12 14:00:32")) |
-         (ID == "NJ-2018-13-2019" & time <= ymd_hms("2019-02-02 03:01:20")))
+summer_transient_movement <- amwo_hmm %>%
+  mutate(id_time = paste(ID, as.character(time))) %>% 
+  filter(id_time == "VA-2020-52-2020 2020-06-19 01:59:28" | id_time == "VA-2020-52-2020 2020-06-28 19:01:20") %>%
+  mutate(id_time = NULL)
 
 amwo_hmm <- amwo_hmm %>%
-  filter(!(ID == "NJ-2018-08-2019" & time <= ymd_hms("2019-01-12 14:00:32"))) %>%
-  filter(!(ID == "NJ-2018-15-2019" & time <= ymd_hms("2019-01-12 14:00:32"))) %>%
-  filter(!(ID == "NJ-2018-13-2019" & time <= ymd_hms("2019-02-02 03:01:20")))
-
-#additionally trimming RI-2020-31; I won't add it back in (not necessary for this workflow). Algorithm catches the tail end of fall migration and pushes it into spring mig too early.
-amwo_hmm <- amwo_hmm %>%
-  filter(!(ID == "RI-2020-31-2021" & time <= ymd_hms("2021-03-02 18:59:12")))
-
+  mutate(id_time = paste(ID, as.character(time))) %>% 
+  filter(id_time != "VA-2020-52-2020 2020-06-19 01:59:28") %>%
+  filter(id_time != "VA-2020-52-2020 2020-06-28 19:01:20") %>%
+  mutate(id_time = NULL)
 ```
 
 remove birds with no individual step lengths >30.2km (20 miles). In practice this pulls birds that never initiate a substantial migratory movement but doesn't penalize birds that DO migrate, as they always make at least one substantial movement.
@@ -201,53 +191,10 @@ amwo_hmm <- amwo_hmm[(amwo_hmm$ID %in% amwo_hmm$ID [amwo_hmm$min.step == 1]) , ]
 amwo_hmm$min.step <- NULL
 ```
 
-if the month of the last > 16.1 km movement is 6 or later, then use
-a 2 state model. If not, use the three state model
-```{r}
-# last_big_step_dates <- amwo_hmm %>%
-#   filter(step > 16.1) %>%
-#   group_by(ID) %>%
-#   summarize(last_big_step = max(time))
-# 
-# nrow(last_big_step_dates) == length(unique(amwo_hmm$ID)) #check that there's a last big step date for all IDs
-# 
-# amwo_hmm <- amwo_hmm %>%
-#   left_join(last_big_step_dates)
-# 
-# amwo_hmm2 <- amwo_hmm %>%
-#   filter(month(last_big_step) >= 6)
-# 
-# amwo_hmm3 <- amwo_hmm %>%
-#   filter(month(last_big_step) < 6)
-```
-
-Alternative method: if the mean of the last 5 steps is > 16.1 km, use the 2 state. Else use the 3 state.
-Currently depreciated
-```{r}
-# last_step_means <- amwo_hmm %>%
-#   group_by(ID) %>%
-#   group_modify(function(x, ...){tail(x, n = 11)}) %>% ###
-#   summarize(mean_final_steps = mean(step, na.rm = TRUE))
-# 
-# amwo_hmm <- amwo_hmm %>%
-#   left_join(last_step_means)
-# 
-# amwo_hmm2 <- amwo_hmm %>%
-#   filter(mean_final_steps > 16.1)
-# 
-# amwo_hmm3 <- amwo_hmm %>%
-#   filter(mean_final_steps <= 16.1)
-
-amwo_hmm3 <- amwo_hmm
-```
-
-
-Add the two state here
-
 Assign a starting state for each individual
 ```{r}
 ## rank observations (requires correct sorting), ifelse to covert first observations to state 1 and all others NA
-knownStates3 <- amwo_hmm3 %>%
+knownStates <- amwo_hmm %>%
   group_by(ID) %>%
   mutate(ranks = row_number()) %>%
   mutate(known = ifelse(ranks == "1", 1, NA)) %>%
@@ -258,55 +205,45 @@ knownStates3 <- amwo_hmm3 %>%
 
 Label states and create distributions for movements
 ```{r}
-stateNames3 <- c("pre","migration", "post")
-nsim3 <- 25 # number of simulations
-dist3 <- list(step="gamma", angle="wrpcauchy")# , pts_10mi_log = "norm", lat_diff_abs = "gamma"
+stateNames <- c("pre","migration", "post")
+nsim <- 25 # number of simulations
+dist <- list(step="gamma", angle="wrpcauchy") #, lat_diff_abs = "gamma" , pts_10mi_log = "norm"
 ```
 
 fix step length parameters and state transitions
 ```{r}
-fixPar3 <- list(beta=matrix(c(NA, -100, # pre-migration to transitions, can't go pre- to post
+fixPar <- list(beta=matrix(c(NA, -100, # pre-migration to transitions, can't go pre- to post
                      -100, NA,  #once entered migration can't go back to pre
                      -100, -100,
                      NA, -100,
                      -100, NA,
                      -100, -100), nrow = 2, byrow = TRUE)) #once entered post-migration, can't leave
-
 ```
 
 These serve as the starting parameters for the HMM to optimize. Liam note: ask Erik where these came from
 ```{r}
-#Default
-# Par0_m1_3 <- list(step=c(0.485, 211.927, 0.485, #mean in km
-#                        0.7327, 289.599, 0.7327, # SD in km
-#                        0.026, 0.036, 0.026), #zeromass ie how many zeroes expected in the distribution
-#                 angle=c(0, 0, 0, #mean
-#                         0.5, 0.5, 0.5), #concentration
-#                 julian_day = c(20, 50, 140, #mean 100
-#                         10, 10, 30))
-
-#Informed priors
-Par0_m1_3 <- list(step=c(0.36553000, 57.96369562, 0.20293436, #mean in km
-                       0.48229603, 140.73763264, 0.26933843, # SD in km
-                       0.01593086, 0.02918066, 0.08298248), #zeromass ie how many zeroes expected in the distribution
-                angle=c(-3.1360643, 3.0924885, -3.1388950, #mean
-                        0.5024427, 0.2242694, 0.4235424), #concentration
-                julian_day = c(20, 50, 140, #mean 100
-                        10, 10, 30))
-
-
+Par0_m1 <- list(step=c(0.485, 211.927, 0.485, #mean in km
+                       0.7327, 289.599, 0.7327, # SD in km
+                       0.026, 0.036, 0.026), #zeromass ie how many zeroes expected in the distribution
+                angle=c(0, 0, 0, #mean
+                        0.5, 0.5, 0.5), #concentration
+                julian_day = c(20, 50, 100, #mean
+                        10, 10, 10))
+                # lat_diff_abs = c(0.01, 1, 0.01,
+                #                  0.01, 1, 0.01,
+                #                  0.026, 0.036, 0.026)) 
 ```
 
 Create a function that fits the model, predicts states for each step (predicted and observed) and input in the dataset. Note: the listed x y is the starting location of the step. Then use this to determine what the bird's state was at any given point
 ```{r}
-fit_and_predict3 <- function(.x){
+fit_and_predict <- function(.x){
   set.seed(8)
-  m1 <- fitHMM(data=.x, nbStates=3, dist=dist3, Par0 = Par0_m1_3,
+  m1 <- fitHMM(data=.x, nbStates=3, dist=dist, Par0 = Par0_m1,
                estAngleMean = list(angle=TRUE),
-               fixPar=fixPar3,
+               fixPar=fixPar,
                #knownStates = knownStates,
                formula = ~julian_day, #state 2 to 3. page 47 of vignette shows how to create the beta matrix
-               stateNames = stateNames3, nsim = nsim3)
+               stateNames = stateNames, nsim = nsim)
   
   .x$step_state <- viterbi(m1)
   
@@ -336,29 +273,14 @@ fit_and_predict3 <- function(.x){
 
 I'll run this once initially, and this can be rerun after ruleset changes if necessary
 ```{r}
-results_initial3 <- fit_and_predict3(amwo_hmm3) #results_initial includes both the created model and the df with predicted states 
+results_initial <- fit_and_predict(amwo_hmm) #results_initial includes both the created model and the df with predicted states 
 
 #results_initial$model #probabilities of transition
 #plot(results_initial$model, plotCI = TRUE) #inspect estimated parameters for each state and state classifications for each individual
 #plotPR(results_initial$model) # lot observation index, theoretical quantiles, and lag
 
-amwo_hmm3 <- results_initial3$results
+amwo_hmm <- results_initial$results
 ```
-
-This is the point where I rejoin amwo_hmm2 and amwo_hmm3 into a single amwo_hmm. The code continues as normal from here
-```{r}
-amwo_hmm <- amwo_hmm3 
-```
-
-The ruleset fails to designate a summering location for VA-2019-46 and SC-2019-03 due to late settlement (not enough points in the area before 6/30). If the window was longer it would correct this, but throw off other observations due to post-breeding dispersal movements. I'll manually force VA-2019-46 and SC-2019-03's final locations into state 3 instead.
-```{r}
-amwo_hmm <- amwo_hmm %>%
-  mutate(step_state = ifelse(animal_name == "VA-2019-46" & date == "2020-06-28", 3, step_state),
-         point_state = ifelse(animal_name == "VA-2019-46" & date == "2020-06-28", 3, point_state)) %>%
-  mutate(step_state = ifelse(animal_name == "SC-2019-03" & date == "2019-06-28", 3, step_state),
-         point_state = ifelse(animal_name == "SC-2019-03" & date == "2019-06-28", 3, point_state))
-```
-
 
 Ruleset: Pre-migration is all points up until the bird departs > 16.1km from its initial location for the final time
 ```{r}
@@ -443,15 +365,14 @@ amwo_hmm <- map(unique(amwo_hmm$ID), function(ind){
 ```
 
 Add back in the movement from the summer transient bird (VA-2020-52-2020), manually classified as post-mig
-Gonna try not doing this, as all I really care about are the migratory initiation dates
 ```{r}
-# early_spring_movement %>%
-#   mutate(step_state = 1, point_state = 1) ->
-#   early_spring_movement
-# 
-# amwo_hmm %>%
-#   rbind(early_spring_movement) ->
-#   amwo_hmm
+summer_transient_movement %>%
+  mutate(step_state = c(3,NA), point_state = 3) ->
+  summer_transient_movement
+
+amwo_hmm %>%
+  rbind(summer_transient_movement) ->
+  amwo_hmm
 ```
 
 Correct step state based on the new point states
@@ -491,9 +412,11 @@ amwo_hmm <- map(unique(amwo_hmm$ID), function(ind){
 Last bit: remove all of the false migrations
 ```{r}
 amwo_hmm <- amwo_hmm %>%
-  filter(ID != "NJ-2019-28-2020",
-         ID != "NS-2019-02-2020",
-         ID != "RI-2020-42-2021")
+  filter(ID != "RI-2019-21-2020",
+         ID != "RI-2019-28-2020",
+         ID != "RI-2019-29-2020",
+         ID != "VA-2018-03-2018")
+         #ID != "RI-2019-18-2020")
 ```
 
 ```{r}
@@ -505,7 +428,7 @@ amwo_hmm <- amwo_hmm %>%
 Save
 ```{r}
 #Save amwo_hmm to a file that can be reviewed via the Shiny app
-saveRDS(amwo_hmm, file = "spring_female_3_state_model.rds")
+saveRDS(amwo_hmm, file = here::here("classifier_spring", "spring_male_3_state_model.rds"))
 ```
 
 
