@@ -123,7 +123,10 @@ amwo_spring_males<- amwo_spring_males %>%
 
 Flag individuals tagged after October 15th on the year of observation so that I can mark their initial stationary state as uncertain
 ```{r include = FALSE}
-# note: need to ensure that capture sheet updates regularly. Include update code somewhere in the project?
+# Comment this out if running repeatedly; otherwise it will just slow down the code
+googledrive::as_id("https://drive.google.com/file/d/19JA5OztH3hS4MPfVnH5zswDxSSLcWxL3/view?usp=sharing") %>%
+        drive_download(path = here("data", "capture_sheet.xlsx"), overwrite = TRUE)
+
 capture_dates <- readxl::read_excel(here::here("capture_sheet.xlsx"), col_types = c("text", "text", "date", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text")) %>%
         mutate(`Argos ID` = as.character(`Argos ID`)) %>%
   transmute(animal_name = `Movebank ID`,
