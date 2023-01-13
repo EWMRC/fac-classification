@@ -1,0 +1,133 @@
+---
+title: "R Notebook"
+output: html_notebook
+editor_options: 
+  chunk_output_type: console
+---
+
+## Use the libraries specified in the modeling scripts
+
+Plot all individuals together to see how the code performs on a population scale
+```{r}
+# Includes latitude
+# ggplot(amwo_hmm, aes(x = ID, y = julian_day)) +
+#   geom_point(aes(color = y, shape = as.character(point_state))) +
+#   scale_color_distiller(palette = "Spectral") +
+#   theme_dark() + 
+#   theme(axis.text.x = element_text(angle = 90))
+
+# Doesn't include latitude
+ggplot(amwo_hmm, aes(x = ID, y = julian_day)) +
+  geom_point(aes(color = as.character(point_state), shape = as.character(point_state))) +
+  scale_color_brewer(palette = "Spectral") +
+  theme_dark() +
+  theme(axis.text.x = element_text(angle = 90))
+```
+
+Plot fall and spring migrations together
+
+Continuity issues:
+VT-2020-09-2020 late arrival to wintering site in Jan causes misclassification as not wintering.
+
+RI-2019-24-2019 switches back to mig immediately. Should this be classified as wintering? Spends only 2 weeks here.
+
+Potential solution: If the bird in question has a mig initiation date for that spring prior to 1/31, only points from before that mig initiation can be used in the fall moveHMM. This should fix both continuity issues w/o causing more.
+
+```{r}
+amwo_hmm_fall <- readRDS(here("classifier_fall", "fall_all_3_state_model.rds")) %>%
+  mutate(combined_year = paste0(animal_name, "-", year),
+         original_point_state = point_state)
+
+amwo_hmm_spring <- readRDS(here("classifier_spring", "spring_male_3_state_model.rds")) %>%
+  mutate(combined_year = paste0(animal_name, "-", as.numeric(year) - 1),
+         julian_day = julian_day + 365,
+         original_point_state = point_state,
+         point_state = point_state + 3)
+
+amwo_hmm_combined <- rbind(amwo_hmm_fall, amwo_hmm_spring)
+
+# individuals_lasting_into_spring <- amwo_hmm_combined %>%
+#   group_by()
+
+combined_plot <- ggplot(amwo_hmm_combined, aes(x = combined_year, y = julian_day)) +
+  geom_point(aes(color = as.character(original_point_state), shape = as.character(original_point_state))) +
+  scale_color_brewer(palette = "Spectral") +
+  theme_dark() +
+  theme(axis.text.x = element_text(angle = 90)) +
+  theme(axis.title.x=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
+
+
+plotly::ggplotly(combined_plot)
+
+```
+
+
+
+Clunky, but basically extract individuals 1 at a time and look at them. Liam note: Currently only working with chunk output in console to my knowledge
+```{r}
+leaflet.male<- function(x){
+  
+  # color pallate for markers
+    getColor <- function(y) {
+    sapply(y$point_state, function(z) {
+      if(is.na(z)) {
+        "blue"
+      } else if(z == 1) {
+        "green"
+      } else if(z == 2) {
+        "orange"
+      } else if(z == 3) {
+        "red"
+      } else if(z == 4){
+        "black"
+      } else if(z == 5){
+        "blue"
+      } else if(z == 6){
+        "brown"
+      }})
+  }
+  
+  icons <- awesomeIcons(
+    icon = 'ios-close',
+    iconColor = 'black',
+    library = 'ion',
+    markerColor = getColor(x)
+  )
+  
+  
+  m <- leaflet(options = leafletOptions(zoomControl = TRUE,
+                                       minZoom = 1, maxZoom = 22,
+                                       dragging = TRUE)) %>%
+    addTiles() %>% # Default base mape
+    addProviderTiles("Esri.WorldImagery") %>%  # ortho image
+    addProviderTiles(providers$Stamen.TonerLines) %>% # state lines and roads.
+    #addProviderTiles(providers$Stamen.TonerLabels) %>% # add location and road labels
+    addScaleBar() %>%
+    addAwesomeMarkers(lng=x$x, 
+                      lat=x$y, 
+                      icon=icons,
+                      popup = x$date) %>%
+    addPolylines(lng =x$x,
+                 lat = x$y,
+                 weight=3, color="red")
+  
+  
+  return(m) 
+  
+}
+```
+
+```{r}
+amwo_hmm %>%
+  filter(ID == "RI-2020-43-2020") %>%
+  #View()
+  leaflet.male(.)
+# 
+# amwo_hmm_combined %>%
+#   filter(combined_year == "VT-2020-09-2020") %>%
+#   #View()
+#   leaflet.male(.)
+```
+
