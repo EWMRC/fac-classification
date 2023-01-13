@@ -34,11 +34,11 @@ RI-2019-24-2019 switches back to mig immediately. Should this be classified as w
 Potential solution: If the bird in question has a mig initiation date for that spring prior to 1/31, only points from before that mig initiation can be used in the fall moveHMM. This should fix both continuity issues w/o causing more.
 
 ```{r}
-amwo_hmm_fall <- readRDS("fall_male_3_state_model.rds") %>%
+amwo_hmm_fall <- readRDS(here("classifier_fall", "fall_all_3_state_model.rds")) %>%
   mutate(combined_year = paste0(animal_name, "-", year),
          original_point_state = point_state)
 
-amwo_hmm_spring <- readRDS("spring_male_3_state_model.rds") %>%
+amwo_hmm_spring <- readRDS(here("classifier_spring", "spring_male_3_state_model.rds")) %>%
   mutate(combined_year = paste0(animal_name, "-", as.numeric(year) - 1),
          julian_day = julian_day + 365,
          original_point_state = point_state,

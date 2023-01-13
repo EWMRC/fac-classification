@@ -17,11 +17,11 @@ library(leaflet)
 library(RColorBrewer)
 library(sf)
 library(furrr)
+library(here)
 ```
 
 Extract all locations from 2018, 2019, 2020, and 2021 from August 1st through January 4th
 ```{r include=FALSE}
-
 ending_consideration_date <- mdy("2/25/2022") #
 
 days_subtract <- days(ending_consideration_date - mdy("12/31/2021"))
@@ -36,12 +36,12 @@ amwo_2019 <- getMovebankData(study = "American Woodcock Migration Ecology in Eas
 
 amwo_2020 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = login, timestamp_start = "20200801000000000", timestamp_end = "20210225000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
 
-# amwo_2021 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = login, timestamp_start = "20210801000000000", timestamp_end = "20220225000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
+amwo_2021 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = login, timestamp_start = "20210801000000000", timestamp_end = "20220225000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
 ```
 
 Formatting and cleaning, including creating time columns and simplifying to one location per day (trying with multiple locations per day now)
 ```{r}
-amwo_spring <- as.data.frame(rbind(amwo_2017, amwo_2018, amwo_2019, amwo_2020))
+amwo_spring <- as.data.frame(rbind(amwo_2017, amwo_2018, amwo_2019, amwo_2020, amwo_2021))
 
 amwo_spring <- amwo_spring %>%
   transmute(ID = local_identifier,
@@ -103,31 +103,13 @@ amwo_spring_males <- amwo_spring_males %>%
   mutate(julian_day = yday(ymd(date)- days_subtract)) #subtracting 5 to make sure that January julian days don't wrap around
 ```
 
-Remove individuals with fewer than 3 locations, recording which ones were removed
-```{r}
-individuals_removed_for_too_few_locations <- amwo_spring_males %>%
-  group_by(ID) %>%
-  tally() %>%
-  filter(n < 3) %>%
-  pull(ID)
-
-rm.ID <- amwo_spring_males %>%
-  group_by(ID) %>%
-  tally() %>%
-  filter(n > 2) %>%
-  pull(ID)
-
-amwo_spring_males<- amwo_spring_males %>%
-  filter(ID %in% rm.ID)
-```
-
 Flag individuals tagged after October 15th on the year of observation so that I can mark their initial stationary state as uncertain
 ```{r include = FALSE}
 # Comment this out if running repeatedly; otherwise it will just slow down the code
-googledrive::as_id("https://drive.google.com/file/d/19JA5OztH3hS4MPfVnH5zswDxSSLcWxL3/view?usp=sharing") %>%
-        drive_download(path = here("data", "capture_sheet.xlsx"), overwrite = TRUE)
+# googledrive::as_id("https://drive.google.com/file/d/19JA5OztH3hS4MPfVnH5zswDxSSLcWxL3/view?usp=sharing") %>%
+#         googledrive::drive_download(path = here("capture_sheet.xlsx"), overwrite = TRUE)
 
-capture_dates <- readxl::read_excel(here::here("capture_sheet.xlsx"), col_types = c("text", "text", "date", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text")) %>%
+capture_dates <- readxl::read_excel(here("capture_sheet.xlsx"), col_types = c("text", "text", "date", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text")) %>%
         mutate(`Argos ID` = as.character(`Argos ID`)) %>%
   transmute(animal_name = `Movebank ID`,
             capture_date = Date)
@@ -181,6 +163,23 @@ amwo_spring_males <- amwo_spring_males %>%
   dplyr::select(-init_time)
 ```
 
+Remove individuals with fewer than 3 locations, recording which ones were remov ed
+```{r}
+individuals_removed_for_too_few_locations <- amwo_spring_males %>%
+  group_by(ID) %>%
+  tally() %>%
+  filter(n < 3) %>%
+  pull(ID)
+
+rm.ID <- amwo_spring_males %>%
+  group_by(ID) %>%
+  tally() %>%
+  filter(n > 2) %>%
+  pull(ID)
+
+amwo_spring_males<- amwo_spring_males %>%
+  filter(ID %in% rm.ID)
+```
 
 # create momentuHMMData object; would specify covariates if included in the dataset
 ##  basically the step length and turn angles are now included
