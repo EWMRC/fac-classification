@@ -296,7 +296,7 @@ Label states and create distributions for movements
 ```{r}
 stateNames <- c("pre","migration", "post")
 nsim <- 25 # number of simulations
-dist <- list(step="gamma", angle="wrpcauchy") #, lat_diff_abs = "gamma" , pts_10mi_log = "norm"
+dist <- list(step="gamma", angle="wrpcauchy", log_mean_dist_7 = "norm") #, lat_diff_abs = "gamma" , pts_10mi_log = "norm"
 ```
 
 fix step length parameters and state transitions
@@ -369,7 +369,7 @@ I'll run this once initially, and this can be rerun after ruleset changes if nec
 ```{r}
 results_initial <- fit_and_predict(amwo_hmm) #results_initial includes both the created model and the df with predicted states 
 
-#results_initial$model #probabilities of transition
+results_initial$model #probabilities of transition
 #plot(results_initial$model, plotCI = TRUE) #inspect estimated parameters for each state and state classifications for each individual
 #plotPR(results_initial$model) # lot observation index, theoretical quantiles, and lag
 

@@ -1,10 +1,2 @@
-spring_male_3_state_model.rds- looking good, with some april settlements that are potentially questionable
-spring_female_3_state_model.rds 
-	manually set NC-2022-40-2022 to settled
-	probably manually set PA-2021-39-2022 to settled
-	VA-2021-98-2022 is not settling correctly; could use interpolated locations
-	VA-2022-100-2022 remove 2022-06-26, as it is messing up the designation of the terminal state
-	VT-2021-22-2022 is not settling correctly; could use interpolated locations
-	VT-2021-25-2022 is going to be a pain in the ass- not enough late locations
-	
-Use the crawl package to interpolate missing daily locations
+VA-2020-52-2020 is thrown off by a mid-summer movement
+VT-2021-27-2022 isn't settling, probably because the transmitter died too early
