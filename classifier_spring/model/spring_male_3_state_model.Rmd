@@ -21,6 +21,7 @@ library(RColorBrewer)
 library(sf)
 library(furrr)
 library(here)
+library(crawl)
 ```
 
 Extract all locations from 2019, 2020, and 2021 from Jan 5th through June 30th
@@ -103,12 +104,14 @@ amwo_spring_males <- amwo_spring_males %>%
 Remove individuals with fewer than 3 locations, recording which ones were removed
 ```{r}
 individuals_removed_for_too_few_locations <- amwo_spring_males %>%
+  distinct(ID, date,.keep_all = TRUE) %>% 
   group_by(ID) %>%
-  tally() %>%
+  tally() %>% 
   filter(n < 3) %>%
   pull(ID)
 
 rm.ID <- amwo_spring_males %>%
+  distinct(ID, date,.keep_all = TRUE) %>% 
   group_by(ID) %>%
   tally() %>%
   filter(n > 2) %>%
@@ -121,12 +124,12 @@ amwo_spring_males <- amwo_spring_males %>%
 Flag individuals tagged after February 15th on the year of observation so that I can mark their initial stationary state as uncertain
 ```{r include = FALSE}
 # Comment this out if running repeatedly; otherwise it will just slow down the code
-googledrive::as_id("https://drive.google.com/file/d/19JA5OztH3hS4MPfVnH5zswDxSSLcWxL3/view?usp=sharing") %>%
-        googledrive::drive_download(path = here("capture_sheet.xlsx"), overwrite = TRUE)
+# googledrive::as_id("https://drive.google.com/file/d/19JA5OztH3hS4MPfVnH5zswDxSSLcWxL3/view?usp=sharing") %>%
+#         googledrive::drive_download(path = here("capture_sheet.xlsx"), overwrite = TRUE)
 
 capture_dates <- readxl::read_excel(here("capture_sheet.xlsx"), col_types = c("text", "text", "date", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text")) %>%
-        mutate(`Argos ID` = as.character(`Argos ID`)) %>%
-  transmute(animal_name = `Movebank ID`,
+        mutate(`Argos_ID` = as.character(`Argos_ID`)) %>%
+  transmute(animal_name = `Movebank_ID`,
             capture_date = Date)
 
 individuals_tagged_too_late <- amwo_spring_males %>%
@@ -148,13 +151,57 @@ individuals_died_too_early <- amwo_spring_males %>%
   pull(ID)
 ```
 
+Crawl code goes here
+```{r}
+# Group tracks by id (for crawl model because it likes tidyverse structure)
+nested_birds <- group_by(amwo_spring_males, ID) %>% 
+  nest() 
+
+# Movement model (no covariates = ~1)
+# The constraints are based on the godwit example
+# Fit model to each bird. Constrain velocity autoregression parameter to c(-7,2)
+# full effective range of the beta parameter (according to D Johnson)
+nested_birds <- mutate(nested_birds,
+                fit = purrr::map(data, ~{crawl::crwMLE(mov.model=~1, 
+                                                       data=.x, 
+                                                       coord=c("lon", "lat"), # movement model = ~1 bc no covariates
+                                                       Time.name="time",
+                                                       #time.scale='hours', # sometimes need to turn this on, sometimes don't
+                                                       method="L-BFGS-B", # there are different optimization methods, default didn't work but this did
+                                                       constr=list(lower=c(-Inf,-7), upper=c(Inf,2)),
+                                                       attempts=20,
+                                                       time.scale = "hours")}
+                )
+)
+
+nested_birds <- mutate(nested_birds,
+                pred = purrr::map(fit, ~{
+                  crawl::crwPredict(.x, predTime="24 hours", return.type='flat') %>% # use 24 hours, NOT 1 day (because it rounds to the unit)
+                    crawl::crw_as_tibble()
+                }
+                )
+)
+
+unnested_birds <- dplyr::select(nested_birds, ID, pred) %>% unnest(cols=pred)
+```
+
+
 # create momentuHMMData object; would specify covariates if included in the dataset
 ##  basically the step length and turn angles are now included
 ## Also create a data stream for difference in latitude (may be necessary for a ruleset: if not, remove)
 ```{r}
-amwo_hmm <- amwo_spring_males %>%
-  rename(x = lon, y = lat) 
+# amwo_hmm <- amwo_spring_males %>%
+#   rename(x = lon, y = lat) 
+amwo_hmm <- unnested_birds %>%
+  rename(x = mu.x, y = mu.y) %>% 
+  ungroup()
 
+#remove duplicates by date to deal with predicted locations on the same day as the observed location
+amwo_hmm <- amwo_hmm %>% 
+  mutate(date = strftime(time, format="%Y-%m-%d")) %>% 
+  distinct(date, ID, .keep_all = TRUE) %>% 
+  mutate(julian_day = yday(ymd(date))) #Redo the julian day calculation
+  
 amwo_hmm$lat_diff <- map(1:nrow(amwo_hmm),  function(i){
   if(i == 1){return(NA)} else{#for the first row, return 1
     if(amwo_hmm[i,"ID"] != amwo_hmm[i-1,"ID"]){ #is this the first point for this ID? Return NA
@@ -165,28 +212,63 @@ amwo_hmm$lat_diff <- map(1:nrow(amwo_hmm),  function(i){
   }
 }) %>% unlist()
 
-amwo_hmm %>%
-  mutate(lat_diff_abs = abs(lat_diff)) ->
-  amwo_hmm
-
-amwo_hmm %>%
-  prepData(type = "LL", covNames = c("julian_day")) %>%
-  mutate(step = round(step, digits = 2)) ->
-  amwo_hmm
+amwo_hmm <- amwo_hmm %>%
+  mutate(lat_diff_abs = abs(lat_diff)) %>% 
+  dplyr::select(ID, animal_name, locType, x, y, time, date, julian_day) %>% 
+  as.data.frame()
+  
 ```
+
+Determine the mean distance to the nearest 7 points
+```{r}
+plan(multisession)
+
+amwo_hmm$mean_dist_7 <- amwo_hmm %>% 
+  dplyr::select(ID, x, y) %>% 
+  future_pmap(function(ID_iter, x_iter, y_iter){
+    
+    iter_sf <- data.frame(x = x_iter, y = y_iter) %>% 
+      st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE)
+    
+    other_locs <- amwo_hmm %>%
+      st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE) %>%
+      filter(ID == ID_iter)
+    
+    st_distance(x = iter_sf, y = other_locs) %>% 
+      as.numeric() %>%
+      sort() %>%
+      .[2:8] %>% 
+      mean(na.rm = TRUE) %>% 
+      return()
+  }) %>% 
+  unlist()
+
+plan(sequential)
+```
+
+
+```{r}
+amwo_hmm <- amwo_hmm %>%
+  mutate(log_mean_dist_7 = log(mean_dist_7)) %>% 
+  prepData(type = "LL", covNames = c("julian_day", "log_mean_dist_7")) %>%
+  mutate(step = round(step, digits = 2)) 
+```
+
 
 remove a transient summer movement which throws off the hmm for VA-2020-52-2020. Add it back again at the end as a manually-delineated residential movement at the end
 ```{r}
 summer_transient_movement <- amwo_hmm %>%
-  mutate(id_time = paste(ID, as.character(time))) %>% 
-  filter(id_time == "VA-2020-52-2020 2020-06-19 01:59:28" | id_time == "VA-2020-52-2020 2020-06-28 19:01:20") %>%
-  mutate(id_time = NULL)
+  filter(ID == "VA-2020-52-2020" & julian_day > 169)
+  #mutate(id_time = paste(ID, as.character(time))) %>% 
+  #filter(id_time == "VA-2020-52-2020 2020-06-19 01:59:28" | id_time == "VA-2020-52-2020 2020-06-28 19:01:20") %>%
+  #mutate(id_time = NULL)
 
 amwo_hmm <- amwo_hmm %>%
-  mutate(id_time = paste(ID, as.character(time))) %>% 
-  filter(id_time != "VA-2020-52-2020 2020-06-19 01:59:28") %>%
-  filter(id_time != "VA-2020-52-2020 2020-06-28 19:01:20") %>%
-  mutate(id_time = NULL)
+  filter(!(ID == "VA-2020-52-2020" & julian_day > 169))
+  # mutate(id_time = paste(ID, as.character(time))) %>% 
+  # filter(id_time != "VA-2020-52-2020 2020-06-19 01:59:28") %>%
+  # filter(id_time != "VA-2020-52-2020 2020-06-28 19:01:20") %>%
+  # mutate(id_time = NULL)
 ```
 
 remove birds with no individual step lengths >30.2km (20 miles). In practice this pulls birds that never initiate a substantial migratory movement but doesn't penalize birds that DO migrate, as they always make at least one substantial movement.
@@ -224,7 +306,10 @@ fixPar <- list(beta=matrix(c(NA, -100, # pre-migration to transitions, can't go 
                      -100, -100,
                      NA, -100,
                      -100, NA,
-                     -100, -100), nrow = 2, byrow = TRUE)) #once entered post-migration, can't leave
+                     -100, -100,
+                     NA, -100,
+                     -100, NA,
+                     -100, -100), nrow = 3, byrow = TRUE)) #once entered post-migration, can't leave
 ```
 
 These serve as the starting parameters for the HMM to optimize. Liam note: ask Erik where these came from
@@ -235,7 +320,9 @@ Par0_m1 <- list(step=c(0.485, 211.927, 0.485, #mean in km
                 angle=c(0, 0, 0, #mean
                         0.5, 0.5, 0.5), #concentration
                 julian_day = c(20, 50, 100, #mean
-                        10, 10, 10))
+                        10, 10, 10),
+                log_mean_dist_7 = c(log(100), log(5000), log(100), #mean
+                                log(50), log(20), log(50))) #sd
                 # lat_diff_abs = c(0.01, 1, 0.01,
                 #                  0.01, 1, 0.01,
                 #                  0.026, 0.036, 0.026)) 
@@ -249,7 +336,7 @@ fit_and_predict <- function(.x){
                estAngleMean = list(angle=TRUE),
                fixPar=fixPar,
                #knownStates = knownStates,
-               formula = ~julian_day, #state 2 to 3. page 47 of vignette shows how to create the beta matrix
+               formula = ~julian_day + log_mean_dist_7, #state 2 to 3. page 47 of vignette shows how to create the beta matrix
                stateNames = stateNames, nsim = nsim)
   
   .x$step_state <- viterbi(m1)
@@ -374,7 +461,7 @@ amwo_hmm <- map(unique(amwo_hmm$ID), function(ind){
 Add back in the movement from the summer transient bird (VA-2020-52-2020), manually classified as post-mig
 ```{r}
 summer_transient_movement %>%
-  mutate(step_state = c(3,NA), point_state = 3) ->
+  mutate(step_state = c(rep(3,10),NA), point_state = 3) ->
   summer_transient_movement
 
 amwo_hmm %>%
