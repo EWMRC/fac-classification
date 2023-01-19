@@ -110,7 +110,7 @@ individuals_removed_for_too_few_locations <- amwo_spring_males %>%
   filter(n < 3) %>%
   pull(ID)
 
-rm.ID <- amwo_spring_males %>%
+birds_to_keep <- amwo_spring_males %>%
   distinct(ID, date,.keep_all = TRUE) %>% 
   group_by(ID) %>%
   tally() %>%
@@ -118,7 +118,7 @@ rm.ID <- amwo_spring_males %>%
   pull(ID)
 
 amwo_spring_males <- amwo_spring_males %>%
-  filter(ID %in% rm.ID)
+  filter(ID %in% birds_to_keep)
 ```
 
 Flag individuals tagged after February 15th on the year of observation so that I can mark their initial stationary state as uncertain
@@ -134,7 +134,7 @@ capture_dates <- readxl::read_excel(here("capture_sheet.xlsx"), col_types = c("t
 
 individuals_tagged_too_late <- amwo_spring_males %>%
   left_join(capture_dates) %>%
-  filter((year == year(capture_date) & mdy(paste0("2/15/", year)) < capture_date)) %>% #remove locations when the bird was caught after Oct 15 in the year of concern
+  filter((year == year(capture_date) & mdy(paste0("2/15/", year)) < capture_date)) %>% #remove locations when the bird was caught after Feb 15 in the year of concern
   dplyr::select(ID, animal_name, year) %>%
   distinct()
 ```
@@ -152,7 +152,7 @@ individuals_died_too_early <- amwo_spring_males %>%
 ```
 
 Crawl code goes here
-```{r}
+```{r include=FALSE}
 # Group tracks by id (for crawl model because it likes tidyverse structure)
 nested_birds <- group_by(amwo_spring_males, ID) %>% 
   nest() 
@@ -249,7 +249,7 @@ plan(sequential)
 
 ```{r}
 amwo_hmm <- amwo_hmm %>%
-  mutate(log_mean_dist_7 = log(mean_dist_7)) %>% 
+  mutate(log_mean_dist_7 = log(mean_dist_7 + 0.1)) %>% #Adding a small # to deal with 0 distances 
   prepData(type = "LL", covNames = c("julian_day", "log_mean_dist_7")) %>%
   mutate(step = round(step, digits = 2)) 
 ```
@@ -258,13 +258,13 @@ amwo_hmm <- amwo_hmm %>%
 remove a transient summer movement which throws off the hmm for VA-2020-52-2020. Add it back again at the end as a manually-delineated residential movement at the end
 ```{r}
 summer_transient_movement <- amwo_hmm %>%
-  filter(ID == "VA-2020-52-2020" & julian_day > 169)
+  filter(ID == "VA-2020-52-2020" & julian_day > 160)
   #mutate(id_time = paste(ID, as.character(time))) %>% 
   #filter(id_time == "VA-2020-52-2020 2020-06-19 01:59:28" | id_time == "VA-2020-52-2020 2020-06-28 19:01:20") %>%
   #mutate(id_time = NULL)
 
 amwo_hmm <- amwo_hmm %>%
-  filter(!(ID == "VA-2020-52-2020" & julian_day > 169))
+  filter(!(ID == "VA-2020-52-2020" & julian_day > 160))
   # mutate(id_time = paste(ID, as.character(time))) %>% 
   # filter(id_time != "VA-2020-52-2020 2020-06-19 01:59:28") %>%
   # filter(id_time != "VA-2020-52-2020 2020-06-28 19:01:20") %>%
@@ -274,7 +274,7 @@ amwo_hmm <- amwo_hmm %>%
 remove birds with no individual step lengths >30.2km (20 miles). In practice this pulls birds that never initiate a substantial migratory movement but doesn't penalize birds that DO migrate, as they always make at least one substantial movement.
 Also recording which individuals are removed
 ```{r}
-amwo_hmm$min.step <- ifelse(amwo_hmm$step>30.2, 1,0)
+amwo_hmm$min.step <- ifelse(amwo_hmm$step > 30.2, 1, 0)
 individuals_removed_for_no_migratory_steps <- unique(amwo_hmm$ID [amwo_hmm$min.step == 1])
 amwo_hmm <- amwo_hmm[(amwo_hmm$ID %in% amwo_hmm$ID [amwo_hmm$min.step == 1]) , ]
 amwo_hmm$min.step <- NULL
@@ -312,7 +312,7 @@ fixPar <- list(beta=matrix(c(NA, -100, # pre-migration to transitions, can't go 
                      -100, -100), nrow = 3, byrow = TRUE)) #once entered post-migration, can't leave
 ```
 
-These serve as the starting parameters for the HMM to optimize. Liam note: ask Erik where these came from
+These serve as the starting parameters for the HMM to optimize.
 ```{r}
 Par0_m1 <- list(step=c(0.485, 211.927, 0.485, #mean in km
                        0.7327, 289.599, 0.7327, # SD in km
@@ -461,7 +461,7 @@ amwo_hmm <- map(unique(amwo_hmm$ID), function(ind){
 Add back in the movement from the summer transient bird (VA-2020-52-2020), manually classified as post-mig
 ```{r}
 summer_transient_movement %>%
-  mutate(step_state = c(rep(3,10),NA), point_state = 3) ->
+  mutate(step_state = c(rep(3,19),NA), point_state = 3) ->
   summer_transient_movement
 
 amwo_hmm %>%

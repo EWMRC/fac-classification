@@ -1,2 +1,18 @@
-VA-2020-52-2020 is thrown off by a mid-summer movement
+Spring males:
 VT-2021-27-2022 isn't settling, probably because the transmitter died too early
+
+Spring females:
+NY-2018-07-2019 has two distinct breeding areas, but correctly marked. I think. Probably controversial.
+SC-2019-03-2019 should have been booted into residential. Good candidate to see if the julian day performs better
+
+Fall birds:
+NJ-2018-09-2018 doesn't enter residential, largely due to a short migration and a massive winter home range. 
+Good candidate to see if the julian day performs better. Adding lat might also help here...
+
+NJ-2018-15-2018 is wrongly classified as a migration- actually a one-way dispersal movement
+
+NY-2018-02-2018 maybe should have settled? Good candidate to see if the julian day performs better
+
+
+
+

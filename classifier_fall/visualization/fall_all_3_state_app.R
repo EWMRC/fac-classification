@@ -25,7 +25,7 @@ server <- function(input, output) {
   ## as a csv to speed up your workflow)
   
   #amwoData.sm <- read.csv('HMMmale.csv')
-  amwoData.sm <- readRDS("fall_all_3_state_model.rds")
+  amwoData.sm <- readRDS(here::here("classifier_fall", "fall_all_3_state_model.rds"))
   
   amwoData.sm %>%
     mutate(ID = as.character(ID)) ->

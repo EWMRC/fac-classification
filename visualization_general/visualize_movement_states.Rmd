@@ -121,7 +121,7 @@ leaflet.male<- function(x){
 
 ```{r}
 amwo_hmm %>%
-  filter(ID == "RI-2020-43-2020") %>%
+  filter(ID == "RI-2020-31-2020") %>%
   #View()
   leaflet.male(.)
 # 
