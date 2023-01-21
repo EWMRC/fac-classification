@@ -199,7 +199,7 @@ nested_birds <- mutate(nested_birds,
                                                        #time.scale='hours', # sometimes need to turn this on, sometimes don't
                                                        method="L-BFGS-B", # there are different optimization methods, default didn't work but this did
                                                        constr=list(lower=c(-Inf,-7), upper=c(Inf,2)),
-                                                       attempts=20,
+                                                       attempts=50,
                                                        time.scale = "hours")}
                 )
 )
@@ -213,11 +213,6 @@ nested_birds <- mutate(nested_birds,
 )
 
 unnested_birds <- dplyr::select(nested_birds, ID, pred) %>% unnest(cols=pred)
-```
-
-
-```{r}
-
 ```
 
 # create momentuHMMData object; would specify covariates if included in the dataset
@@ -234,7 +229,7 @@ amwo_hmm <- unnested_birds %>%
 amwo_hmm <- amwo_hmm %>% 
   mutate(date = strftime(time, format="%Y-%m-%d")) %>% 
   distinct(date, ID, .keep_all = TRUE) %>% 
-  mutate(julian_day = yday(ymd(date))) #Redo the julian day calculation
+  mutate(julian_day = yday(ymd(date)-(days_subtract))) #Redo the julian day calculation
 
 #Remove individuals with fewer than 3 locations, recording which ones were removed. Take 2
 individuals_removed_for_too_few_locations_2 <- amwo_hmm %>%
@@ -264,7 +259,7 @@ amwo_hmm$lat_diff <- map(1:nrow(amwo_hmm),  function(i){
 
 amwo_hmm <- amwo_hmm %>%
   mutate(lat_diff_abs = abs(lat_diff)) %>% 
-  dplyr::select(ID, animal_name, locType, x, y, time, date, julian_day) %>% 
+  dplyr::select(ID, animal_name, year, locType, x, y, time, date, julian_day) %>% 
   as.data.frame()
 ```
 
@@ -298,12 +293,11 @@ plan(sequential)
 ```{r}
 amwo_hmm <- amwo_hmm %>%
   mutate(log_mean_dist_7 = log(mean_dist_7 + 0.1)) %>% #Adding a small # to deal with 0 distances 
-  prepData(type = "LL", covNames = c("julian_day", "log_mean_dist_7")) %>%
+  prepData(type = "LL") %>% #, covNames = c("julian_day", "log_mean_dist_7")
   mutate(step = round(step, digits = 2)) 
 ```
 
 remove a transient summer movement which throws off the hmm for VA-2020-52-2020. Add it back again at the end as a manually-delineated residential movement at the end (actually won't need to add it back in)
-## CRW will need edits
 ```{r}
 # summer_transient_movement <- amwo_hmm %>%
 #   mutate(id_time = paste(ID, as.character(time))) %>% 
@@ -346,34 +340,32 @@ knownStates <- amwo_hmm %>%
 ##### trying 3-state model with fixed state transitions
 
 Label states and create distributions for movements
+Julian day isn't in here, as it only applies to transition probabilities
 ```{r}
 stateNames <- c("pre","migration", "post")
-nsim <- 25 # number of simulations
-dist <- list(step="gamma", angle="wrpcauchy", log_mean_dist_7 = "norm") #, lat_diff_abs = "gamma" , pts_10mi_log = "norm"
+dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", log_mean_dist_7 = "norm") #, lat_diff_abs = "gamma" , pts_10mi_log = "norm"
 ```
 
-fix step length parameters and state transitions
+fix step length parameters and state transitions for the transition probability calculation
 ```{r}
 fixPar <- list(beta=matrix(c(NA, -100, # pre-migration to transitions, can't go pre- to post
                      -100, NA,  #once entered migration can't go back to pre
-                     -100, -100,
-                     NA, -100,
-                     -100, NA,
-                     -100, -100,
-                     NA, -100,
-                     -100, NA,
-                     -100, -100), nrow = 3, byrow = TRUE)) #once entered post-migration, can't leave
+                     -100, -100), nrow = 2, byrow = TRUE)) #once entered post-migration, can't leave
 ```
 
-These serve as the starting parameters for the HMM to optimize. Do these need to change for fall?
+These serve as the starting parameters for the HMM to optimize for the data streams included in the random walk
 ```{r}
 Par0_m1 <- list(step=c(0.485, 211.927, 0.485, #mean in km
                        0.7327, 289.599, 0.7327, # SD in km
                        0.026, 0.036, 0.026), #zeromass ie how many zeroes expected in the distribution
                 angle=c(0, 0, 0, #mean
                         0.5, 0.5, 0.5), #concentration
-                julian_day = c(269, 300, 330, #mean Oct 1, Nov 1, Dec 1, all minus 5
-                        10, 10, 10),
+                y = c(41.58981, 36.79636, 34.32931,
+                      4.433215, 4.035114, 2.398324),
+                julian_day = c(231.1194, 269.1586, 313.0377, #priors pulled from the model w/o julian day
+                        27.13328, 27.70735, 25.30101),
+                # julian_day = c(269, 300, 330, #mean Oct 1, Nov 1, Dec 1, all minus 5
+                #         10, 10, 10),
                 log_mean_dist_7 = c(log(100), log(5000), log(100), #mean
                                 log(50), log(20), log(50)))
                 # lat_diff_abs = c(0.01, 1, 0.01,
@@ -389,8 +381,8 @@ fit_and_predict <- function(.x){
                estAngleMean = list(angle=TRUE),
                fixPar=fixPar,
                #knownStates = knownStates,
-               formula = ~julian_day + log_mean_dist_7, #state 2 to 3. page 47 of vignette shows how to create the beta matrix
-               stateNames = stateNames, nsim = nsim)
+               #formula = ~julian_day, #state 2 to 3. page 47 of vignette shows how to create the beta matrix. Formula for transition probabilities
+               stateNames = stateNames)#nlmPar=list(print.level=2)
   
   .x$step_state <- viterbi(m1)
   
@@ -419,10 +411,10 @@ fit_and_predict <- function(.x){
 
 
 I'll run this once initially, and this can be rerun after ruleset changes if necessary
-```{r}
+```{r include = FALSE}
 results_initial <- fit_and_predict(amwo_hmm) #results_initial includes both the created model and the df with predicted states 
 
-#results_initial$model #probabilities of transition
+results_initial$model #probabilities of transition
 #plot(results_initial$model, plotCI = TRUE) #inspect estimated parameters for each state and state classifications for each individual
 #plotPR(results_initial$model) # lot observation index, theoretical quantiles, and lag
 

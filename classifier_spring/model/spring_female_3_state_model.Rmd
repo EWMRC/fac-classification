@@ -212,7 +212,7 @@ amwo_hmm$lat_diff <- map(1:nrow(amwo_hmm),  function(i){
 
 amwo_hmm <- amwo_hmm %>%
   mutate(lat_diff_abs = abs(lat_diff)) %>% 
-  dplyr::select(ID, animal_name, locType, x, y, time, date, julian_day) %>% 
+  dplyr::select(ID, animal_name, year, locType, x, y, time, date, julian_day) %>% 
   as.data.frame()
   
 ```
@@ -248,7 +248,7 @@ plan(sequential)
 ```{r}
 amwo_hmm <- amwo_hmm %>%
   mutate(log_mean_dist_7 = log(mean_dist_7 + 0.1)) %>% #Adding a small # to deal with 0 distances 
-  prepData(type = "LL", covNames = c("julian_day", "log_mean_dist_7")) %>%
+  prepData(type = "LL") %>% #, covNames = c("julian_day", "log_mean_dist_7")
   mutate(step = round(step, digits = 2))
 ```
 
@@ -306,22 +306,14 @@ knownStates3 <- amwo_hmm3 %>%
 Label states and create distributions for movements
 ```{r}
 stateNames3 <- c("pre","migration", "post")
-nsim3 <- 25 # number of simulations
-dist3 <- list(step="gamma", angle="wrpcauchy", log_mean_dist_7 = "norm")# , pts_10mi_log = "norm", lat_diff_abs = "gamma"
+dist3 <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", log_mean_dist_7 = "norm")# , pts_10mi_log = "norm", lat_diff_abs = "gamma"
 ```
 
 fix step length parameters and state transitions
 ```{r}
 fixPar3 <- list(beta=matrix(c(NA, -100, # pre-migration to transitions, can't go pre- to post
                      -100, NA,  #once entered migration can't go back to pre
-                     -100, -100,
-                     NA, -100,
-                     -100, NA,
-                     -100, -100,
-                     NA, -100,
-                     -100, NA,
-                     -100, -100), nrow = 3, byrow = TRUE)) #once entered post-migration, can't leave
-
+                     -100, -100), nrow = 1, byrow = TRUE)) #once entered post-migration, can't leave
 ```
 
 These serve as the starting parameters for the HMM to optimize.
@@ -341,6 +333,8 @@ Par0_m1_3 <- list(step=c(0.36553000, 57.96369562, 0.20293436, #mean in km
                        0.01593086, 0.02918066, 0.08298248), #zeromass ie how many zeroes expected in the distribution
                 angle=c(-3.1360643, 3.0924885, -3.1388950, #mean
                         0.5024427, 0.2242694, 0.4235424), #concentration
+                y = c(34.32931, 36.79636, 41.58981,
+                      2.398324,4.035114, 4.433215),
                 julian_day = c(20, 50, 140, #mean 100
                         10, 10, 30),
                 log_mean_dist_7 = c(log(100), log(5000), log(100), #mean
@@ -357,8 +351,8 @@ fit_and_predict3 <- function(.x){
                estAngleMean = list(angle=TRUE),
                fixPar=fixPar3,
                #knownStates = knownStates,
-               formula = ~julian_day + log_mean_dist_7, #state 2 to 3. page 47 of vignette shows how to create the beta matrix
-               stateNames = stateNames3, nsim = nsim3)
+               #formula = ~julian_day + log_mean_dist_7, #state 2 to 3. page 47 of vignette shows how to create the beta matrix
+               stateNames = stateNames3)
   
   .x$step_state <- viterbi(m1)
   
@@ -390,7 +384,7 @@ I'll run this once initially, and this can be rerun after ruleset changes if nec
 ```{r}
 results_initial3 <- fit_and_predict3(amwo_hmm3) #results_initial includes both the created model and the df with predicted states 
 
-#results_initial$model #probabilities of transition
+results_initial3$model #probabilities of transition
 #plot(results_initial$model, plotCI = TRUE) #inspect estimated parameters for each state and state classifications for each individual
 #plotPR(results_initial$model) # lot observation index, theoretical quantiles, and lag
 

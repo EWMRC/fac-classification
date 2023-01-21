@@ -14,5 +14,10 @@ NJ-2018-15-2018 is wrongly classified as a migration- actually a one-way dispers
 NY-2018-02-2018 maybe should have settled? Good candidate to see if the julian day performs better
 
 
+After new data streams:
+Spring males
+MD-2019-05-2019 isn't settling. Julian day issues? Yay fixed
+NC-2019-01-2019 same thing  Yay fixed
+
 
 

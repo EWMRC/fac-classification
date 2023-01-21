@@ -25,7 +25,7 @@ server <- function(input, output) {
   ## as a csv to speed up your workflow)
   
   #amwoData.sm <- read.csv('HMMmale.csv')
-  amwoData.sm <- readRDS("fac_primary_state_delineation.rds")
+  amwoData.sm <- readRDS(here::here("classifier_integrated", "fac_primary_state_delineation.rds"))
   
   amwoData.sm %>%
     mutate(animal_name = as.character(animal_name)) %>%
