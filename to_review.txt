@@ -29,3 +29,17 @@ ME-2017-02 isn't getting kicked into a terminal state correctly... likely due to
 Might need to advance to a new version and see if this gets fixed.
 ME-2017-03-2017 is problematic due to exploratory movement
 
+4 state
+RI-2018-12-2019 no idea whats going on here
+RI-2019-24-2020 same
+AL-2020-05-2020 is a controversial stopover instead of settlement
+PA-2020-33-2021 same
+SC-2021-18-2021 transitions from state 3 to 4
+SC-2021-21-2021 alternation puts this into stage 3 instead of 4
+SC-2021-23-2021 same
+VA-2020-62-2021 never enters stage 4, unclear why
+VT-2020-09-2021 is a controversial stopover instead of settlement
+FL-2022-05-2022 outlier keeps it from settling
+FL-2022-08-2022 good example of a 3 to 4 transition
+PA-2021-37-2022 is a controversial stopover instead of settlement
+VT-2021-27-2022 is a controversial stopover instead of settlement, but understandable given movements

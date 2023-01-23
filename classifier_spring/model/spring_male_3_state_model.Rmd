@@ -294,30 +294,31 @@ knownStates <- amwo_hmm %>%
 
 Label states and create distributions for movements
 ```{r}
-stateNames <- c("pre","migration", "post")
+stateNames <- c("pre","migration", "stopover","post")
 dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", log_mean_dist_7 = "norm") #, lat_diff_abs = "gamma" , pts_10mi_log = "norm"
 ```
 
 fix step length parameters and state transitions
 ```{r}
-fixPar <- list(beta=matrix(c(NA, -100, # pre-migration to transitions, can't go pre- to post
-                     -100, NA,  #once entered migration can't go back to pre
-                     -100, -100), nrow = 1, byrow = TRUE)) #once entered post-migration, can't leave
+fixPar <- list(beta=matrix(c(NA, -100, -100, # pre-migration to transitions, can't go pre- to post
+                     -100, NA, NA,  #once entered migration can't go back to pre
+                     -100, NA, -100, #Once entered stopover, can only go back to migration
+                     -100, -100, -100), nrow = 1, byrow = TRUE)) #once entered post-migration, can't leave
 ```
 
 These serve as the starting parameters for the HMM to optimize.
 ```{r}
-Par0_m1 <- list(step=c(0.485, 211.927, 0.485, #mean in km
-                       0.7327, 289.599, 0.7327, # SD in km
-                       0.026, 0.036, 0.026), #zeromass ie how many zeroes expected in the distribution
-                angle=c(0, 0, 0, #mean
-                        0.5, 0.5, 0.5), #concentration
-                y = c(34.32931, 36.79636, 41.58981,
-                      2.398324, 4.035114, 4.433215),
-                julian_day = c(39.19987, 79.72239, 136.54740, #mean
-                        18.71277, 20.65775, 22.94372),
-                log_mean_dist_7 = c(log(100), log(5000), log(100), #mean
-                                log(50), log(20), log(50))) #sd
+Par0_m1 <- list(step=c(0.485, 211.927, 0.485, 0.485, #mean in km
+                       0.7327, 289.599, 0.7327, 0.7327, # SD in km
+                       0.026, 0.036, 0.026, 0.026), #zeromass ie how many zeroes expected in the distribution
+                angle=c(0, 0, 0, 0, #mean
+                        0.5, 0.5, 0.5, 0.5), #concentration
+                y = c(34.32931, 36.79636, 36.79636,  41.58981,
+                      2.398324, 4.035114, 4.035114, 4.433215),
+                julian_day = c(39.19987, 79.72239, 79.72239, 136.54740, #mean
+                        18.71277, 20.65775, 20.65775, 22.94372),
+                log_mean_dist_7 = c(log(100), log(5000), log(100), log(100), #mean
+                                log(50), log(20), log(20), log(50))) #sd
                 # lat_diff_abs = c(0.01, 1, 0.01,
                 #                  0.01, 1, 0.01,
                 #                  0.026, 0.036, 0.026)) 
@@ -327,7 +328,7 @@ Create a function that fits the model, predicts states for each step (predicted 
 ```{r}
 fit_and_predict <- function(.x){
   set.seed(8)
-  m1 <- fitHMM(data=.x, nbStates=3, dist=dist, Par0 = Par0_m1,
+  m1 <- fitHMM(data=.x, nbStates=4, dist=dist, Par0 = Par0_m1,
                estAngleMean = list(angle=TRUE),
                fixPar=fixPar,
                #knownStates = knownStates,
@@ -338,7 +339,7 @@ fit_and_predict <- function(.x){
   
   #step state shows the bird's behavior between points, point state shows the birds behavior at points
   .x$point_state <- map(1:nrow(.x),  function(i){
-    if(i == 1){return(1)} else{#for the first row, return 1
+    if(i == 1){return(1)} else{ #for the first row, return 1
       if(.x[i,"ID"] != .x[i-1,"ID"]){ #is this the first point for this ID? Return the starting state
         return(1)
       } else{
@@ -347,8 +348,12 @@ fit_and_predict <- function(.x){
         } else{
           if(.x[i,"step_state"] == 2 & .x[i-1,"step_state"] == 1){ #is the current step state mig and the previous step pre-mig? Return pre-mig
             return(1) 
-          } else{ #in all other circumstances, return the current step state
-            return(.x[i,"step_state"])
+          } else {
+            if(.x[i,"step_state"] == 2 & .x[i-1,"step_state"] == 3){#is the current step state mig and the previous step stopover? Return stopover
+              return(3) 
+            } else{ #in all other circumstances, return the current step state
+              return(.x[i,"step_state"])
+            }
           }
         }
       }
@@ -408,7 +413,7 @@ amwo_hmm <- map(unique(amwo_hmm$ID), function(ind){
 
 ```
 
-Ruleset: Post-migration is all points up until the bird comes within 8km of its final location for the first time, assuming that its final location is in state 3
+Ruleset: Post-migration is all points up until the bird comes within 8km of its final location for the first time, assuming that its final location is in state 4
 ```{r}
 amwo_hmm <- map(unique(amwo_hmm$ID), function(ind){
   last_loc <- amwo_hmm %>%
@@ -435,9 +440,9 @@ amwo_hmm <- map(unique(amwo_hmm$ID), function(ind){
     cat(crayon::magenta("no points within 8 kilometers of the last point"))
   }
   
-  if(last_loc$point_state == 3){
+  if(last_loc$point_state == 4){
     amwo_ind <- amwo_ind %>% 
-      mutate(point_state = if_else(row_num >= lowest_postmig_row, 3 , point_state)) %>% 
+      mutate(point_state = if_else(row_num >= lowest_postmig_row, 4, point_state)) %>% 
       mutate(within_dist_post = NULL, 
         condition_distance_km_post = NULL,
         row_num = NULL)
@@ -456,7 +461,7 @@ amwo_hmm <- map(unique(amwo_hmm$ID), function(ind){
 Add back in the movement from the summer transient bird (VA-2020-52-2020), manually classified as post-mig
 ```{r}
 summer_transient_movement %>%
-  mutate(step_state = c(rep(3,19),NA), point_state = 3) ->
+  mutate(step_state = c(rep(4,19), NA), point_state = 4) ->
   summer_transient_movement
 
 amwo_hmm %>%
@@ -474,28 +479,28 @@ then the state is migratory. otherwise, it is equal to the current point state
 if we're on the last row for the individual, skip this determination and return NA
 
 ```{r}
-amwo_hmm <- map(unique(amwo_hmm$ID), function(ind){
-  #print(ind)
-  amwo_ind <- amwo_hmm %>%
-    filter(ID == ind)
-  
-  ind_vect <- c()
-  
-  for(i in 1:(nrow(amwo_ind)-1)){
-    #print(i)
-    if(amwo_ind[i, "point_state"] == 2  | amwo_ind[i, "point_state"] != amwo_ind[i+1, "point_state"]){
-      ind_vect <- append(ind_vect, 2)
-    } else {
-      ind_vect <- append(ind_vect, amwo_ind[i, "point_state"])
-    }
-  }
-  
-  ind_vect <- append(ind_vect, NA)
-  
-  amwo_ind$step_state <- ind_vect
-  return(amwo_ind)
-}) %>%
-  exec("bind_rows", .)
+# amwo_hmm <- map(unique(amwo_hmm$ID), function(ind){
+#   #print(ind)
+#   amwo_ind <- amwo_hmm %>%
+#     filter(ID == ind)
+#   
+#   ind_vect <- c()
+#   
+#   for(i in 1:(nrow(amwo_ind)-1)){
+#     #print(i)
+#     if(amwo_ind[i, "point_state"] == 2  | amwo_ind[i, "point_state"] != amwo_ind[i+1, "point_state"]){
+#       ind_vect <- append(ind_vect, 2)
+#     } else {
+#       ind_vect <- append(ind_vect, amwo_ind[i, "point_state"])
+#     }
+#   }
+#   
+#   ind_vect <- append(ind_vect, NA)
+#   
+#   amwo_ind$step_state <- ind_vect
+#   return(amwo_ind)
+# }) %>%
+#   exec("bind_rows", .)
 ```
 
 Last bit: remove all of the false migrations
