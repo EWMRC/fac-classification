@@ -19,5 +19,13 @@ Spring males
 MD-2019-05-2019 isn't settling. Julian day issues? Yay fixed
 NC-2019-01-2019 same thing  Yay fixed
 
+FAC:
+VA-2018-01 likely settled, but its transmitted died too early for us to tell
+RI-2018-01 didn't settle, but it probably should have
+Point state doesn't seem to be operating correctly- first point reflects step state
+Example: ME-2017-02
 
+ME-2017-02 isn't getting kicked into a terminal state correctly... likely due to extended stopovers along route
+Might need to advance to a new version and see if this gets fixed.
+ME-2017-03-2017 is problematic due to exploratory movement
 

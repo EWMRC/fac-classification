@@ -1,4 +1,3 @@
-
 library(shiny)
 library(tidyverse)
 library(leaflet)
@@ -29,7 +28,7 @@ server <- function(input, output) {
   
   amwoData.sm %>%
     mutate(animal_name = as.character(animal_name)) %>%
-    mutate(point_state = primary_step_state) %>%
+    mutate(point_state = primary_point_state) %>%
     mutate(x = long, y = lat, date = as.Date(time)) %>%
     arrange(time) ->
     amwoData.sm
@@ -45,12 +44,12 @@ server <- function(input, output) {
     sapply(state$point_state, function(states) { # individual_stepper$amwoDataID$point_state
       if(states == "Stationary") {
         "blue"
-      } else if(states == "Migratory (southward)") {
+      } else if(states == "Migratory (fall)") {
         "pink"
-      } else if(states == "Migratory (northward)"){
+      } else if(states == "Migratory (spring)"){
         "green"
       } else{
-        "yellow"
+        "orange"
       } })
   }
   
@@ -58,7 +57,7 @@ server <- function(input, output) {
       icon = 'ios-close',
       iconColor = 'black',
       library = 'ion',
-      markerColor = getColor(filter(amwoData.sm, animal_name == unique(amwoData.sm$animal_name)[1]))
+      markerColor = unname(getColor(filter(amwoData.sm, animal_name == unique(amwoData.sm$animal_name)[1])))
     )
   
   
@@ -100,13 +99,14 @@ server <- function(input, output) {
       individual_stepper$compiled <- 1
     }
     
-    individual_stepper$amwoDataID <- subset(amwoData.sm, amwoData.sm$animal_name==individual_stepper$current_id)
+    individual_stepper$amwoDataID <- subset(amwoData.sm, 
+                                            amwoData.sm$animal_name==individual_stepper$current_id)
 
     individual_stepper$icons <- awesomeIcons(
       icon = 'ios-close',
       iconColor = 'black',
       library = 'ion',
-      markerColor = getColor(individual_stepper$amwoDataID)
+      markerColor = unname(getColor(individual_stepper$amwoDataID))
     )
   })
   

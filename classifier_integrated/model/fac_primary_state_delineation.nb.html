@@ -1842,176 +1842,261 @@ migration_dates &lt;- bind_rows(fall_migration_dates, spring_migration_dates)</c
 seasons haven’t been delineated yet)</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubG9naW4gPC0gbW92ZWJhbmtMb2dpbih1c2VybmFtZSA9IFwiTEFfQmVyaWdhblwiLCBwYXNzd29yZD1cIjMzc3pjTlV0djRpeVBHVVwiKVxuYW13b19tb3ZlIDwtIGdldE1vdmViYW5rRGF0YShzdHVkeSA9IFwiQW1lcmljYW4gV29vZGNvY2sgTWlncmF0aW9uIEVjb2xvZ3kgaW4gRWFzdGVybiBOb3J0aCBBbWVyaWNhXCIsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsb2dpbiA9IGxvZ2luLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVtb3ZlRHVwbGljYXRlZFRpbWVzdGFtcHM9VFJVRSlcbmBgYCJ9 -->
-<pre class="r"><code>login &lt;- movebankLogin(username = &quot;LA_Berigan&quot;, password=&quot;33szcNUtv4iyPGU&quot;)
-amwo_move &lt;- getMovebankData(study = &quot;American Woodcock Migration Ecology in Eastern North America&quot;, 
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxubG9naW4gPC0gbW92ZWJhbmtMb2dpbih1c2VybmFtZSA9IFxcTEFfQmVyaWdhblxcLCBwYXNzd29yZD1cXDMzc3pjTlV0djRpeVBHVVxcKVxuYW13b19tb3ZlIDwtIGdldE1vdmViYW5rRGF0YShzdHVkeSA9IFxcQW1lcmljYW4gV29vZGNvY2sgTWlncmF0aW9uIEVjb2xvZ3kgaW4gRWFzdGVybiBOb3J0aCBBbWVyaWNhXFwsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsb2dpbiA9IGxvZ2luLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVtb3ZlRHVwbGljYXRlZFRpbWVzdGFtcHM9VFJVRSlcbmBgYFxuYGBgIn0= -->
+<pre class="r"><code>```r
+login &lt;- movebankLogin(username = \LA_Berigan\, password=\33szcNUtv4iyPGU\)
+amwo_move &lt;- getMovebankData(study = \American Woodcock Migration Ecology in Eastern North America\, 
                              login = login, 
                              removeDuplicatedTimestamps=TRUE)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogVGhlcmUgYXJlIHRpbWVzdGFtcHMgMSBpbiB0aGUgdW51c2VkIGRhdGEgdGhhdCBhcmUgYWxzbyBpbiB0aGUgcmVhbCBkYXRhLCB0aG9zZSByZWNvcmRzIGFyZSBvbWl0dGVkcmVtb3ZlRHVwaWxjYXRlZFRpbWVzdGFtcHMgd2FzIHNldCB0byBUUlVFLCB0aGlzIHdpbGwgcmV0YWluIHRoZSBmaXJzdCBvZiBtdWx0aXBsZSByZWNvcmRzIHdpdGggdGhlIHNhbWUgYW5pbWFsIElEIGFuZCB0aW1lc3RhbXAsIGFuZCByZW1vdmUgYW55IHN1YnNlcXVlbnQgZHVwbGljYXRlc1xuV2FybmluZzogMSBsb2NhdGlvbihzKSBpcy9hcmUgcmVtb3ZlZCBieSByZW1vdmVEdXBsaWNhdGVkVGltZXN0YW1wc1xuIn0= -->
-<pre><code>Warning: There are timestamps 1 in the unused data that are also in the real data, those records are omittedremoveDupilcatedTimestamps was set to TRUE, this will retain the first of multiple records with the same animal ID and timestamp, and remove any subsequent duplicates
-Warning: 1 location(s) is/are removed by removeDuplicatedTimestamps</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW13b19kYXRhIDwtIGFzLmRhdGEuZnJhbWUoYW13b19tb3ZlKSAlPiVcbiAgdHJhbnNtdXRlKGFuaW1hbF9uYW1lID0gbG9jYWxfaWRlbnRpZmllcixcbiAgICAgICAgICAgIHRpbWUgPSB0aW1lc3RhbXAsXG4gICAgICAgICAgICBldmVudF9pZCA9IGV2ZW50X2lkLFxuICAgICAgICAgICAgbGF0ID0gbG9jYXRpb25fbGF0LFxuICAgICAgICAgICAgbG9uZyA9IGxvY2F0aW9uX2xvbmcpICU+JVxuICBmaWx0ZXIodGltZSA8IGx1YnJpZGF0ZTo6bWR5KFwiOC8xLzIwMjJcIikpXG5gYGAifQ== -->
-<pre class="r"><code>amwo_data &lt;- as.data.frame(amwo_move) %&gt;%
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogVGhlcmUgYXJlIHRpbWVzdGFtcHMgMSBpbiB0aGUgdW51c2VkIGRhdGEgdGhhdCBhcmUgYWxzbyBpbiB0aGUgcmVhbCBkYXRhLCB0aG9zZSByZWNvcmRzIGFyZSBvbWl0dGVkcmVtb3ZlRHVwaWxjYXRlZFRpbWVzdGFtcHMgd2FzIHNldCB0byBUUlVFLCB0aGlzIHdpbGwgcmV0YWluIHRoZSBmaXJzdCBvZiBtdWx0aXBsZSByZWNvcmRzIHdpdGggdGhlIHNhbWUgYW5pbWFsIElEIGFuZCB0aW1lc3RhbXAsIGFuZCByZW1vdmUgYW55IHN1YnNlcXVlbnQgZHVwbGljYXRlc1xuV2FybmluZzogMSBsb2NhdGlvbihzKSBpcy9hcmUgcmVtb3ZlZCBieSByZW1vdmVEdXBsaWNhdGVkVGltZXN0YW1wc1xuIn0= --&gt;
+</code></pre>
+<p>Warning: There are timestamps 1 in the unused data that are also in
+the real data, those records are omittedremoveDupilcatedTimestamps was
+set to TRUE, this will retain the first of multiple records with the
+same animal ID and timestamp, and remove any subsequent duplicates
+Warning: 1 location(s) is/are removed by removeDuplicatedTimestamps</p>
+<pre><code>
+
+
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuYW13b19kYXRhIDwtIGFzLmRhdGEuZnJhbWUoYW13b19tb3ZlKSAlPiVcbiAgdHJhbnNtdXRlKGFuaW1hbF9uYW1lID0gbG9jYWxfaWRlbnRpZmllcixcbiAgICAgICAgICAgIHRpbWUgPSB0aW1lc3RhbXAsXG4gICAgICAgICAgICBldmVudF9pZCA9IGV2ZW50X2lkLFxuICAgICAgICAgICAgbGF0ID0gbG9jYXRpb25fbGF0LFxuICAgICAgICAgICAgbG9uZyA9IGxvY2F0aW9uX2xvbmcpICU+JVxuICBmaWx0ZXIodGltZSA8IGx1YnJpZGF0ZTo6bWR5KFxcOC8xLzIwMjJcXCkpXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+amwo_data &lt;- as.data.frame(amwo_move) %&gt;%
   transmute(animal_name = local_identifier,
             time = timestamp,
             event_id = event_id,
             lat = location_lat,
             long = location_long) %&gt;%
-  filter(time &lt; lubridate::mdy(&quot;8/1/2022&quot;))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<ol style="list-style-type: decimal">
-<li>Join in a way that creates a duplicate record for each location and
-potential mig bout</li>
-<li>Classify each record using the potential mig info</li>
-<li>Arrange the states using an ordered factor, with “stationary” on the
-bottom</li>
-</ol>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW13b19kYXRhX3dfZHVwbGljYXRlcyA8LSBhbXdvX2RhdGEgJT4lXG4gIGxlZnRfam9pbihtaWdyYXRpb25fZGF0ZXMpICU+JVxuICBtdXRhdGUodW5rX2luaXRfZmxhZyA9IGlmX2Vsc2UoaXMubmEodW5rX2luaXRfZmxhZyksIEZBTFNFLCB1bmtfaW5pdF9mbGFnKSkgJT4lICMgSWYgdGhlcmUgaXMgbm8gbWlncmF0b3J5IG1vdmVtZW50IGFzc29jaWF0ZWQgd2l0aCB0aGUgaW52aWRpZHVhbCwgc2V0IHRoZSB1bmtfaW5pdF9mbGFnIHRvIEZBTFNFIHNvIHRoYXQgdGhlIGZvbGxvd2luZyBzY3JpcHQgcnVucyBjb3JyZWN0bHlcbiAgbXV0YXRlKHVua190ZXJtX2ZsYWcgPSBpZl9lbHNlKGlzLm5hKHVua190ZXJtX2ZsYWcpLCBGQUxTRSwgdW5rX3Rlcm1fZmxhZykpXG5gYGAifQ== -->
-<pre class="r"><code>amwo_data_w_duplicates &lt;- amwo_data %&gt;%
+  filter(time &lt; lubridate::mdy(\8/1/2022\))</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+1) Join in a way that creates a duplicate record for each location and potential mig bout
+2) Classify each record using the potential mig info
+3) Arrange the states using an ordered factor, with &quot;stationary&quot; on the bottom
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuYW13b19kYXRhX3dfZHVwbGljYXRlcyA8LSBhbXdvX2RhdGEgJT4lXG4gIGxlZnRfam9pbihtaWdyYXRpb25fZGF0ZXMpICU+JVxuICBtdXRhdGUodW5rX2luaXRfZmxhZyA9IGlmX2Vsc2UoaXMubmEodW5rX2luaXRfZmxhZyksIEZBTFNFLCB1bmtfaW5pdF9mbGFnKSkgJT4lICMgSWYgdGhlcmUgaXMgbm8gbWlncmF0b3J5IG1vdmVtZW50IGFzc29jaWF0ZWQgd2l0aCB0aGUgaW52aWRpZHVhbCwgc2V0IHRoZSB1bmtfaW5pdF9mbGFnIHRvIEZBTFNFIHNvIHRoYXQgdGhlIGZvbGxvd2luZyBzY3JpcHQgcnVucyBjb3JyZWN0bHlcbiAgbXV0YXRlKHVua190ZXJtX2ZsYWcgPSBpZl9lbHNlKGlzLm5hKHVua190ZXJtX2ZsYWcpLCBGQUxTRSwgdW5rX3Rlcm1fZmxhZykpXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+amwo_data_w_duplicates &lt;- amwo_data %&gt;%
   left_join(migration_dates) %&gt;%
   mutate(unk_init_flag = if_else(is.na(unk_init_flag), FALSE, unk_init_flag)) %&gt;% # If there is no migratory movement associated with the invididual, set the unk_init_flag to FALSE so that the following script runs correctly
   mutate(unk_term_flag = if_else(is.na(unk_term_flag), FALSE, unk_term_flag))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiSm9pbmluZywgYnkgPSBcImFuaW1hbF9uYW1lXCJcbiJ9 -->
-<pre><code>Joining, by = &quot;animal_name&quot;</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI3N0ZXAgc3RhdGVcbmFtd29fZGF0YV93X2R1cGxpY2F0ZXMkcHJpbWFyeV9zdGVwX3N0YXRlIDwtIGFtd29fZGF0YV93X2R1cGxpY2F0ZXMgJT4lXG4gIGRwbHlyOjpzZWxlY3QodGltZSwgdGltZV9pbml0aWF0aW9uLCB0aW1lX3Rlcm1pbmF0aW9uLCBzZWFzb24sIHVua19pbml0X2ZsYWcsIHVua190ZXJtX2ZsYWcpICU+JVxuICBwbWFwKC5mID0gZnVuY3Rpb24odGltZSwgdGltZV9pbml0aWF0aW9uLCB0aW1lX3Rlcm1pbmF0aW9uLCBzZWFzb24sIHVua19pbml0X2ZsYWcsIHVua190ZXJtX2ZsYWcpe1xuICAgIHN0ZXBfc3RhdGUgPC0gXCJTdGF0aW9uYXJ5XCJcbiAgICAjU2lsZW50bHkgaW1wbGllZDsgaWYgYm90aCB0aW1lX2luaXRpYXRpb24gYW5kIHRpbWVfdGVybWluYXRpb24gYXJlIE5BLCByZW1haW5zIFN0YXRpb25hcnlcbiAgICBpZighaXMubmEodGltZV9pbml0aWF0aW9uKSAmIGlzLm5hKHRpbWVfdGVybWluYXRpb24pKXsgI0lmIHRoZXJlIGlzIGFuIGluaXRpYXRpb24gZGF0ZSBidXQgbm8gdGVybWluYXRpb24gZGF0ZVxuICAgICAgaWYodGltZSA+PSB0aW1lX2luaXRpYXRpb24peyBcbiAgICAgICAgc3RlcF9zdGF0ZSA8LSBpZl9lbHNlKHNlYXNvbiA9PSBcIkZhbGxcIiwgXCJNaWdyYXRvcnkgKGZhbGwpXCIsIFwiTWlncmF0b3J5IChzcHJpbmcpXCIpXG4gICAgICB9XG4gICAgfVxuICAgIFxuICAgIGlmKCFpcy5uYSh0aW1lX2luaXRpYXRpb24pICYgIWlzLm5hKHRpbWVfdGVybWluYXRpb24pKXsgI0lmIHRoZXJlIGlzIGFuIGluaXRpYXRpb24gZGF0ZSBhbmQgYSB0ZXJtaW5hdGlvbiBkYXRlXG4gICAgICBpZih0aW1lID49IHRpbWVfaW5pdGlhdGlvbiAmIHRpbWUgPCB0aW1lX3Rlcm1pbmF0aW9uKXsgXG4gICAgICAgIHN0ZXBfc3RhdGUgPC0gaWZfZWxzZShzZWFzb24gPT0gXCJGYWxsXCIsIFwiTWlncmF0b3J5IChmYWxsKVwiLCBcIk1pZ3JhdG9yeSAoc3ByaW5nKVwiKVxuICAgICAgfVxuICAgIH1cbiAgICBcbiAgICBpZih0aW1lIDwgdGltZV9pbml0aWF0aW9uICYgc2Vhc29uID09IFwiRmFsbFwiICYgdW5rX2luaXRfZmxhZyA9PSBUUlVFKSB7XG4gICAgICBzdGVwX3N0YXRlIDwtIFwiU3RhdGUgdW5rbm93biAoZmFsbCBtaWdyYXRvcnkgb3IgcHJlLW1pZyBzdGF0aW9uYXJ5KVwiXG4gICAgfVxuICAgIFxuICAgIGlmKHRpbWUgPCB0aW1lX2luaXRpYXRpb24gJiBzZWFzb24gPT0gXCJTcHJpbmdcIiAmIHVua19pbml0X2ZsYWcgPT0gVFJVRSkge1xuICAgICAgc3RlcF9zdGF0ZSA8LSBcIlN0YXRlIHVua25vd24gKHNwcmluZyBtaWdyYXRvcnkgb3IgcHJlLW1pZyBzdGF0aW9uYXJ5KVwiXG4gICAgfVxuICAgIFxuICAgIGlmKCFpcy5uYSh0aW1lX3Rlcm1pbmF0aW9uKSl7XG4gICAgICBpZih0aW1lID49IHRpbWVfdGVybWluYXRpb24gJiBzZWFzb24gPT0gXCJGYWxsXCIgJiB1bmtfdGVybV9mbGFnID09IFRSVUUpIHtcbiAgICAgICAgc3RlcF9zdGF0ZSA8LSBcIlN0YXRlIHVua25vd24gKGZhbGwgbWlncmF0b3J5IG9yIHBvc3QtbWlnIHN0YXRpb25hcnkpXCJcbiAgICAgIH1cbiAgICAgIFxuICAgICAgaWYodGltZSA+PSB0aW1lX3Rlcm1pbmF0aW9uICYgc2Vhc29uID09IFwiU3ByaW5nXCIgJiB1bmtfdGVybV9mbGFnID09IFRSVUUpIHtcbiAgICAgICAgc3RlcF9zdGF0ZSA8LSBcIlN0YXRlIHVua25vd24gKHNwcmluZyBtaWdyYXRvcnkgb3IgcG9zdC1taWcgc3RhdGlvbmFyeSlcIlxuICAgICAgfVxuICAgIH1cbiAgXG4gICAgcmV0dXJuKHN0ZXBfc3RhdGUpXG4gIH0pICU+JVxuICB1bmxpc3QoKSAlPiVcbiAgZmFjdG9yKGxldmVscyA9IGMoXCJNaWdyYXRvcnkgKHNwcmluZylcIiwgXCJNaWdyYXRvcnkgKGZhbGwpXCIsIFwiU3RhdGUgdW5rbm93biAoZmFsbCBtaWdyYXRvcnkgb3IgcHJlLW1pZyBzdGF0aW9uYXJ5KVwiLCBcIlN0YXRlIHVua25vd24gKHNwcmluZyBtaWdyYXRvcnkgb3IgcHJlLW1pZyBzdGF0aW9uYXJ5KVwiLCBcIlN0YXRlIHVua25vd24gKGZhbGwgbWlncmF0b3J5IG9yIHBvc3QtbWlnIHN0YXRpb25hcnkpXCIsIFwiU3RhdGUgdW5rbm93biAoc3ByaW5nIG1pZ3JhdG9yeSBvciBwb3N0LW1pZyBzdGF0aW9uYXJ5KVwiLCBcIlN0YXRpb25hcnlcIiksIG9yZGVyZWQgPSBUUlVFKVxuXG4jcG9pbnQgc3RhdGVcbmFtd29fZGF0YV93X2R1cGxpY2F0ZXMkcHJpbWFyeV9wb2ludF9zdGF0ZSA8LSBhbXdvX2RhdGFfd19kdXBsaWNhdGVzICU+JVxuICBkcGx5cjo6c2VsZWN0KHRpbWUsIHRpbWVfaW5pdGlhdGlvbiwgdGltZV90ZXJtaW5hdGlvbiwgc2Vhc29uLCB1bmtfaW5pdF9mbGFnLCB1bmtfdGVybV9mbGFnKSAlPiVcbiAgcG1hcCguZiA9IGZ1bmN0aW9uKHRpbWUsIHRpbWVfaW5pdGlhdGlvbiwgdGltZV90ZXJtaW5hdGlvbiwgc2Vhc29uLCB1bmtfaW5pdF9mbGFnLCB1bmtfdGVybV9mbGFnKXtcbiAgICBwb2ludF9zdGF0ZSA8LSBcIlN0YXRpb25hcnlcIlxuICAgICNTaWxlbnRseSBpbXBsaWVkOyBpZiBib3RoIHRpbWVfaW5pdGlhdGlvbiBhbmQgdGltZV90ZXJtaW5hdGlvbiBhcmUgTkEsIHJlbWFpbnMgU3RhdGlvbmFyeVxuICAgIGlmKCFpcy5uYSh0aW1lX2luaXRpYXRpb24pICYgaXMubmEodGltZV90ZXJtaW5hdGlvbikpeyAjSWYgdGhlcmUgaXMgYW4gaW5pdGlhdGlvbiBkYXRlIGJ1dCBubyB0ZXJtaW5hdGlvbiBkYXRlXG4gICAgICBpZih0aW1lID4gdGltZV9pbml0aWF0aW9uKXsgXG4gICAgICAgIHBvaW50X3N0YXRlIDwtIGlmX2Vsc2Uoc2Vhc29uID09IFwiRmFsbFwiLCBcIk1pZ3JhdG9yeSAoZmFsbClcIiwgXCJNaWdyYXRvcnkgKHNwcmluZylcIilcbiAgICAgIH1cbiAgICB9XG4gICAgXG4gICAgaWYoIWlzLm5hKHRpbWVfaW5pdGlhdGlvbikgJiAhaXMubmEodGltZV90ZXJtaW5hdGlvbikpeyAjSWYgdGhlcmUgaXMgYW4gaW5pdGlhdGlvbiBkYXRlIGFuZCBhIHRlcm1pbmF0aW9uIGRhdGVcbiAgICAgIGlmKHRpbWUgPiB0aW1lX2luaXRpYXRpb24gJiB0aW1lIDwgdGltZV90ZXJtaW5hdGlvbil7ICNpZiB0aGUgdGltZSBpcyBhZnRlciB0aGUgaW5pdGlhdGlvbiB0aW1lIGFuZCBiZWZvcmUgdGhlIHRlcm1pbmF0aW9uIHRpbWVcbiAgICAgICAgcG9pbnRfc3RhdGUgPC0gaWZfZWxzZShzZWFzb24gPT0gXCJGYWxsXCIsIFwiTWlncmF0b3J5IChmYWxsKVwiLCBcIk1pZ3JhdG9yeSAoc3ByaW5nKVwiKVxuICAgICAgfVxuICAgIH1cbiAgICBcbiAgICBpZih0aW1lIDw9IHRpbWVfaW5pdGlhdGlvbiAmIHNlYXNvbiA9PSBcIkZhbGxcIiAmIHVua19pbml0X2ZsYWcgPT0gVFJVRSkge1xuICAgICAgcG9pbnRfc3RhdGUgPC0gXCJTdGF0ZSB1bmtub3duIChmYWxsIG1pZ3JhdG9yeSBvciBwcmUtbWlnIHN0YXRpb25hcnkpXCJcbiAgICB9XG4gICAgXG4gICAgaWYodGltZSA8PSB0aW1lX2luaXRpYXRpb24gJiBzZWFzb24gPT0gXCJTcHJpbmdcIiAmIHVua19pbml0X2ZsYWcgPT0gVFJVRSkge1xuICAgICAgcG9pbnRfc3RhdGUgPC0gXCJTdGF0ZSB1bmtub3duIChzcHJpbmcgbWlncmF0b3J5IG9yIHByZS1taWcgc3RhdGlvbmFyeSlcIlxuICAgIH1cbiAgICBcbiAgICBpZighaXMubmEodGltZV90ZXJtaW5hdGlvbikpe1xuICAgICAgaWYodGltZSA+PSB0aW1lX3Rlcm1pbmF0aW9uICYgc2Vhc29uID09IFwiRmFsbFwiICYgdW5rX3Rlcm1fZmxhZyA9PSBUUlVFKSB7XG4gICAgICAgIHBvaW50X3N0YXRlIDwtIFwiU3RhdGUgdW5rbm93biAoZmFsbCBtaWdyYXRvcnkgb3IgcG9zdC1taWcgc3RhdGlvbmFyeSlcIlxuICAgICAgfVxuICAgICAgXG4gICAgICBpZih0aW1lID49IHRpbWVfdGVybWluYXRpb24gJiBzZWFzb24gPT0gXCJTcHJpbmdcIiAmIHVua190ZXJtX2ZsYWcgPT0gVFJVRSkge1xuICAgICAgICBwb2ludF9zdGF0ZSA8LSBcIlN0YXRlIHVua25vd24gKHNwcmluZyBtaWdyYXRvcnkgb3IgcG9zdC1taWcgc3RhdGlvbmFyeSlcIlxuICAgICAgfVxuICAgIH1cbiAgICBcbiAgICByZXR1cm4ocG9pbnRfc3RhdGUpXG4gIH0pICU+JVxuICB1bmxpc3QoKSAlPiVcbiAgZmFjdG9yKGxldmVscyA9IGMoXCJNaWdyYXRvcnkgKHNwcmluZylcIiwgXCJNaWdyYXRvcnkgKGZhbGwpXCIsIFwiU3RhdGUgdW5rbm93biAoZmFsbCBtaWdyYXRvcnkgb3IgcHJlLW1pZyBzdGF0aW9uYXJ5KVwiLCBcIlN0YXRlIHVua25vd24gKHNwcmluZyBtaWdyYXRvcnkgb3IgcHJlLW1pZyBzdGF0aW9uYXJ5KVwiLCBcIlN0YXRlIHVua25vd24gKGZhbGwgbWlncmF0b3J5IG9yIHBvc3QtbWlnIHN0YXRpb25hcnkpXCIsIFwiU3RhdGUgdW5rbm93biAoc3ByaW5nIG1pZ3JhdG9yeSBvciBwb3N0LW1pZyBzdGF0aW9uYXJ5KVwiLCBcIlN0YXRpb25hcnlcIiksIG9yZGVyZWQgPSBUUlVFKVxuYGBgIn0= -->
-<pre class="r"><code>#step state
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiSm9pbmluZywgYnkgPSBcXGFuaW1hbF9uYW1lXFxcbiJ9 --&gt;
+</code></pre>
+<p>Joining, by = _name<br />
+</p>
+<pre><code>
+
+
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuI3N0ZXAgc3RhdGVcbmFtd29fZGF0YV93X2R1cGxpY2F0ZXMkcHJpbWFyeV9zdGVwX3N0YXRlIDwtIGFtd29fZGF0YV93X2R1cGxpY2F0ZXMgJT4lXG4gIGRwbHlyOjpzZWxlY3QodGltZSwgdGltZV9pbml0aWF0aW9uLCB0aW1lX3Rlcm1pbmF0aW9uLCBzZWFzb24sIHVua19pbml0X2ZsYWcsIHVua190ZXJtX2ZsYWcpICU+JVxuICBwbWFwKC5mID0gZnVuY3Rpb24odGltZSwgdGltZV9pbml0aWF0aW9uLCB0aW1lX3Rlcm1pbmF0aW9uLCBzZWFzb24sIHVua19pbml0X2ZsYWcsIHVua190ZXJtX2ZsYWcpe1xuICAgIHN0ZXBfc3RhdGUgPC0gXFxTdGF0aW9uYXJ5XFxcbiAgICAjU2lsZW50bHkgaW1wbGllZDsgaWYgYm90aCB0aW1lX2luaXRpYXRpb24gYW5kIHRpbWVfdGVybWluYXRpb24gYXJlIE5BLCByZW1haW5zIFN0YXRpb25hcnlcbiAgICBpZighaXMubmEodGltZV9pbml0aWF0aW9uKSAmIGlzLm5hKHRpbWVfdGVybWluYXRpb24pKXsgI0lmIHRoZXJlIGlzIGFuIGluaXRpYXRpb24gZGF0ZSBidXQgbm8gdGVybWluYXRpb24gZGF0ZVxuICAgICAgaWYodGltZSA+PSB0aW1lX2luaXRpYXRpb24peyBcbiAgICAgICAgc3RlcF9zdGF0ZSA8LSBpZl9lbHNlKHNlYXNvbiA9PSBcXEZhbGxcXCwgXFxNaWdyYXRvcnkgKGZhbGwpXFwsIFxcTWlncmF0b3J5IChzcHJpbmcpXFwpXG4gICAgICB9XG4gICAgfVxuICAgIFxuICAgIGlmKCFpcy5uYSh0aW1lX2luaXRpYXRpb24pICYgIWlzLm5hKHRpbWVfdGVybWluYXRpb24pKXsgI0lmIHRoZXJlIGlzIGFuIGluaXRpYXRpb24gZGF0ZSBhbmQgYSB0ZXJtaW5hdGlvbiBkYXRlXG4gICAgICBpZih0aW1lID49IHRpbWVfaW5pdGlhdGlvbiAmIHRpbWUgPCB0aW1lX3Rlcm1pbmF0aW9uKXsgXG4gICAgICAgIHN0ZXBfc3RhdGUgPC0gaWZfZWxzZShzZWFzb24gPT0gXFxGYWxsXFwsIFxcTWlncmF0b3J5IChmYWxsKVxcLCBcXE1pZ3JhdG9yeSAoc3ByaW5nKVxcKVxuICAgICAgfVxuICAgIH1cbiAgICBcbiAgICBpZih0aW1lIDwgdGltZV9pbml0aWF0aW9uICYgc2Vhc29uID09IFxcRmFsbFxcICYgdW5rX2luaXRfZmxhZyA9PSBUUlVFKSB7XG4gICAgICBzdGVwX3N0YXRlIDwtIFxcU3RhdGUgdW5rbm93biAoZmFsbCBtaWdyYXRvcnkgb3IgcHJlLW1pZyBzdGF0aW9uYXJ5KVxcXG4gICAgfVxuICAgIFxuICAgIGlmKHRpbWUgPCB0aW1lX2luaXRpYXRpb24gJiBzZWFzb24gPT0gXFxTcHJpbmdcXCAmIHVua19pbml0X2ZsYWcgPT0gVFJVRSkge1xuICAgICAgc3RlcF9zdGF0ZSA8LSBcXFN0YXRlIHVua25vd24gKHNwcmluZyBtaWdyYXRvcnkgb3IgcHJlLW1pZyBzdGF0aW9uYXJ5KVxcXG4gICAgfVxuICAgIFxuICAgIGlmKCFpcy5uYSh0aW1lX3Rlcm1pbmF0aW9uKSl7XG4gICAgICBpZih0aW1lID49IHRpbWVfdGVybWluYXRpb24gJiBzZWFzb24gPT0gXFxGYWxsXFwgJiB1bmtfdGVybV9mbGFnID09IFRSVUUpIHtcbiAgICAgICAgc3RlcF9zdGF0ZSA8LSBcXFN0YXRlIHVua25vd24gKGZhbGwgbWlncmF0b3J5IG9yIHBvc3QtbWlnIHN0YXRpb25hcnkpXFxcbiAgICAgIH1cbiAgICAgIFxuICAgICAgaWYodGltZSA+PSB0aW1lX3Rlcm1pbmF0aW9uICYgc2Vhc29uID09IFxcU3ByaW5nXFwgJiB1bmtfdGVybV9mbGFnID09IFRSVUUpIHtcbiAgICAgICAgc3RlcF9zdGF0ZSA8LSBcXFN0YXRlIHVua25vd24gKHNwcmluZyBtaWdyYXRvcnkgb3IgcG9zdC1taWcgc3RhdGlvbmFyeSlcXFxuICAgICAgfVxuICAgIH1cbiAgXG4gICAgcmV0dXJuKHN0ZXBfc3RhdGUpXG4gIH0pICU+JVxuICB1bmxpc3QoKSAlPiVcbiAgZmFjdG9yKGxldmVscyA9IGMoXFxNaWdyYXRvcnkgKHNwcmluZylcXCwgXFxNaWdyYXRvcnkgKGZhbGwpXFwsIFxcU3RhdGUgdW5rbm93biAoZmFsbCBtaWdyYXRvcnkgb3IgcHJlLW1pZyBzdGF0aW9uYXJ5KVxcLCBcXFN0YXRlIHVua25vd24gKHNwcmluZyBtaWdyYXRvcnkgb3IgcHJlLW1pZyBzdGF0aW9uYXJ5KVxcLCBcXFN0YXRlIHVua25vd24gKGZhbGwgbWlncmF0b3J5IG9yIHBvc3QtbWlnIHN0YXRpb25hcnkpXFwsIFxcU3RhdGUgdW5rbm93biAoc3ByaW5nIG1pZ3JhdG9yeSBvciBwb3N0LW1pZyBzdGF0aW9uYXJ5KVxcLCBcXFN0YXRpb25hcnlcXCksIG9yZGVyZWQgPSBUUlVFKVxuXG4jcG9pbnQgc3RhdGVcbmFtd29fZGF0YV93X2R1cGxpY2F0ZXMkcHJpbWFyeV9wb2ludF9zdGF0ZSA8LSBhbXdvX2RhdGFfd19kdXBsaWNhdGVzICU+JVxuICBkcGx5cjo6c2VsZWN0KHRpbWUsIHRpbWVfaW5pdGlhdGlvbiwgdGltZV90ZXJtaW5hdGlvbiwgc2Vhc29uLCB1bmtfaW5pdF9mbGFnLCB1bmtfdGVybV9mbGFnKSAlPiVcbiAgcG1hcCguZiA9IGZ1bmN0aW9uKHRpbWUsIHRpbWVfaW5pdGlhdGlvbiwgdGltZV90ZXJtaW5hdGlvbiwgc2Vhc29uLCB1bmtfaW5pdF9mbGFnLCB1bmtfdGVybV9mbGFnKXtcbiAgICBwb2ludF9zdGF0ZSA8LSBcXFN0YXRpb25hcnlcXFxuICAgICNTaWxlbnRseSBpbXBsaWVkOyBpZiBib3RoIHRpbWVfaW5pdGlhdGlvbiBhbmQgdGltZV90ZXJtaW5hdGlvbiBhcmUgTkEsIHJlbWFpbnMgU3RhdGlvbmFyeVxuICAgIGlmKCFpcy5uYSh0aW1lX2luaXRpYXRpb24pICYgaXMubmEodGltZV90ZXJtaW5hdGlvbikpeyAjSWYgdGhlcmUgaXMgYW4gaW5pdGlhdGlvbiBkYXRlIGJ1dCBubyB0ZXJtaW5hdGlvbiBkYXRlXG4gICAgICBpZih0aW1lID4gdGltZV9pbml0aWF0aW9uKXsgXG4gICAgICAgIHBvaW50X3N0YXRlIDwtIGlmX2Vsc2Uoc2Vhc29uID09IFxcRmFsbFxcLCBcXE1pZ3JhdG9yeSAoZmFsbClcXCwgXFxNaWdyYXRvcnkgKHNwcmluZylcXClcbiAgICAgIH1cbiAgICB9XG4gICAgXG4gICAgaWYoIWlzLm5hKHRpbWVfaW5pdGlhdGlvbikgJiAhaXMubmEodGltZV90ZXJtaW5hdGlvbikpeyAjSWYgdGhlcmUgaXMgYW4gaW5pdGlhdGlvbiBkYXRlIGFuZCBhIHRlcm1pbmF0aW9uIGRhdGVcbiAgICAgIGlmKHRpbWUgPiB0aW1lX2luaXRpYXRpb24gJiB0aW1lIDwgdGltZV90ZXJtaW5hdGlvbil7ICNpZiB0aGUgdGltZSBpcyBhZnRlciB0aGUgaW5pdGlhdGlvbiB0aW1lIGFuZCBiZWZvcmUgdGhlIHRlcm1pbmF0aW9uIHRpbWVcbiAgICAgICAgcG9pbnRfc3RhdGUgPC0gaWZfZWxzZShzZWFzb24gPT0gXFxGYWxsXFwsIFxcTWlncmF0b3J5IChmYWxsKVxcLCBcXE1pZ3JhdG9yeSAoc3ByaW5nKVxcKVxuICAgICAgfVxuICAgIH1cbiAgICBcbiAgICBpZih0aW1lIDw9IHRpbWVfaW5pdGlhdGlvbiAmIHNlYXNvbiA9PSBcXEZhbGxcXCAmIHVua19pbml0X2ZsYWcgPT0gVFJVRSkge1xuICAgICAgcG9pbnRfc3RhdGUgPC0gXFxTdGF0ZSB1bmtub3duIChmYWxsIG1pZ3JhdG9yeSBvciBwcmUtbWlnIHN0YXRpb25hcnkpXFxcbiAgICB9XG4gICAgXG4gICAgaWYodGltZSA8PSB0aW1lX2luaXRpYXRpb24gJiBzZWFzb24gPT0gXFxTcHJpbmdcXCAmIHVua19pbml0X2ZsYWcgPT0gVFJVRSkge1xuICAgICAgcG9pbnRfc3RhdGUgPC0gXFxTdGF0ZSB1bmtub3duIChzcHJpbmcgbWlncmF0b3J5IG9yIHByZS1taWcgc3RhdGlvbmFyeSlcXFxuICAgIH1cbiAgICBcbiAgICBpZighaXMubmEodGltZV90ZXJtaW5hdGlvbikpe1xuICAgICAgaWYodGltZSA+PSB0aW1lX3Rlcm1pbmF0aW9uICYgc2Vhc29uID09IFxcRmFsbFxcICYgdW5rX3Rlcm1fZmxhZyA9PSBUUlVFKSB7XG4gICAgICAgIHBvaW50X3N0YXRlIDwtIFxcU3RhdGUgdW5rbm93biAoZmFsbCBtaWdyYXRvcnkgb3IgcG9zdC1taWcgc3RhdGlvbmFyeSlcXFxuICAgICAgfVxuICAgICAgXG4gICAgICBpZih0aW1lID49IHRpbWVfdGVybWluYXRpb24gJiBzZWFzb24gPT0gXFxTcHJpbmdcXCAmIHVua190ZXJtX2ZsYWcgPT0gVFJVRSkge1xuICAgICAgICBwb2ludF9zdGF0ZSA8LSBcXFN0YXRlIHVua25vd24gKHNwcmluZyBtaWdyYXRvcnkgb3IgcG9zdC1taWcgc3RhdGlvbmFyeSlcXFxuICAgICAgfVxuICAgIH1cbiAgICBcbiAgICByZXR1cm4ocG9pbnRfc3RhdGUpXG4gIH0pICU+JVxuICB1bmxpc3QoKSAlPiVcbiAgZmFjdG9yKGxldmVscyA9IGMoXFxNaWdyYXRvcnkgKHNwcmluZylcXCwgXFxNaWdyYXRvcnkgKGZhbGwpXFwsIFxcU3RhdGUgdW5rbm93biAoZmFsbCBtaWdyYXRvcnkgb3IgcHJlLW1pZyBzdGF0aW9uYXJ5KVxcLCBcXFN0YXRlIHVua25vd24gKHNwcmluZyBtaWdyYXRvcnkgb3IgcHJlLW1pZyBzdGF0aW9uYXJ5KVxcLCBcXFN0YXRlIHVua25vd24gKGZhbGwgbWlncmF0b3J5IG9yIHBvc3QtbWlnIHN0YXRpb25hcnkpXFwsIFxcU3RhdGUgdW5rbm93biAoc3ByaW5nIG1pZ3JhdG9yeSBvciBwb3N0LW1pZyBzdGF0aW9uYXJ5KVxcLCBcXFN0YXRpb25hcnlcXCksIG9yZGVyZWQgPSBUUlVFKVxuYGBgXG5gYGAifQ== --&gt;
+
+```r
+```r
+#step state
 amwo_data_w_duplicates$primary_step_state &lt;- amwo_data_w_duplicates %&gt;%
   dplyr::select(time, time_initiation, time_termination, season, unk_init_flag, unk_term_flag) %&gt;%
   pmap(.f = function(time, time_initiation, time_termination, season, unk_init_flag, unk_term_flag){
-    step_state &lt;- &quot;Stationary&quot;
+    step_state &lt;- \Stationary\
     #Silently implied; if both time_initiation and time_termination are NA, remains Stationary
     if(!is.na(time_initiation) &amp; is.na(time_termination)){ #If there is an initiation date but no termination date
       if(time &gt;= time_initiation){ 
-        step_state &lt;- if_else(season == &quot;Fall&quot;, &quot;Migratory (fall)&quot;, &quot;Migratory (spring)&quot;)
+        step_state &lt;- if_else(season == \Fall\, \Migratory (fall)\, \Migratory (spring)\)
       }
     }
     
     if(!is.na(time_initiation) &amp; !is.na(time_termination)){ #If there is an initiation date and a termination date
       if(time &gt;= time_initiation &amp; time &lt; time_termination){ 
-        step_state &lt;- if_else(season == &quot;Fall&quot;, &quot;Migratory (fall)&quot;, &quot;Migratory (spring)&quot;)
+        step_state &lt;- if_else(season == \Fall\, \Migratory (fall)\, \Migratory (spring)\)
       }
     }
     
-    if(time &lt; time_initiation &amp; season == &quot;Fall&quot; &amp; unk_init_flag == TRUE) {
-      step_state &lt;- &quot;State unknown (fall migratory or pre-mig stationary)&quot;
+    if(time &lt; time_initiation &amp; season == \Fall\ &amp; unk_init_flag == TRUE) {
+      step_state &lt;- \State unknown (fall migratory or pre-mig stationary)\
     }
     
-    if(time &lt; time_initiation &amp; season == &quot;Spring&quot; &amp; unk_init_flag == TRUE) {
-      step_state &lt;- &quot;State unknown (spring migratory or pre-mig stationary)&quot;
+    if(time &lt; time_initiation &amp; season == \Spring\ &amp; unk_init_flag == TRUE) {
+      step_state &lt;- \State unknown (spring migratory or pre-mig stationary)\
     }
     
     if(!is.na(time_termination)){
-      if(time &gt;= time_termination &amp; season == &quot;Fall&quot; &amp; unk_term_flag == TRUE) {
-        step_state &lt;- &quot;State unknown (fall migratory or post-mig stationary)&quot;
+      if(time &gt;= time_termination &amp; season == \Fall\ &amp; unk_term_flag == TRUE) {
+        step_state &lt;- \State unknown (fall migratory or post-mig stationary)\
       }
       
-      if(time &gt;= time_termination &amp; season == &quot;Spring&quot; &amp; unk_term_flag == TRUE) {
-        step_state &lt;- &quot;State unknown (spring migratory or post-mig stationary)&quot;
+      if(time &gt;= time_termination &amp; season == \Spring\ &amp; unk_term_flag == TRUE) {
+        step_state &lt;- \State unknown (spring migratory or post-mig stationary)\
       }
     }
   
     return(step_state)
   }) %&gt;%
   unlist() %&gt;%
-  factor(levels = c(&quot;Migratory (spring)&quot;, &quot;Migratory (fall)&quot;, &quot;State unknown (fall migratory or pre-mig stationary)&quot;, &quot;State unknown (spring migratory or pre-mig stationary)&quot;, &quot;State unknown (fall migratory or post-mig stationary)&quot;, &quot;State unknown (spring migratory or post-mig stationary)&quot;, &quot;Stationary&quot;), ordered = TRUE)
+  factor(levels = c(\Migratory (spring)\, \Migratory (fall)\, \State unknown (fall migratory or pre-mig stationary)\, \State unknown (spring migratory or pre-mig stationary)\, \State unknown (fall migratory or post-mig stationary)\, \State unknown (spring migratory or post-mig stationary)\, \Stationary\), ordered = TRUE)
 
 #point state
 amwo_data_w_duplicates$primary_point_state &lt;- amwo_data_w_duplicates %&gt;%
   dplyr::select(time, time_initiation, time_termination, season, unk_init_flag, unk_term_flag) %&gt;%
   pmap(.f = function(time, time_initiation, time_termination, season, unk_init_flag, unk_term_flag){
-    point_state &lt;- &quot;Stationary&quot;
+    point_state &lt;- \Stationary\
     #Silently implied; if both time_initiation and time_termination are NA, remains Stationary
     if(!is.na(time_initiation) &amp; is.na(time_termination)){ #If there is an initiation date but no termination date
       if(time &gt; time_initiation){ 
-        point_state &lt;- if_else(season == &quot;Fall&quot;, &quot;Migratory (fall)&quot;, &quot;Migratory (spring)&quot;)
+        point_state &lt;- if_else(season == \Fall\, \Migratory (fall)\, \Migratory (spring)\)
       }
     }
     
     if(!is.na(time_initiation) &amp; !is.na(time_termination)){ #If there is an initiation date and a termination date
       if(time &gt; time_initiation &amp; time &lt; time_termination){ #if the time is after the initiation time and before the termination time
-        point_state &lt;- if_else(season == &quot;Fall&quot;, &quot;Migratory (fall)&quot;, &quot;Migratory (spring)&quot;)
+        point_state &lt;- if_else(season == \Fall\, \Migratory (fall)\, \Migratory (spring)\)
       }
     }
     
-    if(time &lt;= time_initiation &amp; season == &quot;Fall&quot; &amp; unk_init_flag == TRUE) {
-      point_state &lt;- &quot;State unknown (fall migratory or pre-mig stationary)&quot;
+    if(time &lt;= time_initiation &amp; season == \Fall\ &amp; unk_init_flag == TRUE) {
+      point_state &lt;- \State unknown (fall migratory or pre-mig stationary)\
     }
     
-    if(time &lt;= time_initiation &amp; season == &quot;Spring&quot; &amp; unk_init_flag == TRUE) {
-      point_state &lt;- &quot;State unknown (spring migratory or pre-mig stationary)&quot;
+    if(time &lt;= time_initiation &amp; season == \Spring\ &amp; unk_init_flag == TRUE) {
+      point_state &lt;- \State unknown (spring migratory or pre-mig stationary)\
     }
     
     if(!is.na(time_termination)){
-      if(time &gt;= time_termination &amp; season == &quot;Fall&quot; &amp; unk_term_flag == TRUE) {
-        point_state &lt;- &quot;State unknown (fall migratory or post-mig stationary)&quot;
+      if(time &gt;= time_termination &amp; season == \Fall\ &amp; unk_term_flag == TRUE) {
+        point_state &lt;- \State unknown (fall migratory or post-mig stationary)\
       }
       
-      if(time &gt;= time_termination &amp; season == &quot;Spring&quot; &amp; unk_term_flag == TRUE) {
-        point_state &lt;- &quot;State unknown (spring migratory or post-mig stationary)&quot;
+      if(time &gt;= time_termination &amp; season == \Spring\ &amp; unk_term_flag == TRUE) {
+        point_state &lt;- \State unknown (spring migratory or post-mig stationary)\
       }
     }
     
     return(point_state)
   }) %&gt;%
   unlist() %&gt;%
-  factor(levels = c(&quot;Migratory (spring)&quot;, &quot;Migratory (fall)&quot;, &quot;State unknown (fall migratory or pre-mig stationary)&quot;, &quot;State unknown (spring migratory or pre-mig stationary)&quot;, &quot;State unknown (fall migratory or post-mig stationary)&quot;, &quot;State unknown (spring migratory or post-mig stationary)&quot;, &quot;Stationary&quot;), ordered = TRUE)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<ol start="4" style="list-style-type: decimal">
-<li>Use head on records, grouped by event_id, to keep only the “top”
-record from each group. If there was any migratory movement during that
-time period, the top record will be a migratory state. If not, the top
-record will be a stationary state</li>
-</ol>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW13b19kYXRhX3JlY29uc3RydWN0ZWQgPC0gYW13b19kYXRhX3dfZHVwbGljYXRlcyAlPiVcbiAgZ3JvdXBfYnkoZXZlbnRfaWQpICU+JVxuICBhcnJhbmdlKHByaW1hcnlfc3RlcF9zdGF0ZSwgLmJ5X2dyb3VwID0gVFJVRSkgJT4lXG4gIGdyb3VwX21vZGlmeSguZiA9IGZ1bmN0aW9uKHgsIC4uLil7aGVhZCh4LCBuID0gMSl9KSAlPiUgXG4gIGRwbHlyOjpzZWxlY3QoLXNlYXNvbiwgLXRpbWVfaW5pdGlhdGlvbiwgLXRpbWVfdGVybWluYXRpb24pICU+JVxuICB1bmdyb3VwKClcbmBgYCJ9 -->
-<pre class="r"><code>amwo_data_reconstructed &lt;- amwo_data_w_duplicates %&gt;%
+  factor(levels = c(\Migratory (spring)\, \Migratory (fall)\, \State unknown (fall migratory or pre-mig stationary)\, \State unknown (spring migratory or pre-mig stationary)\, \State unknown (fall migratory or post-mig stationary)\, \State unknown (spring migratory or post-mig stationary)\, \Stationary\), ordered = TRUE)</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+4) Use head on records, grouped by event_id, to keep only the &quot;top&quot; record from each group. If there was any migratory movement during that time period, the top record will be a migratory state. If not, the top record will be a stationary state
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuYW13b19kYXRhX3JlY29uc3RydWN0ZWQgPC0gYW13b19kYXRhX3dfZHVwbGljYXRlcyAlPiVcbiAgZ3JvdXBfYnkoZXZlbnRfaWQpICU+JVxuICBhcnJhbmdlKHByaW1hcnlfc3RlcF9zdGF0ZSwgLmJ5X2dyb3VwID0gVFJVRSkgJT4lXG4gIGdyb3VwX21vZGlmeSguZiA9IGZ1bmN0aW9uKHgsIC4uLil7aGVhZCh4LCBuID0gMSl9KSAlPiUgXG4gIGRwbHlyOjpzZWxlY3QoLXNlYXNvbiwgLXRpbWVfaW5pdGlhdGlvbiwgLXRpbWVfdGVybWluYXRpb24pICU+JVxuICB1bmdyb3VwKClcbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+amwo_data_reconstructed &lt;- amwo_data_w_duplicates %&gt;%
   group_by(event_id) %&gt;%
   arrange(primary_step_state, .by_group = TRUE) %&gt;%
   group_modify(.f = function(x, ...){head(x, n = 1)}) %&gt;% 
   dplyr::select(-season, -time_initiation, -time_termination) %&gt;%
   ungroup()</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Arrange by animal_id and time to ensure that the tracks graph
-correctly</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW13b19kYXRhX3JlY29uc3RydWN0ZWQgPC0gYW13b19kYXRhX3JlY29uc3RydWN0ZWQgJT4lXG4gIGdyb3VwX2J5KGFuaW1hbF9uYW1lKSAlPiVcbiAgYXJyYW5nZSh0aW1lLCAuYnlfZ3JvdXAgPSBUUlVFKSAlPiVcbiAgdW5ncm91cCgpXG5gYGAifQ== -->
-<pre class="r"><code>amwo_data_reconstructed &lt;- amwo_data_reconstructed %&gt;%
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Arrange by animal_id and time to ensure that the tracks graph correctly
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuYW13b19kYXRhX3JlY29uc3RydWN0ZWQgPC0gYW13b19kYXRhX3JlY29uc3RydWN0ZWQgJT4lXG4gIGdyb3VwX2J5KGFuaW1hbF9uYW1lKSAlPiVcbiAgYXJyYW5nZSh0aW1lLCAuYnlfZ3JvdXAgPSBUUlVFKSAlPiVcbiAgdW5ncm91cCgpXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+amwo_data_reconstructed &lt;- amwo_data_reconstructed %&gt;%
   group_by(animal_name) %&gt;%
   arrange(time, .by_group = TRUE) %&gt;%
   ungroup()</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Set any bugged tracks to “Unknown- bugged frequent schedule”</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW13b19kYXRhX3JlY29uc3RydWN0ZWQgPC0gYW13b19kYXRhX3JlY29uc3RydWN0ZWQgJT4lXG4gIG11dGF0ZShwcmltYXJ5X3N0ZXBfc3RhdGUgPSBpZl9lbHNlKGFuaW1hbF9uYW1lID09IFwiVlQtMjAyMC0wMVwiIHwgYW5pbWFsX25hbWUgPT0gXCJWVC0yMDIwLTAyXCIgfCBhbmltYWxfbmFtZSA9PSBcIlZULTIwMjAtMDNcIiB8IGFuaW1hbF9uYW1lID09IFwiVlQtMjAyMC0wNFwiIHwgYW5pbWFsX25hbWUgPT0gXCJWVC0yMDIwLTEyXCIsIFwiVW5rbm93bi0gYnVnZ2VkIGZyZXF1ZW50IHNjaGVkdWxlXCIsIGFzLmNoYXJhY3RlcihwcmltYXJ5X3N0ZXBfc3RhdGUpKSxcbiAgICAgICAgIHByaW1hcnlfcG9pbnRfc3RhdGUgPSBpZl9lbHNlKGFuaW1hbF9uYW1lID09IFwiVlQtMjAyMC0wMVwiIHwgYW5pbWFsX25hbWUgPT0gXCJWVC0yMDIwLTAyXCIgfCBhbmltYWxfbmFtZSA9PSBcIlZULTIwMjAtMDNcIiB8IGFuaW1hbF9uYW1lID09IFwiVlQtMjAyMC0wNFwiIHwgYW5pbWFsX25hbWUgPT0gXCJWVC0yMDIwLTEyXCIsIFwiVW5rbm93bi0gYnVnZ2VkIGZyZXF1ZW50IHNjaGVkdWxlXCIsIGFzLmNoYXJhY3RlcihwcmltYXJ5X3BvaW50X3N0YXRlKSkpXG5gYGAifQ== -->
-<pre class="r"><code>amwo_data_reconstructed &lt;- amwo_data_reconstructed %&gt;%
-  mutate(primary_step_state = if_else(animal_name == &quot;VT-2020-01&quot; | animal_name == &quot;VT-2020-02&quot; | animal_name == &quot;VT-2020-03&quot; | animal_name == &quot;VT-2020-04&quot; | animal_name == &quot;VT-2020-12&quot;, &quot;Unknown- bugged frequent schedule&quot;, as.character(primary_step_state)),
-         primary_point_state = if_else(animal_name == &quot;VT-2020-01&quot; | animal_name == &quot;VT-2020-02&quot; | animal_name == &quot;VT-2020-03&quot; | animal_name == &quot;VT-2020-04&quot; | animal_name == &quot;VT-2020-12&quot;, &quot;Unknown- bugged frequent schedule&quot;, as.character(primary_point_state)))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuc2F2ZVJEUyhhbXdvX2RhdGFfcmVjb25zdHJ1Y3RlZCwgZmlsZSA9IFxcZmFjX3ByaW1hcnlfc3RhdGVfZGVsaW5lYXRpb24ucmRzXFwpXG5gYGBcbmBgYCJ9 -->
-<pre class="r"><code>```r
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Set any bugged tracks to &quot;Unknown- bugged frequent schedule&quot;
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuYW13b19kYXRhX3JlY29uc3RydWN0ZWQgPC0gYW13b19kYXRhX3JlY29uc3RydWN0ZWQgJT4lXG4gIG11dGF0ZShwcmltYXJ5X3N0ZXBfc3RhdGUgPSBpZl9lbHNlKGFuaW1hbF9uYW1lID09IFxcVlQtMjAyMC0wMVxcIHwgYW5pbWFsX25hbWUgPT0gXFxWVC0yMDIwLTAyXFwgfCBhbmltYWxfbmFtZSA9PSBcXFZULTIwMjAtMDNcXCB8IGFuaW1hbF9uYW1lID09IFxcVlQtMjAyMC0wNFxcIHwgYW5pbWFsX25hbWUgPT0gXFxWVC0yMDIwLTEyXFwsIFxcVW5rbm93bi0gYnVnZ2VkIGZyZXF1ZW50IHNjaGVkdWxlXFwsIGFzLmNoYXJhY3RlcihwcmltYXJ5X3N0ZXBfc3RhdGUpKSxcbiAgICAgICAgIHByaW1hcnlfcG9pbnRfc3RhdGUgPSBpZl9lbHNlKGFuaW1hbF9uYW1lID09IFxcVlQtMjAyMC0wMVxcIHwgYW5pbWFsX25hbWUgPT0gXFxWVC0yMDIwLTAyXFwgfCBhbmltYWxfbmFtZSA9PSBcXFZULTIwMjAtMDNcXCB8IGFuaW1hbF9uYW1lID09IFxcVlQtMjAyMC0wNFxcIHwgYW5pbWFsX25hbWUgPT0gXFxWVC0yMDIwLTEyXFwsIFxcVW5rbm93bi0gYnVnZ2VkIGZyZXF1ZW50IHNjaGVkdWxlXFwsIGFzLmNoYXJhY3RlcihwcmltYXJ5X3BvaW50X3N0YXRlKSkpXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+amwo_data_reconstructed &lt;- amwo_data_reconstructed %&gt;%
+  mutate(primary_step_state = if_else(animal_name == \VT-2020-01\ | animal_name == \VT-2020-02\ | animal_name == \VT-2020-03\ | animal_name == \VT-2020-04\ | animal_name == \VT-2020-12\, \Unknown- bugged frequent schedule\, as.character(primary_step_state)),
+         primary_point_state = if_else(animal_name == \VT-2020-01\ | animal_name == \VT-2020-02\ | animal_name == \VT-2020-03\ | animal_name == \VT-2020-04\ | animal_name == \VT-2020-12\, \Unknown- bugged frequent schedule\, as.character(primary_point_state)))</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuYGBgclxuc2F2ZVJEUyhhbXdvX2RhdGFfcmVjb25zdHJ1Y3RlZCwgZmlsZSA9IFxcZmFjX3ByaW1hcnlfc3RhdGVfZGVsaW5lYXRpb24ucmRzXFwpXG5gYGBcbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+```r
 saveRDS(amwo_data_reconstructed, file = \fac_primary_state_delineation.rds\)</code></pre>
-<p>```</p>
+<pre><code></code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 
