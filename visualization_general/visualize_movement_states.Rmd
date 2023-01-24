@@ -20,8 +20,8 @@ Plot all individuals together to see how the code performs on a population scale
 ggplot(amwo_hmm, aes(x = ID, y = julian_day)) +
   geom_point(aes(color = as.character(point_state), shape = as.character(point_state))) +
   scale_color_brewer(palette = "Spectral") +
-  theme_dark() +
-  theme(axis.text.x = element_text(angle = 90))
+  #theme_dark() +
+  theme(axis.text.x = element_text(angle = 90), legend.position = "none")
 ```
 
 Plot fall and spring migrations together
@@ -79,9 +79,9 @@ leaflet.male<- function(x){
       } else if(z == 2) {
         "orange"
       } else if(z == 3) {
-        "red"
+        "pink"
       } else if(z == 4){
-        "black"
+        "red"
       } else if(z == 5){
         "blue"
       } else if(z == 6){
@@ -121,7 +121,7 @@ leaflet.male<- function(x){
 
 ```{r}
 amwo_hmm %>%
-  filter(ID == "ME-2017-02-2017") %>%
+  filter(ID == "FL-2022-08-2022") %>%
   #View()
   leaflet.male(.)
 # 

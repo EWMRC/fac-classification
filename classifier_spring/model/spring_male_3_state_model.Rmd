@@ -151,38 +151,82 @@ individuals_died_too_early <- amwo_spring_males %>%
   pull(ID)
 ```
 
+Determine the mean distance to the nearest 7 points
+```{r}
+# plan(multisession)
+# 
+# amwo_spring_males$mean_dist_7 <- amwo_spring_males %>% 
+#   dplyr::transmute(ID_iter = ID, x_iter = lon, y_iter = lat) %>% 
+#   future_pmap(function(ID_iter, x_iter, y_iter){
+#     
+#     iter_sf <- data.frame(x = x_iter, y = y_iter) %>% 
+#       st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE)
+#     
+#     other_locs <- amwo_spring_males %>%
+#       st_as_sf(coords = c("lon", "lat"), crs = 4326, remove = FALSE) %>%
+#       filter(ID == ID_iter)
+#     
+#     st_distance(x = iter_sf, y = other_locs) %>% 
+#       as.numeric() %>%
+#       sort() %>%
+#       .[2:8] %>% 
+#       mean(na.rm = TRUE) %>% 
+#       return()
+#   }) %>% 
+#   unlist()
+# 
+# plan(sequential)
+```
+
+Random walk code goes here
+```{r}
+unnested_birds <- amwo_spring_males %>% 
+  aniMotum::format_data(id = "ID",
+              date = "time",
+              coord = c("lon", "lat")) %>% 
+  aniMotum::fit_ssm(model = "rw",
+          time.step = 24,
+          spdf = FALSE) %>% 
+  aniMotum::grab(what = "predicted") %>% 
+  dplyr::rename(ID = id, time = date) %>% 
+  left_join(y = dplyr::select(amwo_spring_males, ID, date, year, animal_name))
+  
+```
+
+
 Crawl code goes here
 ```{r include=FALSE}
 # Group tracks by id (for crawl model because it likes tidyverse structure)
-nested_birds <- group_by(amwo_spring_males, ID) %>% 
-  nest() 
-
-# Movement model (no covariates = ~1)
-# The constraints are based on the godwit example
-# Fit model to each bird. Constrain velocity autoregression parameter to c(-7,2)
-# full effective range of the beta parameter (according to D Johnson)
-nested_birds <- mutate(nested_birds,
-                fit = purrr::map(data, ~{crawl::crwMLE(mov.model=~1, 
-                                                       data=.x, 
-                                                       coord=c("lon", "lat"), # movement model = ~1 bc no covariates
-                                                       Time.name="time",
-                                                       #time.scale='hours', # sometimes need to turn this on, sometimes don't
-                                                       method="L-BFGS-B", # there are different optimization methods, default didn't work but this did
-                                                       constr=list(lower=c(-Inf,-7), upper=c(Inf,2)),
-                                                       attempts=20,
-                                                       time.scale = "hours")}
-                )
-)
-
-nested_birds <- mutate(nested_birds,
-                pred = purrr::map(fit, ~{
-                  crawl::crwPredict(.x, predTime="24 hours", return.type='flat') %>% # use 24 hours, NOT 1 day (because it rounds to the unit)
-                    crawl::crw_as_tibble()
-                }
-                )
-)
-
-unnested_birds <- dplyr::select(nested_birds, ID, pred) %>% unnest(cols=pred)
+# nested_birds <- group_by(amwo_spring_males, ID) %>% 
+#   nest() 
+# 
+# # Movement model (no covariates = ~1)
+# # The constraints are based on the godwit example
+# # Fit model to each bird. Constrain velocity autoregression parameter to c(-7,2)
+# # full effective range of the beta parameter (according to D Johnson)
+# set.seed(8)
+# nested_birds <- mutate(nested_birds,
+#                 fit = purrr::map(data, ~{crawl::crwMLE(mov.model=~1, 
+#                                                        data=.x, 
+#                                                        coord=c("lon", "lat"), # movement model = ~1 bc no covariates
+#                                                        Time.name="time",
+#                                                        #time.scale='hours', # sometimes need to turn this on, sometimes don't
+#                                                        method="L-BFGS-B", # there are different optimization methods, default didn't work but this did
+#                                                        constr=list(lower=c(-Inf,-7), upper=c(Inf,2)),
+#                                                        attempts=20,
+#                                                        time.scale = "hours")}
+#                 )
+# )
+# set.seed(8)
+# nested_birds <- mutate(nested_birds,
+#                 pred = purrr::map(fit, ~{
+#                   crawl::crwPredict(.x, predTime="24 hours", return.type='flat') %>% # use 24 hours, NOT 1 day (because it rounds to the unit)
+#                     crawl::crw_as_tibble()
+#                 }
+#                 )
+# )
+# 
+# unnested_birds <- dplyr::select(nested_birds, ID, pred) %>% unnest(cols=pred)
 ```
 
 
@@ -190,17 +234,22 @@ unnested_birds <- dplyr::select(nested_birds, ID, pred) %>% unnest(cols=pred)
 ##  basically the step length and turn angles are now included
 ## Also create a data stream for difference in latitude (may be necessary for a ruleset: if not, remove)
 ```{r}
+##
 # amwo_hmm <- amwo_spring_males %>%
-#   rename(x = lon, y = lat) 
+#   rename(x = lon, y = lat)
 amwo_hmm <- unnested_birds %>%
-  rename(x = mu.x, y = mu.y) %>% 
-  ungroup()
+  mutate(x = lon, y = lat)
+## amwo_hmm <- unnested_birds %>%
+##   rename(x = mu.x, y = mu.y) %>% 
+##   ungroup()
 
 #remove duplicates by date to deal with predicted locations on the same day as the observed location
 amwo_hmm <- amwo_hmm %>% 
-  mutate(date = strftime(time, format="%Y-%m-%d")) %>% 
-  distinct(date, ID, .keep_all = TRUE) %>% 
-  mutate(julian_day = yday(ymd(date))) #Redo the julian day calculation
+  ##mutate(date = strftime(time, format="%Y-%m-%d")) %>% 
+  ##distinct(date, ID, .keep_all = TRUE) %>% 
+  mutate(julian_day = yday(ymd(date)),
+         ##
+         locType = "p") #Redo the julian day calculation
   
 amwo_hmm$lat_diff <- map(1:nrow(amwo_hmm),  function(i){
   if(i == 1){return(NA)} else{#for the first row, return 1
@@ -302,7 +351,7 @@ fix step length parameters and state transitions
 ```{r}
 fixPar <- list(beta=matrix(c(NA, -100, -100, # pre-migration to transitions, can't go pre- to post
                      -100, NA, NA,  #once entered migration can't go back to pre
-                     -100, NA, -100, #Once entered stopover, can only go back to migration
+                     -100, NA, NA, #Once entered stopover, can only go back to migration or advance to post-migration
                      -100, -100, -100), nrow = 1, byrow = TRUE)) #once entered post-migration, can't leave
 ```
 
@@ -460,13 +509,13 @@ amwo_hmm <- map(unique(amwo_hmm$ID), function(ind){
 
 Add back in the movement from the summer transient bird (VA-2020-52-2020), manually classified as post-mig
 ```{r}
-summer_transient_movement %>%
-  mutate(step_state = c(rep(4,19), NA), point_state = 4) ->
-  summer_transient_movement
+## summer_transient_movement %>%
+##   mutate(step_state = c(rep(4,19), NA), point_state = 4) ->
+##   summer_transient_movement
 
-amwo_hmm %>%
-  rbind(summer_transient_movement) ->
-  amwo_hmm
+## amwo_hmm %>%
+##   rbind(summer_transient_movement) ->
+##   amwo_hmm
 ```
 
 Correct step state based on the new point states
