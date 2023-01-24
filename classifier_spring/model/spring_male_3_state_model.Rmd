@@ -151,7 +151,8 @@ individuals_died_too_early <- amwo_spring_males %>%
   pull(ID)
 ```
 
-Crawl code goes here
+Crawl code goes here 
+First parameter is sigma, second is beta (autocorrelation) rnorm(200,-4,2)
 ```{r include=FALSE}
 # Group tracks by id (for crawl model because it likes tidyverse structure)
 nested_birds <- group_by(amwo_spring_males, ID) %>% 
@@ -244,6 +245,48 @@ amwo_hmm$mean_dist_7 <- amwo_hmm %>%
   unlist()
 
 plan(sequential)
+```
+
+Cut out loops produced by the crawl. Use if the haul-out model doesn't work
+```{r}
+# t <- amwo_hmm %>% 
+#   group_by(ID) %>% 
+#   group_modify(.f = function(x){
+#     x <- x %>% 
+#       mutate(., rownum = 1:nrow(.))
+#     
+#     observed_locs <- x %>% 
+#       filter(locType == "o")
+#     
+#     rows_to_remove <- map(1:(nrow(observed_locs)-1), function(i){
+#       point_1 <- observed_locs[i,] %>% 
+#         st_as_sf(coords = c("x", "y"), crs = 4326)
+#       
+#       point_2 <- observed_locs[i + 1,] %>% 
+#         st_as_sf(coords = c("x", "y"), crs = 4326)
+#       
+#       point_dist <- st_distance(point_1, point_2,) %>% 
+#         as.numeric(.)/1000 #results in km
+#       
+#       total_dist <- x[pull(point_1, rownum):pull(point_2, rownum),] %>% 
+#         prepData(type = "LL") %>% 
+#         pull(step) %>% 
+#         sum(na.rm = TRUE)
+# 
+# 
+#       if(total_dist > (10*point_dist)){ #if the total step distance is more than 10 times the distance between observed points, remove the predicted points from the dataset
+#         return((pull(point_1, rownum)+1):(pull(point_2, rownum)-1))
+#       } else {
+#         numeric()
+#       }
+#     }) %>%  unlist()
+#     # actually remove those rows
+#     x <- x[-rows_to_remove,]
+#     
+#     x$rownum <- NULL
+#     
+#     return(x)
+#   })
 ```
 
 
