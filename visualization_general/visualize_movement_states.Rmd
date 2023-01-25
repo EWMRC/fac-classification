@@ -17,11 +17,12 @@ Plot all individuals together to see how the code performs on a population scale
 #   theme(axis.text.x = element_text(angle = 90))
 
 # Doesn't include latitude
-ggplot(amwo_hmm, aes(x = ID, y = julian_day)) +
+ggplot(amwo_hmm_final, aes(x = ID, y = julian_day)) +
   geom_point(aes(color = as.character(point_state), shape = as.character(point_state))) +
+  geom_hline(yintercept = 135) +
   scale_color_brewer(palette = "Spectral") +
   theme_dark() +
-  theme(axis.text.x = element_text(angle = 90))
+  theme(axis.text.x = element_text(angle = 90), legend.position = "none")
 ```
 
 Plot fall and spring migrations together

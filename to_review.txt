@@ -43,3 +43,16 @@ FL-2022-05-2022 outlier keeps it from settling (2022-05-03)
 FL-2022-08-2022 good example of a 3 to 4 transition (NOT FIXED, probably thrown off by outlier on 2022-04-10)
 PA-2021-37-2022 is a controversial stopover instead of settlement DIDNT CHANGE
 VT-2021-27-2022 is a controversial stopover instead of settlement, but understandable given movements DIDNT CHANGE
+
+
+
+---
+AL-2020-05-2020 stayed in a location for a month, still classified as a stopover
+
+GA-2020-09-2020 exception: classified as residential although points end may 6
+
+--- 
+RI-2019-23-2020 pre-mig is broken
+RI-2019-24-2020 same deal
+SC-2021-21-2021 nightly alternation makes it longer. Not much I can do about this.
+SC-2021-23-2021 unclear why it doesn't settle

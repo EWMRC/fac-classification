@@ -246,7 +246,7 @@ amwo_hmm <- amwo_hmm %>%
       filter(locType == "o")
     
     for(i in 1:(nrow(observed_locs)-1)){
-      print(i)
+      #print(i)
       point_1 <- observed_locs[i,] %>%
         st_as_sf(coords = c("x", "y"), crs = 5070, remove = FALSE)
       
@@ -323,6 +323,37 @@ amwo_hmm$mean_dist_7 <- amwo_hmm %>%
 plan(sequential)
 ```
 
+Determining the amount of time that the bird has spent/will spend within a 10km radius of the point
+```{r}
+plan(multisession)
+amwo_hmm$residence_time <- amwo_hmm %>% 
+  dplyr::select(ID, x, y) %>% 
+  future_pmap(function(ID_iter, x_iter, y_iter){
+    
+    iter_sf <- data.frame(x = x_iter, y = y_iter) %>% 
+      st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE) %>% 
+      st_transform(5070) %>% 
+      st_buffer(10000) %>% #10 km radius
+      transmute(intersection = 1)
+    
+    other_locs <- amwo_hmm %>%
+      st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE) %>%
+      filter(ID == ID_iter) %>% 
+      st_transform(5070) %>% 
+      transmute(date = ymd(date))
+    
+    intersected_locs <- other_locs %>% 
+      st_join(iter_sf) %>% 
+      filter(intersection == 1)
+    
+    as.numeric(max(intersected_locs$date, na.rm = TRUE) - min(intersected_locs$date), na.rm = TRUE) %>% 
+      return()
+  }) %>% 
+  unlist()
+
+plan(sequential)
+```
+
 
 ```{r}
 amwo_hmm <- amwo_hmm %>%
@@ -373,7 +404,7 @@ knownStates <- amwo_hmm %>%
 Label states and create distributions for movements
 ```{r}
 stateNames <- c("pre","migration", "stopover","post")
-dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", log_mean_dist_7 = "norm") #, lat_diff_abs = "gamma" , pts_10mi_log = "norm"
+dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", log_mean_dist_7 = "norm", residence_time = "norm") #, lat_diff_abs = "gamma" , pts_10mi_log = "norm"
 ```
 
 fix step length parameters and state transitions
@@ -396,7 +427,9 @@ Par0_m1 <- list(step=c(0.485, 211.927, 0.485, 0.485, #mean in km
                 julian_day = c(39.19987, 79.72239, 79.72239, 136.54740, #mean
                         18.71277, 20.65775, 20.65775, 22.94372),
                 log_mean_dist_7 = c(log(100), log(5000), log(100), log(100), #mean
-                                log(50), log(20), log(20), log(50))) #sd
+                                log(50), log(20), log(20), log(50)), #sd
+                residence_time = c(40.2, 7.39, 55.9, 70.6, #mean
+                                   21.6, 16.4, 32.0, 21.3)) #sd
                 # lat_diff_abs = c(0.01, 1, 0.01,
                 #                  0.01, 1, 0.01,
                 #                  0.026, 0.036, 0.026)) 
@@ -417,25 +450,20 @@ fit_and_predict <- function(.x){
   
   #step state shows the bird's behavior between points, point state shows the birds behavior at points
   .x$point_state <- map(1:nrow(.x),  function(i){
-    if(i == 1){return(1)} else{ #for the first row, return 1
-      if(.x[i,"ID"] != .x[i-1,"ID"]){ #is this the first point for this ID? Return the starting state
-        return(1)
-      } else{
-        if(.x[i,"step_state"] == .x[i-1,"step_state"]){ #is the current step state the same as the last step state? Return the current step state
-          return(.x[i,"step_state"])
-        } else{
-          if(.x[i,"step_state"] == 2 & .x[i-1,"step_state"] == 1){ #is the current step state mig and the previous step pre-mig? Return pre-mig
-            return(1) 
-          } else {
-            if(.x[i,"step_state"] == 2 & .x[i-1,"step_state"] == 3){#is the current step state mig and the previous step stopover? Return stopover
-              return(3) 
-            } else{ #in all other circumstances, return the current step state
-              return(.x[i,"step_state"])
-            }
-          }
-        }
-      }
+    if(i == 1){
+      return(1) #for the first row, return 1
+    } else if(.x[i,"ID"] != .x[i-1,"ID"]){ #is this the first point for this ID? Return the starting state
+      return(1)
+    } else if(.x[i,"step_state"] == .x[i-1,"step_state"]){ #is the current step state the same as the last step state? Return the current step state
+      return(.x[i,"step_state"])
+    } else if(.x[i,"step_state"] == 2 & .x[i-1,"step_state"] == 1){ #is the current step state mig and the previous step pre-mig? Return pre-mig
+      return(1) 
+    } else if(.x[i,"step_state"] == 2 & .x[i-1,"step_state"] == 3){#is the current step state mig and the previous step stopover? Return stopover
+      return(3) 
+    } else{ #in all other circumstances, return the current step state
+      return(.x[i,"step_state"])
     }
+    
   }) %>% unlist()
   
   return(list(model = m1, results = .x))
@@ -450,20 +478,20 @@ results_initial <- fit_and_predict(amwo_hmm) #results_initial includes both the 
 #plot(results_initial$model, plotCI = TRUE) #inspect estimated parameters for each state and state classifications for each individual
 #plotPR(results_initial$model) # lot observation index, theoretical quantiles, and lag
 
-amwo_hmm <- results_initial$results
+amwo_hmm_final <- results_initial$results
 
 results_initial$model #probabilities of transition
 ```
 
 Ruleset: Pre-migration is all points up until the bird departs > 16.1km from its initial location for the final time
 ```{r}
-amwo_hmm <- map(unique(amwo_hmm$ID), function(ind){
-  first_loc <- amwo_hmm %>%
+amwo_hmm_final <- map(unique(amwo_hmm_final$ID), function(ind){
+  first_loc <- amwo_hmm_final %>%
     filter(ID == ind) %>%
     head(n = 1) %>%
     st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE)
 
-  amwo_ind <- amwo_hmm %>%
+  amwo_ind <- amwo_hmm_final %>%
     filter(ID == ind) %>%
     st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE) %>%
     mutate(condition_distance_km_pre = as.numeric(st_distance(geometry, first_loc))/1000) %>%
@@ -494,13 +522,13 @@ amwo_hmm <- map(unique(amwo_hmm$ID), function(ind){
 
 Ruleset: Post-migration is all points up until the bird comes within 8km of its final location for the first time, assuming that its final location is in state 4
 ```{r}
-amwo_hmm <- map(unique(amwo_hmm$ID), function(ind){
-  last_loc <- amwo_hmm %>%
+amwo_hmm_final <- map(unique(amwo_hmm_final$ID), function(ind){
+  last_loc <- amwo_hmm_final %>%
     filter(ID == ind) %>%
     tail(n = 1) %>%
     st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE)
   
-  amwo_ind <- amwo_hmm %>%
+  amwo_ind <- amwo_hmm_final %>%
     filter(ID == ind) %>%
     st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE) %>%
     mutate(condition_distance_km_post = as.numeric(st_distance(geometry, last_loc))/1000) %>%
@@ -543,10 +571,30 @@ summer_transient_movement %>%
   mutate(step_state = c(rep(4,19), NA), point_state = 4) ->
   summer_transient_movement
 
-amwo_hmm %>%
+amwo_hmm_final %>%
   rbind(summer_transient_movement) ->
-  amwo_hmm
+  amwo_hmm_final
 ```
+
+Manually fix a bug: if a point is in pre-mig, all of the prior points must also have been pre-mig
+```{r}
+amwo_hmm_final <- amwo_hmm_final %>% 
+  group_by(ID) %>% 
+  group_modify(function(x, ...){
+    most_recent_premig <- x %>% 
+      filter(point_state == 1) %>% 
+      pull(date) %>% 
+      ymd() %>% 
+      max()
+    
+    x %>% 
+      mutate(point_state = if_else(ymd(date) < most_recent_premig, 1, point_state)) %>% 
+      return()
+  }) %>% 
+  ungroup()
+```
+
+
 
 Correct step state based on the new point states
 If:
@@ -584,7 +632,7 @@ Broken for the 4 state model, I haven't bothered to try to replace it yet
 
 Last bit: remove all of the false migrations
 ```{r}
-amwo_hmm <- amwo_hmm %>%
+amwo_hmm_final <- amwo_hmm_final %>%
   filter(ID != "RI-2019-21-2020",
          ID != "RI-2019-28-2020",
          ID != "RI-2019-29-2020",
@@ -593,15 +641,15 @@ amwo_hmm <- amwo_hmm %>%
 ```
 
 ```{r}
-amwo_hmm <- amwo_hmm %>%
+amwo_hmm_final <- amwo_hmm_final %>%
   mutate(unk_init_flag = if_else(ID %in% individuals_tagged_too_late$ID, TRUE, FALSE)) %>%
   mutate(unk_term_flag = if_else(ID %in% individuals_died_too_early, TRUE, FALSE))
 ```
 
 Save
 ```{r}
-#Save amwo_hmm to a file that can be reviewed via the Shiny app
-saveRDS(amwo_hmm, file = here("classifier_spring", "spring_male_3_state_model.rds"))
+#Save amwo_hmm_final to a file that can be reviewed via the Shiny app
+saveRDS(amwo_hmm_final, file = here("classifier_spring", "spring_male_3_state_model.rds"))
 saveRDS(results_initial$model, file = here("classifier_spring", "spring_male_3_state_parameters.rds"))
 ```
 
