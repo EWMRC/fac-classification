@@ -2,6 +2,7 @@
 library(shiny)
 library(tidyverse)
 library(leaflet)
+library(excelR)
 
 
 # Define UI for application that draws a histogram
@@ -11,13 +12,15 @@ ui <- fluidPage(
            leafletOutput(outputId = "plot",height = 700),
            h3(textOutput("compile_status"), align = "center"),
            actionButton("goButton", "Next"), p("Proof the next individual")
-    )
-
-))
+    ),
+    column(width = 6,
+           excelOutput("table", height = 400))
+    
+  ))
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
-
+  
   ### OK, lets intersect the location data with the shapefile for the AMWO 
   ### SGS coverage zones
   
@@ -38,6 +41,13 @@ server <- function(input, output) {
   individual_stepper$amwoDataID <- amwoData.sm %>%
     filter(ID == unique(amwoData.sm$ID)[1])
   
+  
+  selected_columns <- filter(amwoData.sm, ID == unique(amwoData.sm$ID)[1]) %>% 
+    dplyr::select("ID", "point_state", "date", "julian_day", "step", "angle", "locType",  "log_mean_dist_7", "unk_init_flag", "unk_term_flag") 
+  
+  output$table <- excelTable(data = selected_columns, tableHeight = "800px") %>% 
+    renderExcel()
+  
   getColor <- function(state) {
     sapply(state$point_state, function(states) { # individual_stepper$amwoDataID$point_state
       if(states == 1) {
@@ -52,11 +62,11 @@ server <- function(input, output) {
   }
   
   individual_stepper$icons <- awesomeIcons(
-      icon = 'ios-close',
-      iconColor = 'black',
-      library = 'ion',
-      markerColor = getColor(filter(amwoData.sm, ID == unique(amwoData.sm$ID)[1]))
-    )
+    icon = 'ios-close',
+    iconColor = 'black',
+    library = 'ion',
+    markerColor = getColor(filter(amwoData.sm, ID == unique(amwoData.sm$ID)[1]))
+  )
   
   
   #Reactive plotting: anything within this expression reruns every time input is modified
@@ -76,14 +86,14 @@ server <- function(input, output) {
       addPolylines(lng =individual_stepper$amwoDataID$x, 
                    lat = individual_stepper$amwoDataID$y, 
                    weight=3, color="red")
-
+    
     
   })#end of reactive plotting
   
   #clean locations that we start with
-#  location_iterator <- reactive({
-    #amwoData.sm %>%  filter(ID == individual_stepper$current_ID)
-#  }) 
+  #  location_iterator <- reactive({
+  #amwoData.sm %>%  filter(ID == individual_stepper$current_ID)
+  #  }) 
   
   #updating when go button is pressed
   observeEvent(input$goButton, {
@@ -98,7 +108,12 @@ server <- function(input, output) {
     }
     
     individual_stepper$amwoDataID <- subset(amwoData.sm, amwoData.sm$ID==individual_stepper$current_id)
-
+    
+    selected_columns <- individual_stepper$amwoDataID %>% 
+      dplyr::select("ID", "point_state", "date", "julian_day", "step", "angle", "locType",  "log_mean_dist_7", "unk_init_flag", "unk_term_flag") 
+    
+    output$table <- renderExcel(excelTable(data = selected_columns, tableHeight = "800px"))
+    
     individual_stepper$icons <- awesomeIcons(
       icon = 'ios-close',
       iconColor = 'black',
@@ -107,8 +122,8 @@ server <- function(input, output) {
     )
   })
   
-#  observeEvent(input$goButton,{
-#  })individual_stepper$current_id
+  #  observeEvent(input$goButton,{
+  #  })individual_stepper$current_id
   
   output$compile_status <- renderText({
     if(individual_stepper$compiled == 0){

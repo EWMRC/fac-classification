@@ -198,9 +198,12 @@ amwo_hmm <- unnested_birds %>%
   ungroup()
 
 #remove duplicates by date to deal with predicted locations on the same day as the observed location
+#amwo_hmm <- amwo_hmm %>% 
 amwo_hmm <- amwo_hmm %>% 
-  mutate(date = strftime(time, format="%Y-%m-%d")) %>% 
-  distinct(date, ID, .keep_all = TRUE) %>% 
+  mutate(date = strftime(time, format="%Y-%m-%d"),
+         locType = factor(locType, levels = c("o", "p"), ordered = TRUE)) %>%
+  arrange(ID, date, locType) %>% #keep observed locations above predicted locations
+  distinct(ID, date, .keep_all = TRUE) %>% 
   mutate(julian_day = yday(ymd(date))) #Redo the julian day calculation
   
 amwo_hmm$lat_diff <- map(1:nrow(amwo_hmm),  function(i){
@@ -218,6 +221,79 @@ amwo_hmm <- amwo_hmm %>%
   dplyr::select(ID, animal_name, year, locType, x, y, time, date, julian_day) %>% 
   as.data.frame()
   
+```
+
+Identify loops produced by the crawl and replace them with evenly-spaced points
+```{r include = FALSE}
+amwo_hmm <- amwo_hmm %>%
+  group_by(ID) %>%
+  group_modify(.f = function(x, k){
+    #print(k$ID)
+    x <- x %>% 
+      mutate(., rownum = 1:nrow(.))
+    
+    #Transform to 5070 so I can interpolate points
+    x_coords <- x %>%
+      st_as_sf(coords = c("x", "y"), crs = 4326) %>% 
+      st_transform(5070) %>% 
+      st_coordinates() %>% 
+      as.data.frame()
+    
+    x$x <- x_coords$X
+    x$y <- x_coords$Y
+    
+    observed_locs <- x %>%
+      filter(locType == "o")
+    
+    for(i in 1:(nrow(observed_locs)-1)){
+      print(i)
+      point_1 <- observed_locs[i,] %>%
+        st_as_sf(coords = c("x", "y"), crs = 5070, remove = FALSE)
+      
+      point_2 <- observed_locs[i + 1,] %>%
+        st_as_sf(coords = c("x", "y"), crs = 5070, remove = FALSE)
+      
+      point_dist <- st_distance(point_1, point_2,) %>%
+        as.numeric(.)
+      
+      total_dist <- x[c(point_1$rownum, point_1$rownum:point_2$rownum),] %>%
+        as.data.frame() %>% 
+        prepData(type = "UTM") %>%
+        pull(step) %>%
+        sum(na.rm = TRUE)
+      
+      if(total_dist > (10*point_dist)){ #if the total step distance is more than 10 times the distance between observed points, replace with equally spaced between the points
+        x_step <- (point_2$x - point_1$x)/(point_2$rownum - point_1$rownum)
+        y_step <- (point_2$y - point_1$y)/(point_2$rownum - point_1$rownum)
+        for(j in (point_1$rownum+1):(point_2$rownum-1)){
+          #paste("Row number:", j) %>%  print()
+          loop_index <- j - point_1$rownum
+          
+          #paste("Initial x:", x$x[j]) %>%  print()
+          x$x[j] <- x$x[point_1$rownum] + (x_step*loop_index)
+          #paste("Final x:", x$x[j]) %>%  print()
+          
+          #paste("Initial y:", x$y[j]) %>%  print()
+          x$y[j] <- x$y[point_1$rownum] + (y_step*loop_index)
+          #paste("Final y:", x$y[j]) %>%  print()
+        }
+      } 
+    }
+    #Cleanup
+    x$rownum <- NULL
+    
+    #transform back to 4326
+    x_coords <- x %>%
+      st_as_sf(coords = c("x", "y"), crs = 5070) %>% 
+      st_transform(4326) %>% 
+      st_coordinates() %>% 
+      as.data.frame()
+    
+    x$x <- x_coords$X
+    x$y <- x_coords$Y
+    
+    return(x)
+  })
 ```
 
 Determine the mean distance to the nearest 7 points
@@ -247,54 +323,13 @@ amwo_hmm$mean_dist_7 <- amwo_hmm %>%
 plan(sequential)
 ```
 
-Cut out loops produced by the crawl. Use if the haul-out model doesn't work
-```{r}
-# t <- amwo_hmm %>% 
-#   group_by(ID) %>% 
-#   group_modify(.f = function(x){
-#     x <- x %>% 
-#       mutate(., rownum = 1:nrow(.))
-#     
-#     observed_locs <- x %>% 
-#       filter(locType == "o")
-#     
-#     rows_to_remove <- map(1:(nrow(observed_locs)-1), function(i){
-#       point_1 <- observed_locs[i,] %>% 
-#         st_as_sf(coords = c("x", "y"), crs = 4326)
-#       
-#       point_2 <- observed_locs[i + 1,] %>% 
-#         st_as_sf(coords = c("x", "y"), crs = 4326)
-#       
-#       point_dist <- st_distance(point_1, point_2,) %>% 
-#         as.numeric(.)/1000 #results in km
-#       
-#       total_dist <- x[pull(point_1, rownum):pull(point_2, rownum),] %>% 
-#         prepData(type = "LL") %>% 
-#         pull(step) %>% 
-#         sum(na.rm = TRUE)
-# 
-# 
-#       if(total_dist > (10*point_dist)){ #if the total step distance is more than 10 times the distance between observed points, remove the predicted points from the dataset
-#         return((pull(point_1, rownum)+1):(pull(point_2, rownum)-1))
-#       } else {
-#         numeric()
-#       }
-#     }) %>%  unlist()
-#     # actually remove those rows
-#     x <- x[-rows_to_remove,]
-#     
-#     x$rownum <- NULL
-#     
-#     return(x)
-#   })
-```
-
 
 ```{r}
 amwo_hmm <- amwo_hmm %>%
-  mutate(log_mean_dist_7 = log(mean_dist_7 + 0.1)) %>% #Adding a small # to deal with 0 distances 
+  mutate(log_mean_dist_7 = log(mean_dist_7 + 0.1)) %>% #Adding a small # to deal with 0 distances
+  as.data.frame() %>% 
   prepData(type = "LL") %>% #, covNames = c("julian_day", "log_mean_dist_7")
-  mutate(step = round(step, digits = 2)) 
+  mutate(step = round(step, digits = 4)) #round down to a tenth of a meter, which is higher than our GPS precision
 ```
 
 
@@ -333,7 +368,7 @@ knownStates <- amwo_hmm %>%
   pull(known)
 ```
 
-##### trying 3-state model with fixed state transitions
+##### trying 4-state model with fixed state transitions
 
 Label states and create distributions for movements
 ```{r}
@@ -412,11 +447,12 @@ I'll run this once initially, and this can be rerun after ruleset changes if nec
 ```{r}
 results_initial <- fit_and_predict(amwo_hmm) #results_initial includes both the created model and the df with predicted states 
 
-results_initial$model #probabilities of transition
 #plot(results_initial$model, plotCI = TRUE) #inspect estimated parameters for each state and state classifications for each individual
 #plotPR(results_initial$model) # lot observation index, theoretical quantiles, and lag
 
 amwo_hmm <- results_initial$results
+
+results_initial$model #probabilities of transition
 ```
 
 Ruleset: Pre-migration is all points up until the bird departs > 16.1km from its initial location for the final time
@@ -520,7 +556,7 @@ or
 then the state is migratory. otherwise, it is equal to the current point state
 
 if we're on the last row for the individual, skip this determination and return NA
-
+Broken for the 4 state model, I haven't bothered to try to replace it yet
 ```{r}
 # amwo_hmm <- map(unique(amwo_hmm$ID), function(ind){
 #   #print(ind)
@@ -566,6 +602,7 @@ Save
 ```{r}
 #Save amwo_hmm to a file that can be reviewed via the Shiny app
 saveRDS(amwo_hmm, file = here("classifier_spring", "spring_male_3_state_model.rds"))
+saveRDS(results_initial$model, file = here("classifier_spring", "spring_male_3_state_parameters.rds"))
 ```
 
 

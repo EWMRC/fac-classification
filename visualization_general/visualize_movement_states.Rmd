@@ -79,9 +79,9 @@ leaflet.male<- function(x){
       } else if(z == 2) {
         "orange"
       } else if(z == 3) {
-        "red"
+        "pink"
       } else if(z == 4){
-        "black"
+        "red"
       } else if(z == 5){
         "blue"
       } else if(z == 6){
@@ -121,7 +121,7 @@ leaflet.male<- function(x){
 
 ```{r}
 amwo_hmm %>%
-  filter(ID == "ME-2017-02-2017") %>%
+  filter(ID == "AL-2022-21-2022") %>%
   #View()
   leaflet.male(.)
 # 
