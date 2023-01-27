@@ -52,8 +52,22 @@ AL-2020-05-2020 stayed in a location for a month, still classified as a stopover
 GA-2020-09-2020 exception: classified as residential although points end may 6
 
 --- 
-RI-2019-23-2020 pre-mig is broken
-RI-2019-24-2020 same deal
+RI-2019-23-2020 pre-mig is broken fixed
+RI-2019-24-2020 same deal fixed
 SC-2021-21-2021 nightly alternation makes it longer. Not much I can do about this.
 SC-2021-23-2021 unclear why it doesn't settle
 
+---
+NC-2022-45-2022 the ruleset is messing up the settlement
+NY-2018-07-2019 same
+NY-2022-40-2022 is actually a post-nest failure dispersal movement FIXED
+RI-2020-31-2021 the ruleset is messing up the settlement
+RI-2021-47-2022 actually a mid-Atlantic transitory movement FIXED
+RI-2021-52-2022 actually a mid-Atlantic transitory movement FIXED
+
+VA-2020-79-2021 3 - 4 transition (may have to manually fix these)
+
+fall 4 state---
+ME-2018-08-2018 take out ranging movement on 2018-12-24 and 2018-12-25 FIXED
+NY-2018-04-2018 take out ranging movement on 2018-11-23 and 2018-11-22 FIXED
+PA-2021-38-2021 there's a movement in Fed which should have been classified in spring 2022 FIXED

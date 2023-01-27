@@ -1,8 +1,0 @@
-MD-2019-05-2019 failed to settle
-MD-2019-08-2019 failed to settle
-PA-2018-08-2019 settled too early. Manually delineated movement?
-QUE-2018-03-2019 settled too early. Manually delineated movement?
-RI-2018-06-2019 settled too early. Steps too short?
-RI-2018-12-2019 never settled
-SC-2019-05-2019 never settled
-VA-2018-01-2019 never settled

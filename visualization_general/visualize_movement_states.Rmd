@@ -94,7 +94,7 @@ leaflet.male<- function(x){
     icon = 'ios-close',
     iconColor = 'black',
     library = 'ion',
-    markerColor = getColor(x)
+    markerColor = as.character(getColor(x))
   )
   
   
@@ -121,8 +121,8 @@ leaflet.male<- function(x){
 ```
 
 ```{r}
-amwo_hmm %>%
-  filter(ID == "AL-2022-21-2022") %>%
+amwo_hmm_final %>%
+  filter(ID == "PA-2021-38-2021") %>%
   #View()
   leaflet.male(.)
 # 
