@@ -370,7 +370,7 @@ amwo_hmm <- amwo_hmm %>%
   mutate(log_mean_dist_7 = log(mean_dist_7 + 0.1)) %>% #Adding a small # to deal with 0 distances
   as.data.frame() %>% 
   prepData(type = "LL") %>% #, covNames = c("julian_day", "log_mean_dist_7")
-  mutate(step = round(step, digits = 4)) #round down to a tenth of a meter, which is higher than our GPS precision
+  mutate(step = round(step, digits = 4))  #round down to a tenth of a meter, which is higher than our GPS precision
 ```
 
 
@@ -453,7 +453,7 @@ fit_and_predict <- function(.x){
                estAngleMean = list(angle=TRUE),
                fixPar=fixPar,
                #knownStates = knownStates,
-               #formula = ~julian_day + log_mean_dist_7, #state 2 to 3. page 47 of vignette shows how to create the beta matrix
+               #formula = ~step_cov, #state 2 to 3. page 47 of vignette shows how to create the beta matrix
                stateNames = stateNames)
   
   .x$step_state <- viterbi(m1)
@@ -493,86 +493,124 @@ amwo_hmm_final <- results_initial$results
 results_initial$model #probabilities of transition
 ```
 
+Ruleset: If the total step distance between the start of 4 and the most recent 3 is less than 2 km, then everything from the top of the most recent 3 down is 4
+```{r}
+amwo_hmm_final <- amwo_hmm_final %>% 
+  group_by(ID) %>% 
+  group_modify(function(iter_df, ...){
+    iter_df <- iter_df %>% 
+      mutate(., row_num = 1:nrow(.))
+    
+    if(any(iter_df$point_state == 3) & any(iter_df$point_state == 4)){
+      first_4_row <- iter_df %>% 
+        filter(point_state == 4) %>% 
+        pull(row_num) %>% 
+        min()
+      
+      last_3_row <- iter_df %>% 
+        filter(point_state == 3) %>% 
+        pull(row_num) %>% 
+        max()
+      
+      total_dist_moved <- iter_df[last_3_row:(first_4_row-1), "step"] %>% 
+        sum()
+      
+      if(total_dist_moved < 2){
+        start_of_last_stopover <- iter_df[1:(last_3_row-1),] %>% 
+          filter(point_state == 2) %>%
+          pull(row_num) %>% 
+          max(.) + 1
+        
+        iter_df[start_of_last_stopover:nrow(iter_df), "point_state"] <- 4
+      }
+    }
+    return(iter_df)
+  }) %>% 
+  ungroup() %>% 
+  mutate(row_num = NULL)
+```
+
+
 Ruleset: Pre-migration is all points up until the bird departs > 16.1km from its initial location for the final time
 ```{r}
-amwo_hmm_final <- map(unique(amwo_hmm_final$ID), function(ind){
-  first_loc <- amwo_hmm_final %>%
-    filter(ID == ind) %>%
-    head(n = 1) %>%
-    st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE)
-
-  amwo_ind <- amwo_hmm_final %>%
-    filter(ID == ind) %>%
-    st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE) %>%
-    mutate(condition_distance_km_pre = as.numeric(st_distance(geometry, first_loc))/1000) %>%
-    st_drop_geometry() %>%
-    mutate(within_dist_pre = condition_distance_km_pre < 16.1) #10
-  
-  amwo_ind <- amwo_ind %>%
-    mutate(row_num = 1:nrow(amwo_ind))
-  
-  highest_premig_row <- amwo_ind %>%
-    filter(within_dist_pre == 1) %>%
-    pull(row_num) %>%
-    max()
-  
-  if(highest_premig_row < -1000){
-    cat(crayon::magenta("no points within 16.1 kilometers of the centroid"))
-  }
-  
-  amwo_ind <- amwo_ind %>% 
-    mutate(point_state = if_else(row_num <= highest_premig_row, 1 , point_state)) %>% #point_state_premig_corrected
-    mutate(condition_distance_km_pre = NULL,
-           within_dist_pre = NULL,
-           row_num = NULL)
-}) %>%
-  exec("bind_rows", .)
+# amwo_hmm_final <- map(unique(amwo_hmm_final$ID), function(ind){
+#   first_loc <- amwo_hmm_final %>%
+#     filter(ID == ind) %>%
+#     head(n = 1) %>%
+#     st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE)
+# 
+#   amwo_ind <- amwo_hmm_final %>%
+#     filter(ID == ind) %>%
+#     st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE) %>%
+#     mutate(condition_distance_km_pre = as.numeric(st_distance(geometry, first_loc))/1000) %>%
+#     st_drop_geometry() %>%
+#     mutate(within_dist_pre = condition_distance_km_pre < 16.1) #10
+#   
+#   amwo_ind <- amwo_ind %>%
+#     mutate(row_num = 1:nrow(amwo_ind))
+#   
+#   highest_premig_row <- amwo_ind %>%
+#     filter(within_dist_pre == 1) %>%
+#     pull(row_num) %>%
+#     max()
+#   
+#   if(highest_premig_row < -1000){
+#     cat(crayon::magenta("no points within 16.1 kilometers of the centroid"))
+#   }
+#   
+#   amwo_ind <- amwo_ind %>% 
+#     mutate(point_state = if_else(row_num <= highest_premig_row, 1 , point_state)) %>% #point_state_premig_corrected
+#     mutate(condition_distance_km_pre = NULL,
+#            within_dist_pre = NULL,
+#            row_num = NULL)
+# }) %>%
+#   exec("bind_rows", .)
 
 ```
 
 Ruleset: Post-migration is all points up until the bird comes within 8km of its final location for the first time, assuming that its final location is in state 4
 ```{r}
-amwo_hmm_final <- map(unique(amwo_hmm_final$ID), function(ind){
-  last_loc <- amwo_hmm_final %>%
-    filter(ID == ind) %>%
-    tail(n = 1) %>%
-    st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE)
-  
-  amwo_ind <- amwo_hmm_final %>%
-    filter(ID == ind) %>%
-    st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE) %>%
-    mutate(condition_distance_km_post = as.numeric(st_distance(geometry, last_loc))/1000) %>%
-    st_drop_geometry() %>%
-    mutate(within_dist_post = condition_distance_km_post < 8) #16.1
-  
-  amwo_ind <- amwo_ind %>%
-    mutate(row_num = 1:nrow(amwo_ind))
-  
-  lowest_postmig_row <- amwo_ind %>%
-    filter(within_dist_post == 1) %>%
-    pull(row_num) %>%
-    min()
-  
-  if(lowest_postmig_row< -1000){
-    cat(crayon::magenta("no points within 8 kilometers of the last point"))
-  }
-  
-  if(last_loc$point_state == 4){
-    amwo_ind <- amwo_ind %>% 
-      mutate(point_state = if_else(row_num >= lowest_postmig_row, 4, point_state)) %>% 
-      mutate(within_dist_post = NULL, 
-        condition_distance_km_post = NULL,
-        row_num = NULL)
-  } else {
-    amwo_ind <- amwo_ind %>% 
-      mutate(within_dist_post = NULL, 
-        condition_distance_km_post = NULL,
-        row_num = NULL)
-  }
-
-  return(amwo_ind)
-}) %>%
-  exec("bind_rows", .)
+# amwo_hmm_final <- map(unique(amwo_hmm_final$ID), function(ind){
+#   last_loc <- amwo_hmm_final %>%
+#     filter(ID == ind) %>%
+#     tail(n = 1) %>%
+#     st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE)
+#   
+#   amwo_ind <- amwo_hmm_final %>%
+#     filter(ID == ind) %>%
+#     st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE) %>%
+#     mutate(condition_distance_km_post = as.numeric(st_distance(geometry, last_loc))/1000) %>%
+#     st_drop_geometry() %>%
+#     mutate(within_dist_post = condition_distance_km_post < 8) #16.1
+#   
+#   amwo_ind <- amwo_ind %>%
+#     mutate(row_num = 1:nrow(amwo_ind))
+#   
+#   lowest_postmig_row <- amwo_ind %>%
+#     filter(within_dist_post == 1) %>%
+#     pull(row_num) %>%
+#     min()
+#   
+#   if(lowest_postmig_row< -1000){
+#     cat(crayon::magenta("no points within 8 kilometers of the last point"))
+#   }
+#   
+#   if(last_loc$point_state == 4){
+#     amwo_ind <- amwo_ind %>% 
+#       mutate(point_state = if_else(row_num >= lowest_postmig_row, 4, point_state)) %>% 
+#       mutate(within_dist_post = NULL, 
+#         condition_distance_km_post = NULL,
+#         row_num = NULL)
+#   } else {
+#     amwo_ind <- amwo_ind %>% 
+#       mutate(within_dist_post = NULL, 
+#         condition_distance_km_post = NULL,
+#         row_num = NULL)
+#   }
+# 
+#   return(amwo_ind)
+# }) %>%
+#   exec("bind_rows", .)
 ```
 
 Add back in the movement from the summer transient bird (VA-2020-52-2020), manually classified as post-mig
@@ -588,20 +626,20 @@ amwo_hmm_final %>%
 
 Manually fix a bug: if a point is in pre-mig, all of the prior points must also have been pre-mig
 ```{r}
-amwo_hmm_final <- amwo_hmm_final %>% 
-  group_by(ID) %>% 
-  group_modify(function(x, ...){
-    most_recent_premig <- x %>% 
-      filter(point_state == 1) %>% 
-      pull(date) %>% 
-      ymd() %>% 
-      max()
-    
-    x %>% 
-      mutate(point_state = if_else(ymd(date) < most_recent_premig, 1, point_state)) %>% 
-      return()
-  }) %>% 
-  ungroup()
+# amwo_hmm_final <- amwo_hmm_final %>% 
+#   group_by(ID) %>% 
+#   group_modify(function(x, ...){
+#     most_recent_premig <- x %>% 
+#       filter(point_state == 1) %>% 
+#       pull(date) %>% 
+#       ymd() %>% 
+#       max()
+#     
+#     x %>% 
+#       mutate(point_state = if_else(ymd(date) < most_recent_premig, 1, point_state)) %>% 
+#       return()
+#   }) %>% 
+#   ungroup()
 ```
 
 
