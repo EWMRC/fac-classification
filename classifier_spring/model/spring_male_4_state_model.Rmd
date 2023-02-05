@@ -364,6 +364,40 @@ amwo_hmm$residence_time <- amwo_hmm %>%
 plan(sequential)
 ```
 
+Determining the log distance from the first point to the current point
+```{r}
+plan(multisession)
+
+nested_birds_3 <- amwo_hmm %>%
+  group_by(ID) %>%
+  nest()
+
+nested_birds_3$data <- nested_birds_3 %>% 
+  pull(data) %>% 
+  future_map(.f = function(x){
+    
+    x <- x %>% 
+      st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE)
+    
+    dist_vect <- st_distance(x = x[1,], y = x, by_element = TRUE) %>% #results in meters
+      as.numeric() 
+    
+    dist_vect <- log(dist_vect + 1.1)
+    
+    x <- x %>% 
+      st_drop_geometry() %>% 
+      mutate(dist_start = dist_vect)
+    
+    return(x)
+  })
+
+amwo_hmm <- nested_birds_3 %>% 
+  unnest(cols = c(data))
+
+plan(sequential)
+
+```
+
 
 ```{r}
 amwo_hmm <- amwo_hmm %>%
@@ -414,7 +448,7 @@ knownStates <- amwo_hmm %>%
 Label states and create distributions for movements
 ```{r}
 stateNames <- c("pre","migration", "stopover", "settling", "post")
-dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", log_mean_dist_7 = "norm", residence_time = "norm") #, lat_diff_abs = "gamma" , pts_10mi_log = "norm"
+dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", log_mean_dist_7 = "norm", residence_time = "norm", dist_start = "norm") #, lat_diff_abs = "gamma" , pts_10mi_log = "norm"
 ```
 
 fix step length parameters and state transitions
@@ -436,7 +470,9 @@ Par0_m1 <- list(step=c(0.485, 211.927, 0.485, 0.485, 0.485, #mean in km
                 log_mean_dist_7 = c(log(100), log(5000), log(100), log(100), log(100), #mean
                                 log(50), log(20), log(50), log(50), log(50)), #sd
                 residence_time = c(40.2, 7.39, 55.9, 70.6, 70.6, #mean
-                                   21.6, 16.4, 32.0, 21.3, 21.3)) #sd
+                                   21.6, 16.4, 32.0, 21.3, 21.3), #sd
+                dist_start = c(log(100), log(10000), log(10000), log(20000), log(20000),
+                               log(100), log(10000), log(10000), log(10000), log(10000))) 
                 # lat_diff_abs = c(0.01, 1, 0.01,
                 #                  0.01, 1, 0.01,
                 #                  0.026, 0.036, 0.026)) 
