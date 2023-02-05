@@ -447,18 +447,18 @@ knownStates <- amwo_hmm %>%
 
 Label states and create distributions for movements
 ```{r}
-stateNames <- c("pre","migration", "stopover", "settling", "post")
+stateNames <- c("pre", "migration", "stopover", "settling", "post")
 dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", log_mean_dist_7 = "norm", residence_time = "norm", dist_start = "norm") #, lat_diff_abs = "gamma" , pts_10mi_log = "norm"
 ```
 
 fix step length parameters and state transitions
 ```{r}
-fixPar <- list(beta=matrix(c(NA,	-1000,	-1000,	-1000,	-1000,	NA,	NA,	NA,	-1000,	NA,	-1000,	-1000,	-1000,	-1000,	-1000,	NA,	-1000,	-1000,	-1000,	-1000), nrow = 1, byrow = TRUE)) #once entered post-migration, can't leave
+fixPar <- list(beta=matrix(c(NA,	-1000,	-1000,	-1000,	-1000,	NA,	NA,	NA,	-1000,	NA,	-1000,	-1000,	-1000,	-1000,	-1000,	NA,	-1000,	-1000,	-1000,	NA), nrow = 1, byrow = TRUE)) #once entered post-migration, can't leave
 ```
 
 These serve as the starting parameters for the HMM to optimize.
 ```{r}
-Par0_m1 <- list(step=c(0.485, 211.927, 0.485, 0.485, 0.485, #mean in km
+Par0_m1 <- list(step=c(0.485, 211.927, 0.485, 1, 0.285, #mean in km
                        0.7327, 289.599, 0.7327, 0.7327, 0.7327, # SD in km
                        0.026, 0.036, 0.026, 0.026, 0.026), #zeromass ie how many zeroes expected in the distribution
                 angle=c(0, 0, 0, 0, 0, #mean
@@ -516,14 +516,18 @@ fit_and_predict <- function(.x){
 
 I'll run this once initially, and this can be rerun after ruleset changes if necessary
 ```{r}
+start_time <- Sys.time()
 results_initial <- fit_and_predict(amwo_hmm) #results_initial includes both the created model and the df with predicted states 
-
+end_time <- Sys.time()
 #plot(results_initial$model, plotCI = TRUE) #inspect estimated parameters for each state and state classifications for each individual
 #plotPR(results_initial$model) # lot observation index, theoretical quantiles, and lag
 
 amwo_hmm_final <- results_initial$results
 
 results_initial$model #probabilities of transition
+
+print(start_time)
+print(end_time)
 ```
 
 Ruleset: If the total step distance between the start of 4 and the most recent 3 is less than 2 km, then everything from the top of the most recent 3 down is 4
