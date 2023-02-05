@@ -409,37 +409,34 @@ knownStates <- amwo_hmm %>%
   pull(known)
 ```
 
-##### trying 4-state model
+##### trying 5-state model
 
 Label states and create distributions for movements
 ```{r}
-stateNames <- c("pre","migration", "stopover","post")
+stateNames <- c("pre","migration", "stopover", "settling", "post")
 dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", log_mean_dist_7 = "norm", residence_time = "norm") #, lat_diff_abs = "gamma" , pts_10mi_log = "norm"
 ```
 
 fix step length parameters and state transitions
 ```{r}
-fixPar <- list(beta=matrix(c(NA, -1000, -1000, # pre-migration to transitions, can't go pre- to post
-                     -1000, NA, NA,  #once entered migration can't go back to pre
-                     -1000, NA, -1000, #Once entered stopover, can only go back to migration
-                     -1000, -1000, -1000), nrow = 1, byrow = TRUE)) #once entered post-migration, can't leave
+fixPar <- list(beta=matrix(c(NA,	-1000,	-1000,	-1000,	-1000,	NA,	NA,	NA,	-1000,	NA,	-1000,	-1000,	-1000,	-1000,	-1000,	NA,	-1000,	-1000,	-1000,	-1000), nrow = 1, byrow = TRUE)) #once entered post-migration, can't leave
 ```
 
 These serve as the starting parameters for the HMM to optimize.
 ```{r}
-Par0_m1 <- list(step=c(0.485, 211.927, 0.485, 0.485, #mean in km
-                       0.7327, 289.599, 0.7327, 0.7327, # SD in km
-                       0.026, 0.036, 0.026, 0.026), #zeromass ie how many zeroes expected in the distribution
-                angle=c(0, 0, 0, 0, #mean
-                        0.5, 0.5, 0.5, 0.5), #concentration
-                y = c(34.32931, 36.79636, 36.79636,  41.58981,
-                      2.398324, 4.035114, 4.035114, 4.433215),
-                julian_day = c(39.19987, 79.72239, 79.72239, 136.54740, #mean
-                        18.71277, 20.65775, 20.65775, 22.94372),
-                log_mean_dist_7 = c(log(100), log(5000), log(100), log(100), #mean
-                                log(50), log(20), log(50), log(50)), #sd
-                residence_time = c(40.2, 7.39, 55.9, 70.6, #mean
-                                   21.6, 16.4, 32.0, 21.3)) #sd
+Par0_m1 <- list(step=c(0.485, 211.927, 0.485, 0.485, 0.485, #mean in km
+                       0.7327, 289.599, 0.7327, 0.7327, 0.7327, # SD in km
+                       0.026, 0.036, 0.026, 0.026, 0.026), #zeromass ie how many zeroes expected in the distribution
+                angle=c(0, 0, 0, 0, 0, #mean
+                        0.5, 0.5, 0.5, 0.5, 0.5), #concentration
+                y = c(34.32931, 36.79636, 36.79636,  41.58981, 41.58981,
+                      2.398324, 4.035114, 4.035114, 4.433215, 4.433215),
+                julian_day = c(39.19987, 79.72239, 79.72239, 136.54740, 136.54740, #mean
+                        18.71277, 20.65775, 20.65775, 22.94372, 22.94372),
+                log_mean_dist_7 = c(log(100), log(5000), log(100), log(100), log(100), #mean
+                                log(50), log(20), log(50), log(50), log(50)), #sd
+                residence_time = c(40.2, 7.39, 55.9, 70.6, 70.6, #mean
+                                   21.6, 16.4, 32.0, 21.3, 21.3)) #sd
                 # lat_diff_abs = c(0.01, 1, 0.01,
                 #                  0.01, 1, 0.01,
                 #                  0.026, 0.036, 0.026)) 
@@ -449,7 +446,7 @@ Create a function that fits the model, predicts states for each step (predicted 
 ```{r}
 fit_and_predict <- function(.x){
   set.seed(8)
-  m1 <- fitHMM(data=.x, nbStates=4, dist=dist, Par0 = Par0_m1,
+  m1 <- fitHMM(data=.x, nbStates=5, dist=dist, Par0 = Par0_m1,
                estAngleMean = list(angle=TRUE),
                fixPar=fixPar,
                #knownStates = knownStates,
@@ -494,40 +491,43 @@ results_initial$model #probabilities of transition
 ```
 
 Ruleset: If the total step distance between the start of 4 and the most recent 3 is less than 2 km, then everything from the top of the most recent 3 down is 4
+
+# Phasing out for the 5 state
+
 ```{r}
-amwo_hmm_final <- amwo_hmm_final %>% 
-  group_by(ID) %>% 
-  group_modify(function(iter_df, ...){
-    iter_df <- iter_df %>% 
-      mutate(., row_num = 1:nrow(.))
-    
-    if(any(iter_df$point_state == 3) & any(iter_df$point_state == 4)){
-      first_4_row <- iter_df %>% 
-        filter(point_state == 4) %>% 
-        pull(row_num) %>% 
-        min()
-      
-      last_3_row <- iter_df %>% 
-        filter(point_state == 3) %>% 
-        pull(row_num) %>% 
-        max()
-      
-      total_dist_moved <- iter_df[last_3_row:(first_4_row-1), "step"] %>% 
-        sum()
-      
-      if(total_dist_moved < 2){
-        start_of_last_stopover <- iter_df[1:(last_3_row-1),] %>% 
-          filter(point_state == 2) %>%
-          pull(row_num) %>% 
-          max(.) + 1
-        
-        iter_df[start_of_last_stopover:nrow(iter_df), "point_state"] <- 4
-      }
-    }
-    return(iter_df)
-  }) %>% 
-  ungroup() %>% 
-  mutate(row_num = NULL)
+# amwo_hmm_final <- amwo_hmm_final %>% 
+#   group_by(ID) %>% 
+#   group_modify(function(iter_df, ...){
+#     iter_df <- iter_df %>% 
+#       mutate(., row_num = 1:nrow(.))
+#     
+#     if(any(iter_df$point_state == 3) & any(iter_df$point_state == 4)){
+#       first_4_row <- iter_df %>% 
+#         filter(point_state == 4) %>% 
+#         pull(row_num) %>% 
+#         min()
+#       
+#       last_3_row <- iter_df %>% 
+#         filter(point_state == 3) %>% 
+#         pull(row_num) %>% 
+#         max()
+#       
+#       total_dist_moved <- iter_df[last_3_row:(first_4_row-1), "step"] %>% 
+#         sum()
+#       
+#       if(total_dist_moved < 2){
+#         start_of_last_stopover <- iter_df[1:(last_3_row-1),] %>% 
+#           filter(point_state == 2) %>%
+#           pull(row_num) %>% 
+#           max(.) + 1
+#         
+#         iter_df[start_of_last_stopover:nrow(iter_df), "point_state"] <- 4
+#       }
+#     }
+#     return(iter_df)
+#   }) %>% 
+#   ungroup() %>% 
+#   mutate(row_num = NULL)
 ```
 
 
@@ -616,7 +616,7 @@ Ruleset: Post-migration is all points up until the bird comes within 8km of its 
 Add back in the movement from the summer transient bird (VA-2020-52-2020), manually classified as post-mig
 ```{r}
 summer_transient_movement %>%
-  mutate(step_state = c(rep(4,19), NA), point_state = 4) ->
+  mutate(step_state = c(rep(5,19), NA), point_state = 5) ->
   summer_transient_movement
 
 amwo_hmm_final %>%
