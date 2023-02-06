@@ -43,7 +43,7 @@ server <- function(input, output) {
   
   
   selected_columns <- filter(amwoData.sm, ID == unique(amwoData.sm$ID)[1]) %>% 
-    dplyr::select("ID", "point_state", "date", "julian_day", "step", "angle", "locType",  "dist_start", "unk_init_flag", "unk_term_flag") 
+    dplyr::select("ID", "point_state", "date", "julian_day", "step", "angle", "locType",  "log_mean_dist_7", "unk_init_flag", "unk_term_flag") 
   
   output$table <- excelTable(data = selected_columns, tableHeight = "800px") %>% 
     renderExcel()
@@ -112,7 +112,7 @@ server <- function(input, output) {
     individual_stepper$amwoDataID <- subset(amwoData.sm, amwoData.sm$ID==individual_stepper$current_id)
     
     selected_columns <- individual_stepper$amwoDataID %>% 
-      dplyr::select("ID", "point_state", "date", "julian_day", "step", "angle", "locType",  "dist_start", "unk_init_flag", "unk_term_flag") 
+      dplyr::select("ID", "point_state", "date", "julian_day", "step", "angle", "locType",  "log_mean_dist_7", "unk_init_flag", "unk_term_flag") 
     
     output$table <- renderExcel(excelTable(data = selected_columns, tableHeight = "800px"))
     
