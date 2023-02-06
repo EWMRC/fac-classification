@@ -73,4 +73,5 @@ NY-2018-04-2018 take out ranging movement on 2018-11-23 and 2018-11-22 FIXED
 PA-2021-38-2021 there's a movement in Fed which should have been classified in spring 2022 FIXED
 
 --- ditched ruleset, used reg covariates to weight state transitions
+.
 
