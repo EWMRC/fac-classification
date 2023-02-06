@@ -382,7 +382,7 @@ nested_birds_3$data <- nested_birds_3 %>%
     dist_vect <- st_distance(x = x[1,], y = x, by_element = TRUE) %>% #results in meters
       as.numeric() 
     
-    dist_vect <- log(dist_vect + 1.1)
+    dist_vect <- log(2, base = (dist_vect + 2)) #adding 2 so the value scales between 3.32 and 0. Form is log(x+2) 10
     
     x <- x %>% 
       st_drop_geometry() %>% 
@@ -471,8 +471,8 @@ Par0_m1 <- list(step=c(0.485, 211.927, 0.485, 1, 0.285, #mean in km
                                 log(50), log(20), log(50), log(50), log(50)), #sd
                 residence_time = c(40.2, 7.39, 55.9, 70.6, 70.6, #mean
                                    21.6, 16.4, 32.0, 21.3, 21.3), #sd
-                dist_start = c(log(100), log(10000), log(10000), log(20000), log(20000),
-                               log(100), log(10000), log(10000), log(10000), log(10000))) 
+                dist_start = c(0.15, 0, 0, 0, 0,
+                               0.05, 0.1, 0.1, 0.1, 0.1)) 
                 # lat_diff_abs = c(0.01, 1, 0.01,
                 #                  0.01, 1, 0.01,
                 #                  0.026, 0.036, 0.026)) 
