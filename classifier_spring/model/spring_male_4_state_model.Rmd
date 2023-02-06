@@ -374,21 +374,21 @@ nested_birds_3 <- amwo_hmm %>%
 
 nested_birds_3$data <- nested_birds_3 %>% 
   pull(data) %>% 
-  future_map(.f = function(x){
+  future_map(.f = function(int){
     
-    x <- x %>% 
+    int <- int %>% 
       st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE)
     
-    dist_vect <- st_distance(x = x[1,], y = x, by_element = TRUE) %>% #results in meters
-      as.numeric() 
+    dist_vect <- st_distance(x = int[1,], y = int, by_element = FALSE) %>% #results in meters
+      as.numeric() #NOTE: NEEDS sf 1.0-9 to work correctly
     
     dist_vect <- log(dist_vect + 1.1)
     
-    x <- x %>% 
+    int <- int %>% 
       st_drop_geometry() %>% 
       mutate(dist_start = dist_vect)
     
-    return(x)
+    return(int)
   })
 
 amwo_hmm <- nested_birds_3 %>% 
@@ -453,7 +453,8 @@ dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", l
 
 fix step length parameters and state transitions
 ```{r}
-fixPar <- list(beta=matrix(c(NA,	-1000,	-1000,	-1000,	-1000,	NA,	NA,	NA,	-1000,	NA,	-1000,	-1000,	-1000,	-1000,	-1000,	NA,	-1000,	-1000,	-1000,	NA), nrow = 1, byrow = TRUE)) #once entered post-migration, can't leave
+fixPar <- list(beta=matrix(c(NA,	-1000,	-1000,	-1000,	-1000,	NA,	NA,	NA,	-1000,	NA,	-1000,	-1000,	-1000,	-1000,	-1000,	NA,	-1000,	-1000,	-1000,	NA), nrow = 1, byrow = TRUE), dist_start = c(NA, NA, 14.023368, 14.023368, 14.023368,
+               NA, NA, 1, 1, 1)) #Estimate the dist_start of pre-mig and mig, but hold the dist_start of stopover, settling, and post-mig to be identical) #once entered post-migration, can't leave
 ```
 
 These serve as the starting parameters for the HMM to optimize.
