@@ -382,7 +382,8 @@ nested_birds_3$data <- nested_birds_3 %>%
     dist_vect <- st_distance(x = int[1,], y = int, by_element = FALSE) %>% #results in meters
       as.numeric() #NOTE: NEEDS sf 1.0-9 to work correctly
     
-    dist_vect <- log(dist_vect + 1.1)
+    # dist_vect <- log(dist_vect + 1.1)
+    dist_vect <- if_else(dist_vect < 16100, 0, 1)
     
     int <- int %>% 
       st_drop_geometry() %>% 
@@ -448,7 +449,7 @@ knownStates <- amwo_hmm %>%
 Label states and create distributions for movements
 ```{r}
 stateNames <- c("pre", "migration", "stopover", "settling", "post")
-dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", log_mean_dist_7 = "norm", residence_time = "norm", dist_start = "norm") #, lat_diff_abs = "gamma" , pts_10mi_log = "norm"
+dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", log_mean_dist_7 = "norm", residence_time = "norm", dist_start = "bern") #, lat_diff_abs = "gamma" , pts_10mi_log = "norm"
 ```
 
 fix step length parameters and state transitions
@@ -463,24 +464,24 @@ fixPar <- list(beta=matrix(c(NA,	-1000,	-1000,	-1000,	-1000,	NA,	NA,	NA,	-1000,	
 
 Set design matricies for certain data streams
 ```{r include=FALSE}
-DM_step <- matrix(c(1,0,0,0,0,0,0,0,0,0,0,0,0,0,0, #identity
-                    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
-                    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,
-                    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,
-                    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,
-                    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,
-                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1),
-                  dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5", "z1", "z2", "z3", "z4", "z5"),
-                                  c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5", "z1", "z2", "z3", "z4", "z5")),
-                  nrow = 15, ncol = 15, byrow=TRUE)
+# DM_step <- matrix(c(1,0,0,0,0,0,0,0,0,0,0,0,0,0,0, #identity
+#                     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
+#                     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,
+#                     0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,
+#                     0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,
+#                     0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,
+#                     0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,
+#                     0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,
+#                     0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,
+#                     0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,
+#                     0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,
+#                     0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,
+#                     0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,
+#                     0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,
+#                     0,0,0,0,0,0,0,0,0,0,0,0,0,0,1),
+#                   dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5", "z1", "z2", "z3", "z4", "z5"),
+#                                   c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5", "z1", "z2", "z3", "z4", "z5")),
+#                   nrow = 15, ncol = 15, byrow=TRUE)
 
 # DM_y <- matrix(c(1,0,0,0,0,0,0,0,0,0, #1 must always be at lower latitudes than 2 & 3, and 2&3 must always come before 4&5
 #                  1,1,1,0,0,0,0,0,0,0, #gonna switch this up for fall
@@ -537,12 +538,12 @@ DM_step <- matrix(c(1,0,0,0,0,0,0,0,0,0,0,0,0,0,0, #identity
 #                         dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5"),
 #                                         c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5")),
 #                         nrow = 10, ncol = 10, byrow=TRUE)
-
-DM <- list(step = DM_step)#,
-           #y = DM_y,
-           #julian_day = DM_julian_day,
-           #residence_time = DM_residence_time,
-           #dist_start = DM_dist_start)
+# 
+# DM <- list(step = DM_step)#,
+#            #y = DM_y,
+#            #julian_day = DM_julian_day,
+#            #residence_time = DM_residence_time,
+#            #dist_start = DM_dist_start)
 
 ```
 
@@ -565,26 +566,26 @@ Set boundaries for the working parameters (e.g. the columns in the design matrix
 #                             -Inf, Inf),
 #                           dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5", "z1", "z2", "z3", "z4", "z5"), 
 #                                           c("lower", "upper")), 
+# #                           nrow = 15, ncol = 2, byrow=TRUE)
+# 
+# userbounds_step <- matrix(c(0, 5, #slow steps should not average higher than 0.5 km
+#                             0, 200,
+#                             0, 5,
+#                             0, 5,
+#                             0, 5,
+#                             0, 5,
+#                             0, 200,
+#                             0, 5,
+#                             0, 5,
+#                             0, 5,
+#                             0, 1,
+#                             0, 1,
+#                             0, 1,
+#                             0, 1,
+#                             0, 1),
+#                           dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5", "z1", "z2", "z3", "z4", "z5"), 
+#                                           c("lower", "upper")), 
 #                           nrow = 15, ncol = 2, byrow=TRUE)
-
-userbounds_step <- matrix(c(0, 5, #slow steps should not average higher than 0.5 km
-                            0, 200,
-                            0, 5,
-                            0, 5,
-                            0, 5,
-                            0, 5,
-                            0, 200,
-                            0, 5,
-                            0, 5,
-                            0, 5,
-                            0, 1,
-                            0, 1,
-                            0, 1,
-                            0, 1,
-                            0, 1),
-                          dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5", "z1", "z2", "z3", "z4", "z5"), 
-                                          c("lower", "upper")), 
-                          nrow = 15, ncol = 2, byrow=TRUE)
 
 # workbounds_y <- matrix(c(-Inf, Inf, 
 #                          0, Inf, #set subsequent covariates to be positive so that they're additive
@@ -676,12 +677,12 @@ userbounds_step <- matrix(c(0, 5, #slow steps should not average higher than 0.5
 #                    julian_day = workbounds_julian_day,
 #                    dist_start = workbounds_dist_start
 #                    )
-
-userBounds <- list(step = userbounds_step)#,
-                   #y = userbounds_y,
-                   #julian_day = userbounds_julian_day,
-                   #dist_start = userbounds_dist_start
-                   
+# 
+# userBounds <- list(step = userbounds_step)#,
+#                    #y = userbounds_y,
+#                    #julian_day = userbounds_julian_day,
+#                    #dist_start = userbounds_dist_start
+#                    
 ```
 
 
@@ -700,8 +701,7 @@ Par0_m1 <- list(step=c(0.485, 211.927, 0.485, 1, 0.285, #mean in km
                                 log(50), log(20), log(50), log(50), log(50)), #sd
                 residence_time = c(40.2, 7.39, 55.9, 70.6, 70.6, #mean
                                    21.6, 16.4, 32.0, 21.3, 21.3), #sd
-                dist_start = c(log(100), log(10000), log(10000), log(10000), log(10000),
-                               log(100), log(10000), log(10000), log(10000), log(10000))) 
+                dist_start = c(0.1, 0.9, 0.9, 0.9, 0.9)) 
                 # lat_diff_abs = c(0.01, 1, 0.01,
                 #                  0.01, 1, 0.01,
                 #                  0.026, 0.036, 0.026)) 
@@ -714,9 +714,9 @@ fit_and_predict <- function(.x){
   m1 <- fitHMM(data=.x, nbStates=5, dist=dist, Par0 = Par0_m1,
                estAngleMean = list(angle=TRUE),
                fixPar=fixPar,
-               userBounds = userBounds,
+               #userBounds = userBounds,
                #workBounds = workBounds,
-               DM = DM,
+               #DM = DM,
                #knownStates = knownStates,
                #formula = ~step_cov, #state 2 to 3. page 47 of vignette shows how to create the beta matrix
                stateNames = stateNames)

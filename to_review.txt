@@ -84,3 +84,6 @@ NJ-2019-22-2020 problematic pre-mig
 QUE-2019-13-2020 settlement in an area known to not have woodcock
 RI-2019-24-2020 wtf
 
+---
+FL-2022-08-2022 lack of spatial segregation between 3, 4, and 5
+FL-2022-09-2022 same
