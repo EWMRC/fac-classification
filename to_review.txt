@@ -1,89 +1,13 @@
-Spring males:
-VT-2021-27-2022 isn't settling, probably because the transmitter died too early
-
-Spring females:
-NY-2018-07-2019 has two distinct breeding areas, but correctly marked. I think. Probably controversial.
-SC-2019-03-2019 should have been booted into residential. Good candidate to see if the julian day performs better
-
-Fall birds:
-NJ-2018-09-2018 doesn't enter residential, largely due to a short migration and a massive winter home range. 
-Good candidate to see if the julian day performs better. Adding lat might also help here...
-
-NJ-2018-15-2018 is wrongly classified as a migration- actually a one-way dispersal movement
-
-NY-2018-02-2018 maybe should have settled? Good candidate to see if the julian day performs better
-
-
-After new data streams:
-Spring males
-MD-2019-05-2019 isn't settling. Julian day issues? Yay fixed
-NC-2019-01-2019 same thing  Yay fixed
-
-FAC:
-VA-2018-01 likely settled, but its transmitted died too early for us to tell
-RI-2018-01 didn't settle, but it probably should have
-Point state doesn't seem to be operating correctly- first point reflects step state
-Example: ME-2017-02
-
-ME-2017-02 isn't getting kicked into a terminal state correctly... likely due to extended stopovers along route
-Might need to advance to a new version and see if this gets fixed.
-ME-2017-03-2017 is problematic due to exploratory movement
-
-4 state
-RI-2018-12-2019 no idea whats going on here
-RI-2019-24-2020 same
-AL-2020-05-2020 is a controversial stopover instead of settlement DIDNT CHANGE
-PA-2020-33-2021 same DIDNT CHANGE
------------------------------------------------------------------------------SC-2021-18-2021 transitions from state 3 to 4 FIXED
-SC-2021-21-2021 alternation puts this into stage 3 instead of 4 NOT FIXED this is messing up due to night location alternation
------------------------------------------------------------------------------SC-2021-23-2021 same FIXED
------------------------------------------------------------------------------VA-2020-62-2021 never enters stage 4, unclear why FIXED
-VT-2020-09-2021 is a controversial stopover instead of settlement DIDNT CHANGE
-FL-2022-05-2022 outlier keeps it from settling (2022-05-03)
-FL-2022-08-2022 good example of a 3 to 4 transition (NOT FIXED, probably thrown off by outlier on 2022-04-10)
-PA-2021-37-2022 is a controversial stopover instead of settlement DIDNT CHANGE
-VT-2021-27-2022 is a controversial stopover instead of settlement, but understandable given movements DIDNT CHANGE
+-- 2/8/23
+MD-2019-08-2019 controversial
+NC-2021-24-2021 is a problem (outside case)
+PA-2021-37-2022 classifies correctly despite early end (4/9)- is this okay?
+QUE-2019-13-2020 Early termination (Iowa) is almost certainly in error here- too generous with transition
+SC-2019-06-2019 Really early termination (4/2)
+VA-2020-52-2020 needs manual fixing
+VT-2020-07-2021 post-mig 4/2 NC
 
 
 
----
-AL-2020-05-2020 stayed in a location for a month, still classified as a stopover
 
-GA-2020-09-2020 exception: classified as residential although points end may 6
 
---- 
-RI-2019-23-2020 pre-mig is broken fixed
-RI-2019-24-2020 same deal fixed
-SC-2021-21-2021 nightly alternation makes it longer. Not much I can do about this.
-SC-2021-23-2021 unclear why it doesn't settle
-
----
-NC-2022-45-2022 the ruleset is messing up the settlement
-NY-2018-07-2019 same
-NY-2022-40-2022 is actually a post-nest failure dispersal movement FIXED
-RI-2020-31-2021 the ruleset is messing up the settlement
-RI-2021-47-2022 actually a mid-Atlantic transitory movement FIXED
-RI-2021-52-2022 actually a mid-Atlantic transitory movement FIXED
-
-VA-2020-79-2021 3 - 4 transition (may have to manually fix these)
-
-fall 4 state---
-ME-2018-08-2018 take out ranging movement on 2018-12-24 and 2018-12-25 FIXED
-NY-2018-04-2018 take out ranging movement on 2018-11-23 and 2018-11-22 FIXED
-PA-2021-38-2021 there's a movement in Fed which should have been classified in spring 2022 FIXED
-
-spring male 5 state ---
-MD-2019-05-2019 isn't settling
-NC-2021-22-2021 also isn't settling
-NC-2022-32-2022 same
-
----
-AL-2022-18-2022 issues
-NC-2021-25-2021 isn't a stopover
-NJ-2019-22-2020 problematic pre-mig
-QUE-2019-13-2020 settlement in an area known to not have woodcock
-RI-2019-24-2020 wtf
-
----
-FL-2022-08-2022 lack of spatial segregation between 3, 4, and 5
-FL-2022-09-2022 same

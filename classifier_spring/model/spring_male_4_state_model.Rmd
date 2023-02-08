@@ -403,9 +403,11 @@ plan(sequential)
 ```{r}
 amwo_hmm <- amwo_hmm %>%
   mutate(log_mean_dist_7 = log(mean_dist_7 + 0.1)) %>% #Adding a small # to deal with 0 distances
-  as.data.frame() %>% 
+  as.data.frame() %>%
   prepData(type = "LL") %>% #, covNames = c("julian_day", "log_mean_dist_7")
-  mutate(step = round(step, digits = 4))  #round down to a tenth of a meter, which is higher than our GPS precision
+  mutate(step = round(step, digits = 4)) %>%   #round down to a tenth of a meter, which is higher than our GPS precision
+  mutate(step_500 = if_else(step < 0.5, 0, 1)) %>%
+  mutate(step_500 = if_else(!is.na(step_500), step_500, 0))
 ```
 
 
@@ -449,12 +451,13 @@ knownStates <- amwo_hmm %>%
 Label states and create distributions for movements
 ```{r}
 stateNames <- c("pre", "migration", "stopover", "settling", "post")
-dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", log_mean_dist_7 = "norm", residence_time = "norm", dist_start = "bern") #, lat_diff_abs = "gamma" , pts_10mi_log = "norm"
+dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", log_mean_dist_7 = "norm", residence_time = "norm", dist_start = "bern", step_500 = "bern") #, lat_diff_abs = "gamma" , pts_10mi_log = "norm"
 ```
 
 fix step length parameters and state transitions
 ```{r}
-fixPar <- list(beta=matrix(c(NA,	-1000,	-1000,	-1000,	-1000,	NA,	NA,	NA,	-1000,	NA,	-1000,	-1000,	-1000,	-1000,	-1000,	NA,	-1000,	-1000,	-1000,	NA), nrow = 1, byrow = TRUE))
+fixPar <- list(beta=matrix(c(NA,	-1000,	-1000,	-1000,	-1000,	NA,	NA,	NA,	-1000,	NA,	-1000,	-1000,	-1000,	-1000,	-1000,	NA,	-1000,	-1000,	-1000,	NA), nrow = 1, byrow = TRUE),
+               step_500 = c(NA, 0.999999999, NA, NA, NA))
 
 #, dist_start = c(NA, NA, 14.023368, 14.023368, 14.023368,
 #NA, NA, 1, 1, 1)
@@ -701,7 +704,8 @@ Par0_m1 <- list(step=c(0.485, 211.927, 0.485, 1, 0.285, #mean in km
                                 log(50), log(20), log(50), log(50), log(50)), #sd
                 residence_time = c(40.2, 7.39, 55.9, 70.6, 70.6, #mean
                                    21.6, 16.4, 32.0, 21.3, 21.3), #sd
-                dist_start = c(0.1, 0.9, 0.9, 0.9, 0.9)) 
+                dist_start = c(0.1, 0.9, 0.9, 0.9, 0.9),
+                step_500 = c(0.1, 0.9, 0.1, 0.1, 0.1)) 
                 # lat_diff_abs = c(0.01, 1, 0.01,
                 #                  0.01, 1, 0.01,
                 #                  0.026, 0.036, 0.026)) 
