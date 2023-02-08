@@ -453,9 +453,237 @@ dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", l
 
 fix step length parameters and state transitions
 ```{r}
-fixPar <- list(beta=matrix(c(NA,	-1000,	-1000,	-1000,	-1000,	NA,	NA,	NA,	-1000,	NA,	-1000,	-1000,	-1000,	-1000,	-1000,	NA,	-1000,	-1000,	-1000,	NA), nrow = 1, byrow = TRUE), dist_start = c(NA, NA, 14.023368, 14.023368, 14.023368,
-               NA, NA, 1, 1, 1)) #Estimate the dist_start of pre-mig and mig, but hold the dist_start of stopover, settling, and post-mig to be identical) #once entered post-migration, can't leave
+fixPar <- list(beta=matrix(c(NA,	-1000,	-1000,	-1000,	-1000,	NA,	NA,	NA,	-1000,	NA,	-1000,	-1000,	-1000,	-1000,	-1000,	NA,	-1000,	-1000,	-1000,	NA), nrow = 1, byrow = TRUE))
+
+#, dist_start = c(NA, NA, 14.023368, 14.023368, 14.023368,
+#NA, NA, 1, 1, 1)
+
+#Estimate the dist_start of pre-mig and mig, but hold the dist_start of stopover, settling, and post-mig to be identical) #once entered post-migration, can't leave
 ```
+
+Set design matricies for certain data streams
+```{r include=FALSE}
+DM_step <- matrix(c(1,0,0,0,0,0,0,0,0,0,0,0,0,0,0, #identity
+                    0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
+                    0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,
+                    0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,
+                    0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,
+                    0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,
+                    0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,
+                    0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,
+                    0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,
+                    0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,
+                    0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,
+                    0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,
+                    0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,
+                    0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,
+                    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1),
+                  dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5", "z1", "z2", "z3", "z4", "z5"),
+                                  c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5", "z1", "z2", "z3", "z4", "z5")),
+                  nrow = 15, ncol = 15, byrow=TRUE)
+
+# DM_y <- matrix(c(1,0,0,0,0,0,0,0,0,0, #1 must always be at lower latitudes than 2 & 3, and 2&3 must always come before 4&5
+#                  1,1,1,0,0,0,0,0,0,0, #gonna switch this up for fall
+#                  1,1,1,0,0,0,0,0,0,0,
+#                  1,1,1,1,1,0,0,0,0,0,
+#                  1,1,1,1,1,0,0,0,0,0,
+#                  0,0,0,0,0,1,0,0,0,0,
+#                  0,0,0,0,0,0,1,0,0,0,
+#                  0,0,0,0,0,0,0,1,0,0,
+#                  0,0,0,0,0,0,0,0,1,0,
+#                  0,0,0,0,0,0,0,0,0,1),
+#                dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5"),
+#                                c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5")),
+#                nrow = 10, ncol = 10, byrow=TRUE)
+
+# DM_julian_day <- matrix(c(1,0,0,0,0,0,0,0,0,0, #1 must always come before 2 & 3, and 2&3 must always come before 4&5
+#                           1,1,1,0,0,0,0,0,0,0,
+#                           1,1,1,0,0,0,0,0,0,0,
+#                           1,1,1,1,1,0,0,0,0,0,
+#                           1,1,1,1,1,0,0,0,0,0,
+#                           0,0,0,0,0,1,0,0,0,0,
+#                           0,0,0,0,0,0,1,0,0,0,
+#                           0,0,0,0,0,0,0,1,0,0,
+#                           0,0,0,0,0,0,0,0,1,0,
+#                           0,0,0,0,0,0,0,0,0,1),
+#                         dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5"),
+#                                         c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5")),
+#                         nrow = 10, ncol = 10, byrow=TRUE)
+
+# DM_residence_time <- matrix(c(1,0,0,0,0,0,0,0,0,0, #identity
+#                               0,1,0,0,0,0,0,0,0,0,
+#                               0,0,1,0,0,0,0,0,0,0,
+#                               0,0,0,1,0,0,0,0,0,0,
+#                               0,0,0,0,1,0,0,0,0,0,
+#                               0,0,0,0,0,1,0,0,0,0,
+#                               0,0,0,0,0,0,1,0,0,0,
+#                               0,0,0,0,0,0,0,1,0,0,
+#                               0,0,0,0,0,0,0,0,1,0,
+#                               0,0,0,0,0,0,0,0,0,1),
+#                             dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5"),
+#                                             c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5")),
+#                             nrow = 10, ncol = 10, byrow=TRUE)
+
+# DM_dist_start <- matrix(c(1,0,0,0,0,0,0,0,0,0, #estimate the means for 2, 3, 4, and 5 together, and 1 separately
+#                           1,1,1,1,1,0,0,0,0,0,
+#                           1,1,1,1,1,0,0,0,0,0,
+#                           1,1,1,1,1,0,0,0,0,0,
+#                           1,1,1,1,1,0,0,0,0,0,
+#                           0,0,0,0,0,1,0,0,0,0,
+#                           0,0,0,0,0,0,1,0,0,0,
+#                           0,0,0,0,0,0,0,1,0,0,
+#                           0,0,0,0,0,0,0,0,1,1,
+#                           0,0,0,0,0,0,0,0,1,1),
+#                         dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5"),
+#                                         c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5")),
+#                         nrow = 10, ncol = 10, byrow=TRUE)
+
+DM <- list(step = DM_step)#,
+           #y = DM_y,
+           #julian_day = DM_julian_day,
+           #residence_time = DM_residence_time,
+           #dist_start = DM_dist_start)
+
+```
+
+Set boundaries for the working parameters (e.g. the columns in the design matrix) and the user parameters (the rows)
+```{r include=FALSE}
+# workbounds_step <- matrix(c(-Inf, Inf, #if you want to ensure that some means are larger than others, this is what you edit
+#                             -Inf, Inf,
+#                             -Inf, Inf,
+#                             -Inf, Inf,
+#                             -Inf, Inf,
+#                             -Inf, Inf,
+#                             -Inf, Inf,
+#                             -Inf, Inf,
+#                             -Inf, Inf,
+#                             -Inf, Inf,
+#                             -Inf, Inf,
+#                             -Inf, Inf,
+#                             -Inf, Inf,
+#                             -Inf, Inf,
+#                             -Inf, Inf),
+#                           dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5", "z1", "z2", "z3", "z4", "z5"), 
+#                                           c("lower", "upper")), 
+#                           nrow = 15, ncol = 2, byrow=TRUE)
+
+userbounds_step <- matrix(c(0, 5, #slow steps should not average higher than 0.5 km
+                            0, 200,
+                            0, 5,
+                            0, 5,
+                            0, 5,
+                            0, 5,
+                            0, 200,
+                            0, 5,
+                            0, 5,
+                            0, 5,
+                            0, 1,
+                            0, 1,
+                            0, 1,
+                            0, 1,
+                            0, 1),
+                          dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5", "z1", "z2", "z3", "z4", "z5"), 
+                                          c("lower", "upper")), 
+                          nrow = 15, ncol = 2, byrow=TRUE)
+
+# workbounds_y <- matrix(c(-Inf, Inf, 
+#                          0, Inf, #set subsequent covariates to be positive so that they're additive
+#                          0, Inf,
+#                          0, Inf,
+#                          0, Inf,
+#                          -Inf, Inf,
+#                          -Inf, Inf,
+#                          -Inf, Inf,
+#                          -Inf, Inf,
+#                          -Inf, Inf),
+#                        dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5"), 
+#                                        c("lower", "upper")), 
+#                        nrow = 10, ncol = 2, byrow=TRUE)
+
+# userbounds_y <- matrix(c(-Inf, Inf, 
+#                          -Inf, Inf,
+#                          -Inf, Inf,
+#                          -Inf, Inf,
+#                          -Inf, Inf,
+#                          -Inf, Inf,
+#                          -Inf, Inf,
+#                          -Inf, Inf,
+#                          -Inf, Inf,
+#                          -Inf, Inf),
+#                        dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5"), 
+#                                        c("lower", "upper")), 
+#                        nrow = 10, ncol = 2, byrow=TRUE)
+
+
+# workbounds_julian_day <- matrix(c(-Inf, Inf, 
+#                                   0, Inf, #set subsequent covariates to be positive so that they're additive
+#                                   0, Inf,
+#                                   0, Inf,
+#                                   0, Inf,
+#                                   -Inf, Inf,
+#                                   -Inf, Inf,
+#                                   -Inf, Inf,
+#                                   -Inf, Inf,
+#                                   -Inf, Inf),
+#                                 dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5"), 
+#                                                 c("lower", "upper")), 
+#                                 nrow = 10, ncol = 2, byrow=TRUE)
+
+# userbounds_julian_day <- matrix(c(-Inf, Inf, 
+#                                   -Inf, Inf,
+#                                   -Inf, Inf,
+#                                   -Inf, Inf,
+#                                   -Inf, Inf,
+#                                   -Inf, Inf,
+#                                   -Inf, Inf,
+#                                   -Inf, Inf,
+#                                   -Inf, Inf,
+#                                   -Inf, Inf),
+#                                 dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5"), 
+#                                                 c("lower", "upper")), 
+#                                 nrow = 10, ncol = 2, byrow=TRUE)
+
+# workbounds_dist_start <- matrix(c(-Inf, Inf, 
+#                                   0, Inf, #set subsequent covariates to be positive so that they're additive
+#                                   0, Inf,
+#                                   0, Inf,
+#                                   0, Inf,
+#                                   -Inf, Inf,
+#                                   -Inf, Inf,
+#                                   -Inf, Inf,
+#                                   -Inf, Inf,
+#                                   -Inf, Inf),
+#                                 dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5"), 
+#                                                 c("lower", "upper")), 
+#                                 nrow = 10, ncol = 2, byrow=TRUE)
+
+# userbounds_dist_start <- matrix(c(-Inf, Inf, 
+#                                   -Inf, Inf,
+#                                   -Inf, Inf,
+#                                   -Inf, Inf,
+#                                   -Inf, Inf,
+#                                   -Inf, Inf,
+#                                   -Inf, Inf,
+#                                   -Inf, Inf,
+#                                   -Inf, Inf,
+#                                   -Inf, Inf),
+#                                 dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5"), 
+#                                                 c("lower", "upper")), 
+#                                 nrow = 10, ncol = 2, byrow=TRUE)
+
+# workBounds <- list(#step = workbounds_step,
+#                    y = workbounds_y,
+#                    julian_day = workbounds_julian_day,
+#                    dist_start = workbounds_dist_start
+#                    )
+
+userBounds <- list(step = userbounds_step)#,
+                   #y = userbounds_y,
+                   #julian_day = userbounds_julian_day,
+                   #dist_start = userbounds_dist_start
+                   
+```
+
 
 These serve as the starting parameters for the HMM to optimize.
 ```{r}
@@ -472,7 +700,7 @@ Par0_m1 <- list(step=c(0.485, 211.927, 0.485, 1, 0.285, #mean in km
                                 log(50), log(20), log(50), log(50), log(50)), #sd
                 residence_time = c(40.2, 7.39, 55.9, 70.6, 70.6, #mean
                                    21.6, 16.4, 32.0, 21.3, 21.3), #sd
-                dist_start = c(log(100), log(10000), log(10000), log(20000), log(20000),
+                dist_start = c(log(100), log(10000), log(10000), log(10000), log(10000),
                                log(100), log(10000), log(10000), log(10000), log(10000))) 
                 # lat_diff_abs = c(0.01, 1, 0.01,
                 #                  0.01, 1, 0.01,
@@ -486,6 +714,9 @@ fit_and_predict <- function(.x){
   m1 <- fitHMM(data=.x, nbStates=5, dist=dist, Par0 = Par0_m1,
                estAngleMean = list(angle=TRUE),
                fixPar=fixPar,
+               userBounds = userBounds,
+               #workBounds = workBounds,
+               DM = DM,
                #knownStates = knownStates,
                #formula = ~step_cov, #state 2 to 3. page 47 of vignette shows how to create the beta matrix
                stateNames = stateNames)
