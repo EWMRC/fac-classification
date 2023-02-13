@@ -450,14 +450,14 @@ knownStates <- amwo_hmm %>%
 
 Label states and create distributions for movements
 ```{r}
-stateNames <- c("pre", "migration", "stopover", "settling", "post")
-dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", log_mean_dist_7 = "norm", residence_time = "norm", dist_start = "bern", step_500 = "bern") #, lat_diff_abs = "gamma" , pts_10mi_log = "norm"
+stateNames <- c("pre", "migration", "stopover", "post")
+dist <- list(step = "gamma", angle = "wrpcauchy", y = "norm", julian_day = "norm", log_mean_dist_7 = "norm", residence_time = "norm", dist_start = "bern", step_500 = "bern") #, lat_diff_abs = "gamma" , pts_10mi_log = "norm"
 ```
 
 fix step length parameters and state transitions
 ```{r}
-fixPar <- list(beta=matrix(c(NA,	-1000,	-1000,	-1000,	-1000,	NA,	NA,	NA,	-1000,	NA,	-1000,	-1000,	-1000,	-1000,	-1000,	NA,	-1000,	-1000,	-1000,	NA), nrow = 1, byrow = TRUE),
-               step_500 = c(NA, 0.999999999, NA, NA, NA))
+fixPar <- list(beta = matrix(c(NA, -1000,	-1000, -1000, NA,	NA, -1000, NA, -1000, -1000, -1000, -1000), nrow = 1, byrow = TRUE),
+               step_500 = c(NA, 0.999999999, NA, NA))
 
 #, dist_start = c(NA, NA, 14.023368, 14.023368, 14.023368,
 #NA, NA, 1, 1, 1)
@@ -465,247 +465,25 @@ fixPar <- list(beta=matrix(c(NA,	-1000,	-1000,	-1000,	-1000,	NA,	NA,	NA,	-1000,	
 #Estimate the dist_start of pre-mig and mig, but hold the dist_start of stopover, settling, and post-mig to be identical) #once entered post-migration, can't leave
 ```
 
-Set design matricies for certain data streams
-```{r include=FALSE}
-# DM_step <- matrix(c(1,0,0,0,0,0,0,0,0,0,0,0,0,0,0, #identity
-#                     0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
-#                     0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,
-#                     0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,
-#                     0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,
-#                     0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,
-#                     0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,
-#                     0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,
-#                     0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,
-#                     0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,
-#                     0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,
-#                     0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,
-#                     0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,
-#                     0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,
-#                     0,0,0,0,0,0,0,0,0,0,0,0,0,0,1),
-#                   dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5", "z1", "z2", "z3", "z4", "z5"),
-#                                   c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5", "z1", "z2", "z3", "z4", "z5")),
-#                   nrow = 15, ncol = 15, byrow=TRUE)
-
-# DM_y <- matrix(c(1,0,0,0,0,0,0,0,0,0, #1 must always be at lower latitudes than 2 & 3, and 2&3 must always come before 4&5
-#                  1,1,1,0,0,0,0,0,0,0, #gonna switch this up for fall
-#                  1,1,1,0,0,0,0,0,0,0,
-#                  1,1,1,1,1,0,0,0,0,0,
-#                  1,1,1,1,1,0,0,0,0,0,
-#                  0,0,0,0,0,1,0,0,0,0,
-#                  0,0,0,0,0,0,1,0,0,0,
-#                  0,0,0,0,0,0,0,1,0,0,
-#                  0,0,0,0,0,0,0,0,1,0,
-#                  0,0,0,0,0,0,0,0,0,1),
-#                dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5"),
-#                                c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5")),
-#                nrow = 10, ncol = 10, byrow=TRUE)
-
-# DM_julian_day <- matrix(c(1,0,0,0,0,0,0,0,0,0, #1 must always come before 2 & 3, and 2&3 must always come before 4&5
-#                           1,1,1,0,0,0,0,0,0,0,
-#                           1,1,1,0,0,0,0,0,0,0,
-#                           1,1,1,1,1,0,0,0,0,0,
-#                           1,1,1,1,1,0,0,0,0,0,
-#                           0,0,0,0,0,1,0,0,0,0,
-#                           0,0,0,0,0,0,1,0,0,0,
-#                           0,0,0,0,0,0,0,1,0,0,
-#                           0,0,0,0,0,0,0,0,1,0,
-#                           0,0,0,0,0,0,0,0,0,1),
-#                         dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5"),
-#                                         c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5")),
-#                         nrow = 10, ncol = 10, byrow=TRUE)
-
-# DM_residence_time <- matrix(c(1,0,0,0,0,0,0,0,0,0, #identity
-#                               0,1,0,0,0,0,0,0,0,0,
-#                               0,0,1,0,0,0,0,0,0,0,
-#                               0,0,0,1,0,0,0,0,0,0,
-#                               0,0,0,0,1,0,0,0,0,0,
-#                               0,0,0,0,0,1,0,0,0,0,
-#                               0,0,0,0,0,0,1,0,0,0,
-#                               0,0,0,0,0,0,0,1,0,0,
-#                               0,0,0,0,0,0,0,0,1,0,
-#                               0,0,0,0,0,0,0,0,0,1),
-#                             dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5"),
-#                                             c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5")),
-#                             nrow = 10, ncol = 10, byrow=TRUE)
-
-# DM_dist_start <- matrix(c(1,0,0,0,0,0,0,0,0,0, #estimate the means for 2, 3, 4, and 5 together, and 1 separately
-#                           1,1,1,1,1,0,0,0,0,0,
-#                           1,1,1,1,1,0,0,0,0,0,
-#                           1,1,1,1,1,0,0,0,0,0,
-#                           1,1,1,1,1,0,0,0,0,0,
-#                           0,0,0,0,0,1,0,0,0,0,
-#                           0,0,0,0,0,0,1,0,0,0,
-#                           0,0,0,0,0,0,0,1,0,0,
-#                           0,0,0,0,0,0,0,0,1,1,
-#                           0,0,0,0,0,0,0,0,1,1),
-#                         dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5"),
-#                                         c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5")),
-#                         nrow = 10, ncol = 10, byrow=TRUE)
-# 
-# DM <- list(step = DM_step)#,
-#            #y = DM_y,
-#            #julian_day = DM_julian_day,
-#            #residence_time = DM_residence_time,
-#            #dist_start = DM_dist_start)
-
-```
-
-Set boundaries for the working parameters (e.g. the columns in the design matrix) and the user parameters (the rows)
-```{r include=FALSE}
-# workbounds_step <- matrix(c(-Inf, Inf, #if you want to ensure that some means are larger than others, this is what you edit
-#                             -Inf, Inf,
-#                             -Inf, Inf,
-#                             -Inf, Inf,
-#                             -Inf, Inf,
-#                             -Inf, Inf,
-#                             -Inf, Inf,
-#                             -Inf, Inf,
-#                             -Inf, Inf,
-#                             -Inf, Inf,
-#                             -Inf, Inf,
-#                             -Inf, Inf,
-#                             -Inf, Inf,
-#                             -Inf, Inf,
-#                             -Inf, Inf),
-#                           dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5", "z1", "z2", "z3", "z4", "z5"), 
-#                                           c("lower", "upper")), 
-# #                           nrow = 15, ncol = 2, byrow=TRUE)
-# 
-# userbounds_step <- matrix(c(0, 5, #slow steps should not average higher than 0.5 km
-#                             0, 200,
-#                             0, 5,
-#                             0, 5,
-#                             0, 5,
-#                             0, 5,
-#                             0, 200,
-#                             0, 5,
-#                             0, 5,
-#                             0, 5,
-#                             0, 1,
-#                             0, 1,
-#                             0, 1,
-#                             0, 1,
-#                             0, 1),
-#                           dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5", "z1", "z2", "z3", "z4", "z5"), 
-#                                           c("lower", "upper")), 
-#                           nrow = 15, ncol = 2, byrow=TRUE)
-
-# workbounds_y <- matrix(c(-Inf, Inf, 
-#                          0, Inf, #set subsequent covariates to be positive so that they're additive
-#                          0, Inf,
-#                          0, Inf,
-#                          0, Inf,
-#                          -Inf, Inf,
-#                          -Inf, Inf,
-#                          -Inf, Inf,
-#                          -Inf, Inf,
-#                          -Inf, Inf),
-#                        dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5"), 
-#                                        c("lower", "upper")), 
-#                        nrow = 10, ncol = 2, byrow=TRUE)
-
-# userbounds_y <- matrix(c(-Inf, Inf, 
-#                          -Inf, Inf,
-#                          -Inf, Inf,
-#                          -Inf, Inf,
-#                          -Inf, Inf,
-#                          -Inf, Inf,
-#                          -Inf, Inf,
-#                          -Inf, Inf,
-#                          -Inf, Inf,
-#                          -Inf, Inf),
-#                        dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5"), 
-#                                        c("lower", "upper")), 
-#                        nrow = 10, ncol = 2, byrow=TRUE)
-
-
-# workbounds_julian_day <- matrix(c(-Inf, Inf, 
-#                                   0, Inf, #set subsequent covariates to be positive so that they're additive
-#                                   0, Inf,
-#                                   0, Inf,
-#                                   0, Inf,
-#                                   -Inf, Inf,
-#                                   -Inf, Inf,
-#                                   -Inf, Inf,
-#                                   -Inf, Inf,
-#                                   -Inf, Inf),
-#                                 dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5"), 
-#                                                 c("lower", "upper")), 
-#                                 nrow = 10, ncol = 2, byrow=TRUE)
-
-# userbounds_julian_day <- matrix(c(-Inf, Inf, 
-#                                   -Inf, Inf,
-#                                   -Inf, Inf,
-#                                   -Inf, Inf,
-#                                   -Inf, Inf,
-#                                   -Inf, Inf,
-#                                   -Inf, Inf,
-#                                   -Inf, Inf,
-#                                   -Inf, Inf,
-#                                   -Inf, Inf),
-#                                 dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5"), 
-#                                                 c("lower", "upper")), 
-#                                 nrow = 10, ncol = 2, byrow=TRUE)
-
-# workbounds_dist_start <- matrix(c(-Inf, Inf, 
-#                                   0, Inf, #set subsequent covariates to be positive so that they're additive
-#                                   0, Inf,
-#                                   0, Inf,
-#                                   0, Inf,
-#                                   -Inf, Inf,
-#                                   -Inf, Inf,
-#                                   -Inf, Inf,
-#                                   -Inf, Inf,
-#                                   -Inf, Inf),
-#                                 dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5"), 
-#                                                 c("lower", "upper")), 
-#                                 nrow = 10, ncol = 2, byrow=TRUE)
-
-# userbounds_dist_start <- matrix(c(-Inf, Inf, 
-#                                   -Inf, Inf,
-#                                   -Inf, Inf,
-#                                   -Inf, Inf,
-#                                   -Inf, Inf,
-#                                   -Inf, Inf,
-#                                   -Inf, Inf,
-#                                   -Inf, Inf,
-#                                   -Inf, Inf,
-#                                   -Inf, Inf),
-#                                 dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5"), 
-#                                                 c("lower", "upper")), 
-#                                 nrow = 10, ncol = 2, byrow=TRUE)
-
-# workBounds <- list(#step = workbounds_step,
-#                    y = workbounds_y,
-#                    julian_day = workbounds_julian_day,
-#                    dist_start = workbounds_dist_start
-#                    )
-# 
-# userBounds <- list(step = userbounds_step)#,
-#                    #y = userbounds_y,
-#                    #julian_day = userbounds_julian_day,
-#                    #dist_start = userbounds_dist_start
-#                    
-```
 
 
 These serve as the starting parameters for the HMM to optimize.
 ```{r}
-Par0_m1 <- list(step=c(0.485, 211.927, 0.485, 1, 0.285, #mean in km
-                       0.7327, 289.599, 0.7327, 0.7327, 0.7327, # SD in km
-                       0.026, 0.036, 0.026, 0.026, 0.026), #zeromass ie how many zeroes expected in the distribution
-                angle=c(0, 0, 0, 0, 0, #mean
-                        0.5, 0.5, 0.5, 0.5, 0.5), #concentration
-                y = c(34.32931, 36.79636, 36.79636,  41.58981, 41.58981,
-                      2.398324, 4.035114, 4.035114, 4.433215, 4.433215),
-                julian_day = c(39.19987, 79.72239, 79.72239, 136.54740, 136.54740, #mean
-                        18.71277, 20.65775, 20.65775, 22.94372, 22.94372),
-                log_mean_dist_7 = c(log(100), log(5000), log(100), log(100), log(100), #mean
-                                log(50), log(20), log(50), log(50), log(50)), #sd
-                residence_time = c(40.2, 7.39, 55.9, 70.6, 70.6, #mean
-                                   21.6, 16.4, 32.0, 21.3, 21.3), #sd
-                dist_start = c(0.1, 0.9, 0.9, 0.9, 0.9),
-                step_500 = c(0.1, 0.9, 0.1, 0.1, 0.1)) 
+Par0_m1 <- list(step=c(0.485, 211.927, 0.485, 0.285, #mean in km
+                       0.7327, 289.599, 0.7327, 0.7327, # SD in km
+                       0.026, 0.036, 0.026, 0.026), #zeromass ie how many zeroes expected in the distribution
+                angle=c(0, 0, 0, 0, #mean
+                        0.5, 0.5, 0.5, 0.5), #concentration
+                y = c(34.32931, 36.79636, 36.79636,  41.58981,
+                      2.398324, 4.035114, 4.035114, 4.433215),
+                julian_day = c(39.19987, 79.72239, 79.72239, 136.54740, #mean
+                        18.71277, 20.65775, 20.65775, 22.94372),
+                log_mean_dist_7 = c(log(100), log(5000), log(100), log(100), #mean
+                                log(50), log(20), log(50), log(50)), #sd
+                residence_time = c(40.2, 7.39, 55.9, 70.6, #mean
+                                   21.6, 16.4, 32.0, 21.3), #sd
+                dist_start = c(0.1, 0.9, 0.9, 0.9),
+                step_500 = c(0.1, 0.9, 0.1, 0.1)) 
                 # lat_diff_abs = c(0.01, 1, 0.01,
                 #                  0.01, 1, 0.01,
                 #                  0.026, 0.036, 0.026)) 
@@ -715,7 +493,7 @@ Create a function that fits the model, predicts states for each step (predicted 
 ```{r}
 fit_and_predict <- function(.x){
   set.seed(8)
-  m1 <- fitHMM(data=.x, nbStates=5, dist=dist, Par0 = Par0_m1,
+  m1 <- fitHMM(data=.x, nbStates=4, dist=dist, Par0 = Par0_m1,
                estAngleMean = list(angle=TRUE),
                fixPar=fixPar,
                #userBounds = userBounds,
@@ -766,159 +544,16 @@ print(start_time)
 print(end_time)
 ```
 
-Ruleset: If the total step distance between the start of 4 and the most recent 3 is less than 2 km, then everything from the top of the most recent 3 down is 4
-
-# Phasing out for the 5 state
-
-```{r}
-# amwo_hmm_final <- amwo_hmm_final %>% 
-#   group_by(ID) %>% 
-#   group_modify(function(iter_df, ...){
-#     iter_df <- iter_df %>% 
-#       mutate(., row_num = 1:nrow(.))
-#     
-#     if(any(iter_df$point_state == 3) & any(iter_df$point_state == 4)){
-#       first_4_row <- iter_df %>% 
-#         filter(point_state == 4) %>% 
-#         pull(row_num) %>% 
-#         min()
-#       
-#       last_3_row <- iter_df %>% 
-#         filter(point_state == 3) %>% 
-#         pull(row_num) %>% 
-#         max()
-#       
-#       total_dist_moved <- iter_df[last_3_row:(first_4_row-1), "step"] %>% 
-#         sum()
-#       
-#       if(total_dist_moved < 2){
-#         start_of_last_stopover <- iter_df[1:(last_3_row-1),] %>% 
-#           filter(point_state == 2) %>%
-#           pull(row_num) %>% 
-#           max(.) + 1
-#         
-#         iter_df[start_of_last_stopover:nrow(iter_df), "point_state"] <- 4
-#       }
-#     }
-#     return(iter_df)
-#   }) %>% 
-#   ungroup() %>% 
-#   mutate(row_num = NULL)
-```
-
-
-Ruleset: Pre-migration is all points up until the bird departs > 16.1km from its initial location for the final time
-```{r}
-# amwo_hmm_final <- map(unique(amwo_hmm_final$ID), function(ind){
-#   first_loc <- amwo_hmm_final %>%
-#     filter(ID == ind) %>%
-#     head(n = 1) %>%
-#     st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE)
-# 
-#   amwo_ind <- amwo_hmm_final %>%
-#     filter(ID == ind) %>%
-#     st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE) %>%
-#     mutate(condition_distance_km_pre = as.numeric(st_distance(geometry, first_loc))/1000) %>%
-#     st_drop_geometry() %>%
-#     mutate(within_dist_pre = condition_distance_km_pre < 16.1) #10
-#   
-#   amwo_ind <- amwo_ind %>%
-#     mutate(row_num = 1:nrow(amwo_ind))
-#   
-#   highest_premig_row <- amwo_ind %>%
-#     filter(within_dist_pre == 1) %>%
-#     pull(row_num) %>%
-#     max()
-#   
-#   if(highest_premig_row < -1000){
-#     cat(crayon::magenta("no points within 16.1 kilometers of the centroid"))
-#   }
-#   
-#   amwo_ind <- amwo_ind %>% 
-#     mutate(point_state = if_else(row_num <= highest_premig_row, 1 , point_state)) %>% #point_state_premig_corrected
-#     mutate(condition_distance_km_pre = NULL,
-#            within_dist_pre = NULL,
-#            row_num = NULL)
-# }) %>%
-#   exec("bind_rows", .)
-
-```
-
-Ruleset: Post-migration is all points up until the bird comes within 8km of its final location for the first time, assuming that its final location is in state 4
-```{r}
-# amwo_hmm_final <- map(unique(amwo_hmm_final$ID), function(ind){
-#   last_loc <- amwo_hmm_final %>%
-#     filter(ID == ind) %>%
-#     tail(n = 1) %>%
-#     st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE)
-#   
-#   amwo_ind <- amwo_hmm_final %>%
-#     filter(ID == ind) %>%
-#     st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE) %>%
-#     mutate(condition_distance_km_post = as.numeric(st_distance(geometry, last_loc))/1000) %>%
-#     st_drop_geometry() %>%
-#     mutate(within_dist_post = condition_distance_km_post < 8) #16.1
-#   
-#   amwo_ind <- amwo_ind %>%
-#     mutate(row_num = 1:nrow(amwo_ind))
-#   
-#   lowest_postmig_row <- amwo_ind %>%
-#     filter(within_dist_post == 1) %>%
-#     pull(row_num) %>%
-#     min()
-#   
-#   if(lowest_postmig_row< -1000){
-#     cat(crayon::magenta("no points within 8 kilometers of the last point"))
-#   }
-#   
-#   if(last_loc$point_state == 4){
-#     amwo_ind <- amwo_ind %>% 
-#       mutate(point_state = if_else(row_num >= lowest_postmig_row, 4, point_state)) %>% 
-#       mutate(within_dist_post = NULL, 
-#         condition_distance_km_post = NULL,
-#         row_num = NULL)
-#   } else {
-#     amwo_ind <- amwo_ind %>% 
-#       mutate(within_dist_post = NULL, 
-#         condition_distance_km_post = NULL,
-#         row_num = NULL)
-#   }
-# 
-#   return(amwo_ind)
-# }) %>%
-#   exec("bind_rows", .)
-```
-
 Add back in the movement from the summer transient bird (VA-2020-52-2020), manually classified as post-mig
 ```{r}
 summer_transient_movement %>%
-  mutate(step_state = c(rep(5,19), NA), point_state = 5) ->
+  mutate(step_state = c(rep(4,19), NA), point_state = 4) ->
   summer_transient_movement
 
 amwo_hmm_final %>%
   rbind(summer_transient_movement) ->
   amwo_hmm_final
 ```
-
-Manually fix a bug: if a point is in pre-mig, all of the prior points must also have been pre-mig
-```{r}
-# amwo_hmm_final <- amwo_hmm_final %>% 
-#   group_by(ID) %>% 
-#   group_modify(function(x, ...){
-#     most_recent_premig <- x %>% 
-#       filter(point_state == 1) %>% 
-#       pull(date) %>% 
-#       ymd() %>% 
-#       max()
-#     
-#     x %>% 
-#       mutate(point_state = if_else(ymd(date) < most_recent_premig, 1, point_state)) %>% 
-#       return()
-#   }) %>% 
-#   ungroup()
-```
-
-
 
 Correct step state based on the new point states
 If:
