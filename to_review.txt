@@ -6,8 +6,3 @@ QUE-2019-13-2020 Early termination (Iowa) is almost certainly in error here- too
 SC-2019-06-2019 Really early termination (4/2)
 VA-2020-52-2020 needs manual fixing
 VT-2020-07-2021 post-mig 4/2 NC
-
-
-
-
-
