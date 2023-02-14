@@ -410,6 +410,9 @@ amwo_hmm$breeding_abundance <- amwo_hmm %>%
   terra::extract(x = ebirdst_breeding, y = .) %>% 
   mutate(breeding = if_else(is.na(breeding), 0, breeding)) %>% 
   pull(breeding) 
+
+amwo_hmm <- amwo_hmm %>% #simplify from abundance to breeding range
+  mutate(breeding_abundance = if_else(breeding_abundance > 0, 1, 0)) 
 ```
 
 
@@ -459,12 +462,38 @@ knownStates <- amwo_hmm %>%
   pull(known)
 ```
 
+Set a design matrix for breeding abundance
+```{r}
+# DM_ebirdst <- matrix(c(1,1,0,0,0,0,0,0,0,0,0,0,0,0,0, #estimate 1 and 2 together, and 3, 4, 5 separately
+#                        1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
+#                        0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,
+#                        0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,
+#                        0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,
+#                        0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,
+#                        0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,
+#                        0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,
+#                        0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,
+#                        0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,
+#                        0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,
+#                        0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,
+#                        0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,
+#                        0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,
+#                        0,0,0,0,0,0,0,0,0,0,0,0,0,0,1),
+#                      dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5", "z1", "z2", "z3", "z4", "z5"),
+#                                      c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5", "z1", "z2", "z3", "z4", "z5")),
+#                      nrow = 15, ncol = 15, byrow=TRUE)
+# 
+# DM <- list(breeding_abundance = DM_ebirdst)#,
+
+```
+
+
 ##### trying 5-state model
 
 Label states and create distributions for movements
 ```{r}
 stateNames <- c("pre", "migration", "stopover", "settling", "post")
-dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", log_mean_dist_7 = "norm", residence_time = "norm", dist_start = "bern", step_500 = "bern", breeding_abundance = "norm") #, lat_diff_abs = "gamma" , pts_10mi_log = "norm"
+dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", log_mean_dist_7 = "norm", residence_time = "norm", dist_start = "bern", step_500 = "bern", breeding_abundance = "bern") #, lat_diff_abs = "gamma" , pts_10mi_log = "norm"
 ```
 
 fix step length parameters and state transitions
@@ -495,8 +524,7 @@ Par0_m1 <- list(step=c(0.485, 211.927, 0.485, 1, 0.285, #mean in km
                                    21.6, 16.4, 32.0, 21.3, 21.3), #sd
                 dist_start = c(0.1, 0.9, 0.9, 0.9, 0.9),
                 step_500 = c(0.1, 0.9, 0.1, 0.1, 0.1),
-                breeding_abundance = c(0.00786, 0.0489, 0.0492, 0.0901, 0.0729,
-                                       0.0421, 0.0856, 0.0792, 0.0939, 0.0859)) 
+                breeding_abundance = c(0.1, 0.3, 0.3, 0.8, 0.8))
                 # lat_diff_abs = c(0.01, 1, 0.01,
                 #                  0.01, 1, 0.01,
                 #                  0.026, 0.036, 0.026)) 
