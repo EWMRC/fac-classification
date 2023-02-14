@@ -422,7 +422,7 @@ amwo_hmm <- amwo_hmm %>%
   as.data.frame() %>%
   prepData(type = "LL") %>% #, covNames = c("julian_day", "log_mean_dist_7")
   mutate(step = round(step, digits = 4)) %>%   #round down to a tenth of a meter, which is higher than our GPS precision
-  mutate(step_500 = if_else(step < 0.5, 0, 1)) %>%
+  mutate(step_500 = if_else(step < 5, 0, 1)) %>% #larger than 5km
   mutate(step_500 = if_else(!is.na(step_500), step_500, 0))
 ```
 
