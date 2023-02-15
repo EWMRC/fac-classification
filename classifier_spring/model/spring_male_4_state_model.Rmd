@@ -596,6 +596,80 @@ amwo_hmm_final %>%
   amwo_hmm_final
 ```
 
+Ruleset: If the total step distance between the start of 4 and the most recent 3 is less than 5 km, then everything from the top of the most recent 3 down is 4
+```{r}
+amwo_hmm_final <- amwo_hmm_final %>%
+  group_by(ID) %>%
+  group_modify(function(iter_df, ...){
+    iter_df <- iter_df %>%
+      mutate(., row_num = 1:nrow(.))
+
+    if(any(iter_df$point_state == 3) & any(iter_df$point_state == 4 |iter_df$point_state == 5)){
+      first_4_row <- iter_df %>%
+        filter(point_state == 4 | point_state == 5) %>%
+        pull(row_num) %>%
+        min()
+
+      last_3_row <- iter_df %>%
+        filter(point_state == 3) %>%
+        pull(row_num) %>%
+        max()
+
+      total_dist_moved <- iter_df[last_3_row:(first_4_row-1), "step"] %>%
+        sum()
+
+      if(total_dist_moved < 5){
+        start_of_last_stopover <- iter_df[1:(last_3_row-1),] %>%
+          filter(point_state == 2) %>%
+          pull(row_num) %>%
+          max(.) + 1
+
+        iter_df[start_of_last_stopover:nrow(iter_df), "point_state"] <- 4
+      }
+    }
+    return(iter_df)
+  }) %>%
+  ungroup() %>%
+  mutate(row_num = NULL)
+```
+
+Ruleset: If the total step distance between the end of 1 and the 1st 3 is less than 5 km, then everything until the last 3 in that sequence is 1
+```{r}
+amwo_hmm_final <- amwo_hmm_final %>%
+  group_by(ID) %>%
+  group_modify(function(iter_df, id){
+    iter_df <- iter_df %>%
+      mutate(., row_num = 1:nrow(.))
+
+    if(any(iter_df$point_state == 3) & any(iter_df$point_state == 2)){
+      first_3_row <- iter_df %>%
+        filter(point_state == 3) %>%
+        pull(row_num) %>%
+        min()
+
+      last_1_row <- iter_df %>%
+        filter(point_state == 1) %>%
+        pull(row_num) %>%
+        max()
+
+      total_dist_moved <- iter_df[last_1_row:(first_3_row-1), "step"] %>%
+        sum()
+
+      if(total_dist_moved < 5){
+        end_of_first_stopover <- iter_df[first_3_row:nrow(iter_df),] %>%
+          filter(point_state == 2) %>%
+          pull(row_num) %>%
+          min(.) - 1
+
+        iter_df[1:end_of_first_stopover, "point_state"] <- 1
+      }
+    }
+    return(iter_df)
+  }) %>%
+  ungroup() %>%
+  mutate(row_num = NULL)
+```
+
 Correct step state based on the new point states
 If:
 - This point state is migratory
