@@ -70,7 +70,7 @@ plotly::ggplotly(combined_plot)
 
 Clunky, but basically extract individuals 1 at a time and look at them. Liam note: Currently only working with chunk output in console to my knowledge
 ```{r}
-leaflet.male<- function(x){
+leaflet.male <- function(x){
   
   # color pallate for markers
     getColor <- function(y) {
@@ -124,7 +124,7 @@ leaflet.male<- function(x){
 
 ```{r}
 amwo_hmm_final %>%
-  filter(ID == "VA-2019-12-2019") %>%
+  filter(ID == "VA-2019-36-2020") %>%
   #View()
   leaflet.male(.)
 # 

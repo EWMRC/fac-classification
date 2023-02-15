@@ -3,15 +3,8 @@ QUE-2019-13-2020 settle missouri
 
 AL-2022-18-2022 skips from 1 to 3
 
---- 2/15/23 spring males (*working*)
+--- 2/15/23 *spring males*
 FL-2021-01-2021 manually demarkate
-
-FL-2022-08-2022 3 to 5 transition- fix with a known state of 4 on the first day of the stopover. Or using the post-code from before.
-NC-2022-32-2022 same deal. Need to reinstitute the old code.
-SC-2021-19-2021 same deal.
-SC-2021-23-2021 same deal.
-VA-2019-39-2020 same deal.
-VA-2020-57-2020 same deal.
 
 VA-2019-12-2019 1 to 3 transition- fix with a similar version of the above code.
 
@@ -20,8 +13,17 @@ RI-2019-24-2020 same deal
 
 General issue: current model forces the last point of migration into a stopover state. Fix to stay in the preceding state.
 
-spring females:
-AL-2022-15-2022 ranging location on 2/28/23
-LA-2022-14-2022 stays in 1 too long
-ME-2018-13-2019 same. Seems to be an issue with not enough time spent in state 1.
+*spring females*:
+FL-2021-04-2021 state 4 or 5 has locations > 5km
+VA-2021-97-2022 same
+SC-2019-09-2019 same
+VA-2020-79-2021 same
+NC-2020-16-2020 same
 
+NJ-2018-08-2019 stays in 1 far too long (still an issue)
+VA-2019-22-2019 same
+NY-2018-07-2019 same
+VA-2019-22-2019 same
+
+VA-2021-91-2021 crw is pushing things into 1 for too long
+VA-2021-92-2021 same
