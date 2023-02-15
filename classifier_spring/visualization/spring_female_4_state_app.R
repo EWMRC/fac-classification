@@ -56,6 +56,8 @@ server <- function(input, output) {
         "orange"
       } else if(states == 3){
         "pink"
+      } else if(states == 4){
+        "blue"
       } else {
         "red"
       } })

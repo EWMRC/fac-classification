@@ -104,12 +104,14 @@ amwo_spring_males <- amwo_spring_males %>%
 Remove individuals with fewer than 3 locations, recording which ones were removed
 ```{r}
 individuals_removed_for_too_few_locations <- amwo_spring_males %>%
+  distinct(ID, date, .keep_all = TRUE) %>% 
   group_by(ID) %>%
   tally() %>%
   filter(n < 3) %>%
   pull(ID)
 
 birds_to_keep <- amwo_spring_males %>%
+  distinct(ID, date, .keep_all = TRUE) %>% 
   group_by(ID) %>%
   tally() %>%
   filter(n > 2) %>%
@@ -149,8 +151,8 @@ individuals_died_too_early <- amwo_spring_males %>%
   pull(ID)
 ```
 
-
 Crawl code goes here
+First parameter is sigma, second is beta (autocorrelation) rnorm(200,-4,2)
 ```{r include=FALSE}
 # Group tracks by id (for crawl model because it likes tidyverse structure)
 nested_birds <- group_by(amwo_spring_males, ID) %>% 
@@ -190,16 +192,16 @@ unnested_birds <- dplyr::select(nested_birds, ID, pred) %>% unnest(cols=pred)
 ```{r}
 # amwo_hmm <- amwo_spring_males %>%
 #   rename(x = lon, y = lat) 
-
 amwo_hmm <- unnested_birds %>%
   rename(x = mu.x, y = mu.y) %>% 
   ungroup()
 
 #remove duplicates by date to deal with predicted locations on the same day as the observed location
 amwo_hmm <- amwo_hmm %>% 
-  mutate(date = strftime(time, format="%Y-%m-%d")) %>% 
+  mutate(date = strftime(time, format="%Y-%m-%d"),
+         locType = factor(locType, levels = c("o", "p"), ordered = TRUE)) %>% 
   arrange(ID, date, locType) %>% #keep observed locations above predicted locations
-  distinct(date, ID, .keep_all = TRUE) %>% 
+  distinct(ID, date, .keep_all = TRUE) %>% 
   mutate(julian_day = yday(ymd(date))) #Redo the julian day calculation
 
 amwo_hmm$lat_diff <- map(1:nrow(amwo_hmm),  function(i){
@@ -360,12 +362,64 @@ amwo_hmm$residence_time <- amwo_hmm %>%
 plan(sequential)
 ```
 
+Determining the log distance from the first point to the current point
+```{r}
+plan(multisession)
+
+nested_birds_3 <- amwo_hmm %>%
+  group_by(ID) %>%
+  nest()
+
+nested_birds_3$data <- nested_birds_3 %>% 
+  pull(data) %>% 
+  future_map(.f = function(int){
+    
+    int <- int %>% 
+      st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE)
+    
+    dist_vect <- st_distance(x = int[1,], y = int, by_element = FALSE) %>% #results in meters
+      as.numeric() #NOTE: NEEDS sf 1.0-9 to work correctly
+    
+    # dist_vect <- log(dist_vect + 1.1)
+    dist_vect <- if_else(dist_vect < 16100, 0, 1)
+    
+    int <- int %>% 
+      st_drop_geometry() %>% 
+      mutate(dist_start = dist_vect)
+    
+    return(int)
+  })
+
+amwo_hmm <- nested_birds_3 %>% 
+  unnest(cols = c(data))
+
+plan(sequential)
+```
+
+Extract breeding season abundance for each point
+```{r}
+ebirdst_breeding <- terra::rast(here("ebirdst_abundance", "amewoo_abundance_seasonal_breeding_max_2021.tif"))
+
+amwo_hmm$breeding_abundance <- amwo_hmm %>% 
+  st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE) %>%
+  st_transform(st_crs(ebirdst_breeding)) %>% 
+  terra::vect() %>% 
+  terra::extract(x = ebirdst_breeding, y = .) %>% 
+  mutate(breeding = if_else(is.na(breeding), 0, breeding)) %>% 
+  pull(breeding) 
+
+amwo_hmm <- amwo_hmm %>% #simplify from abundance to breeding range
+  mutate(breeding_abundance = if_else(breeding_abundance > 0, 1, 0)) 
+```
+
 ```{r}
 amwo_hmm <- amwo_hmm %>%
   mutate(log_mean_dist_7 = log(mean_dist_7 + 0.1)) %>% #Adding a small # to deal with 0 distances
-  as.data.frame() %>% 
+  as.data.frame() %>%
   prepData(type = "LL") %>% #, covNames = c("julian_day", "log_mean_dist_7")
-  mutate(step = round(step, digits = 4))
+  mutate(step = round(step, digits = 4)) %>%   #round down to a tenth of a meter, which is higher than our GPS precision
+  mutate(step_500 = if_else(step < 5, 0, 1)) %>% #larger than 5km
+  mutate(step_500 = if_else(!is.na(step_500), step_500, 0))
 ```
 
 #remove early spring movements which throw off the hmm for NJ-2018-08-2019, NJ-2018-13-2019, and NJ-2018-15-2019. Add it back again at the end as a manually-delineated residential movement at the end (or not, as this code only cares about delineating state-shift dates)
@@ -400,7 +454,6 @@ amwo_hmm <- amwo_hmm[(amwo_hmm$ID %in% amwo_hmm$ID [amwo_hmm$min.step == 1]) , ]
 amwo_hmm$min.step <- NULL
 ```
 
-
 Assign a starting state for each individual
 ```{r}
 ## rank observations (requires correct sorting), ifelse to covert first observations to state 1 and all others NA
@@ -411,55 +464,78 @@ knownStates <- amwo_hmm %>%
   pull(known)
 ```
 
-##### 4-state model
+##### trying 5-state model
 
 Label states and create distributions for movements
 ```{r}
-stateNames <- c("pre","migration", "stopover","post")
-dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", log_mean_dist_7 = "norm", residence_time = "norm")# , pts_10mi_log = "norm", lat_diff_abs = "gamma"
+stateNames <- c("pre", "migration", "stopover", "settling", "post")
+dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", log_mean_dist_7 = "norm", residence_time = "norm", dist_start = "bern", step_500 = "bern", breeding_abundance = "bern") #, lat_diff_abs = "gamma" , pts_10mi_log = "norm"
 ```
 
 fix step length parameters and state transitions
 ```{r}
-fixPar <- list(beta=matrix(c(NA, -1000, -1000, # pre-migration to transitions, can't go pre- to post
-                     -1000, NA, NA,  #once entered migration can't go back to pre
-                     -1000, NA, -1000, #Once entered stopover, can only go back to migration
-                     -1000, -1000, -1000), nrow = 1, byrow = TRUE)) #once entered post-migration, can't leave
+fixPar <- list(beta=matrix(c(NA,	-10000,	-10000,	-10000,	
+                             -10000,	NA,	NA,	NA,	
+                             -10000,	NA,	-10000, -10000, 
+                             -10000, -10000, -10000, NA, 
+                             -10000,	-10000,	-10000,	NA), nrow = 1, byrow = TRUE),
+               step_500 = c(NA, 0.999999999, NA, NA, NA)) 
 ```
 
 These serve as the starting parameters for the HMM to optimize.
 ```{r}
-#Informed priors
-Par0_m1 <- list(step=c(0.36553000, 57.96369562, 0.36553000, 0.20293436, #mean in km
-                       0.48229603, 140.73763264, 0.48229603, 0.26933843, # SD in km
-                       0.01593086, 0.02918066, 0.01593086, 0.08298248), #zeromass ie how many zeroes expected in the distribution
-                angle=c(-3.1360643, 3.0924885, 3.1388950, -3.1388950, #mean
-                        0.5024427, 0.2242694, 0.4235424, 0.4235424), #concentration
-                y = c(34.32931, 36.79636, 36.79636, 41.58981,
-                      2.398324,4.035114, 4.035114, 4.433215),
-                julian_day = c(20, 50, 80, 140, #mean 100
-                        10, 10, 30 ,30), 
-                log_mean_dist_7 = c(log(100), log(5000), log(100), log(100), #mean
-                                log(50), log(20), log(50), log(50)),
-                residence_time = c(40.2, 7.39, 55.9, 70.6, #mean
-                                   21.6, 16.4, 32.0, 21.3)) #sd
+Par0_m1 <- list(step=c(0.293641627, 79.029506936, 0.157361645, 0.250739740, 0.086056474, #mean in km
+                       0.455493251, 95.302307236, 0.211421668, 0.384581337, 0.128558113, # SD in km
+                       0.005159307, 0.006024863, 0.006664064, 0.005636388, 0.006973284), #zeromass ie how many zeroes expected in the distribution
+                angle=c(0.001353412, 0.0006979447, 0.01168102, 0.0005445842, 0, #mean
+                        0.917280917, 0.9754146876, 0.59501513, 0.7614896594, 0.99999), #concentration
+                y = c(34.83030, 40.173268, 40.426752,  44.689995, 43.678101,
+                      3.11158, 4.497807, 3.668652, 2.267504, 4.109156),
+                julian_day = c(40.14297, 79.36682, 80.54528, 135.69949, 136.7710, #mean
+                        19.89502, 27.50774, 23.92289, 25.77254, 30.0146),
+                log_mean_dist_7 = c(4.126427, 9.965601, 4.959182, 3.797415, 3.581605, #mean
+                                1.679125, 2.403601, 2.736004, 1.536724, 1.806670), #sd
+                residence_time = c(39.91826, 6.848351, 53.64592, 71.41284, 70.66562, #mean
+                                   20.41741, 13.174650, 35.49282, 21.65228, 25.53273), #sd
+                dist_start = c(0.00530222, 0.9276614, 0.9750638, 0.9955032, 0.9882519), #prob
+                step_500 = c(0.1336989, 0.99999, 0.06175472, 0.1351401, 0.04079765), #prob
+                breeding_abundance = c(0.1183127, 0.3973247, 0.442492, 0.7108834, 0.5959887)) #prob
 ```
 
 Create a function that fits the model, predicts states for each step (predicted and observed) and input in the dataset. Note: the listed x y is the starting location of the step. Then use this to determine what the bird's state was at any given point
 ```{r}
 fit_and_predict <- function(.x){
   set.seed(8)
-  m1 <- fitHMM(data=.x, nbStates=4, dist=dist, Par0 = Par0_m1,
+  m1 <- fitHMM(data=.x, nbStates=5, dist=dist, Par0 = Par0_m1,
                estAngleMean = list(angle=TRUE),
                fixPar=fixPar,
-               #knownStates = knownStates,
-               #formula = ~julian_day + log_mean_dist_7, #state 2 to 3. page 47 of vignette shows how to create the beta matrix
+               #userBounds = userBounds,
+               #workBounds = workBounds,
+               #DM = DM,
+               knownStates = knownStates,
+               #formula = ~step_cov, #state 2 to 3. page 47 of vignette shows how to create the beta matrix
                stateNames = stateNames)
   
   .x$step_state <- viterbi(m1)
   
   #step state shows the bird's behavior between points, point state shows the birds behavior at points
+  .x$point_state <- map(1:nrow(.x),  function(i){
+    if(i == 1){
+      return(1) #for the first row, return 1
+    } else if(.x[i,"ID"] != .x[i-1,"ID"]){ #is this the first point for this ID? Return the starting state
+      return(1)
+    } else if(.x[i,"step_state"] == .x[i-1,"step_state"]){ #is the current step state the same as the last step state? Return the current step state
+      return(.x[i,"step_state"])
+    } else if(.x[i,"step_state"] == 2 & .x[i-1,"step_state"] == 1){ #is the current step state mig and the previous step pre-mig? Return pre-mig
+      return(1)
+    } else if(.x[i,"step_state"] == 2 & .x[i-1,"step_state"] == 3){#is the current step state mig and the previous step stopover? Return stopover
+      return(3)
+    } else{ #in all other circumstances, return the current step state
+      return(.x[i,"step_state"])
+    }
 
+  }) %>% unlist()
+  
   return(list(model = m1, results = .x))
 }
 ```
@@ -467,16 +543,94 @@ fit_and_predict <- function(.x){
 
 I'll run this once initially, and this can be rerun after ruleset changes if necessary
 ```{r}
+start_time <- Sys.time()
 results_initial <- fit_and_predict(amwo_hmm) #results_initial includes both the created model and the df with predicted states 
-
+end_time <- Sys.time()
 #plot(results_initial$model, plotCI = TRUE) #inspect estimated parameters for each state and state classifications for each individual
 #plotPR(results_initial$model) # lot observation index, theoretical quantiles, and lag
 
 amwo_hmm_final <- results_initial$results
 
 results_initial$model #probabilities of transition
+
+print(start_time)
+print(end_time)
 ```
 
+
+Ruleset: If the total step distance between the start of 4 and the most recent 3 is less than 5 km, then everything from the top of the most recent 3 down is 4
+```{r}
+amwo_hmm_final <- amwo_hmm_final %>%
+  group_by(ID) %>%
+  group_modify(function(iter_df, ...){
+    iter_df <- iter_df %>%
+      mutate(., row_num = 1:nrow(.))
+
+    if(any(iter_df$point_state == 3) & any(iter_df$point_state == 4 |iter_df$point_state == 5)){
+      first_4_row <- iter_df %>%
+        filter(point_state == 4 | point_state == 5) %>%
+        pull(row_num) %>%
+        min()
+
+      last_3_row <- iter_df %>%
+        filter(point_state == 3) %>%
+        pull(row_num) %>%
+        max()
+
+      total_dist_moved <- iter_df[last_3_row:(first_4_row-1), "step"] %>%
+        sum()
+
+      if(total_dist_moved < 5){
+        start_of_last_stopover <- iter_df[1:(last_3_row-1),] %>%
+          filter(point_state == 2) %>%
+          pull(row_num) %>%
+          max(.) + 1
+
+        iter_df[start_of_last_stopover:nrow(iter_df), "point_state"] <- 4
+      }
+    }
+    return(iter_df)
+  }) %>%
+  ungroup() %>%
+  mutate(row_num = NULL)
+```
+
+Ruleset: If the total step distance between the end of 1 and the 1st 3 is less than 5 km, then everything until the last 3 in that sequence is 1
+```{r}
+amwo_hmm_final <- amwo_hmm_final %>%
+  group_by(ID) %>%
+  group_modify(function(iter_df, id){
+    iter_df <- iter_df %>%
+      mutate(., row_num = 1:nrow(.))
+
+    if(any(iter_df$point_state == 3) & any(iter_df$point_state == 2)){
+      first_3_row <- iter_df %>%
+        filter(point_state == 3) %>%
+        pull(row_num) %>%
+        min()
+
+      last_1_row <- iter_df %>%
+        filter(point_state == 1) %>%
+        pull(row_num) %>%
+        max()
+
+      total_dist_moved <- iter_df[last_1_row:(first_3_row-1), "step"] %>%
+        sum()
+
+      if(total_dist_moved < 5){
+        end_of_first_stopover <- iter_df[first_3_row:nrow(iter_df),] %>%
+          filter(point_state == 2) %>%
+          pull(row_num) %>%
+          min(.) - 1
+
+        iter_df[1:end_of_first_stopover, "point_state"] <- 1
+      }
+    }
+    return(iter_df)
+  }) %>%
+  ungroup() %>%
+  mutate(row_num = NULL)
+```
 
 The ruleset fails to designate a summering location for VA-2019-46 and SC-2019-03 due to late settlement (not enough points in the area before 6/30). If the window was longer it would correct this, but throw off other observations due to post-breeding dispersal movements. I'll manually force VA-2019-46 and SC-2019-03's final locations into state 3 instead.
 ## NOTE: CRW may change this, so i'm commenting out for now. Will put them back in on a case-by-case basis
@@ -488,94 +642,6 @@ The ruleset fails to designate a summering location for VA-2019-46 and SC-2019-0
 #          point_state = ifelse(animal_name == "SC-2019-03" & date == "2019-06-28", 3, point_state))
 ```
 
-Ruleset: Pre-migration is all points up until the bird departs > 16.1km from its initial location for the final time
-```{r}
-amwo_hmm_final <- map(unique(amwo_hmm_final$ID), function(ind){
-  first_loc <- amwo_hmm_final %>%
-    filter(ID == ind) %>%
-    head(n = 1) %>%
-    st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE)
-
-  amwo_ind <- amwo_hmm_final %>%
-    filter(ID == ind) %>%
-    st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE) %>%
-    mutate(condition_distance_km_pre = as.numeric(st_distance(geometry, first_loc))/1000) %>%
-    st_drop_geometry() %>%
-    mutate(within_dist_pre = condition_distance_km_pre < 16.1) #10
-  
-  amwo_ind <- amwo_ind %>%
-    mutate(row_num = 1:nrow(amwo_ind))
-  
-  highest_premig_row <- amwo_ind %>%
-    filter(within_dist_pre == 1) %>%
-    pull(row_num) %>%
-    max()
-  
-  if(highest_premig_row < -1000){
-    cat(crayon::magenta("no points within 16.1 kilometers of the centroid"))
-  }
-  
-  amwo_ind <- amwo_ind %>% 
-    mutate(point_state = if_else(row_num <= highest_premig_row, 1 , point_state)) %>% #point_state_premig_corrected
-    mutate(condition_distance_km_pre = NULL,
-           within_dist_pre = NULL,
-           row_num = NULL)
-}) %>%
-  exec("bind_rows", .)
-
-```
-
-Ruleset: Post-migration is all points up until the bird comes within 8km of its final location for the first time, assuming that its final location is in state 3
-```{r}
-amwo_hmm_final <- map(unique(amwo_hmm_final$ID), function(ind){
-  last_loc <- amwo_hmm_final %>%
-    filter(ID == ind) %>%
-    tail(n = 1) %>%
-    st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE)
-  
-  amwo_ind <- amwo_hmm_final %>%
-    filter(ID == ind) %>%
-    st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE) %>%
-    mutate(condition_distance_km_post = as.numeric(st_distance(geometry, last_loc))/1000) %>%
-    st_drop_geometry() %>%
-    mutate(within_dist_post = condition_distance_km_post < 8) #16.1
-  
-  amwo_ind <- amwo_ind %>%
-    mutate(row_num = 1:nrow(amwo_ind))
-  
-  lowest_postmig_row <- amwo_ind %>%
-    filter(within_dist_post == 1) %>%
-    pull(row_num) %>%
-    min()
-  
-  if(lowest_postmig_row< -1000){
-    cat(crayon::magenta("no points within 8 kilometers of the last point"))
-  }
-  
-  if(last_loc$point_state == 4){
-    amwo_ind <- amwo_ind %>% 
-      mutate(point_state = if_else(row_num >= lowest_postmig_row, 4, point_state)) %>% 
-      mutate(within_dist_post = NULL, 
-        condition_distance_km_post = NULL,
-        row_num = NULL)
-  } else {
-    amwo_ind <- amwo_ind %>% 
-      mutate(within_dist_post = NULL, 
-        condition_distance_km_post = NULL,
-        row_num = NULL)
-  }
-
-  return(amwo_ind)
-}) %>%
-  exec("bind_rows", .)
-```
-
-#
-#
-Ruleset to do:
-If a bird transitions from 3 to 4, include all 3 locations as 4 locations
-#
-#
 
 Add back in the movement from the summer transient bird (VA-2020-52-2020), manually classified as post-mig
 Gonna try not doing this, as all I really care about are the migratory initiation dates

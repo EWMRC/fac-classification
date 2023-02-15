@@ -104,14 +104,14 @@ amwo_spring_males <- amwo_spring_males %>%
 Remove individuals with fewer than 3 locations, recording which ones were removed
 ```{r}
 individuals_removed_for_too_few_locations <- amwo_spring_males %>%
-  distinct(ID, date,.keep_all = TRUE) %>% 
+  distinct(ID, date, .keep_all = TRUE) %>% 
   group_by(ID) %>%
   tally() %>% 
   filter(n < 3) %>%
   pull(ID)
 
 birds_to_keep <- amwo_spring_males %>%
-  distinct(ID, date,.keep_all = TRUE) %>% 
+  distinct(ID, date, .keep_all = TRUE) %>% 
   group_by(ID) %>%
   tally() %>%
   filter(n > 2) %>%
@@ -139,7 +139,7 @@ individuals_tagged_too_late <- amwo_spring_males %>%
   distinct()
 ```
 
-Flag individuals which died before May 15th on the year of observation so that I can mark their final stationary state as uncertain. 
+Flag individuals which died before May 15th on the year of observation so that I can mark their final stationary state as uncertain. Don't worry about the 2020 thing, it's just a standardized year.
 
 ### This will bias any survival analyses done with these designations ###
 ```{r}
@@ -186,7 +186,6 @@ nested_birds <- mutate(nested_birds,
 unnested_birds <- dplyr::select(nested_birds, ID, pred) %>% unnest(cols=pred)
 ```
 
-
 # create momentuHMMData object; would specify covariates if included in the dataset
 ##  basically the step length and turn angles are now included
 ## Also create a data stream for difference in latitude (may be necessary for a ruleset: if not, remove)
@@ -198,7 +197,6 @@ amwo_hmm <- unnested_birds %>%
   ungroup()
 
 #remove duplicates by date to deal with predicted locations on the same day as the observed location
-#amwo_hmm <- amwo_hmm %>% 
 amwo_hmm <- amwo_hmm %>% 
   mutate(date = strftime(time, format="%Y-%m-%d"),
          locType = factor(locType, levels = c("o", "p"), ordered = TRUE)) %>%
@@ -396,7 +394,6 @@ amwo_hmm <- nested_birds_3 %>%
   unnest(cols = c(data))
 
 plan(sequential)
-
 ```
 
 Extract breeding season abundance for each point
@@ -415,7 +412,6 @@ amwo_hmm <- amwo_hmm %>% #simplify from abundance to breeding range
   mutate(breeding_abundance = if_else(breeding_abundance > 0, 1, 0)) 
 ```
 
-
 ```{r}
 amwo_hmm <- amwo_hmm %>%
   mutate(log_mean_dist_7 = log(mean_dist_7 + 0.1)) %>% #Adding a small # to deal with 0 distances
@@ -425,7 +421,6 @@ amwo_hmm <- amwo_hmm %>%
   mutate(step_500 = if_else(step < 5, 0, 1)) %>% #larger than 5km
   mutate(step_500 = if_else(!is.na(step_500), step_500, 0))
 ```
-
 
 remove a transient summer movement which throws off the hmm for VA-2020-52-2020. Add it back again at the end as a manually-delineated residential movement at the end
 ```{r}
@@ -462,32 +457,6 @@ knownStates <- amwo_hmm %>%
   pull(known)
 ```
 
-Set a design matrix for breeding abundance
-```{r}
-# DM_ebirdst <- matrix(c(1,1,0,0,0,0,0,0,0,0,0,0,0,0,0, #estimate 1 and 2 together, and 3, 4, 5 separately
-#                        1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,
-#                        0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,
-#                        0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,
-#                        0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,
-#                        0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,
-#                        0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,
-#                        0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,
-#                        0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,
-#                        0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,
-#                        0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,
-#                        0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,
-#                        0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,
-#                        0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,
-#                        0,0,0,0,0,0,0,0,0,0,0,0,0,0,1),
-#                      dimnames = list(c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5", "z1", "z2", "z3", "z4", "z5"),
-#                                      c("m1", "m2","m3","m4", "m5", "s1", "s2", "s3", "s4", "s5", "z1", "z2", "z3", "z4", "z5")),
-#                      nrow = 15, ncol = 15, byrow=TRUE)
-# 
-# DM <- list(breeding_abundance = DM_ebirdst)#,
-
-```
-
-
 ##### trying 5-state model
 
 Label states and create distributions for movements
@@ -498,13 +467,12 @@ dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", l
 
 fix step length parameters and state transitions
 ```{r}
-fixPar <- list(beta=matrix(c(NA,	-10000,	-10000,	-10000,	-10000,	NA,	NA,	NA,	-10000,	NA,	-10000,	-10000,	-10000,	-10000,	-10000,	NA,	-10000,	-10000,	-10000,	NA), nrow = 1, byrow = TRUE),
+fixPar <- list(beta=matrix(c(NA,	-10000,	-10000,	-10000,	
+                             -10000,	NA,	NA,	NA,	
+                             -10000,	NA,	-10000, -10000, 
+                             -10000, -10000, -10000, NA, 
+                             -10000,	-10000,	-10000,	NA), nrow = 1, byrow = TRUE),
                step_500 = c(NA, 0.999999999, NA, NA, NA)) 
-
-#, dist_start = c(NA, NA, 14.023368, 14.023368, 14.023368,
-#NA, NA, 1, 1, 1)
-
-#Estimate the dist_start of pre-mig and mig, but hold the dist_start of stopover, settling, and post-mig to be identical) #once entered post-migration, can't leave
 ```
 
 These serve as the starting parameters for the HMM to optimize.
@@ -522,12 +490,9 @@ Par0_m1 <- list(step=c(0.293641627, 79.029506936, 0.157361645, 0.250739740, 0.08
                                 1.679125, 2.403601, 2.736004, 1.536724, 1.806670), #sd
                 residence_time = c(39.91826, 6.848351, 53.64592, 71.41284, 70.66562, #mean
                                    20.41741, 13.174650, 35.49282, 21.65228, 25.53273), #sd
-                dist_start = c(0.00530222, 0.9276614, 0.9750638, 0.9955032, 0.9882519),
-                step_500 = c(0.1336989, 0.99999, 0.06175472, 0.1351401, 0.04079765),
-                breeding_abundance = c(0.1183127, 0.3973247, 0.442492, 0.7108834, 0.5959887))
-                # lat_diff_abs = c(0.01, 1, 0.01,
-                #                  0.01, 1, 0.01,
-                #                  0.026, 0.036, 0.026)) 
+                dist_start = c(0.00530222, 0.9276614, 0.9750638, 0.9955032, 0.9882519), #prob
+                step_500 = c(0.1336989, 0.99999, 0.06175472, 0.1351401, 0.04079765), #prob
+                breeding_abundance = c(0.1183127, 0.3973247, 0.442492, 0.7108834, 0.5959887)) #prob
 ```
 
 Create a function that fits the model, predicts states for each step (predicted and observed) and input in the dataset. Note: the listed x y is the starting location of the step. Then use this to determine what the bird's state was at any given point

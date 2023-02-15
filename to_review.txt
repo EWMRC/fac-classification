@@ -19,3 +19,9 @@ QUE-2020-17-2021 stays in 1 longer than it should. Not an issue, as it's a predi
 RI-2019-24-2020 same deal
 
 General issue: current model forces the last point of migration into a stopover state. Fix to stay in the preceding state.
+
+spring females:
+AL-2022-15-2022 ranging location on 2/28/23
+LA-2022-14-2022 stays in 1 too long
+ME-2018-13-2019 same. Seems to be an issue with not enough time spent in state 1.
+
