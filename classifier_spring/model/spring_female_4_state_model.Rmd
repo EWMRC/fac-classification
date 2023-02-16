@@ -478,49 +478,47 @@ knownStates <- amwo_hmm %>%
 
 Label states and create distributions for movements
 ```{r}
-stateNames <- c("pre", "migration", "stopover", "settling", "post")
-dist <- list(step="gamma", angle="wrpcauchy", julian_day = "norm", dist_start = "bern", step_500 = "bern") #, y = "norm", , log_mean_dist_7 = "norm", residence_time = "norm",  , breeding_abundance = "bern"
+stateNames <- c("pre", "migration", "stopover", "post")
+dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", dist_start = "bern", step_500 = "bern", breeding_abundance = "bern", log_mean_dist_7 = "norm") #,  , log_mean_dist_7 = "norm", residence_time = "norm",  
 ```
 
 fix step length parameters and state transitions
 ```{r}
-fixPar <- list(beta=matrix(c(NA,	-10000,	-10000,	-10000,	
-                             -10000,	NA,	NA,	NA,	
-                             -10000,	NA,	-10000, -10000, 
-                             -10000, -10000, -10000, NA, 
-                             -10000,	-10000,	-10000,	NA), nrow = 1, byrow = TRUE),
-               step_500 = c(NA, 0.999999999, NA, NA, NA)) 
+fixPar <- list(beta=matrix(c(NA, -1000,	-1000,	-1000,	NA,	NA,	-1000,	NA,	-1000,	-1000,	-1000,	-1000), nrow = 1, byrow = TRUE),
+               step_500 = c(NA, 0.999999999, NA, NA)) 
 ```
 
 These serve as the starting parameters for the HMM to optimize.
 ```{r}
-Par0_m1 <- list(step=c(0.293641627, 79.029506936, 0.157361645, 0.250739740, 0.086056474, #mean in km
-                       0.455493251, 95.302307236, 0.211421668, 0.384581337, 0.128558113, # SD in km
-                       0.005159307, 0.006024863, 0.006664064, 0.005636388, 0.006973284), #zeromass ie how many zeroes expected in the distribution
-                angle=c(0.001353412, 0.0006979447, 0.01168102, 0.0005445842, 0, #mean
-                        0.917280917, 0.9754146876, 0.59501513, 0.7614896594, 0.99999),
-                julian_day = c(40.14297, 79.36682, 80.54528, 135.69949, 136.7710, #mean
-                        19.89502, 27.50774, 23.92289, 25.77254, 30.0146),#concentration
-                dist_start = c(0.00530222, 0.9276614, 0.9750638, 0.9955032, 0.9882519), #prob
-                step_500 = c(0.1336989, 0.99999, 0.06175472, 0.1351401, 0.04079765) #prob
-                ) #prob
+Par0_m1 <- list(step=c(0.256894766, 9.280669e+01, 0.301858315, 0.1020830, #mean in km
+                       0.428115246, 9.998649e+01, 0.526387184, 0.1597016, # SD in km
+                       0.002895599, 1.556613e-09, 0.009130244, 0.0101866), #zeromass ie how many zeroes expected in the distribution
+                angle=c(0.001083468, -0.004341168, 0.002000331, -0.0005895074, #mean
+                        0.882835350, 0.912545440, 0.367423909, 0.8726309448),
+                y = c(34.83030, 40.173268, 40.426752,  44.689995,
+                      3.11158, 4.497807, 3.668652, 2.267504),
+                julian_day = c(41.90799, 86.61119, 92.55090, 150.67031, #mean
+                               20.94627, 26.59649, 26.54255, 16.98246),#concentration
+                log_mean_dist_7 = c(4.126427, 9.965601, 4.959182, 3.797415, #mean
+                                    1.679125, 2.403601, 2.736004, 1.536724), #sd
+                dist_start = c(0.003836731, 0.9282294, 0.9820994, 0.999999), #prob
+                step_500 = c(0.002005791, 0.99999, 7.501248e-09, 1.130989e-08), #prob
+                breeding_abundance = c(0.1198084, 0.4470662, 0.5400118, 0.8414759)) #prob
 ```
 
-y = c(34.83030, 40.173268, 40.426752,  44.689995, 43.678101,
-                      3.11158, 4.497807, 3.668652, 2.267504, 4.109156),
-                ,
-                log_mean_dist_7 = c(4.126427, 9.965601, 4.959182, 3.797415, 3.581605, #mean
-                                1.679125, 2.403601, 2.736004, 1.536724, 1.806670), #sd
+
+
+                 #sd
                 residence_time = c(39.91826, 6.848351, 53.64592, 71.41284, 70.66562, #mean
                                    20.41741, 13.174650, 35.49282, 21.65228, 25.53273), #sd
                 
-                breeding_abundance = c(0.1183127, 0.3973247, 0.442492, 0.7108834, 0.5959887)
+                
 
 Create a function that fits the model, predicts states for each step (predicted and observed) and input in the dataset. Note: the listed x y is the starting location of the step. Then use this to determine what the bird's state was at any given point
 ```{r}
 fit_and_predict <- function(.x){
   set.seed(8)
-  m1 <- fitHMM(data=.x, nbStates=5, dist=dist, Par0 = Par0_m1,
+  m1 <- fitHMM(data=.x, nbStates=4, dist=dist, Par0 = Par0_m1,
                estAngleMean = list(angle=TRUE),
                fixPar=fixPar,
                #userBounds = userBounds,

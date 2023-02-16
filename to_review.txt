@@ -13,7 +13,7 @@ RI-2019-24-2020 same deal
 
 General issue: current model forces the last point of migration into a stopover state. Fix to stay in the preceding state.
 
-*spring females*:
+*spring females*: 5-state
 FL-2021-04-2021 state 4 or 5 has locations > 5km
 VA-2021-97-2022 same
 SC-2019-09-2019 same
@@ -27,3 +27,10 @@ VA-2019-22-2019 same
 
 VA-2021-91-2021 crw is pushing things into 1 for too long
 VA-2021-92-2021 same
+
+4-state
+AL-2021-10-2021 remove movements on 5/20/21 and 5/21/21
+
+AL-2021-12-2021 remove 2021-02-26
+
+NC-2020-08-2020 steps over 5km

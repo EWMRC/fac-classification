@@ -24,7 +24,7 @@ ggplot(amwo_hmm_final, aes(x = ID, y = julian_day)) +
   theme_dark() +
   theme(axis.text.x = element_text(angle = 90), legend.position = "none")
 
-ggsave("all_mig_summary__ebirdst.png", width = 20, height = 10)
+ggsave("all_mig_summary_springfemale.png", width = 20, height = 10)
 ```
 
 Plot fall and spring migrations together
