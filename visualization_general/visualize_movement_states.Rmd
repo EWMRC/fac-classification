@@ -17,11 +17,14 @@ Plot all individuals together to see how the code performs on a population scale
 #   theme(axis.text.x = element_text(angle = 90))
 
 # Doesn't include latitude
-ggplot(amwo_hmm, aes(x = ID, y = julian_day)) +
+ggplot(amwo_hmm_final, aes(x = ID, y = julian_day)) +
   geom_point(aes(color = as.character(point_state), shape = as.character(point_state))) +
+  geom_hline(yintercept = 135) +
   scale_color_brewer(palette = "Spectral") +
   theme_dark() +
-  theme(axis.text.x = element_text(angle = 90))
+  theme(axis.text.x = element_text(angle = 90), legend.position = "none")
+
+ggsave("all_mig_summary_springfemale.png", width = 20, height = 10)
 ```
 
 Plot fall and spring migrations together
@@ -67,7 +70,7 @@ plotly::ggplotly(combined_plot)
 
 Clunky, but basically extract individuals 1 at a time and look at them. Liam note: Currently only working with chunk output in console to my knowledge
 ```{r}
-leaflet.male<- function(x){
+leaflet.male <- function(x){
   
   # color pallate for markers
     getColor <- function(y) {
@@ -79,9 +82,9 @@ leaflet.male<- function(x){
       } else if(z == 2) {
         "orange"
       } else if(z == 3) {
-        "red"
+        "pink"
       } else if(z == 4){
-        "black"
+        "red"
       } else if(z == 5){
         "blue"
       } else if(z == 6){
@@ -93,7 +96,7 @@ leaflet.male<- function(x){
     icon = 'ios-close',
     iconColor = 'black',
     library = 'ion',
-    markerColor = getColor(x)
+    markerColor = as.character(getColor(x))
   )
   
   
@@ -120,8 +123,8 @@ leaflet.male<- function(x){
 ```
 
 ```{r}
-amwo_hmm %>%
-  filter(ID == "RI-2020-43-2020") %>%
+amwo_hmm_final %>%
+  filter(ID == "VA-2019-47-2020") %>%
   #View()
   leaflet.male(.)
 # 

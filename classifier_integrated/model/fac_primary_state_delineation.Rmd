@@ -3,18 +3,18 @@ title: "R Notebook"
 output: html_notebook
 ---
 
-```{r}
+```{r include = FALSE}
 library(tidyverse)
 library(move)
 library(sf)
-library(furrr)
-plan(multisession)
+#library(furrr)
+#plan(multisession)
 ```
 
 ```{r}
-fall_classified <- readRDS("fall_all_3_state_model.rds")
-spring_male_classified <- readRDS("spring_male_3_state_model.rds")
-spring_female_classified <-readRDS("spring_female_3_state_model.rds")
+fall_classified <- readRDS(here::here("classifier_fall", "fall_all_3_state_model.rds"))
+spring_male_classified <- readRDS(here::here("classifier_spring", "spring_male_3_state_model.rds"))
+spring_female_classified <-readRDS(here::here("classifier_spring", "spring_female_3_state_model.rds"))
 ```
 
 Pulling the migratory initiation and termination date-times
@@ -81,9 +81,9 @@ spring_migration_dates <- spring_migration_dates %>%
 migration_dates <- bind_rows(fall_migration_dates, spring_migration_dates)
 ```
 
-Download Movebank data, limit to times before Aug 1 2021 (more recent seasons haven't been delineated yet)
+Download Movebank data, limit to times before Aug 1 2022 (more recent seasons haven't been delineated yet)
 ```{r}
-login <- movebankLogin(username = "acfish", password="EPvzvNSUJ8")
+login <- movebankLogin(username = "LA_Berigan", password="33szcNUtv4iyPGU")
 amwo_move <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", 
                              login = login, 
                              removeDuplicatedTimestamps=TRUE)
@@ -94,7 +94,7 @@ amwo_data <- as.data.frame(amwo_move) %>%
             event_id = event_id,
             lat = location_lat,
             long = location_long) %>%
-  filter(time < lubridate::mdy("8/1/2021"))
+  filter(time < lubridate::mdy("8/1/2022"))
 ```
 
 1) Join in a way that creates a duplicate record for each location and potential mig bout
@@ -141,9 +141,7 @@ amwo_data_w_duplicates$primary_step_state <- amwo_data_w_duplicates %>%
         step_state <- "State unknown (spring migratory or post-mig stationary)"
       }
     }
-    
-    
-    
+  
     return(step_state)
   }) %>%
   unlist() %>%
@@ -191,7 +189,7 @@ amwo_data_w_duplicates$primary_point_state <- amwo_data_w_duplicates %>%
   factor(levels = c("Migratory (spring)", "Migratory (fall)", "State unknown (fall migratory or pre-mig stationary)", "State unknown (spring migratory or pre-mig stationary)", "State unknown (fall migratory or post-mig stationary)", "State unknown (spring migratory or post-mig stationary)", "Stationary"), ordered = TRUE)
 ```
 
-4) Use head on records, grouped by event_id, to keep only the "top" record from each group. If there was any migratory movement during that time period, the top record will be a migratory state If not, the top record will be a stationary state
+4) Use head on records, grouped by event_id, to keep only the "top" record from each group. If there was any migratory movement during that time period, the top record will be a migratory state. If not, the top record will be a stationary state
 ```{r}
 amwo_data_reconstructed <- amwo_data_w_duplicates %>%
   group_by(event_id) %>%
@@ -217,5 +215,5 @@ amwo_data_reconstructed <- amwo_data_reconstructed %>%
 ```
 
 ```{r}
-saveRDS(amwo_data_reconstructed, file = "fac_primary_state_delineation.rds")
+saveRDS(amwo_data_reconstructed, file = here::here("classifier_integrated", "fac_primary_state_delineation.rds"))
 ```

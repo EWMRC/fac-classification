@@ -1,10 +1,8 @@
-spring_male_3_state_model.rds- looking good, with some april settlements that are potentially questionable
-spring_female_3_state_model.rds 
-	manually set NC-2022-40-2022 to settled
-	probably manually set PA-2021-39-2022 to settled
-	VA-2021-98-2022 is not settling correctly; could use interpolated locations
-	VA-2022-100-2022 remove 2022-06-26, as it is messing up the designation of the terminal state
-	VT-2021-22-2022 is not settling correctly; could use interpolated locations
-	VT-2021-25-2022 is going to be a pain in the ass- not enough late locations
-	
-Use the crawl package to interpolate missing daily locations
+--- 2/15/23 *spring males*
+FL-2021-01-2021 manually demarkate
+
+General issue: current model forces the last point of migration into a stopover state. 
+Fix to stay in the preceding state, or just ignore the difference between 3 and 4.
+
+*spring females*: 4-state
+all good!
