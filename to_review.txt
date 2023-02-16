@@ -1,36 +1,8 @@
--- 2/14/23
-QUE-2019-13-2020 settle missouri
-
-AL-2022-18-2022 skips from 1 to 3
-
 --- 2/15/23 *spring males*
 FL-2021-01-2021 manually demarkate
 
-VA-2019-12-2019 1 to 3 transition- fix with a similar version of the above code.
+General issue: current model forces the last point of migration into a stopover state. 
+Fix to stay in the preceding state, or just ignore the difference between 3 and 4.
 
-QUE-2020-17-2021 stays in 1 longer than it should. Not an issue, as it's a predicted location.
-RI-2019-24-2020 same deal
-
-General issue: current model forces the last point of migration into a stopover state. Fix to stay in the preceding state.
-
-*spring females*: 5-state
-FL-2021-04-2021 state 4 or 5 has locations > 5km
-VA-2021-97-2022 same
-SC-2019-09-2019 same
-VA-2020-79-2021 same
-NC-2020-16-2020 same
-
-NJ-2018-08-2019 stays in 1 far too long (still an issue)
-VA-2019-22-2019 same
-NY-2018-07-2019 same
-VA-2019-22-2019 same
-
-VA-2021-91-2021 crw is pushing things into 1 for too long
-VA-2021-92-2021 same
-
-4-state
-AL-2021-10-2021 remove movements on 5/20/21 and 5/21/21
-
-AL-2021-12-2021 remove 2021-02-26
-
-NC-2020-08-2020 steps over 5km
+*spring females*: 4-state
+all good!

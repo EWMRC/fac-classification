@@ -333,7 +333,7 @@ plan(sequential)
 
 Determining the amount of time that the bird has spent/will spend within a 10km radius of the point
 ```{r}
-plan(multisession)
+plan(sequential)
 amwo_hmm$residence_time <- amwo_hmm %>% 
   dplyr::select(ID, x, y) %>% 
   future_pmap(function(ID_iter, x_iter, y_iter){
@@ -450,9 +450,10 @@ amwo_hmm <- amwo_hmm %>% #removing ranging movements
   filter(!(ID == "VA-2019-45-2020" & time > ymd_hms("2020-06-22 04:00:00"))) %>% #same thing with midsummer movements
   filter(!(ID == "VA-2021-98-2022" & time > ymd_hms("2022-05-30 15:00:00"))) %>%
   filter(!(ID == "VA-2022-100-2022" & time > ymd_hms("2022-06-19 09:00:00"))) %>% 
-  filter(!(ID == "VA-2019-36-2020" & time > ymd_hms("2020-06-19 01:59:28")))
-
-
+  filter(!(ID == "VA-2019-36-2020" & time > ymd_hms("2020-06-19 01:59:28"))) %>% 
+  filter(!(ID == "AL-2021-10-2021" & time == ymd_hms("2021-05-21 03:58:56"))) %>%
+  filter(!(ID == "AL-2021-10-2021" & time == ymd_hms("2021-05-21 17:00:00"))) %>% 
+  filter(!(ID == "AL-2021-12-2021" & time == ymd_hms("2021-02-26 05:02:56")))
 ```
 
 remove birds with no individual step lengths >30.2km (20 miles). In practice this pulls birds that never initiate a substantial migratory movement but doesn't penalize birds that DO migrate, as they always make at least one substantial movement.
@@ -471,6 +472,9 @@ knownStates <- amwo_hmm %>%
   group_by(ID) %>%
   mutate(ranks = row_number()) %>%
   mutate(known = ifelse(ranks == "1", 1, NA)) %>%
+  mutate(known = ifelse(ID == "VA-2019-22-2019" & ranks < 6, 1, known)) %>% #accidentally slips into 3 too early
+  mutate(known = ifelse(ID == "VA-2021-91-2021" & ranks %in% c(16, 17, 18), 2, known)) %>% #crw stops the bird from slipping into mig
+  mutate(known = ifelse(ID == "VA-2021-92-2021" & ranks %in% c(6, 7, 8), 2, known)) %>% #crw stops the bird from slipping into mig
   pull(known)
 ```
 
@@ -479,7 +483,7 @@ knownStates <- amwo_hmm %>%
 Label states and create distributions for movements
 ```{r}
 stateNames <- c("pre", "migration", "stopover", "post")
-dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", dist_start = "bern", step_500 = "bern", breeding_abundance = "bern", log_mean_dist_7 = "norm") #,  , log_mean_dist_7 = "norm", residence_time = "norm",  
+dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", dist_start = "bern", step_500 = "bern", breeding_abundance = "bern", log_mean_dist_7 = "norm", residence_time = "norm") #,  
 ```
 
 fix step length parameters and state transitions
@@ -490,29 +494,23 @@ fixPar <- list(beta=matrix(c(NA, -1000,	-1000,	-1000,	NA,	NA,	-1000,	NA,	-1000,	
 
 These serve as the starting parameters for the HMM to optimize.
 ```{r}
-Par0_m1 <- list(step=c(0.256894766, 9.280669e+01, 0.301858315, 0.1020830, #mean in km
-                       0.428115246, 9.998649e+01, 0.526387184, 0.1597016, # SD in km
-                       0.002895599, 1.556613e-09, 0.009130244, 0.0101866), #zeromass ie how many zeroes expected in the distribution
-                angle=c(0.001083468, -0.004341168, 0.002000331, -0.0005895074, #mean
-                        0.882835350, 0.912545440, 0.367423909, 0.8726309448),
-                y = c(34.83030, 40.173268, 40.426752,  44.689995,
-                      3.11158, 4.497807, 3.668652, 2.267504),
-                julian_day = c(41.90799, 86.61119, 92.55090, 150.67031, #mean
-                               20.94627, 26.59649, 26.54255, 16.98246),#concentration
-                log_mean_dist_7 = c(4.126427, 9.965601, 4.959182, 3.797415, #mean
-                                    1.679125, 2.403601, 2.736004, 1.536724), #sd
-                dist_start = c(0.003836731, 0.9282294, 0.9820994, 0.999999), #prob
-                step_500 = c(0.002005791, 0.99999, 7.501248e-09, 1.130989e-08), #prob
-                breeding_abundance = c(0.1198084, 0.4470662, 0.5400118, 0.8414759)) #prob
+Par0_m1 <- list(step=c(0.260832696, 9.429288e+01, 0.323209095, 0.1581120, #mean in km
+                       0.434046082, 9.829083e+01, 0.565636024 , 0.2682378, # SD in km
+                       0.002864053, 1.549953e-09, 0.008935152, 0.0101826), #zeromass ie how many zeroes expected in the distribution
+                angle=c(0.001212793, -0.004443658, -0.004534878, 0.0003999368, #mean
+                        0.882238488, 0.911903062, 0.405040026, 0.7535390314),
+                y = c(35.142723, 40.642156, 41.012048,  44.801910,
+                      2.567658, 4.407258, 3.666311, 3.010217),
+                julian_day = c(41.63823, 86.00518, 88.73997, 141.08671, #mean
+                               20.60346, 26.04991, 25.50664, 23.33606),#concentration
+                log_mean_dist_7 = c(3.601858, 9.920471, 4.539150, 3.114167, #mean
+                                    1.610840, 2.643817, 2.938573, 1.637662), #sd
+                residence_time = c(49.87944, 7.546966, 26.48728, 66.52459, #mean
+                                   21.66159, 16.575491, 20.09901, 22.88829), #sd
+                dist_start = c(0.01667985, 0.9264421, 0.9762556, 0.999999), #prob
+                step_500 = c(0.002299856, 0.99999, 7.443581e-09, 0.00255622), #prob
+                breeding_abundance = c(0.1159913, 0.4453295, 0.5308599, 0.8146863)) #prob
 ```
-
-
-
-                 #sd
-                residence_time = c(39.91826, 6.848351, 53.64592, 71.41284, 70.66562, #mean
-                                   20.41741, 13.174650, 35.49282, 21.65228, 25.53273), #sd
-                
-                
 
 Create a function that fits the model, predicts states for each step (predicted and observed) and input in the dataset. Note: the listed x y is the starting location of the step. Then use this to determine what the bird's state was at any given point
 ```{r}
@@ -643,17 +641,6 @@ amwo_hmm_final <- amwo_hmm_final %>%
   ungroup() %>%
   mutate(row_num = NULL)
 ```
-
-The ruleset fails to designate a summering location for VA-2019-46 and SC-2019-03 due to late settlement (not enough points in the area before 6/30). If the window was longer it would correct this, but throw off other observations due to post-breeding dispersal movements. I'll manually force VA-2019-46 and SC-2019-03's final locations into state 3 instead.
-## NOTE: CRW may change this, so i'm commenting out for now. Will put them back in on a case-by-case basis
-```{r}
-# amwo_hmm <- amwo_hmm %>%
-#   mutate(step_state = ifelse(animal_name == "VA-2019-46" & date == "2020-06-28", 3, step_state),
-#          point_state = ifelse(animal_name == "VA-2019-46" & date == "2020-06-28", 3, point_state)) %>%
-#   mutate(step_state = ifelse(animal_name == "SC-2019-03" & date == "2019-06-28", 3, step_state),
-#          point_state = ifelse(animal_name == "SC-2019-03" & date == "2019-06-28", 3, point_state))
-```
-
 
 Add back in the movement from the summer transient bird (VA-2020-52-2020), manually classified as post-mig
 Gonna try not doing this, as all I really care about are the migratory initiation dates
