@@ -1,0 +1,510 @@
+---
+title: "R Notebook"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r include=FALSE}
+library(tidyverse)
+library(lubridate)
+library(move)
+library(momentuHMM)
+library(leaflet)
+library(RColorBrewer)
+library(sf)
+library(furrr)
+library(here)
+library(crawl)
+```
+
+Extract all locations from 2018, 2019, 2020, and 2021 from August 1st through January 4th
+```{r include=FALSE}
+ending_consideration_date <- mdy("2/25/2022")
+
+days_subtract <- days(ending_consideration_date - mdy("12/31/2021"))
+
+login <- movebankLogin(username = "LA_Berigan", password="33szcNUtv4iyPGU")
+
+amwo_2017 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = login, timestamp_start = "20170801000000000", timestamp_end = "20180225000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame() #20190115000000000
+
+amwo_2018 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = login, timestamp_start = "20180801000000000", timestamp_end = "20190225000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame() #20190115000000000
+
+amwo_2019 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = login, timestamp_start = "20190801000000000", timestamp_end = "20200225000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
+
+amwo_2020 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = login, timestamp_start = "20200801000000000", timestamp_end = "20210225000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
+
+amwo_2021 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = login, timestamp_start = "20210801000000000", timestamp_end = "20220225000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
+```
+
+Formatting and cleaning, including creating time columns and simplifying to one location per day (trying with multiple locations per day now)
+```{r}
+amwo_spring <- as.data.frame(rbind(amwo_2017, amwo_2018, amwo_2019, amwo_2020, amwo_2021))
+
+amwo_spring <- amwo_spring %>%
+  transmute(ID = local_identifier,
+            #time = as.POSIXct(round(force_tzs(timestamp, tzone = "GMT", tzone_out = "EST"), "hour")), #time rounded in EST
+            time = timestamp,
+            lon = location_long,
+            lat = location_lat,
+            tagtype = comments,
+            sex = sex,
+            age = taxon_detail,
+            altitude = height_above_msl)
+
+amwo_spring <- amwo_spring %>%
+  mutate(t = strftime(time, format="%H:%M"),
+         date = strftime(time, format="%Y-%m-%d")) #%>%
+  #distinct(date, ID, .keep_all = TRUE) # remove multiple locations on same day, mainly retaining only 1 of 3 locations 1st day after marking
+```
+
+Converting all age classes to juvenile and adult
+```{r}
+amwo_spring <- amwo_spring %>%
+  mutate(age = recode_factor(age,
+                             "Second Year" = "juv",
+                             "Hatch Year" = "juv",
+                             "After Hatch Year" = "ad",
+                             "After Second Year" = "ad",
+                             "Third Year" = "ad",
+                             "After Third Year" = "ad"))
+```
+
+Extracting tag type, schedule, state marked, and year. Note that this doesn't work for later years.
+```{r}
+amwo_spring <- amwo_spring %>%
+  separate(tagtype, c("tagtype", "second", "schedule"), sep = " ") %>% 
+  dplyr::select(-second) %>%
+  mutate(ID2 = ID) %>%
+  separate(ID2, c("m.state", "m.year", "third"), sep = "-") %>% 
+  dplyr::select(-third)
+```
+
+Filtering to just males- now trying to do all sexes
+```{r}
+amwo_spring_males <- amwo_spring
+# amwo_spring_males <- amwo_spring %>%
+#   filter(sex == "m")
+```
+
+Account for potential duplicate years by adding a year to the end of the id
+```{r}
+amwo_spring_males <- amwo_spring_males %>%
+  mutate(year = year(time-days_subtract)) %>% #boot the january locations into the previous year
+  mutate(animal_name = ID, 
+         ID = paste(ID, year, sep="-"))
+```
+
+Add a julian day column (new data stream)
+```{r}
+amwo_spring_males <- amwo_spring_males %>%
+  mutate(julian_day = yday(ymd(date)- days_subtract)) #subtracting to make sure that January julian days don't wrap around
+```
+
+Flag individuals tagged after October 15th on the year of observation so that I can mark their initial stationary state as uncertain
+```{r include = FALSE}
+# Comment this out if running repeatedly; otherwise it will just slow down the code
+# googledrive::as_id("https://drive.google.com/file/d/19JA5OztH3hS4MPfVnH5zswDxSSLcWxL3/view?usp=sharing") %>%
+#         googledrive::drive_download(path = here("capture_sheet.xlsx"), overwrite = TRUE)
+
+capture_dates <- readxl::read_excel(here("capture_sheet.xlsx"), col_types = c("text", "text", "date", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text")) %>%
+        mutate(`Argos_ID` = as.character(`Argos_ID`)) %>%
+  transmute(animal_name = `Movebank_ID`,
+            capture_date = Date)
+
+individuals_tagged_too_late <- amwo_spring_males %>%
+  left_join(capture_dates) %>%
+  filter((year == year(capture_date) & mdy(paste0("10/15/", year)) < capture_date)) %>% #remove locations when the bird was caught after Oct 15 in the year of concern
+  dplyr::select(ID, animal_name, year) %>%
+  distinct()
+```
+
+Flag individuals which died before December 15th on the year of observation so that I can mark their final stationary state as uncertain. 
+
+### This will bias any survival analyses done with these designations ###
+```{r}
+individuals_died_too_early <- amwo_spring_males %>%
+  mutate(time = time - days_subtract) %>%
+  group_by(ID) %>%
+  summarise(max_time = max(time)) %>%
+  mutate(max_date = mdy(paste0(month(max_time), "/", day(max_time), "/2020"))) %>%
+  filter(max_date < (mdy("12/15/2020") - days_subtract)) %>%
+  pull(ID)
+```
+
+If the bird has an initiation date from the spring, only consider locations from dates <= the date of the first spring migratory step
+```{r}
+## Reading in the initiation dates
+male_spring_init_dates <- readRDS(here::here("classifier_spring", "spring_male_5_state_model.rds")) %>%
+  filter(step_state == 2) %>%
+  group_by(ID) %>%
+  group_modify(.f = function(x, ...){head(x, n = 1)}) %>%
+  ungroup() %>%
+  mutate(ID = paste0(animal_name, "-", (year(time) - 1))) %>% #Create IDs that will match the IDs of the previous fall, if the transmitter had been deployed then. If not, this will create invalid ids that will "come out in the wash"
+  transmute(ID = ID, init_time = time)
+
+female_spring_init_dates <- readRDS(here::here("classifier_spring", "spring_female_4_state_model.rds")) %>%
+  filter(step_state == 2) %>%
+  group_by(ID) %>%
+  group_modify(.f = function(x, ...){head(x, n = 1)}) %>%
+  ungroup() %>%
+  mutate(ID = paste0(animal_name, "-", (year(time) - 1))) %>% #Create IDs that will match the IDs of the previous fall, if the transmitter had been deployed then. If not, this will create invalid ids that will "come out in the wash"
+  transmute(ID = ID, init_time = time)
+
+spring_init_dates <- bind_rows(male_spring_init_dates, female_spring_init_dates)
+
+## Filtering to only those locations <= the spring initiation time, should the spring initiation time exist
+
+amwo_spring_males <- amwo_spring_males %>%
+  left_join(spring_init_dates) %>%
+  filter(is.na(init_time) | time <= init_time) %>%
+  dplyr::select(-init_time)
+```
+
+Remove individuals with fewer than 3 locations, recording which ones were removed
+```{r}
+individuals_removed_for_too_few_locations <- amwo_spring_males %>%
+  group_by(ID) %>%
+  tally() %>%
+  filter(n < 3) %>%
+  pull(ID)
+
+birds_to_keep <- amwo_spring_males %>%
+  group_by(ID) %>%
+  tally() %>%
+  filter(n > 2) %>%
+  pull(ID)
+
+amwo_spring_males <- amwo_spring_males %>%
+  filter(ID %in% birds_to_keep)
+```
+
+Crawl code goes here
+First parameter is sigma, second is beta (autocorrelation)
+```{r include=FALSE}
+# Group tracks by id (for crawl model because it likes tidyverse structure)
+nested_birds <- group_by(amwo_spring_males, ID) %>% 
+  nest() 
+
+# Movement model (no covariates = ~1)
+# The constraints are based on the godwit example
+# Fit model to each bird. Constrain velocity autoregression parameter to c(-7,2)
+# full effective range of the beta parameter (according to D Johnson)
+nested_birds <- mutate(nested_birds,
+                fit = purrr::map(data, ~{crawl::crwMLE(mov.model=~1, 
+                                                       data=.x, 
+                                                       coord=c("lon", "lat"), # movement model = ~1 bc no covariates
+                                                       Time.name="time",
+                                                       #time.scale='hours', # sometimes need to turn this on, sometimes don't
+                                                       method="L-BFGS-B", # there are different optimization methods, default didn't work but this did
+                                                       constr=list(lower=c(-Inf,-7), upper=c(Inf,2)),
+                                                       attempts=50,
+                                                       time.scale = "hours")}
+                )
+)
+
+nested_birds <- mutate(nested_birds,
+                pred = purrr::map(fit, ~{
+                  crawl::crwPredict(.x, predTime="24 hours", return.type='flat') %>% # use 24 hours, NOT 1 day (because it rounds to the unit)
+                    crawl::crw_as_tibble()
+                }
+                )
+)
+
+unnested_birds <- dplyr::select(nested_birds, ID, pred) %>% unnest(cols=pred)
+```
+
+Fixing a bug: if lon is not na, loctype is o. Else, it's p
+```{r}
+unnested_birds <- unnested_birds %>% 
+  mutate(locType = if_else(!is.na(lon), "o", "p"))
+```
+
+
+# create momentuHMMData object; would specify covariates if included in the dataset
+```{r}
+# amwo_hmm <- amwo_spring_males %>%
+#   rename(x = lon, y = lat) 
+amwo_hmm <- unnested_birds %>%
+  rename(x = mu.x, y = mu.y) %>% 
+  ungroup()
+
+#remove duplicates by date to deal with predicted locations on the same day as the observed location
+amwo_hmm <- amwo_hmm %>% 
+  mutate(date = strftime(time, format="%Y-%m-%d"),
+         locType = factor(locType, levels = c("o", "p"), ordered = TRUE)) %>% 
+  arrange(ID, date, locType) %>% #keep observed locations above predicted locations
+  distinct(date, ID, .keep_all = TRUE) %>% 
+  mutate(julian_day = yday(ymd(date)-(days_subtract))) #Redo the julian day calculation
+
+#Remove individuals with fewer than 3 locations, recording which ones were removed. Take 2
+individuals_removed_for_too_few_locations_2 <- amwo_hmm %>%
+  group_by(ID) %>%
+  tally() %>%
+  filter(n < 3) %>%
+  pull(ID)
+
+birds_to_keep_2 <- amwo_hmm %>%
+  group_by(ID) %>%
+  tally() %>%
+  filter(n > 2) %>%
+  pull(ID)
+
+amwo_hmm <- amwo_hmm %>%
+  filter(ID %in% birds_to_keep_2)
+
+amwo_hmm$lat_diff <- map(1:nrow(amwo_hmm),  function(i){
+  if(i == 1){return(NA)} else{#for the first row, return 1
+    if(amwo_hmm[i,"ID"] != amwo_hmm[i-1,"ID"]){ #is this the first point for this ID? Return NA
+      return(NA)
+    } else{
+      return(amwo_hmm[i,"y"] - amwo_hmm[i-1,"y"])
+    }
+  }
+}) %>% unlist()
+
+amwo_hmm <- amwo_hmm %>%
+  mutate(lat_diff_abs = abs(lat_diff)) %>% 
+  dplyr::select(ID, animal_name, year, locType, x, y, time, date, julian_day) %>% 
+  as.data.frame()
+```
+
+Identify loops produced by the crawl and replace them with evenly-spaced points
+```{r include = FALSE}
+plan(multisession)
+nested_birds_2 <- amwo_hmm %>%
+  group_by(ID) %>%
+  nest()
+
+nested_birds_2$data <- nested_birds_2 %>% 
+  pull(data) %>% 
+  future_map(.f = function(x){
+
+    x <- x %>% 
+      mutate(., rownum = 1:nrow(.))
+    
+    #Transform to 5070 so I can interpolate points
+    x_coords <- x %>%
+      st_as_sf(coords = c("x", "y"), crs = 4326) %>% 
+      st_transform(5070) %>% 
+      st_coordinates() %>% 
+      as.data.frame()
+    
+    x$x <- x_coords$X
+    x$y <- x_coords$Y
+    
+    observed_locs <- x %>%
+      filter(locType == "o")
+    
+    for(i in 1:(nrow(observed_locs)-1)){
+      #print(i)
+      point_1 <- observed_locs[i,] %>%
+        st_as_sf(coords = c("x", "y"), crs = 5070, remove = FALSE)
+      
+      point_2 <- observed_locs[i + 1,] %>%
+        st_as_sf(coords = c("x", "y"), crs = 5070, remove = FALSE)
+      
+      point_dist <- st_distance(point_1, point_2,) %>%
+        as.numeric(.)
+      
+      total_dist <- x[c(point_1$rownum, point_1$rownum:point_2$rownum),] %>%
+        as.data.frame() %>% 
+        prepData(type = "UTM") %>%
+        pull(step) %>%
+        sum(na.rm = TRUE)
+      
+      if(total_dist > (10*point_dist)){ #if the total step distance is more than 10 times the distance between observed points, replace with equally spaced between the points
+        x_step <- (point_2$x - point_1$x)/(point_2$rownum - point_1$rownum)
+        y_step <- (point_2$y - point_1$y)/(point_2$rownum - point_1$rownum)
+        for(j in (point_1$rownum+1):(point_2$rownum-1)){
+          #paste("Row number:", j) %>%  print()
+          loop_index <- j - point_1$rownum
+          
+          #paste("Initial x:", x$x[j]) %>%  print()
+          x$x[j] <- x$x[point_1$rownum] + (x_step*loop_index)
+          #paste("Final x:", x$x[j]) %>%  print()
+          
+          #paste("Initial y:", x$y[j]) %>%  print()
+          x$y[j] <- x$y[point_1$rownum] + (y_step*loop_index)
+          #paste("Final y:", x$y[j]) %>%  print()
+        }
+      } 
+    }
+    #Cleanup
+    x$rownum <- NULL
+    
+    #transform back to 4326
+    x_coords <- x %>%
+      st_as_sf(coords = c("x", "y"), crs = 5070) %>% 
+      st_transform(4326) %>% 
+      st_coordinates() %>% 
+      as.data.frame()
+    
+    x$x <- x_coords$X
+    x$y <- x_coords$Y
+    
+    return(x)
+  })
+
+amwo_hmm <- nested_birds_2 %>% 
+  unnest(cols = c(data))
+
+plan(sequential)
+```
+
+Determine the mean distance to the nearest 7 points
+```{r}
+plan(multisession)
+
+amwo_hmm$mean_dist_7 <- amwo_hmm %>% 
+  dplyr::select(ID, x, y) %>% 
+  future_pmap(function(ID_iter, x_iter, y_iter){
+    
+    iter_sf <- data.frame(x = x_iter, y = y_iter) %>% 
+      st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE)
+    
+    other_locs <- amwo_hmm %>%
+      st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE) %>%
+      filter(ID == ID_iter)
+    
+    st_distance(x = iter_sf, y = other_locs) %>% 
+      as.numeric() %>%
+      sort() %>%
+      .[2:8] %>% 
+      mean(na.rm = TRUE) %>% 
+      return()
+  }) %>% 
+  unlist()
+
+plan(sequential)
+```
+
+Determining the amount of time that the bird has spent/will spend within a 10km radius of the point
+```{r}
+plan(multisession)
+amwo_hmm$residence_time <- amwo_hmm %>% 
+  dplyr::select(ID, x, y) %>% 
+  future_pmap(function(ID_iter, x_iter, y_iter){
+    
+    iter_sf <- data.frame(x = x_iter, y = y_iter) %>% 
+      st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE) %>% 
+      st_transform(5070) %>% 
+      st_buffer(10000) %>% #10 km radius
+      transmute(intersection = 1)
+    
+    other_locs <- amwo_hmm %>%
+      st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE) %>%
+      filter(ID == ID_iter) %>% 
+      st_transform(5070) %>% 
+      transmute(date = ymd(date))
+    
+    intersected_locs <- other_locs %>% 
+      st_join(iter_sf) %>% 
+      filter(intersection == 1)
+    
+    as.numeric(max(intersected_locs$date, na.rm = TRUE) - min(intersected_locs$date), na.rm = TRUE) %>% 
+      return()
+  }, .progress = TRUE) %>% 
+  unlist()
+
+plan(sequential)
+```
+
+Determining the log distance from the first point to the current point
+```{r}
+plan(multisession)
+
+nested_birds_3 <- amwo_hmm %>%
+  group_by(ID) %>%
+  nest()
+
+nested_birds_3$data <- nested_birds_3 %>% 
+  pull(data) %>% 
+  future_map(.f = function(int){
+    
+    int <- int %>% 
+      st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE)
+    
+    dist_vect <- st_distance(x = int[1,], y = int, by_element = FALSE) %>% #results in meters
+      as.numeric() #NOTE: NEEDS sf 1.0-9 to work correctly
+    
+    # dist_vect <- log(dist_vect + 1.1)
+    dist_vect <- if_else(dist_vect < 16100, 0, 1)
+    
+    int <- int %>% 
+      st_drop_geometry() %>% 
+      mutate(dist_start = dist_vect)
+    
+    return(int)
+  }, .progress = TRUE)
+
+amwo_hmm <- nested_birds_3 %>% 
+  unnest(cols = c(data))
+
+plan(sequential)
+```
+
+Extract nonbreeding season abundance for each point
+```{r}
+ebirdst_breeding <- terra::rast(here("ebirdst_abundance", "amewoo_abundance_seasonal_nonbreeding_max_2021.tif"))
+
+amwo_hmm$breeding_abundance <- amwo_hmm %>% 
+  st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE) %>%
+  st_transform(st_crs(ebirdst_breeding)) %>% 
+  terra::vect() %>% 
+  terra::extract(x = ebirdst_breeding, y = .) %>% 
+  mutate(nonbreeding = if_else(is.na(nonbreeding), 0, nonbreeding)) %>% 
+  pull(nonbreeding) 
+
+amwo_hmm <- amwo_hmm %>% #simplify from abundance to breeding range
+  mutate(breeding_abundance = if_else(breeding_abundance > 0, 1, 0)) 
+```
+
+```{r}
+amwo_hmm <- amwo_hmm %>%
+  mutate(log_mean_dist_7 = log(mean_dist_7 + 0.1)) %>% #Adding a small # to deal with 0 distances 
+  as.data.frame() %>% 
+  prepData(type = "LL") %>% #, covNames = c("julian_day", "log_mean_dist_7")
+  mutate(step = round(step, digits = 4)) %>%   #round down to a tenth of a meter, which is higher than our GPS precision
+  mutate(step_500 = if_else(step < 30.2, 0, 1)) %>% #larger than 5km
+  mutate(step_500 = if_else(!is.na(step_500), step_500, 0))
+```
+
+remove a transient summer movement which throws off the hmm for VA-2020-52-2020. Add it back again at the end as a manually-delineated residential movement at the end (actually won't need to add it back in)
+```{r}
+# summer_transient_movement <- amwo_hmm %>%
+#   mutate(id_time = paste(ID, as.character(time))) %>% 
+#   filter(id_time == "VA-2020-52-2020 2020-06-18 21:00:00" | id_time == "VA-2020-52-2020 2020-06-28 14:00:00") %>%
+#   mutate(id_time = NULL)
+# 
+# amwo_hmm <- amwo_hmm %>%
+#   mutate(id_time = paste(ID, as.character(time))) %>% 
+#   filter(id_time != "VA-2020-52-2020 2020-06-18 21:00:00") %>%
+#   filter(id_time != "VA-2020-52-2020 2020-06-28 14:00:00") %>%
+#   mutate(id_time = NULL)
+
+# remove a late summer movement which throws off the hmm for SC-2020-13. Also removing all of RI-2020-31-2020, as it runs up and down the midatlantic coast and doesn't have consistency in southerly direction like we'd expect for a migration
+amwo_hmm <- amwo_hmm %>%
+  filter(!(ID == "SC-2020-13-2020" & time > ymd_hms("2020-08-27 00:00:00"))) %>%
+  filter(!(ID == "RI-2020-31-2020")) %>% 
+  filter(!(ID == "ME-2018-08-2018" & time > ymd_hms("2018-12-24 00:00:00") & time < ymd_hms("2018-12-26 00:00:00"))) %>% 
+  filter(!(ID == "NY-2018-04-2018" & time > ymd_hms("2018-11-22 00:00:00") & time < ymd_hms("2018-11-24 00:00:00"))) %>% 
+filter(!(ID == "PA-2021-38-2021" & time > ymd_hms("2022-01-29 12:00:00"))) #Note: this is going to either have to be manually categorized or categorized as "not designated" in the final model
+```
+
+remove birds with no individual step lengths >30.2km (20 miles). In practice this pulls birds that never initiate a substantial migratory movement but doesn't penalize birds that DO migrate, as they always make at least one substantial movement.
+Also recording which individuals are removed.
+
+Small, one-way movements do not move along a resource gradient, and thus are not migrations
+```{r}
+amwo_hmm$min.step <- ifelse(amwo_hmm$step > 30.2, 1, 0)
+individuals_removed_for_no_migratory_steps <- unique(amwo_hmm$ID [amwo_hmm$min.step == 1])
+amwo_hmm <- amwo_hmm[(amwo_hmm$ID %in% amwo_hmm$ID [amwo_hmm$min.step == 1]) , ]
+amwo_hmm$min.step <- NULL
+```
+
+Save data for use in the model
+```{r}
+save.image(file = here("classifier_fall", "fall_all_data.RData"))
+```
+

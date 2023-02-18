@@ -6,3 +6,20 @@ Fix to stay in the preceding state, or just ignore the difference between 3 and 
 
 *spring females*: 4-state
 all good!
+
+*fall all*: 4-state
+NJ-2018-08-2018 rm 1/7/19
+NY-2019-32-2019 should smooth out when 10km is used for steps
+PA-2021-34-2021 complicated issue...
+RI-2020-42-2020 problematic 4
+RI-2021-52-2021 not a mig?
+
+minus y and with 10k
+ME-2018-07-2018 classifies correctly (did it before?)
+NJ-2018-09-2018 is still an issue. Consider upping to 20km
+NS-2019-02-2019 doesn't settle, despite making in to 2/20. Why?
+
+
+
+
+
