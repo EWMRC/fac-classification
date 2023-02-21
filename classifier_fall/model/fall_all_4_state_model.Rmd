@@ -46,7 +46,7 @@ Label states and create distributions for movements
 Julian day isn't in here, as it only applies to transition probabilities
 ```{r}
 stateNames <- c("pre","migration", "stopover", "post")
-dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", dist_start = "bern", step_500 = "bern", breeding_abundance = "bern", log_mean_dist_7 = "norm", residence_time = "norm") #,
+dist <- list(step="gamma", angle="wrpcauchy", julian_day = "norm", dist_start = "bern", step_500 = "bern", breeding_abundance = "bern", log_mean_dist_7 = "norm", residence_time = "norm") # y = "norm",
 ```
 
 fix step length parameters and state transitions for the transition probability calculation
@@ -55,27 +55,27 @@ fixPar <- list(beta=matrix(c(NA, -1000, -1000, # pre-migration to transitions, c
                      -1000, NA, NA,  #once entered migration can't go back to pre
                      -1000, NA, -1000, #Once entered stopover, can only go back to migration
                      -1000, -1000, -1000), nrow = 1, byrow = TRUE), #once entered post-migration, can't leave
-               step_500 = c(NA, 0.999999999, NA, NA)) 
+               step_500 = c(0.000000001, 0.999999999, 0.000000001, 0.000000001)) 
 ```
 
 These serve as the starting parameters for the HMM to optimize for the data streams included in the random walk
 ```{r}
-Par0_m1 <- list(step=c(0.260422621, 1.222709e+02, 0.43958050, 0.305660933, #mean in km
-                       0.400384082, 1.379686e+02, 0.70153050, 0.499270487, # SD in km
-                       0.003361887, 3.196105e-67, 0.00308734, 0.001950549), #zeromass ie how many zeroes expected in the distribution
-                angle=c(9.972823e-05, -0.003611636, 0.06917188, -0.001081856, #mean
-                        9.331280e-01, 0.927557223, 0.16633055, 0.779827256), #concentration
-                y = c(42.903653, 38.560696, 37.939696, 33.785863,
-                      3.072624, 4.316646, 3.494462, 2.197339),
-                julian_day = c(231.74162, 265.07195, 277.61999, 313.77507, #priors pulled from the model w/o julian day
-                        25.46262, 26.45834, 26.12413, 24.97701),
-                log_mean_dist_7 = c(4.062360, 9.989322, 5.012713, 3.652682, #mean
-                                1.603215, 2.796832, 2.738608, 1.571083),
-                residence_time = c(56.20244, 8.167779, 26.30733, 71.02887, #mean
-                                   27.94377, 18.146496, 17.45733, 20.27082),
-                dist_start = c(0.01667985, 0.9264421, 0.9762556, 0.999999), #prob
-                step_500 = c(0.002585776, 0.99999, 7.754479e-09, 0.003630367), #prob
-                breeding_abundance = c(0.002562285, 0.2628888, 0.3822839, 0.6908077)) #sd
+Par0_m1 <- list(step=c(0.285413190, 3.901788e+02, 0.820544300, 0.297055354, #mean in km
+                       0.451352909, 4.324081e+02, 1.476813069, 0.489128003, # SD in km
+                       0.003165934, 3.196105e-67, 0.003368961, 0.001911813), #zeromass ie how many zeroes expected in the distribution
+                angle=c(-0.000239557, -0.06783009, 0.04822221, -0.001278146, #mean
+                        0.937255838, 0.28042682, 0.25919003, 0.804746106), #concentration
+                # y = c(42.862454, 39.823877, 37.643459, 33.899562,
+                #       3.101288, 4.254915, 3.484837, 2.230976),
+                julian_day = c(231.37508, 265.88534, 279.03653, 314.71185, #priors pulled from the model w/o julian day
+                        25.44738, 23.87641, 26.80304, 24.67712),
+                log_mean_dist_7 = c(4.066369, 7.982241, 4.996136, 3.611064, #mean
+                                1.598801, 3.910788, 2.739713, 1.568053),
+                residence_time = c(56.12920, 18.72699, 28.08602, 71.19991, #mean
+                                   28.01801, 24.23944, 20.06677, 19.72396),
+                dist_start = c(0.009571303, 0.6557964, 0.9229815, 0.999999), #prob
+                step_500 = c(0.0005653901, 0.99999, 7.594605e-09, 0.0001981839), #prob
+                breeding_abundance = c(0.001864007, 0.2303195, 0.4055553, 0.6898942)) #sd
                 # lat_diff_abs = c(0.01, 1, 0.01,
                 #                  0.01, 1, 0.01,
                 #                  0.026, 0.036, 0.026)) 
@@ -151,54 +151,19 @@ amwo_hmm_final <- amwo_hmm_final %>%
   group_modify(function(iter_df, y){
     iter_df <- iter_df %>%
       mutate(., row_num = 1:nrow(.))
-    
-    first_30km_step <- iter_df %>% 
-      filter(step > 30.2) %>% 
-      pull(row_num) %>% 
+
+    first_30km_step <- iter_df %>%
+      filter(step > 30.2) %>%
+      pull(row_num) %>%
       min(na.rm = TRUE)
-    
-    iter_df %>% 
-      mutate(point_state = if_else(row_num <= first_30km_step, 1, point_state)) %>% 
+
+    iter_df %>%
+      mutate(point_state = if_else(row_num <= first_30km_step, 1, point_state)) %>%
       return()
-    
+
   }) %>%
   ungroup() %>%
   mutate(row_num = NULL)
-
-# amwo_hmm_final <- amwo_hmm_final %>%
-#   group_by(ID) %>%
-#   group_modify(function(iter_df, y){
-#     #print(y$ID)
-#     iter_df <- iter_df %>%
-#       mutate(., row_num = 1:nrow(.))
-# 
-#     if(any(iter_df$point_state == 3) & any(iter_df$point_state == 4)){
-#       first_4_row <- iter_df %>%
-#         filter(point_state == 4) %>%
-#         pull(row_num) %>%
-#         min()
-# 
-#       last_3_row <- iter_df %>%
-#         filter(point_state == 3) %>%
-#         pull(row_num) %>%
-#         max()
-# 
-#       total_dist_moved <- iter_df[last_3_row:(first_4_row-1), "step"] %>%
-#         sum()
-# 
-#       if(total_dist_moved < 30.2){
-#         start_of_last_stopover <- iter_df[1:(last_3_row-1),] %>%
-#           filter(step_state == 2) %>% #the last stopover occurs right after the last mig step
-#           pull(row_num) %>%
-#           max(.) + 1
-# 
-#         iter_df[start_of_last_stopover:nrow(iter_df), "point_state"] <- 4
-#       }
-#     }
-#     return(iter_df)
-#   }) %>%
-#   ungroup() %>%
-#   mutate(row_num = NULL)
 ```
 
 Ruleset: If the total step distance between the end of 1 and the 1st 3 is less than 5 km, then everything until the last 3 in that sequence is 1
@@ -209,13 +174,13 @@ amwo_hmm_final <- amwo_hmm_final %>%
     if(pull(tail(iter_df, 1), point_state) == 4){ #if the last point is in a final state, all locations after the last 30.2 km movement are also in a final state
       iter_df <- iter_df %>%
         mutate(., row_num = 1:nrow(.))
-      
-      last_30km_step <- iter_df %>% 
-        filter(step > 30.2) %>% 
-        pull(row_num) %>% 
+
+      last_30km_step <- iter_df %>%
+        filter(step > 30.2) %>%
+        pull(row_num) %>%
         max(na.rm = TRUE)
-      
-      iter_df <- iter_df %>% 
+
+      iter_df <- iter_df %>%
         mutate(point_state = if_else(row_num > last_30km_step, 4, point_state))
     }
     return(iter_df)
@@ -223,39 +188,6 @@ amwo_hmm_final <- amwo_hmm_final %>%
   ungroup() %>%
   mutate(row_num = NULL)
 
-# amwo_hmm_final <- amwo_hmm_final %>%
-#   group_by(ID) %>%
-#   group_modify(function(iter_df, id){
-#     iter_df <- iter_df %>%
-#       mutate(., row_num = 1:nrow(.))
-# 
-#     if(any(iter_df$point_state == 3) & any(iter_df$point_state == 1)){
-#       first_3_row <- iter_df %>%
-#         filter(point_state == 3) %>%
-#         pull(row_num) %>%
-#         min()
-# 
-#       last_1_row <- iter_df %>%
-#         filter(point_state == 1) %>%
-#         pull(row_num) %>%
-#         max()
-# 
-#       total_dist_moved <- iter_df[last_1_row:(first_3_row-1), "step"] %>%
-#         sum()
-# 
-#       if(total_dist_moved < 30.2){
-#         end_of_first_stopover <- iter_df[first_3_row:nrow(iter_df),] %>%
-#           filter(step_state == 2) %>%
-#           pull(row_num) %>%
-#           min(.) - 1
-# 
-#         iter_df[1:end_of_first_stopover, "point_state"] <- 1
-#       }
-#     }
-#     return(iter_df)
-#   }) %>%
-#   ungroup() %>%
-#   mutate(row_num = NULL)
 ```
 
 Add back in the movement from the summer transient bird (VA-2020-52-2020), manually classified as post-mig
