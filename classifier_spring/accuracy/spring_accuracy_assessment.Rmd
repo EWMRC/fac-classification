@@ -24,7 +24,7 @@ Load data for use in the assessment
 load(file=here("classifier_spring", "spring_male_data.RData"))
 ```
 
-Determine which individuals *didn't* die too early (here defined as XX/XX)
+Determine which individuals *didn't* die too early (here defined as 5/15)
 ```{r}
 id_list <- unique(amwo_hmm$ID)
 id_list <- id_list[!(id_list %in% individuals_died_too_early)]
@@ -36,11 +36,6 @@ results <- readRDS(here("classifier_spring", "spring_male_5_state_model.rds"))
 ```
 
 Frontmatter: prepare the model
-
-Assign a starting state for each individual
-```{r}
-## rank observations (requires correct sorting), ifelse to covert first observations to state 1 and all others NA
-```
 
 Label states and create distributions for movements
 ```{r}
@@ -117,11 +112,8 @@ fit_and_predict <- function(.x, ks){
 ```
 
 
-# nd now for the accuracy assessment
+# and now for the accuracy assessment
 
-First: iterate through dates. Gonna start with a single date for now (6/15) and add an iterative framework on top of this. Note that this will likely be the level at which I implement parallel processing.
-
-Will likely need to subsample the ids down to a reasonable # for processing.
 ```{r}
 iterate_ids_male <- function(id_iter, jul_day_cutoff, rn){
   amwo_hmm_clipped <- amwo_hmm %>% #remove locations for the ID in question after the cutoff date
@@ -156,17 +148,25 @@ iterate_ids_male <- function(id_iter, jul_day_cutoff, rn){
 
 
 ```{r}
-cutoffs <- c("3/15/2020","4/15/2020", "5/15/2020", "6/15/2020") %>% 
+cutoffs <- c("3/15/2020", "4/1/2020", "4/15/2020", "5/1/2020", "5/15/2020") %>% 
   mdy() %>% 
   yday()
 
 #now iterating through individuals
 set.seed(8)
-id_subsample <- id_list %>% sample(size = 20)
+id_subsample <- id_list %>% sample(size = 50)
 
 parameters_to_run <- expand.grid(id_subsample, cutoffs) %>%
   mutate(rn = row_number())
 colnames(parameters_to_run) <- c("id_iter", "jul_day_cutoff", "rn")
+
+prior_results <- read.csv("accuracy_results_male.csv") %>% #ensure that I'm not duplicating past labor
+  transmute(combined = paste0(cutoff_date, "_",ID))
+
+parameters_to_run <- parameters_to_run %>% 
+  mutate(combined = paste0(jul_day_cutoff, "_",id_iter)) %>% 
+  filter(!(combined %in% prior_results$combined)) %>% 
+  mutate(combined = NULL)
 
 plan(multisession)
 tbl_list <- future_pmap(.l = parameters_to_run, 

@@ -1317,6 +1317,14 @@
         "viridisLite"
       ]
     },
+    "plotrix": {
+      "Package": "plotrix",
+      "Version": "3.8-2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "2ebe8c2ec200da649738b0fc35a9b1a1",
+      "Requirements": []
+    },
     "plyr": {
       "Package": "plyr",
       "Version": "1.8.8",

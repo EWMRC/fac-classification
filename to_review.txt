@@ -19,6 +19,17 @@ ME-2018-07-2018 classifies correctly (did it before?)
 NJ-2018-09-2018 is still an issue. Consider upping to 20km
 NS-2019-02-2019 doesn't settle, despite making in to 2/20. Why?
 
+Full with 30.2 km
+NJ-2018-03-2018 isn't a real mig
+NS-2019-02-2019 birds in delmarva aren't settling
+RI-2020-42-2020 settles too early
+RI-2021-52-2021 RI mig that didn't settle. I really need to take latitude out again.
+SC-2020-13-2020 stays in premig too late
+
+
+
+
+
 
 
 
