@@ -26,7 +26,7 @@ load(file=here("classifier_fall", "fall_all_data.RData"))
 
 Certain Rhode Island birds have a single pre-mig location before they migrate. Define those birds so that I can auto-classify their states as mig during classification, and stick them correctly into pre-mig in the after-classification editing
 ```{r}
-RI_problems <- c("RI-2020-33-2020", "RI-2020-34-2020", "RI-2020-35-2020", "RI-2020-42-2020", "RI-2020-43-2020", "RI-2020-44-2020", "RI-2021-48-2021", "RI-2021-49-2021", "RI-2020-30-2020", "RI-2020-32-2020")
+RI_problems <- c("RI-2020-33-2020", "RI-2020-34-2020", "RI-2020-35-2020", "RI-2020-42-2020", "RI-2020-43-2020", "RI-2020-44-2020", "RI-2021-48-2021", "RI-2021-49-2021", "RI-2020-30-2020", "RI-2020-32-2020", "SC-2020-13-2020", "VT-2020-14-2020")
 ```
 
 Assign a starting state for each individual
@@ -34,9 +34,19 @@ Assign a starting state for each individual
 ## rank observations (requires correct sorting), ifelse to covert first observations to state 1 and all others NA
 knownStates <- amwo_hmm %>%
   group_by(ID) %>%
-  mutate(ranks = row_number()) %>%
+  mutate(ranks = row_number()) %>% 
   mutate(known = ifelse(ranks == "1", 1, NA)) %>%
-  mutate(known = ifelse(known == 1 & ID %in% RI_problems, 2, known)) %>% 
+  mutate(known = ifelse(known == 1 & ID %in% RI_problems, 2, known)) %>%
+  group_modify(.f = function(x, y){
+    max_rank <- x %>% 
+      pull(ranks) %>% 
+      max()
+    if(pull(y, ID) %in% spring_init_dates$ID){
+      x <- x %>% 
+        mutate(known = ifelse(ranks == max_rank, 4, known))
+    }
+    return(x)
+  }) %>% 
   pull(known)
 ```
 
@@ -60,22 +70,22 @@ fixPar <- list(beta=matrix(c(NA, -1000, -1000, # pre-migration to transitions, c
 
 These serve as the starting parameters for the HMM to optimize for the data streams included in the random walk
 ```{r}
-Par0_m1 <- list(step=c(0.285413190, 3.901788e+02, 0.820544300, 0.297055354, #mean in km
-                       0.451352909, 4.324081e+02, 1.476813069, 0.489128003, # SD in km
-                       0.003165934, 3.196105e-67, 0.003368961, 0.001911813), #zeromass ie how many zeroes expected in the distribution
-                angle=c(-0.000239557, -0.06783009, 0.04822221, -0.001278146, #mean
-                        0.937255838, 0.28042682, 0.25919003, 0.804746106), #concentration
+Par0_m1 <- list(step=c(0.261500539, 3.838994e+02, 0.834030041, 0.261825163, #mean in km
+                       0.404219742, 4.410903e+02, 1.488383758, 0.425347015, # SD in km
+                       0.003181082, 3.196105e-67, 0.003409205, 0.001801455), #zeromass ie how many zeroes expected in the distribution
+                angle=c(-0.000203342, -0.07766199, 0.04102217, -0.001115973, #mean
+                        0.9361437423, 0.27836443, 0.25968012, 0.827444744), #concentration
                 # y = c(42.862454, 39.823877, 37.643459, 33.899562,
                 #       3.101288, 4.254915, 3.484837, 2.230976),
-                julian_day = c(231.37508, 265.88534, 279.03653, 314.71185, #priors pulled from the model w/o julian day
-                        25.44738, 23.87641, 26.80304, 24.67712),
-                log_mean_dist_7 = c(4.066369, 7.982241, 4.996136, 3.611064, #mean
-                                1.598801, 3.910788, 2.739713, 1.568053),
-                residence_time = c(56.12920, 18.72699, 28.08602, 71.19991, #mean
-                                   28.01801, 24.23944, 20.06677, 19.72396),
-                dist_start = c(0.009571303, 0.6557964, 0.9229815, 0.999999), #prob
-                step_500 = c(0.0005653901, 0.99999, 7.594605e-09, 0.0001981839), #prob
-                breeding_abundance = c(0.001864007, 0.2303195, 0.4055553, 0.6898942)) #sd
+                julian_day = c(231.3170, 266.31026, 279.18957, 316.30196, 
+                        25.4405, 24.72308, 24.87789, 24.78954),
+                log_mean_dist_7 = c(4.062038, 7.953790, 4.951820, 3.563583, #mean
+                                1.593476, 3.889766, 2.663651, 1.548703),
+                residence_time = c(56.03299, 19.56778, 30.27572, 72.30254, #mean
+                                   28.02860, 24.80717, 20.52254, 19.56757),
+                dist_start = c(0.003826158, 0.6588471, 0.9374171, 0.9968719), #prob
+                step_500 = c(0.00001, 0.99999, 0.00001, 0.00001), #prob
+                breeding_abundance = c(0.003084936, 0.2362899, 0.4301947, 0.6869913)) #sd
                 # lat_diff_abs = c(0.01, 1, 0.01,
                 #                  0.01, 1, 0.01,
                 #                  0.026, 0.036, 0.026)) 

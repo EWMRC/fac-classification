@@ -27,13 +27,10 @@ RI-2021-52-2021 RI mig that didn't settle. I really need to take latitude out ag
 SC-2020-13-2020 stays in premig too late
 
 2/21/23 minus 30.2 with 30.2 fixed for all states
-NY-2019-22-2019 check mig states
-RI-2019-28-2019 great example of a really late settler
-RI-2020-42-2020 still settles too early. Unclear why. Movement on 1/21.
+RI-2020-42-2020 still settles too early. Unclear why. Movement on 1/21. *** Still an issue
 RI-2021-47-2021 makes a movement starting on 1/29 that leads to things breaking
 RI-2021-57-2021 secondary movement starting on 1/03
-SC-2020-13-2020 bugged, add to RI problems list
-VT-2020-14-2020 same
+
 
 
 
