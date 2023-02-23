@@ -24,6 +24,10 @@ Load data for use in the assessment
 load(file=here("classifier_spring", "spring_male_data.RData"))
 ```
 
+```{r}
+RI_problems <- c("AL-2022-20-2022", "NJ-2018-03-2019", "QUE-2020-17-2021", "RI-2019-24-2020", "VT-2021-27-2022")
+```
+
 Determine which individuals *didn't* die too early (here defined as 5/15)
 ```{r}
 id_list <- unique(amwo_hmm$ID)
@@ -50,7 +54,7 @@ fixPar <- list(beta=matrix(c(NA,	-10000,	-10000,	-10000,
                              -10000,	NA,	-10000, -10000, 
                              -10000, -10000, -10000, NA, 
                              -10000,	-10000,	-10000,	NA), nrow = 1, byrow = TRUE),
-               step_500 = c(NA, 0.999999999, NA, NA, NA)) 
+               step_500 = c(0.000000001, 0.999999999, 0.000000001, 0.000000001, 0.000000001)) 
 ```
 
 These serve as the starting parameters for the HMM to optimize.
@@ -75,7 +79,7 @@ Par0_m1 <- list(step=c(0.293641627, 79.029506936, 0.157361645, 0.250739740, 0.08
 
 Create a function that fits the model, predicts states for each step (predicted and observed) and input in the dataset. Note: the listed x y is the starting location of the step. Then use this to determine what the bird's state was at any given point
 ```{r}
-fit_and_predict <- function(.x, ks){
+fit_and_predict <- function(.x){
   set.seed(8)
   m1 <- fitHMM(data=.x, nbStates=5, dist=dist, Par0 = Par0_m1,
                estAngleMean = list(angle=TRUE),
@@ -83,7 +87,7 @@ fit_and_predict <- function(.x, ks){
                #userBounds = userBounds,
                #workBounds = workBounds,
                #DM = DM,
-               knownStates = ks,
+               knownStates = knownStates,
                #formula = ~step_cov, #state 2 to 3. page 47 of vignette shows how to create the beta matrix
                stateNames = stateNames)
   
@@ -104,8 +108,16 @@ fit_and_predict <- function(.x, ks){
     } else{ #in all other circumstances, return the current step state
       return(.x[i,"step_state"])
     }
-
+    
   }) %>% unlist()
+  
+  #Fix the RI problem birds
+  .x <- .x %>% 
+    group_by(ID) %>%
+    mutate(ranks = row_number()) %>%
+    mutate(point_state = ifelse(ranks == "1" & ID %in% RI_problems, 1, point_state)) %>% 
+    ungroup() %>% 
+    dplyr::select(-ranks)
   
   return(list(model = m1, results = .x))
 }
@@ -123,6 +135,9 @@ iterate_ids_male <- function(id_iter, jul_day_cutoff, rn){
     group_by(ID) %>%
     mutate(ranks = row_number()) %>%
     mutate(known = ifelse(ranks == "1", 1, NA)) %>%
+    mutate(known = ifelse(ID == "NC-2021-25-2021" & julian_day == 139, 2, known)) %>% 
+    mutate(known = ifelse(ID == "VT-2020-05-2021" & julian_day == 99, 2, known)) %>% 
+    mutate(known = ifelse(known == 1 & ID %in% RI_problems, 2, known)) %>% 
     pull(known)
   
   results_modified <- fit_and_predict(amwo_hmm_clipped, ks = knownStates)
@@ -148,7 +163,7 @@ iterate_ids_male <- function(id_iter, jul_day_cutoff, rn){
 
 
 ```{r}
-cutoffs <- c("3/15/2020", "4/1/2020", "4/15/2020", "5/1/2020", "5/15/2020") %>% 
+cutoffs <- c("3/15/2020", "4/1/2020", "4/15/2020", "5/1/2020", "5/15/2020", "6/1/2020", "6/15/2020") %>% 
   mdy() %>% 
   yday()
 
@@ -159,6 +174,9 @@ id_subsample <- id_list %>% sample(size = 50)
 parameters_to_run <- expand.grid(id_subsample, cutoffs) %>%
   mutate(rn = row_number())
 colnames(parameters_to_run) <- c("id_iter", "jul_day_cutoff", "rn")
+
+parameters_to_run <- parameters_to_run %>% #if I omit the bird from the model, omit it from the accuracy evaluation
+  filter(!(id_iter %in% c("RI-2019-21-2020", "RI-2019-28-2020", "RI-2019-29-2020", "VA-2018-03-2018")))
 
 prior_results <- read.csv("accuracy_results_male.csv") %>% #ensure that I'm not duplicating past labor
   transmute(combined = paste0(cutoff_date, "_",ID))
@@ -214,6 +232,6 @@ ggplot(data = accuracy_results_male, mapping = aes(x = cutoff_date, y = percent_
   scale_y_continuous(labels = scales::percent) +
   labs(y = "Percent error", x = "Julian day", col = "Classification error")
 
-ggsave("spring_male_classification_error_2_21_23.png", width = 7, height = 5)
+ggsave("spring_male_classification_error_2_22_23.png", width = 7, height = 5)
 ```
 

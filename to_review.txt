@@ -1,35 +1,18 @@
---- 2/15/23 *spring males*
-FL-2021-01-2021 manually demarkate
+*spring males*
+all good = )
 
-General issue: current model forces the last point of migration into a stopover state. 
-Fix to stay in the preceding state, or just ignore the difference between 3 and 4.
+General issue: current model forces the last point of 2 into 3
+Just going to ignore the difference between 3 and 4.
 
-*spring females*: 4-state
-all good!
+*spring females*
 
-*fall all*: 4-state
-NJ-2018-08-2018 rm 1/7/19
-NY-2019-32-2019 should smooth out when 10km is used for steps
-PA-2021-34-2021 complicated issue...
-RI-2020-42-2020 problematic 4
-RI-2021-52-2021 not a mig?
+add to RI problems:
+## ME-2018-13-2019
 
-minus y and with 10k
-ME-2018-07-2018 classifies correctly (did it before?)
-NJ-2018-09-2018 is still an issue. Consider upping to 20km
-NS-2019-02-2019 doesn't settle, despite making in to 2/20. Why?
+SC-2019-03-2019 example of a female that doesn't settle
 
-Full with 30.2 km
-NJ-2018-03-2018 isn't a real mig
-NS-2019-02-2019 birds in delmarva aren't settling
-RI-2020-42-2020 settles too early
-RI-2021-52-2021 RI mig that didn't settle. I really need to take latitude out again.
-SC-2020-13-2020 stays in premig too late
-
-2/21/23 minus 30.2 with 30.2 fixed for all states
-RI-2020-42-2020 still settles too early. Unclear why. Movement on 1/21. *** Still an issue
-RI-2021-47-2021 makes a movement starting on 1/29 that leads to things breaking
-RI-2021-57-2021 secondary movement starting on 1/03
+*fall all*
+all good = )
 
 
 

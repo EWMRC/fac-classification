@@ -127,7 +127,7 @@ individuals_died_too_early <- amwo_spring_males %>%
   group_by(ID) %>%
   summarise(max_time = max(time)) %>%
   mutate(max_date = mdy(paste0(month(max_time), "/", day(max_time), "/2020"))) %>%
-  filter(max_date < (mdy("12/15/2020") - days_subtract)) %>%
+  filter(max_date < (mdy("1/15/2021") - days_subtract)) %>%
   pull(ID)
 ```
 
@@ -567,7 +567,9 @@ amwo_hmm <- amwo_hmm %>%
   filter(!(ID == "RI-2020-31-2020")) %>% 
   filter(!(ID == "ME-2018-08-2018" & time > ymd_hms("2018-12-24 00:00:00") & time < ymd_hms("2018-12-26 00:00:00"))) %>% 
   filter(!(ID == "NY-2018-04-2018" & time > ymd_hms("2018-11-22 00:00:00") & time < ymd_hms("2018-11-24 00:00:00"))) %>% 
-filter(!(ID == "PA-2021-38-2021" & time > ymd_hms("2022-01-29 12:00:00"))) #Note: this is going to either have to be manually categorized or categorized as "not designated" in the final model
+filter(!(ID == "PA-2021-38-2021" & time > ymd_hms("2022-01-29 12:00:00"))) %>% 
+  filter(!(ID == "NJ-2018-03-2018" & time == ymd_hms("2019-01-18 02:59:12")))
+  #Note: this is going to either have to be manually categorized or categorized as "not designated" in the final model
 ```
 
 remove birds with no individual step lengths >30.2km (20 miles). In practice this pulls birds that never initiate a substantial migratory movement but doesn't penalize birds that DO migrate, as they always make at least one substantial movement.

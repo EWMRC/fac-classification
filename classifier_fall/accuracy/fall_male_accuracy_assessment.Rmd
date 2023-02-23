@@ -1,0 +1,236 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+editor_options:
+  chunk_output_type: inline
+---
+```{r include=FALSE}
+library(tidyverse)
+library(lubridate)
+library(move)
+library(momentuHMM)
+library(leaflet)
+library(RColorBrewer)
+library(sf)
+library(furrr)
+library(here)
+library(crawl)
+```
+
+Load data for use in the assessment
+```{r}
+load(file=here("classifier_fall", "fall_all_data.RData"))
+```
+
+```{r}
+RI_problems <- c("RI-2020-33-2020", "RI-2020-34-2020", "RI-2020-35-2020", "RI-2020-42-2020", "RI-2020-43-2020", "RI-2020-44-2020", "RI-2021-48-2021", "RI-2021-49-2021", "RI-2020-30-2020", "RI-2020-32-2020", "SC-2020-13-2020", "VT-2020-14-2020")
+```
+
+Determine which individuals *didn't* die too early (here defined as 12/15, probably need to bump this up to 1/15)
+```{r}
+id_list <- unique(amwo_hmm$ID)
+id_list <- id_list[!(id_list %in% individuals_died_too_early)]
+```
+
+Load the results object
+```{r}
+results <- readRDS(here("classifier_fall", "fall_all_4_state_model.rds"))
+```
+
+Frontmatter: prepare the model
+
+Label states and create distributions for movements
+```{r}
+stateNames <- c("pre","migration", "stopover", "post")
+dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", dist_start = "bern", step_500 = "bern", breeding_abundance = "bern", log_mean_dist_7 = "norm", residence_time = "norm") # ,
+```
+
+fix step length parameters and state transitions
+```{r}
+fixPar <- list(beta=matrix(c(NA, -1000, -1000, # pre-migration to transitions, can't go pre- to post
+                     -1000, NA, NA,  #once entered migration can't go back to pre
+                     -1000, NA, -1000, #Once entered stopover, can only go back to migration
+                     -1000, -1000, -1000), nrow = 1, byrow = TRUE), #once entered post-migration, can't leave
+               step_500 = c(0.000000001, 0.999999999, 0.000000001, 0.000000001)) 
+```
+
+These serve as the starting parameters for the HMM to optimize.
+```{r}
+Par0_m1 <- list(step=c(0.261500539, 3.838994e+02, 0.834030041, 0.261825163, #mean in km
+                       0.404219742, 4.410903e+02, 1.488383758, 0.425347015, # SD in km
+                       0.003181082, 3.196105e-67, 0.003409205, 0.001801455), #zeromass ie how many zeroes expected in the distribution
+                angle=c(-0.000203342, -0.07766199, 0.04102217, -0.001115973, #mean
+                        0.9361437423, 0.27836443, 0.25968012, 0.827444744), #concentration
+                y = c(42.862454, 39.823877, 37.643459, 33.899562,
+                      3.101288, 4.254915, 3.484837, 2.230976),
+                julian_day = c(231.3170, 266.31026, 279.18957, 316.30196, 
+                        25.4405, 24.72308, 24.87789, 24.78954),
+                log_mean_dist_7 = c(4.062038, 7.953790, 4.951820, 3.563583, #mean
+                                1.593476, 3.889766, 2.663651, 1.548703),
+                residence_time = c(56.03299, 19.56778, 30.27572, 72.30254, #mean
+                                   28.02860, 24.80717, 20.52254, 19.56757),
+                dist_start = c(0.003826158, 0.6588471, 0.9374171, 0.9968719), #prob
+                step_500 = c(0.00001, 0.99999, 0.00001, 0.00001), #prob
+                breeding_abundance = c(0.003084936, 0.2362899, 0.4301947, 0.6869913)) #sd
+                # lat_diff_abs = c(0.01, 1, 0.01,
+                #                  0.01, 1, 0.01,
+                #                  0.026, 0.036, 0.026)) 
+```
+
+Create a function that fits the model, predicts states for each step (predicted and observed) and input in the dataset. Note: the listed x y is the starting location of the step. Then use this to determine what the bird's state was at any given point
+```{r}
+fit_and_predict <- function(.x){
+  set.seed(8)
+  m1 <- fitHMM(data=.x, nbStates=4, dist=dist, Par0 = Par0_m1,
+               estAngleMean = list(angle=TRUE),
+               fixPar=fixPar,
+               knownStates = knownStates,
+               #formula = ~julian_day, #state 2 to 3. page 47 of vignette shows how to create the beta matrix. Formula for transition probabilities
+               stateNames = stateNames)#nlmPar=list(print.level=2)
+  
+  .x$step_state <- viterbi(m1)
+  
+  #step state shows the bird's behavior between points, point state shows the birds behavior at points
+  .x$point_state <- map(1:nrow(.x),  function(i){
+    if(i == 1){
+      return(1) #for the first row, return 1 
+      return(1)
+    } else if(.x[i,"step_state"] == .x[i-1,"step_state"]){ #is the current step state the same as the last step state? Return the current step state
+      return(.x[i,"step_state"])
+    } else if(.x[i,"step_state"] == 2 & .x[i-1,"step_state"] == 1){ #is the current step state mig and the previous step pre-mig? Return pre-mig
+      return(1) 
+    } else if(.x[i,"step_state"] == 2 & .x[i-1,"step_state"] == 3){#is the current step state mig and the previous step stopover? Return stopover
+      return(3) 
+    } else{ #in all other circumstances, return the current step state
+      return(.x[i,"step_state"])
+    }
+    
+  }) %>% unlist()
+  
+  #step state shows the bird's behavior between points, point state shows the birds behavior at points
+  
+  #Fix the RI problem birds
+  .x <- .x %>% 
+    group_by(ID) %>%
+    mutate(ranks = row_number()) %>%
+    mutate(point_state = ifelse(ranks == "1" & ID %in% RI_problems, 1, point_state)) %>% 
+    ungroup() %>% 
+    dplyr::select(-ranks)
+  
+  return(list(model = m1, results = .x))
+}
+```
+
+
+# and now for the accuracy assessment
+
+```{r}
+iterate_ids <- function(id_iter, jul_day_cutoff, rn){
+  amwo_hmm_clipped <- amwo_hmm %>% #remove locations for the ID in question after the cutoff date
+    filter(!(ID == id_iter & julian_day > jul_day_cutoff))
+  
+  knownStates <- amwo_hmm_clipped %>%
+    group_by(ID) %>%
+    mutate(ranks = row_number()) %>%
+    mutate(known = ifelse(ranks == "1", 1, NA)) %>%
+    mutate(known = ifelse(ID == "RI-2020-42-2020" & julian_day == 331, 2, known)) %>% #fix a bird which goes into 4 too early
+    mutate(known = ifelse(known == 1 & ID %in% RI_problems, 2, known)) %>% 
+    pull(known)
+  
+  results_modified <- fit_and_predict(amwo_hmm_clipped, ks = knownStates)
+  
+  #retrieve the modified ending state
+  end_state_modified <- results_modified$results %>% 
+    filter(ID == id_iter & julian_day == jul_day_cutoff) %>% 
+    pull(point_state)
+  
+  #retrieve the real ending state
+  end_state_true <- results %>% 
+    filter(ID == id_iter & julian_day == jul_day_cutoff) %>% 
+    pull(point_state)
+  
+  #report the cutoff date, ID, modified ending state, and real ending state in a tibble, which will be the output of the loop
+  tibble(cutoff_date = jul_day_cutoff,
+         ID = id_iter,
+         end_modified = end_state_modified,
+         end_true = end_state_true) %>% 
+    return()
+}
+```
+
+
+```{r}
+cutoffs <- c("10/1/2020", "10/15/2020", "11/1/2020", "11/15/2020", "12/1/2020", "12/15/2020", "1/1/2021", "1/15/2021", "2/1/2021", "2/15/2021") %>% 
+  mdy(.) - days_subtract %>% 
+  yday()
+
+#now iterating through individuals
+set.seed(8)
+id_subsample <- id_list %>% sample(size = 50)
+
+parameters_to_run <- expand.grid(id_subsample, cutoffs) %>%
+  mutate(rn = row_number())
+colnames(parameters_to_run) <- c("id_iter", "jul_day_cutoff", "rn")
+
+parameters_to_run <- parameters_to_run %>% #if I omit the bird from the model, omit it from the accuracy evaluation
+  filter(!(id_iter %in% c("PA-2019-13-2019", "RI-2019-18-2019", "RI-2019-29-2019", "VT-2020-04-2020", "FL-2021-01-2021")))
+
+prior_results <- read.csv("accuracy_results_fall.csv") %>% #ensure that I'm not duplicating past labor
+  transmute(combined = paste0(cutoff_date, "_",ID))
+
+parameters_to_run <- parameters_to_run %>% 
+  mutate(combined = paste0(jul_day_cutoff, "_",id_iter)) %>% 
+  filter(!(combined %in% prior_results$combined)) %>% 
+  mutate(combined = NULL)
+
+plan(multisession)
+tbl_list <- future_pmap(.l = parameters_to_run, 
+                        .f = iterate_ids, 
+                        .options = furrr_options(seed = 8))
+plan(sequential)
+```
+
+
+```{r}
+accuracy_results_fall <- tbl_list %>% 
+  do.call(rbind, .)
+
+# Append results to previous runs
+write.table(accuracy_results_fall, "accuracy_results_fall.csv",
+          append = TRUE,
+          sep = ",",
+          col.names = TRUE,
+          row.names = FALSE,
+          quote = FALSE)
+```
+
+# Read the results back in and plot
+```{r}
+accuracy_results_fall <- read_csv("accuracy_results_fall.csv")
+```
+
+Coding the results in a ggplot-friendly format
+```{r}
+accuracy_results_fall <- accuracy_results_fall %>% 
+  mutate(false_mig = if_else((end_modified == 2 | end_modified == 3) & (end_true == 4 | end_true == 5), 1, 0)) %>% 
+  mutate(false_postmig = if_else((end_true == 2 | end_true == 3) & (end_modified == 4 | end_modified == 5), 1, 0)) %>% 
+  pivot_longer(cols = c("false_mig", "false_postmig"), names_to = "test", values_to = "result") %>% 
+  group_by(cutoff_date, test) %>% 
+  summarise(percent_error = mean(result), std_err = plotrix::std.error(result)) %>% 
+  ungroup()
+```
+
+```{r}
+ggplot(data = accuracy_results_fall, mapping = aes(x = cutoff_date, y = percent_error, col = test)) +
+  geom_point(position=position_dodge(width=4)) +
+  geom_errorbar(aes(ymin = percent_error - std_err*1.96, ymax = percent_error + std_err*1.96), width = 2,
+                position=position_dodge(width=4),) +
+  theme_bw() +
+  scale_y_continuous(labels = scales::percent) +
+  labs(y = "Percent error", x = "Julian day", col = "Classification error")
+
+ggsave("fall_classification_error_2_22_23.png", width = 7, height = 5)
+```
+

@@ -6,9 +6,27 @@ output:
 editor_options:
   chunk_output_type: inline
 ---
+```{r include=FALSE}
+library(tidyverse)
+library(lubridate)
+library(move)
+library(momentuHMM)
+library(leaflet)
+library(RColorBrewer)
+library(sf)
+library(furrr)
+library(here)
+library(crawl)
+```
+
 Load data
 ```{r}
 load(file=here("classifier_spring", "spring_male_data.RData"))
+```
+
+Certain birds have a single pre-mig location before they migrate. Define those birds so that I can auto-classify their states as mig during classification, and stick them correctly into pre-mig in the after-classification editing
+```{r}
+RI_problems <- c("AL-2022-20-2022", "NJ-2018-03-2019", "QUE-2020-17-2021", "RI-2019-24-2020", "VT-2021-27-2022")
 ```
 
 Assign a starting state for each individual
@@ -18,6 +36,9 @@ knownStates <- amwo_hmm %>%
   group_by(ID) %>%
   mutate(ranks = row_number()) %>%
   mutate(known = ifelse(ranks == "1", 1, NA)) %>%
+  mutate(known = ifelse(ID == "NC-2021-25-2021" & julian_day == 139, 2, known)) %>% 
+  mutate(known = ifelse(ID == "VT-2020-05-2021" & julian_day == 99, 2, known)) %>% 
+  mutate(known = ifelse(known == 1 & ID %in% RI_problems, 2, known)) %>% 
   pull(known)
 ```
 
@@ -36,7 +57,7 @@ fixPar <- list(beta=matrix(c(NA,	-10000,	-10000,	-10000,
                              -10000,	NA,	-10000, -10000, 
                              -10000, -10000, -10000, NA, 
                              -10000,	-10000,	-10000,	NA), nrow = 1, byrow = TRUE),
-               step_500 = c(NA, 0.999999999, NA, NA, NA)) 
+               step_500 = c(0.000000001, 0.999999999, 0.000000001, 0.000000001, 0.000000001)) 
 ```
 
 These serve as the starting parameters for the HMM to optimize.
@@ -90,8 +111,16 @@ fit_and_predict <- function(.x){
     } else{ #in all other circumstances, return the current step state
       return(.x[i,"step_state"])
     }
-
+    
   }) %>% unlist()
+  
+  #Fix the RI problem birds
+  .x <- .x %>% 
+    group_by(ID) %>%
+    mutate(ranks = row_number()) %>%
+    mutate(point_state = ifelse(ranks == "1" & ID %in% RI_problems, 1, point_state)) %>% 
+    ungroup() %>% 
+    dplyr::select(-ranks)
   
   return(list(model = m1, results = .x))
 }
@@ -117,7 +146,7 @@ print(end_time)
 Add back in the movement from the summer transient bird (VA-2020-52-2020), manually classified as post-mig
 ```{r}
 summer_transient_movement %>%
-  mutate(step_state = c(rep(5,19), NA), point_state = 5) ->
+  mutate(step_state = c(rep(5,10), NA), point_state = 5) ->
   summer_transient_movement
 
 amwo_hmm_final %>%
@@ -125,73 +154,45 @@ amwo_hmm_final %>%
   amwo_hmm_final
 ```
 
-Ruleset: If the total step distance between the start of 4 and the most recent 3 is less than 5 km, then everything from the top of the most recent 3 down is 4
+Ruleset: If the total step distance between the end of 1 and the 1st 3 is less than 30.2 km, then everything until the last 3 in that sequence is 1
 ```{r}
 amwo_hmm_final <- amwo_hmm_final %>%
   group_by(ID) %>%
-  group_modify(function(iter_df, ...){
+  group_modify(function(iter_df, y){
     iter_df <- iter_df %>%
       mutate(., row_num = 1:nrow(.))
 
-    if(any(iter_df$point_state == 3) & any(iter_df$point_state == 4 |iter_df$point_state == 5)){
-      first_4_row <- iter_df %>%
-        filter(point_state == 4 | point_state == 5) %>%
-        pull(row_num) %>%
-        min()
+    first_30km_step <- iter_df %>%
+      filter(step > 30.2) %>%
+      pull(row_num) %>%
+      min(na.rm = TRUE)
 
-      last_3_row <- iter_df %>%
-        filter(point_state == 3) %>%
-        pull(row_num) %>%
-        max()
+    iter_df %>%
+      mutate(point_state = if_else(row_num <= first_30km_step, 1, point_state)) %>%
+      return()
 
-      total_dist_moved <- iter_df[last_3_row:(first_4_row-1), "step"] %>%
-        sum()
-
-      if(total_dist_moved < 5){
-        start_of_last_stopover <- iter_df[1:(last_3_row-1),] %>%
-          filter(point_state == 2) %>%
-          pull(row_num) %>%
-          max(.) + 1
-
-        iter_df[start_of_last_stopover:nrow(iter_df), "point_state"] <- 4
-      }
-    }
-    return(iter_df)
   }) %>%
   ungroup() %>%
   mutate(row_num = NULL)
 ```
 
-Ruleset: If the total step distance between the end of 1 and the 1st 3 is less than 5 km, then everything until the last 3 in that sequence is 1
+Ruleset: If the total step distance between the start of 4 and the most recent 3 is less than 30.2 km, then everything from the top of the most recent 3 down is 4
 ```{r}
 amwo_hmm_final <- amwo_hmm_final %>%
   group_by(ID) %>%
-  group_modify(function(iter_df, id){
-    iter_df <- iter_df %>%
-      mutate(., row_num = 1:nrow(.))
+  group_modify(function(iter_df, y){
+    final_state <- pull(tail(iter_df, 1), point_state)
+    if(final_state == 4 | final_state == 5){ #if the last point is in a final state, all locations after the last 30.2 km movement are also in a final state
+      iter_df <- iter_df %>%
+        mutate(., row_num = 1:nrow(.))
 
-    if(any(iter_df$point_state == 3) & any(iter_df$point_state == 2)){
-      first_3_row <- iter_df %>%
-        filter(point_state == 3) %>%
+      last_30km_step <- iter_df %>%
+        filter(step > 30.2) %>%
         pull(row_num) %>%
-        min()
+        max(na.rm = TRUE)
 
-      last_1_row <- iter_df %>%
-        filter(point_state == 1) %>%
-        pull(row_num) %>%
-        max()
-
-      total_dist_moved <- iter_df[last_1_row:(first_3_row-1), "step"] %>%
-        sum()
-
-      if(total_dist_moved < 5){
-        end_of_first_stopover <- iter_df[first_3_row:nrow(iter_df),] %>%
-          filter(point_state == 2) %>%
-          pull(row_num) %>%
-          min(.) - 1
-
-        iter_df[1:end_of_first_stopover, "point_state"] <- 1
-      }
+      iter_df <- iter_df %>%
+        mutate(point_state = if_else(row_num > last_30km_step & (point_state %in% c(1,2,3)), 4, point_state))
     }
     return(iter_df)
   }) %>%

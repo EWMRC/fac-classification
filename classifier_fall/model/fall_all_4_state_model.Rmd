@@ -36,6 +36,7 @@ knownStates <- amwo_hmm %>%
   group_by(ID) %>%
   mutate(ranks = row_number()) %>% 
   mutate(known = ifelse(ranks == "1", 1, NA)) %>%
+  mutate(known = ifelse(ID == "RI-2020-42-2020" & julian_day == 331, 2, known)) %>% #fix a bird which goes into 4 too early
   mutate(known = ifelse(known == 1 & ID %in% RI_problems, 2, known)) %>%
   group_modify(.f = function(x, y){
     max_rank <- x %>% 
@@ -56,7 +57,7 @@ Label states and create distributions for movements
 Julian day isn't in here, as it only applies to transition probabilities
 ```{r}
 stateNames <- c("pre","migration", "stopover", "post")
-dist <- list(step="gamma", angle="wrpcauchy", julian_day = "norm", dist_start = "bern", step_500 = "bern", breeding_abundance = "bern", log_mean_dist_7 = "norm", residence_time = "norm") # y = "norm",
+dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", dist_start = "bern", step_500 = "bern", breeding_abundance = "bern", log_mean_dist_7 = "norm", residence_time = "norm") # ,
 ```
 
 fix step length parameters and state transitions for the transition probability calculation
@@ -75,8 +76,8 @@ Par0_m1 <- list(step=c(0.261500539, 3.838994e+02, 0.834030041, 0.261825163, #mea
                        0.003181082, 3.196105e-67, 0.003409205, 0.001801455), #zeromass ie how many zeroes expected in the distribution
                 angle=c(-0.000203342, -0.07766199, 0.04102217, -0.001115973, #mean
                         0.9361437423, 0.27836443, 0.25968012, 0.827444744), #concentration
-                # y = c(42.862454, 39.823877, 37.643459, 33.899562,
-                #       3.101288, 4.254915, 3.484837, 2.230976),
+                y = c(42.862454, 39.823877, 37.643459, 33.899562,
+                      3.101288, 4.254915, 3.484837, 2.230976),
                 julian_day = c(231.3170, 266.31026, 279.18957, 316.30196, 
                         25.4405, 24.72308, 24.87789, 24.78954),
                 log_mean_dist_7 = c(4.062038, 7.953790, 4.951820, 3.563583, #mean
@@ -152,9 +153,7 @@ print(start_time)
 print(end_time)
 ```
 
-
-Ruleset: If the total step distance between the start of 4 and the most recent 3 is less than 5 km, then everything from the top of the most recent 3 down is 4
-
+Ruleset: If the total step distance between the end of 1 and the 1st 3 is less than 30.2 km, then everything until the last 3 in that sequence is 1
 ```{r}
 amwo_hmm_final <- amwo_hmm_final %>%
   group_by(ID) %>%
@@ -176,12 +175,13 @@ amwo_hmm_final <- amwo_hmm_final %>%
   mutate(row_num = NULL)
 ```
 
-Ruleset: If the total step distance between the end of 1 and the 1st 3 is less than 5 km, then everything until the last 3 in that sequence is 1
+Ruleset: If the total step distance between the start of 4 and the most recent 3 is less than 30.2 km, then everything from the top of the most recent 3 down is 4
 ```{r}
 amwo_hmm_final <- amwo_hmm_final %>%
   group_by(ID) %>%
   group_modify(function(iter_df, y){
-    if(pull(tail(iter_df, 1), point_state) == 4){ #if the last point is in a final state, all locations after the last 30.2 km movement are also in a final state
+    final_state <- pull(tail(iter_df, 1), point_state)
+    if(final_state == 4){ #if the last point is in a final state, all locations after the last 30.2 km movement are also in a final state
       iter_df <- iter_df %>%
         mutate(., row_num = 1:nrow(.))
 
@@ -251,7 +251,8 @@ amwo_hmm_final <- amwo_hmm_final %>%
   filter(ID != "PA-2019-13-2019",
          ID != "RI-2019-18-2019",
          ID != "RI-2019-29-2019",
-         ID != "VT-2020-04-2020")
+         ID != "VT-2020-04-2020",
+         ID != "FL-2021-01-2021")
 ```
 
 ```{r}

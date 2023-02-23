@@ -143,7 +143,7 @@ individuals_died_too_early <- amwo_spring_males %>%
   group_by(ID) %>%
   summarise(max_time = max(time)) %>%
   mutate(max_date = mdy(paste0(month(max_time), "/", day(max_time), "/2020"))) %>%
-  filter(max_date < mdy("5/15/2020")) %>%
+  filter(max_date < mdy("6/15/2020")) %>%
   pull(ID)
 ```
 
@@ -298,6 +298,85 @@ amwo_hmm <- nested_birds_2 %>%
 plan(sequential)
 ```
 
+Identify when there is > 30.2 km between observed points, and remove all predicted points between them
+```{r include = FALSE}
+plan(multisession)
+nested_birds_2.5 <- amwo_hmm %>%
+  group_by(ID) %>%
+  nest()
+
+nested_birds_2.5$data <- nested_birds_2 %>% 
+  pull(data) %>% 
+  future_map(.f = function(x){
+
+    x <- x %>% 
+      mutate(., rownum = 1:nrow(.))
+    
+    #Transform to 5070 so I can interpolate points
+    # x_coords <- x %>%
+    #   st_as_sf(coords = c("x", "y"), crs = 4326) %>% 
+    #   st_transform(5070) %>% 
+    #   st_coordinates() %>% 
+    #   as.data.frame()
+    # 
+    # x$x <- x_coords$X
+    # x$y <- x_coords$Y
+    
+    observed_locs <- x %>%
+      filter(locType == "o")
+    
+    rows_to_delete <- numeric()
+    
+    for(i in 1:(nrow(observed_locs)-1)){
+      #print(i)
+      point_1 <- observed_locs[i,] %>%
+        st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE) %>% 
+        st_transform(5070)
+      
+      point_2 <- observed_locs[i + 1,] %>%
+        st_as_sf(coords = c("x", "y"), crs = 4326, remove = FALSE) %>% 
+        st_transform(5070)
+      
+      point_dist <- st_distance(point_1, point_2,) %>%
+        as.numeric(.)
+      
+      # total_dist <- x[c(point_1$rownum, point_1$rownum:point_2$rownum),] %>%
+      #   as.data.frame() %>% 
+      #   prepData(type = "UTM") %>%
+      #   pull(step) %>%
+      #   sum(na.rm = TRUE)
+      
+      if(point_dist > 30200){ 
+        rows_to_delete <- rows_to_delete %>% 
+          append(values = (point_1$rownum + 1):(point_2$rownum - 1))
+      } 
+    }
+    
+    x <- x %>% 
+      filter(!(rownum %in% rows_to_delete))
+    
+    #Cleanup
+    x$rownum <- NULL
+    
+    #transform back to 4326
+    # x_coords <- x %>%
+    #   st_as_sf(coords = c("x", "y"), crs = 5070) %>% 
+    #   st_transform(4326) %>% 
+    #   st_coordinates() %>% 
+    #   as.data.frame()
+    # 
+    # x$x <- x_coords$X
+    # x$y <- x_coords$Y
+    
+    return(x)
+  })
+
+amwo_hmm <- nested_birds_2.5 %>% 
+  unnest(cols = c(data))
+
+plan(sequential)
+```
+
 Determine the mean distance to the nearest 7 points
 ```{r}
 plan(multisession)
@@ -412,7 +491,7 @@ amwo_hmm <- amwo_hmm %>%
   as.data.frame() %>%
   prepData(type = "LL") %>% #, covNames = c("julian_day", "log_mean_dist_7")
   mutate(step = round(step, digits = 4)) %>%   #round down to a tenth of a meter, which is higher than our GPS precision
-  mutate(step_500 = if_else(step < 5, 0, 1)) %>% #larger than 5km
+  mutate(step_500 = if_else(step < 30.2, 0, 1)) %>% #larger than 5km
   mutate(step_500 = if_else(!is.na(step_500), step_500, 0))
 ```
 
