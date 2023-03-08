@@ -81,12 +81,12 @@ Par0_m1 <- list(step=c(0.261500539, 3.838994e+02, 0.834030041, 0.261825163, #mea
 
 Create a function that fits the model, predicts states for each step (predicted and observed) and input in the dataset. Note: the listed x y is the starting location of the step. Then use this to determine what the bird's state was at any given point
 ```{r}
-fit_and_predict <- function(.x){
+fit_and_predict <- function(.x, ks){
   set.seed(8)
   m1 <- fitHMM(data=.x, nbStates=4, dist=dist, Par0 = Par0_m1,
                estAngleMean = list(angle=TRUE),
                fixPar=fixPar,
-               knownStates = knownStates,
+               knownStates = ks,
                #formula = ~julian_day, #state 2 to 3. page 47 of vignette shows how to create the beta matrix. Formula for transition probabilities
                stateNames = stateNames)#nlmPar=list(print.level=2)
   
@@ -163,8 +163,9 @@ iterate_ids <- function(id_iter, jul_day_cutoff, rn){
 
 ```{r}
 cutoffs <- c("10/1/2020", "10/15/2020", "11/1/2020", "11/15/2020", "12/1/2020", "12/15/2020", "1/1/2021", "1/15/2021", "2/1/2021", "2/15/2021") %>% 
-  mdy(.) - days_subtract %>% 
-  yday()
+  mdy(.) - days_subtract
+
+cutoffs <- yday(cutoffs)
 
 #now iterating through individuals
 set.seed(8)
@@ -176,22 +177,42 @@ colnames(parameters_to_run) <- c("id_iter", "jul_day_cutoff", "rn")
 
 parameters_to_run <- parameters_to_run %>% #if I omit the bird from the model, omit it from the accuracy evaluation
   filter(!(id_iter %in% c("PA-2019-13-2019", "RI-2019-18-2019", "RI-2019-29-2019", "VT-2020-04-2020", "FL-2021-01-2021")))
+```
 
-prior_results <- read.csv("accuracy_results_fall.csv") %>% #ensure that I'm not duplicating past labor
-  transmute(combined = paste0(cutoff_date, "_",ID))
+Take out iterations that would result in fewer than 1 rows for the bird of concern, and eliminate iterations that I've already run
+```{r}
+parameters_to_run$valid <- parameters_to_run %>% 
+  dplyr::select(id_iter, jul_day_cutoff) %>% 
+  pmap(.f = function(id_iter, jul_day_cutoff){
+  amwo_hmm_clipped <- amwo_hmm %>% #remove locations for the ID in question after the cutoff date
+    filter(ID == id_iter & julian_day < jul_day_cutoff)
+  
+  if_else(nrow(amwo_hmm_clipped) > 1, TRUE, FALSE) %>% 
+    return()
+})
 
 parameters_to_run <- parameters_to_run %>% 
-  mutate(combined = paste0(jul_day_cutoff, "_",id_iter)) %>% 
-  filter(!(combined %in% prior_results$combined)) %>% 
-  mutate(combined = NULL)
+  filter(valid == TRUE) %>% 
+  dplyr::select(-valid)
 
+# prior_results <- read.csv("accuracy_results_fall.csv") %>% #ensure that I'm not duplicating past labor
+#   transmute(combined = paste0(cutoff_date, "_",ID))
+# 
+# parameters_to_run <- parameters_to_run %>% 
+#   mutate(combined = paste0(jul_day_cutoff, "_",id_iter)) %>% 
+#   filter(!(combined %in% prior_results$combined)) %>% 
+#   mutate(combined = NULL)
+```
+
+Run the process in parallel
+```{r}
 plan(multisession)
 tbl_list <- future_pmap(.l = parameters_to_run, 
                         .f = iterate_ids, 
-                        .options = furrr_options(seed = 8))
+                        .options = furrr_options(seed = 8),
+                        .progress = TRUE)
 plan(sequential)
 ```
-
 
 ```{r}
 accuracy_results_fall <- tbl_list %>% 
@@ -201,7 +222,7 @@ accuracy_results_fall <- tbl_list %>%
 write.table(accuracy_results_fall, "accuracy_results_fall.csv",
           append = TRUE,
           sep = ",",
-          col.names = TRUE,
+          col.names = FALSE,
           row.names = FALSE,
           quote = FALSE)
 ```

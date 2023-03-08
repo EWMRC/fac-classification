@@ -232,6 +232,6 @@ ggplot(data = accuracy_results_male, mapping = aes(x = cutoff_date, y = percent_
   scale_y_continuous(labels = scales::percent) +
   labs(y = "Percent error", x = "Julian day", col = "Classification error")
 
-ggsave("spring_male_classification_error_2_22_23.png", width = 7, height = 5)
+ggsave("spring_male_classification_error_2_27_23.png", width = 7, height = 5)
 ```
 

@@ -76,7 +76,7 @@ Par0_m1 <- list(step=c(0.260832696, 9.429288e+01, 0.323209095, 0.1581120, #mean 
 
 Create a function that fits the model, predicts states for each step (predicted and observed) and input in the dataset. Note: the listed x y is the starting location of the step. Then use this to determine what the bird's state was at any given point
 ```{r}
-fit_and_predict <- function(.x){
+fit_and_predict <- function(.x, ks){
   set.seed(8)
   m1 <- fitHMM(data=.x, nbStates=4, dist=dist, Par0 = Par0_m1,
                estAngleMean = list(angle=TRUE),
@@ -84,7 +84,7 @@ fit_and_predict <- function(.x){
                #userBounds = userBounds,
                #workBounds = workBounds,
                #DM = DM,
-               knownStates = knownStates,
+               knownStates = ks,
                #formula = ~step_cov, #state 2 to 3. page 47 of vignette shows how to create the beta matrix
                stateNames = stateNames)
   
@@ -179,13 +179,13 @@ colnames(parameters_to_run) <- c("id_iter", "jul_day_cutoff", "rn")
 parameters_to_run <- parameters_to_run %>% #if I omit the bird from the model, omit it from the accuracy evaluation
   filter(!(id_iter %in% c("NJ-2019-28-2020", "NS-2019-02-2020", "RI-2020-42-2021", "RI-2021-47-2022", "RI-2021-52-2022", "NY-2022-40-2022")))
 
-prior_results <- read.csv("accuracy_results_female.csv") %>% #ensure that I'm not duplicating past labor
-  transmute(combined = paste0(cutoff_date, "_",ID))
-
-parameters_to_run <- parameters_to_run %>% 
-  mutate(combined = paste0(jul_day_cutoff, "_",id_iter)) %>% 
-  filter(!(combined %in% prior_results$combined)) %>% 
-  mutate(combined = NULL)
+# prior_results <- read.csv("accuracy_results_female.csv") %>% #ensure that I'm not duplicating past labor
+#   transmute(combined = paste0(cutoff_date, "_",ID))
+# 
+# parameters_to_run <- parameters_to_run %>% 
+#   mutate(combined = paste0(jul_day_cutoff, "_",id_iter)) %>% 
+#   filter(!(combined %in% prior_results$combined)) %>% 
+#   mutate(combined = NULL)
 
 plan(multisession)
 tbl_list <- future_pmap(.l = parameters_to_run, 
@@ -203,7 +203,7 @@ accuracy_results_female <- tbl_list %>%
 write.table(accuracy_results_female, "accuracy_results_female.csv",
           append = TRUE,
           sep = ",",
-          col.names = TRUE,
+          col.names = FALSE,
           row.names = FALSE,
           quote = FALSE)
 ```
@@ -233,6 +233,6 @@ ggplot(data = accuracy_results_female, mapping = aes(x = cutoff_date, y = percen
   scale_y_continuous(labels = scales::percent) +
   labs(y = "Percent error", x = "Julian day", col = "Classification error")
 
-ggsave("spring_female_classification_error_2_22_23.png", width = 7, height = 5)
+ggsave("spring_female_classification_error_2_27_23.png", width = 7, height = 5)
 ```
 
