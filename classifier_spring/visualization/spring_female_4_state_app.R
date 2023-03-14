@@ -31,7 +31,7 @@ server <- function(input, output) {
   amwoData.sm <- readRDS(here::here("classifier_spring", "spring_female_4_state_model.rds"))
   
   amwoData.sm %>%
-    mutate(ID = as.character(ID)) ->
+    mutate(ID = as.character(ID)) -> ##TEST CODE: REMOVE ME
     amwoData.sm
   
   individual_stepper <- reactiveValues() #These values can be defined w/in a reactive expression and will be remembered in other reactive expressions

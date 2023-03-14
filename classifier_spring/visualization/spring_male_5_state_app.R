@@ -60,7 +60,7 @@ server <- function(input, output) {
         "blue"
       } else {
         "red"
-      } })
+      } }) 
   }
   
   individual_stepper$icons <- awesomeIcons(
