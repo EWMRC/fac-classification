@@ -97,7 +97,7 @@ amwo_spring_males <- amwo_spring_males %>%
 Add a julian day column (new data stream)
 ```{r}
 amwo_spring_males <- amwo_spring_males %>%
-  mutate(julian_day = yday(ymd(date)- days_subtract)) #subtracting to make sure that January julian days don't wrap around
+  mutate(julian_day = yday(ymd(date) - days_subtract)) #subtracting to make sure that January julian days don't wrap around
 ```
 
 Flag individuals tagged after October 15th on the year of observation so that I can mark their initial stationary state as uncertain
