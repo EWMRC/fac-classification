@@ -114,6 +114,8 @@ amwo_spring_males <- amwo_spring_males %>%
 ```
 
 Flag individuals tagged after February 15th on the year of observation so that I can mark their initial stationary state as uncertain
+
+No longer using these in the analysis, but keeping for future reference
 ```{r include = FALSE}
 # Comment this out if running repeatedly; otherwise it will just slow down the code
 # googledrive::as_id("https://drive.google.com/file/d/19JA5OztH3hS4MPfVnH5zswDxSSLcWxL3/view?usp=sharing") %>%
@@ -133,7 +135,7 @@ individuals_tagged_too_late <- amwo_spring_males %>%
 
 Flag individuals which died before May 15th on the year of observation so that I can mark their final stationary state as uncertain. Don't worry about the 2020 thing, it's just a standardized year.
 
-### This will bias any survival analyses done with these designations ###
+No longer using these in the analysis, but keeping for future reference
 ```{r}
 individuals_died_too_early <- amwo_spring_males %>%
   group_by(ID) %>%
@@ -493,7 +495,7 @@ amwo_hmm <- amwo_hmm %>%
   mutate(step_500 = if_else(!is.na(step_500), step_500, 0))
 ```
 
-remove a transient summer movement which throws off the hmm for VA-2020-52-2020. Add it back again at the end as a manually-delineated residential movement at the end
+remove a transient summer movement which throws off the hmm for VA-2020-52-2020. Also throw out a winter ranging movement
 ```{r}
 summer_transient_movement <- amwo_hmm %>%
   filter(ID == "VA-2020-52-2020" & julian_day > 160)
@@ -502,7 +504,8 @@ summer_transient_movement <- amwo_hmm %>%
   #mutate(id_time = NULL)
 
 amwo_hmm <- amwo_hmm %>%
-  filter(!(ID == "VA-2020-52-2020" & julian_day > 160))
+  filter(!(ID == "VA-2020-52-2020" & julian_day > 160)) %>% 
+  filter(!(ID == "NJ-2018-03-2019" & julian_day == 17))
   # mutate(id_time = paste(ID, as.character(time))) %>% 
   # filter(id_time != "VA-2020-52-2020 2020-06-19 01:59:28") %>%
   # filter(id_time != "VA-2020-52-2020 2020-06-28 19:01:20") %>%

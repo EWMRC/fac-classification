@@ -24,19 +24,47 @@ Load data
 load(file=here("classifier_fall", "fall_all_data.RData"))
 ```
 
-Certain Rhode Island birds have a single pre-mig location before they migrate. Define those birds so that I can auto-classify their states as mig during classification, and stick them correctly into pre-mig in the after-classification editing
+Define those birds for which I should estimate starting states (birds tagged in VA or NJ in this season)
+Defining "tagged this season" as "tagged less than 2 months (~60 days) before the first location of this seasonal delineation"
 ```{r}
-RI_problems <- c("RI-2020-33-2020", "RI-2020-34-2020", "RI-2020-35-2020", "RI-2020-42-2020", "RI-2020-43-2020", "RI-2020-44-2020", "RI-2021-48-2021", "RI-2021-49-2021", "RI-2020-30-2020", "RI-2020-32-2020", "SC-2020-13-2020", "VT-2020-14-2020")
+starting_state_key <- amwo_hmm %>% #How many days before the first location of the season was this bird captured?
+  left_join(capture_dates) %>% 
+  group_by(ID) %>% 
+  nest() %>%
+  mutate(days_from_capture_to_first_loc = map(.x = data, .f = function(iter_df){
+    first_time <- iter_df %>% 
+      head(n = 1) %>% 
+      pull(time)
+    
+    cap_date <- iter_df %>% 
+      head(n = 1) %>% 
+      pull(capture_date)
+    
+    as.numeric(first_time - cap_date)/24 %>% #diff time is in hours, convert to days
+      return()
+  }))
+
+starting_state_key <- starting_state_key %>% 
+  mutate(estimate_starting_state = if_else((str_detect(ID, pattern = "VA") | str_detect(ID, pattern = "NJ")) & days_from_capture_to_first_loc < 60, true = TRUE, false = FALSE)) %>% 
+  dplyr::select(ID, estimate_starting_state) %>% 
+  ungroup()
+
+amwo_hmm <- amwo_hmm %>% 
+  left_join(starting_state_key)
 ```
 
 Assign a starting state for each individual
+This looks clunky, but it's necessary to maintain a momentuHMMData class
+Can probably get rid of some exceptions after running the revised known states
 ```{r}
 ## rank observations (requires correct sorting), ifelse to covert first observations to state 1 and all others NA
-knownStates <- amwo_hmm %>%
+known_state_key <- amwo_hmm %>%
   group_by(ID) %>%
   mutate(ranks = row_number()) %>% 
-  mutate(known = NA) %>% 
-  # mutate(known = ifelse(ranks == "1", 1, NA)) %>%
+  mutate(known = ifelse(estimate_starting_state == FALSE & ranks == 1, yes = 1, no = NA)) %>% #if this is the first row of an ID for which I don't want to estimate starting state, the initial step is 1
+  mutate(r1p1s2 = if_else(known == 1 & step > 30.2, true = TRUE, false = FALSE)) %>% #if known == 1 and step >30.2, mark as a "rank 1 point 1 step 2" event to be reclassified in post-processing
+  mutate(r1p1s2 = replace_na(r1p1s2, replace = FALSE)) %>% #deals with NA issues 
+  mutate(known = ifelse(step > 30.2, 2, known)) %>% #if step length is >30.2, then it must be mig (even if known is already 1) 
   mutate(known = ifelse(ID == "RI-2020-42-2020" & julian_day == 331, 2, known)) %>% #fix a bird which goes into 4 too early
   # mutate(known = ifelse(known == 1 & ID %in% RI_problems, 2, known)) %>%
   group_modify(.f = function(x, y){ #if we know that the bird has a spring migration after this, it must settle
@@ -49,7 +77,12 @@ knownStates <- amwo_hmm %>%
     }
     return(x)
   }) %>% 
-  pull(known)
+  ungroup()
+
+amwo_hmm$known <- known_state_key$known
+amwo_hmm$r1p1s2 <- known_state_key$r1p1s2
+
+knownStates <- amwo_hmm$known
 ```
 
 ##### trying 3-state model with fixed state transitions
@@ -153,6 +186,12 @@ print(start_time)
 print(end_time)
 ```
 
+Fix the r1p1s2 issue
+```{r}
+amwo_hmm_final <- amwo_hmm_final %>% 
+  mutate(point_state = if_else(r1p1s2 == TRUE, 1, point_state))
+```
+
 What is the starting state for any given classification?
 ```{r}
 amwo_hmm_final <- amwo_hmm_final %>%
@@ -241,7 +280,8 @@ amwo_hmm_final <- amwo_hmm_final %>%
          ID != "RI-2019-18-2019",
          ID != "RI-2019-29-2019",
          ID != "VT-2020-04-2020",
-         ID != "FL-2021-01-2021")
+         ID != "FL-2021-01-2021",
+         ID != "NJ-2018-11-2018") #this is probably a residential bird with a 30km movement, like FL 03
 ```
 
 ```{r}

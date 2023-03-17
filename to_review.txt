@@ -14,9 +14,10 @@ SC-2019-03-2019 example of a female that doesn't settle
 *fall all*
 all good = )
 
-Accuracy assessments
-Initial accuracy assessments complete for all seasons, and proofing done to ensure that there aren't fallacious cutouts left from past categorizations. Closes #3 
+*Integrated classifier*
+AL-2020-03 mig too early (2020-03-07), maybe too late (2020-04-22)
 
+AL-2020-05 late mig point on 2020-03-29, but starting points are okay
 
 
 

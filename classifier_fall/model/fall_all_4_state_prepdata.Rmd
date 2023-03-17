@@ -101,6 +101,8 @@ amwo_spring_males <- amwo_spring_males %>%
 ```
 
 Flag individuals tagged after October 15th on the year of observation so that I can mark their initial stationary state as uncertain
+
+No longer using these in the analysis, but keeping for future reference
 ```{r include = FALSE}
 # Comment this out if running repeatedly; otherwise it will just slow down the code
 # googledrive::as_id("https://drive.google.com/file/d/19JA5OztH3hS4MPfVnH5zswDxSSLcWxL3/view?usp=sharing") %>%
@@ -119,7 +121,8 @@ individuals_tagged_too_late <- amwo_spring_males %>%
 ```
 
 Flag individuals which died before December 15th on the year of observation so that I can mark their final stationary state as uncertain. 
-### This will bias any survival analyses done with these designations ###
+
+No longer using these in the analysis, but keeping for future reference
 ```{r}
 individuals_died_too_early <- amwo_spring_males %>%
   mutate(time = time - days_subtract) %>%
@@ -567,7 +570,10 @@ amwo_hmm <- amwo_hmm %>%
   filter(!(ID == "ME-2018-08-2018" & time > ymd_hms("2018-12-24 00:00:00") & time < ymd_hms("2018-12-26 00:00:00"))) %>% 
   filter(!(ID == "NY-2018-04-2018" & time > ymd_hms("2018-11-22 00:00:00") & time < ymd_hms("2018-11-24 00:00:00"))) %>% 
 filter(!(ID == "PA-2021-38-2021" & time > ymd_hms("2022-01-29 12:00:00"))) %>% 
-  filter(!(ID == "NJ-2018-03-2018" & time == ymd_hms("2019-01-18 02:59:12")))
+  filter(!(ID == "NJ-2018-03-2018" & time == ymd_hms("2019-01-18 02:59:12"))) %>% 
+  filter(!(ID == "PA-2018-01-2018" & julian_day == 298)) %>% #ranging movement
+  filter(!(ID == "PA-2019-15-2019" & julian_day == 290)) %>%  #ranging movement pt1
+  filter(!(ID == "PA-2019-15-2019" & julian_day == 291)) #ranging movement pt2
   #Note: this is going to either have to be manually categorized or categorized as "not designated" in the final model
 ```
 

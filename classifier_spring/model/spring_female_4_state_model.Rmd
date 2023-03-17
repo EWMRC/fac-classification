@@ -24,27 +24,60 @@ Load data for use in the model
 load(file=here("classifier_spring", "spring_female_data.RData"))
 ```
 
-Certain birds have a single pre-mig location before they migrate. Define those birds so that I can auto-classify their states as mig during classification, and stick them correctly into pre-mig in the after-classification editing
+Define those birds for which I should estimate starting states (birds tagged in VA, NJ, or MD in this season)
+Defining "tagged this season" as "tagged less than 2 months (~60 days) before the first location of this seasonal delineation"
 ```{r}
-RI_problems <- c("ME-2018-13-2019")
+starting_state_key <- amwo_hmm %>% #How many days before the first location of the season was this bird captured?
+  left_join(capture_dates) %>% 
+  group_by(ID) %>% 
+  nest() %>%
+  mutate(days_from_capture_to_first_loc = map(.x = data, .f = function(iter_df){
+    first_time <- iter_df %>% 
+      head(n = 1) %>% 
+      pull(time)
+    
+    cap_date <- iter_df %>% 
+      head(n = 1) %>% 
+      pull(capture_date)
+    
+    as.numeric(first_time - cap_date)/24 %>% #diff time is in hours, convert to days
+      return()
+  }))
+
+starting_state_key <- starting_state_key %>% 
+  mutate(estimate_starting_state = if_else((str_detect(ID, pattern = "VA") | str_detect(ID, pattern = "NJ") | str_detect(ID, pattern = "MD")) & days_from_capture_to_first_loc < 60, true = TRUE, false = FALSE)) %>% 
+  mutate(estimate_starting_state = if_else(ID %in% c("NJ-2018-13-2019", "NJ-2018-15-2019"), true = FALSE, false = estimate_starting_state)) %>% #Two birds were tagged in Dec, but didn't start taking points until much later, which causes the estimator to push them into mig as an initial states
+  dplyr::select(ID, estimate_starting_state) %>% 
+  ungroup()
+
+amwo_hmm <- amwo_hmm %>% 
+  left_join(starting_state_key)
 ```
 
 Assign a starting state for each individual
+This looks clunky, but it's necessary to maintain a momentuHMMData class
+I should be able to take many of the individual exceptions after these changes
 ```{r}
 ## rank observations (requires correct sorting), ifelse to covert first observations to state 1 and all others NA
-knownStates <- amwo_hmm %>%
+known_state_key <- amwo_hmm %>%
   group_by(ID) %>%
-  mutate(ranks = row_number()) %>%
-  mutate(known = NA) %>% 
-  # mutate(known = ifelse(ranks == "1", 1, NA)) %>%
-  mutate(known = ifelse(ID == "VA-2019-22-2019" & ranks < 6, 1, known)) %>% #accidentally slips into 3 too early
+  mutate(ranks = row_number()) %>% # rank observations (requires correct sorting), ifelse to convert first observations to state 1 and all others NA
+  ungroup() %>% 
+  mutate(known = ifelse(estimate_starting_state == FALSE & ranks == 1, yes = 1, no = NA)) %>%
+  mutate(r1p1s2 = if_else(known == 1 & step > 30.2, true = TRUE, false = FALSE)) %>% #if known == 1 and step >30.2, mark as a "rank 1 point 1 step 2" event to be reclassified in post-processing
+  mutate(r1p1s2 = replace_na(r1p1s2, replace = FALSE)) %>% #deals with NA issues
+  mutate(known = ifelse(step > 30.2, 2, known)) %>% #if step length is >30.2, then it must be mig (even if known is already 1) 
   mutate(known = ifelse(ID == "VA-2021-91-2021" & ranks %in% c(16, 17, 18), 2, known)) %>% #crw stops the bird from slipping into mig
   mutate(known = ifelse(ID == "VA-2021-92-2021" & ranks %in% c(6, 7, 8), 2, known)) %>% #crw stops the bird from slipping into mig
   mutate(known = ifelse(ID == "NJ-2018-15-2019" & julian_day == 46, 2, known)) %>% 
   mutate(known = ifelse(ID == "VA-2019-22-2019" & julian_day == 99, 2, known)) %>% 
-  mutate(known = ifelse(ID == "ME-2018-13-2019" & julian_day == 161, 2, known)) %>% 
+  mutate(known = ifelse(ID == "ME-2018-13-2019" & julian_day == 161, 2, known))  
   # mutate(known = ifelse(known == 1 & ID %in% RI_problems, 2, known)) %>%
-  pull(known)
+
+amwo_hmm$known <- known_state_key$known
+amwo_hmm$r1p1s2 <- known_state_key$r1p1s2
+
+knownStates <- amwo_hmm$known
 ```
 
 ##### trying 5-state model
@@ -114,14 +147,6 @@ fit_and_predict <- function(.x){
     }
   }) %>% unlist()
   
-  #Fix the RI problem birds
-  # .x <- .x %>% 
-  #   group_by(ID) %>%
-  #   mutate(ranks = row_number()) %>%
-  #   mutate(point_state = ifelse(ranks == "1" & ID %in% RI_problems, 1, point_state)) %>% 
-  #   ungroup() %>% 
-  #   dplyr::select(-ranks)
-  
   return(list(model = m1, results = .x))
 }
 ```
@@ -141,6 +166,12 @@ results_initial$model #probabilities of transition
 
 print(start_time)
 print(end_time)
+```
+
+Fix the r1p1s2 issue
+```{r}
+amwo_hmm_final <- amwo_hmm_final %>% 
+  mutate(point_state = if_else(r1p1s2 == TRUE, 1, point_state))
 ```
 
 What is the starting state for any given classification?

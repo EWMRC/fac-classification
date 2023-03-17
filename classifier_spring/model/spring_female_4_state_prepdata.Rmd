@@ -52,7 +52,7 @@ amwo_spring <- amwo_spring %>%
 amwo_spring <- amwo_spring %>%
   mutate(t = strftime(time, format="%H:%M"),
          date = strftime(time, format="%Y-%m-%d")) #%>%
-  #distinct(date, ID, .keep_all = TRUE) # remove multiple locations on same day, mainly retaining only 1 of 3 locations 1st day after marking
+#distinct(date, ID, .keep_all = TRUE) # remove multiple locations on same day, mainly retaining only 1 of 3 locations 1st day after marking
 ```
 
 Converting all age classes to juvenile and adult
@@ -118,13 +118,15 @@ amwo_spring_males <- amwo_spring_males %>%
 ```
 
 Flag individuals tagged after February 15th on the year of observation so that I can mark their initial stationary state as uncertain
+
+No longer using these in the analysis, but keeping for future reference
 ```{r include = FALSE}
 # Comment this out if running repeatedly; otherwise it will just slow down the code
 # googledrive::as_id("https://drive.google.com/file/d/19JA5OztH3hS4MPfVnH5zswDxSSLcWxL3/view?usp=sharing") %>%
 #         googledrive::drive_download(path = here("capture_sheet.xlsx"), overwrite = TRUE)
 
 capture_dates <- readxl::read_excel(here("capture_sheet.xlsx"), col_types = c("text", "text", "date", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text")) %>%
-        mutate(`Argos_ID` = as.character(`Argos_ID`)) %>%
+  mutate(`Argos_ID` = as.character(`Argos_ID`)) %>%
   transmute(animal_name = `Movebank_ID`,
             capture_date = Date)
 
@@ -137,7 +139,7 @@ individuals_tagged_too_late <- amwo_spring_males %>%
 
 Flag individuals which died before May 15th on the year of observation so that I can mark their final stationary state as uncertain. Don't worry about the 2020 thing, it's just a standardized year.
 
-### This will bias any survival analyses done with these designations ###
+No longer using these in the analysis, but keeping for future reference
 ```{r}
 individuals_died_too_early <- amwo_spring_males %>%
   group_by(ID) %>%
@@ -159,24 +161,24 @@ nested_birds <- group_by(amwo_spring_males, ID) %>%
 # Fit model to each bird. Constrain velocity autoregression parameter to c(-7,2)
 # full effective range of the beta parameter (according to D Johnson)
 nested_birds <- mutate(nested_birds,
-                fit = purrr::map(data, ~{crawl::crwMLE(mov.model=~1, 
-                                                       data=.x, 
-                                                       coord=c("lon", "lat"), # movement model = ~1 bc no covariates
-                                                       Time.name="time",
-                                                       #time.scale='hours', # sometimes need to turn this on, sometimes don't
-                                                       method="L-BFGS-B", # there are different optimization methods, default didn't work but this did
-                                                       constr=list(lower=c(-Inf,-7), upper=c(Inf,2)),
-                                                       attempts=20,
-                                                       time.scale = "hours")}
-                )
+                       fit = purrr::map(data, ~{crawl::crwMLE(mov.model=~1, 
+                                                              data=.x, 
+                                                              coord=c("lon", "lat"), # movement model = ~1 bc no covariates
+                                                              Time.name="time",
+                                                              #time.scale='hours', # sometimes need to turn this on, sometimes don't
+                                                              method="L-BFGS-B", # there are different optimization methods, default didn't work but this did
+                                                              constr=list(lower=c(-Inf,-7), upper=c(Inf,2)),
+                                                              attempts=20,
+                                                              time.scale = "hours")}
+                       )
 )
 
 nested_birds <- mutate(nested_birds,
-                pred = purrr::map(fit, ~{
-                  crawl::crwPredict(.x, predTime="24 hours", return.type='flat') %>% # use 24 hours, NOT 1 day (because it rounds to the unit)
-                    crawl::crw_as_tibble()
-                }
-                )
+                       pred = purrr::map(fit, ~{
+                         crawl::crwPredict(.x, predTime="24 hours", return.type='flat') %>% # use 24 hours, NOT 1 day (because it rounds to the unit)
+                           crawl::crw_as_tibble()
+                       }
+                       )
 )
 
 unnested_birds <- dplyr::select(nested_birds, ID, pred) %>% unnest(cols=pred)
@@ -212,7 +214,7 @@ amwo_hmm <- amwo_hmm %>%
   mutate(lat_diff_abs = abs(lat_diff)) %>% 
   dplyr::select(ID, animal_name, year, locType, x, y, time, date, julian_day) %>% 
   as.data.frame()
-  
+
 ```
 
 Identify loops produced by the crawl and replace them with evenly-spaced points
@@ -225,7 +227,7 @@ nested_birds_2 <- amwo_hmm %>%
 nested_birds_2$data <- nested_birds_2 %>% 
   pull(data) %>% 
   future_map(.f = function(x){
-
+    
     x <- x %>% 
       mutate(., rownum = 1:nrow(.))
     
@@ -308,7 +310,7 @@ nested_birds_2.5 <- amwo_hmm %>%
 nested_birds_2.5$data <- nested_birds_2 %>% 
   pull(data) %>% 
   future_map(.f = function(x){
-
+    
     x <- x %>% 
       mutate(., rownum = 1:nrow(.))
     
@@ -406,7 +408,7 @@ plan(sequential)
 
 Determining the amount of time that the bird has spent/will spend within a 10km radius of the point
 ```{r}
-plan(sequential)
+plan(multisession)
 amwo_hmm$residence_time <- amwo_hmm %>% 
   dplyr::select(ID, x, y) %>% 
   future_pmap(function(ID_iter, x_iter, y_iter){
@@ -504,8 +506,8 @@ amwo_hmm <- amwo_hmm %>%
 
 early_spring_movement <- amwo_hmm %>%
   filter((ID == "NJ-2018-08-2019" & time <= ymd_hms("2019-01-12 14:00:32")) |
-         (ID == "NJ-2018-15-2019" & time <= ymd_hms("2019-01-14 00:00:00")) |
-         (ID == "NJ-2018-13-2019" & time <= ymd_hms("2019-02-05 00:00:00")))
+           (ID == "NJ-2018-15-2019" & time <= ymd_hms("2019-01-14 00:00:00")) |
+           (ID == "NJ-2018-13-2019" & time <= ymd_hms("2019-02-05 00:00:00")))
 
 amwo_hmm <- amwo_hmm %>%
   filter(!(ID == "NJ-2018-08-2019" & time <= ymd_hms("2019-01-12 14:00:32"))) %>%
@@ -517,7 +519,7 @@ amwo_hmm <- amwo_hmm %>%
   filter(!(ID == "RI-2020-31-2021" & time <= ymd_hms("2021-03-02 18:59:12")))
 
 amwo_hmm <- amwo_hmm %>% #removing ranging movements
-  filter(!(ID == "AL-2022-15-2022" & time == ymd_hms("2022-02-28 17:00:00"))) %>% 
+  filter(!(ID == "AL-2022-15-2022" & time == ymd_hms("2022-02-28 17:00:00"))) %>% #may need to check if some of these need to go back in...
   filter(!(ID == "AL-2021-12-2021" & time == ymd_hms("2021-02-25 17:00:00"))) %>%
   filter(!(ID == "NJ-2018-15-2019" & time == ymd_hms("2019-01-14 04:00:00"))) %>% 
   filter(!(ID == "VA-2019-45-2020" & time > ymd_hms("2020-06-22 04:00:00"))) %>% #same thing with midsummer movements
@@ -526,7 +528,8 @@ amwo_hmm <- amwo_hmm %>% #removing ranging movements
   filter(!(ID == "VA-2019-36-2020" & time > ymd_hms("2020-06-19 01:59:28"))) %>% 
   filter(!(ID == "AL-2021-10-2021" & time == ymd_hms("2021-05-21 03:58:56"))) %>%
   filter(!(ID == "AL-2021-10-2021" & time == ymd_hms("2021-05-21 17:00:00"))) %>% 
-  filter(!(ID == "AL-2021-12-2021" & time == ymd_hms("2021-02-26 05:02:56")))
+  filter(!(ID == "AL-2021-12-2021" & time == ymd_hms("2021-02-26 05:02:56"))) %>% 
+  filter(!(ID == "ME-2018-13-2019" & julian_day == 7))
 ```
 
 remove birds with no individual step lengths >30.2km (20 miles). In practice this pulls birds that never initiate a substantial migratory movement but doesn't penalize birds that DO migrate, as they always make at least one substantial movement.

@@ -35,7 +35,8 @@ server <- function(input, output) {
            x = long,
            y = lat,
            date = as.Date(time),
-           point_state = primary_point_state) ->
+           point_state = primary_point_state,
+           step_state = primary_step_state) ->
     amwoData.sm
   
   individual_stepper <- reactiveValues() #These values can be defined w/in a reactive expression and will be remembered in other reactive expressions
@@ -47,7 +48,7 @@ server <- function(input, output) {
   
   
   selected_columns <- filter(amwoData.sm, animal_name == unique(amwoData.sm$animal_name)[1]) %>% 
-    dplyr::select("animal_name", "primary_point_state", "time") 
+    dplyr::select("animal_name", "primary_point_state", "step_state", "time") 
   
   output$table <- excelTable(data = selected_columns, tableHeight = "800px") %>% 
     renderExcel()
@@ -114,7 +115,7 @@ server <- function(input, output) {
     individual_stepper$amwoDataID <- subset(amwoData.sm, amwoData.sm$animal_name==individual_stepper$current_id)
     
     selected_columns <- individual_stepper$amwoDataID %>% 
-      dplyr::select("animal_name", "primary_point_state", "time")  
+      dplyr::select("animal_name", "primary_point_state", "step_state", "time")  
     
     output$table <- renderExcel(excelTable(data = selected_columns, tableHeight = "800px"))
     
@@ -122,7 +123,7 @@ server <- function(input, output) {
       icon = 'ios-close',
       iconColor = 'black',
       library = 'ion',
-      markerColor = getColor(individual_stepper$amwoDataID)
+      markerColor = as.character(getColor(individual_stepper$amwoDataID))
     )
   })
   

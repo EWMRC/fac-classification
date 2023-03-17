@@ -24,7 +24,7 @@ nocturnal_diurnal -> transmission protocol
 flight_ground -> data decoding software
 
 ```{r}
-amwo_data_reconstructed <- readRDS("fac_primary_state_delineation.rds")
+amwo_data_reconstructed <- readRDS("classifier_integrated", "fac_primary_state_delineation.rds")
 
 t <- amwo_data_reconstructed %>%
   transmute(event_id = as.character(event_id), primary_step_state = paste("Primary step state:", primary_step_state), primary_point_state = paste("Primary point state:", primary_point_state))
