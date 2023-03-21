@@ -135,6 +135,7 @@ amwo_move <- getMovebankData(study = "American Woodcock Migration Ecology in Eas
                              removeDuplicatedTimestamps=TRUE)
 
 amwo_data <- as.data.frame(amwo_move) %>%
+  filter(mortality_status == 0) %>% 
   transmute(animal_name = local_identifier,
             time = timestamp,
             event_id = event_id,

@@ -15,18 +15,17 @@ SC-2019-03-2019 example of a female that doesn't settle
 all good = )
 
 *Integrated classifier*
-AL-2020-03 mig too early (2020-03-07), maybe too late (2020-04-22)
+** fixed AL-2020-03 mig too early (2020-03-07), maybe too late (2020-04-22)
+time init 2020-03-06 20:01:04
+time term 2020-04-23 15:00:00
 
-AL-2020-05 late mig point on 2020-03-29, but starting points are okay
-
-
-
-
-
-
-
+NOT FIXED: AL-2020-05 late mig point on 2020-03-29, but starting points are okay
+3-29 is missing from the classified dataset. Why?
+Also missing in hmm
+Seens to have been a distinct dates bug. Pretty sure I fixed it...
 
 
+AL-2020-07 late mig point on 2020-05-02 (2020-05-02 03:58:56)
 
 
 

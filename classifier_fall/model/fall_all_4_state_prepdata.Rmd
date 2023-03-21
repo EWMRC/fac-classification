@@ -41,6 +41,7 @@ Formatting and cleaning, including creating time columns and simplifying to one 
 amwo_spring <- as.data.frame(rbind(amwo_2017, amwo_2018, amwo_2019, amwo_2020, amwo_2021))
 
 amwo_spring <- amwo_spring %>%
+  filter(mortality_status == 0) %>% 
   transmute(ID = local_identifier,
             #time = as.POSIXct(round(force_tzs(timestamp, tzone = "GMT", tzone_out = "EST"), "hour")), #time rounded in EST
             time = timestamp,
@@ -221,7 +222,6 @@ unnested_birds <- unnested_birds %>%
   mutate(locType = if_else(!is.na(lon), "o", "p"))
 ```
 
-
 # create momentuHMMData object; would specify covariates if included in the dataset
 ```{r}
 # amwo_hmm <- amwo_spring_males %>%
@@ -235,7 +235,22 @@ amwo_hmm <- amwo_hmm %>%
   mutate(date = strftime(time, format="%Y-%m-%d"),
          locType = factor(locType, levels = c("o", "p"), ordered = TRUE)) %>% 
   arrange(ID, date, locType) %>% #keep observed locations above predicted locations
-  distinct(date, ID, .keep_all = TRUE) %>% 
+  group_by(ID, date) %>%
+  group_modify(.f = function(x, y){ # a special case of the distinct function, which only removes duplicates if locType == "p"
+    if(nrow(x) > 1 & "o" %in% x$locType) { #if there's more than 1 row and there's at least 1 observed point, then filter to just observed points. If there's more than 1 observed point keep them all.
+      x %>% 
+        filter(locType == "o") %>% 
+        return()
+    } else if(nrow(x) > 1 & !("o" %in% x$locType)){ #if there's more than 1 row and only predicted points, keep the first predicted point
+      x %>% 
+        head(n = 1) %>% 
+        return()
+    } else{ # if there's only 1 row, just return x
+      return(x)
+    }
+  }) %>% 
+  ungroup() %>% 
+  #distinct(date, ID, .keep_all = TRUE) %>% 
   mutate(julian_day = yday(ymd(date)-(days_subtract))) #Redo the julian day calculation
 
 #Remove individuals with fewer than 3 locations, recording which ones were removed. Take 2
@@ -401,7 +416,7 @@ nested_birds_2.5$data <- nested_birds_2 %>%
       #   pull(step) %>%
       #   sum(na.rm = TRUE)
       
-      if(point_dist > 30200){ 
+      if(point_dist > 30200 & ((point_2$rownum - point_1$rownum) > 1)){ 
         rows_to_delete <- rows_to_delete %>% 
           append(values = (point_1$rownum + 1):(point_2$rownum - 1))
       } 

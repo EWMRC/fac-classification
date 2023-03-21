@@ -169,7 +169,6 @@ fit_and_predict <- function(.x){
 }
 ```
 
-
 I'll run this once initially, and this can be rerun after ruleset changes if necessary
 ```{r include = FALSE}
 start_time <- Sys.time()
