@@ -24,28 +24,6 @@ PA-2018-01 currently classified as a winter ranging movement- make sure that is 
 
 
 **Fixes to make**
-*** p1s2
-NJ-2018-04 is the first point intended to be p1s2?
-VA-2019-22 same
-VA-2019-39 same
-VA-2019-48 same
-VA-2019-50 same
-VA-2020-57 same
-VA-2021-93 same
-NJ-2018-07 same
-NJ-2018-08 same
-NJ-2018-09 same
-NJ-2018-10 same
-NJ-2018-13 same
-NJ-2018-14 same
-NJ-2018-15 same
-NJ-2019-16 same
-NJ-2019-18 same
-NJ-2019-22 same
-NJ-2019-23 same
-NJ-2019-28 same
-MD-2021-24 doesn't properly reflect a starting migratory state
-
 *** Add a MATM state
 RI-2020-31 several MATM
 

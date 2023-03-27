@@ -28,17 +28,19 @@ fall_initiation_dates <- fall_classified %>%
     if(starting_point_state == 1){
       x %>% 
         filter(step_state == 2) %>%
-        head(x, n = 1) %>% 
+        head(x, n = 1) %>%
+        mutate(init_state = "Stationary") %>%
         return()
     } else if(starting_point_state == 2 | starting_point_state == 3){
       x %>% 
-        head(x, n = 1) %>% 
+        head(x, n = 1) %>%
+        mutate(init_state = "Migratory") %>%
         return()
     } else{
       stop("Starting point state is not 1, 2, or 3")
     }
   }) %>%
-  dplyr::select(ID, animal_name, year, time) %>%
+  dplyr::select(ID, animal_name, year, time, init_state) %>%
   rename(time_initiation = time)
 
 fall_termination_dates <- fall_classified %>%
@@ -58,17 +60,19 @@ spring_male_initiation_dates <- spring_male_classified %>%
     if(starting_point_state == 1){
       x %>% 
         filter(step_state == 2) %>%
-        head(x, n = 1) %>% 
+        head(x, n = 1) %>%
+        mutate(init_state = "Stationary") %>% 
         return()
     } else if(starting_point_state == 2 | starting_point_state == 3){
       x %>% 
-        head(x, n = 1) %>% 
+        head(x, n = 1) %>%
+        mutate(init_state = "Migratory") %>%
         return()
     } else{
       stop("Starting point state is not 1, 2, or 3")
     }
   }) %>%
-  dplyr::select(ID, animal_name, year, time) %>%
+  dplyr::select(ID, animal_name, year, time, init_state) %>%
   rename(time_initiation = time)
 
 spring_male_termination_dates <- spring_male_classified %>%
@@ -88,17 +92,19 @@ spring_female_initiation_dates <- spring_female_classified %>%
     if(starting_point_state == 1){
       x %>% 
         filter(step_state == 2) %>%
-        head(x, n = 1) %>% 
+        head(x, n = 1) %>%
+        mutate(init_state = "Stationary") %>%
         return()
     } else if(starting_point_state == 2 | starting_point_state == 3){
       x %>% 
-        head(x, n = 1) %>% 
+        head(x, n = 1) %>%
+        mutate(init_state = "Migratory") %>%
         return()
     } else{
       stop("Starting point state is not 1, 2, or 3")
     }
   }) %>%
-  dplyr::select(ID, animal_name, year, time) %>%
+  dplyr::select(ID, animal_name, year, time, init_state) %>%
   rename(time_initiation = time) 
 
 spring_female_termination_dates <- spring_female_classified %>%
@@ -118,11 +124,11 @@ spring_migration_dates <- full_join(spring_initiation_dates, spring_termination_
   ungroup()
 
 fall_migration_dates <- fall_migration_dates %>%
-  dplyr::select(animal_name, time_initiation, time_termination) %>%
+  dplyr::select(animal_name, time_initiation, time_termination, init_state) %>%
   mutate(season = "Fall")
 
 spring_migration_dates <- spring_migration_dates %>%
-  dplyr::select(animal_name, time_initiation, time_termination) %>%
+  dplyr::select(animal_name, time_initiation, time_termination, init_state) %>%
   mutate(season = "Spring")
 
 migration_dates <- bind_rows(fall_migration_dates, spring_migration_dates)
@@ -133,7 +139,6 @@ Manually set a late settlement (after 6-30)
 migration_dates <- migration_dates %>% 
   mutate(time_termination = if_else(animal_name == "VA-2019-45" & season == "Spring", lubridate::ymd_hms("2020-07-28 19:01:20"), time_termination))
 ```
-
 
 Download Movebank data, limit to times before Aug 1 2022 (more recent seasons haven't been delineated yet)
 ```{r}
@@ -163,7 +168,8 @@ birds_w_no_mig_movements <- amwo_data_w_duplicates %>%
   pull(animal_name)
 
 amwo_data_w_duplicates <- amwo_data_w_duplicates %>% #Fill in dummy dates for the migration so that birds with no migratory movements are always registered as stationary
-  mutate(time_initiation = if_else(is.na(time_initiation), lubridate::ymd("2035-01-01", tz = "UTC"), time_initiation),
+  mutate(init_state = if_else(is.na(time_initiation), "Stationary", init_state),
+         time_initiation = if_else(is.na(time_initiation), lubridate::ymd("2035-01-01", tz = "UTC"), time_initiation),
          time_termination = if_else(is.na(time_initiation), lubridate::ymd("2035-01-01", tz = "UTC"), time_termination),
          season = if_else(is.na(time_initiation), "None", season))
 
@@ -196,8 +202,8 @@ amwo_data_w_duplicates$primary_step_state <- amwo_data_w_duplicates %>%
 
 #point state
 amwo_data_w_duplicates$primary_point_state <- amwo_data_w_duplicates %>%
-  dplyr::select(time, time_initiation, time_termination, season) %>%
-  pmap(.f = function(time, time_initiation, time_termination, season){
+  dplyr::select(time, time_initiation, time_termination, season, init_state) %>%
+  pmap(.f = function(time, time_initiation, time_termination, season, init_state){
     point_state <- "Stationary"
     #Silently implied; if both time_initiation and time_termination are NA, remains Stationary
     
@@ -206,14 +212,26 @@ amwo_data_w_duplicates$primary_point_state <- amwo_data_w_duplicates %>%
     }
     
     if(is.na(time_termination)){ #If there is no termination date
-      if(time > time_initiation){ 
-        point_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
+      if(init_state == "Stationary"){
+        if(time > time_initiation){ 
+          point_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
+        }
+      } else { #if the bird starts in a mig state, then the first point is migratory
+        if(time >= time_initiation){ 
+          point_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
+        }
       }
     }
     
     if(!is.na(time_termination)){ #If there is a termination date
-      if(time > time_initiation & time < time_termination){
-        point_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
+      if(init_state == "Stationary"){
+        if(time > time_initiation & time < time_termination){
+          point_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
+        }
+      } else { #if the bird starts in a mig state, then the first point is migratory
+        if(time >= time_initiation & time < time_termination){
+          point_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
+        }
       }
     }
     
