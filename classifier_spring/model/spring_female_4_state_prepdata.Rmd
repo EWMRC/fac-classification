@@ -538,7 +538,7 @@ amwo_hmm <- amwo_hmm %>% #removing ranging movements
   filter(!(ID == "AL-2022-15-2022" & time == ymd_hms("2022-02-28 17:00:00"))) %>% #may need to check if some of these need to go back in...
   filter(!(ID == "AL-2021-12-2021" & time == ymd_hms("2021-02-25 17:00:00"))) %>%
   filter(!(ID == "NJ-2018-15-2019" & time == ymd_hms("2019-01-14 04:00:00"))) %>% 
-  filter(!(ID == "VA-2019-45-2020" & time > ymd_hms("2020-06-22 04:00:00"))) %>% #same thing with midsummer movements
+  # filter(!(ID == "VA-2019-45-2020" & time > ymd_hms("2020-06-22 04:00:00"))) %>% #same thing with midsummer movements
   filter(!(ID == "VA-2021-98-2022" & time > ymd_hms("2022-05-30 15:00:00"))) %>%
   filter(!(ID == "VA-2022-100-2022" & time > ymd_hms("2022-06-19 09:00:00"))) %>% 
   filter(!(ID == "VA-2019-36-2020" & time > ymd_hms("2020-06-19 01:59:28"))) %>% 

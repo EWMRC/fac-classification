@@ -514,14 +514,14 @@ amwo_hmm <- amwo_hmm %>%
 
 remove a transient summer movement which throws off the hmm for VA-2020-52-2020. Also throw out a winter ranging movement
 ```{r}
-summer_transient_movement <- amwo_hmm %>%
-  filter(ID == "VA-2020-52-2020" & julian_day > 160)
+# summer_transient_movement <- amwo_hmm %>%
+#   filter(ID == "VA-2020-52-2020" & julian_day > 160)
   #mutate(id_time = paste(ID, as.character(time))) %>% 
   #filter(id_time == "VA-2020-52-2020 2020-06-19 01:59:28" | id_time == "VA-2020-52-2020 2020-06-28 19:01:20") %>%
   #mutate(id_time = NULL)
 
 amwo_hmm <- amwo_hmm %>%
-  filter(!(ID == "VA-2020-52-2020" & julian_day > 160)) %>% 
+  # filter(!(ID == "VA-2020-52-2020" & julian_day > 160)) %>% 
   filter(!(ID == "NJ-2018-03-2019" & julian_day == 17))
   # mutate(id_time = paste(ID, as.character(time))) %>% 
   # filter(id_time != "VA-2020-52-2020 2020-06-19 01:59:28") %>%

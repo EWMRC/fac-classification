@@ -128,6 +128,13 @@ spring_migration_dates <- spring_migration_dates %>%
 migration_dates <- bind_rows(fall_migration_dates, spring_migration_dates)
 ```
 
+Manually set a late settlement (after 6-30)
+```{r}
+migration_dates <- migration_dates %>% 
+  mutate(time_termination = if_else(animal_name == "VA-2019-45" & season == "Spring", lubridate::ymd_hms("2020-07-28 19:01:20"), time_termination))
+```
+
+
 Download Movebank data, limit to times before Aug 1 2022 (more recent seasons haven't been delineated yet)
 ```{r}
 amwo_move <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", 

@@ -71,7 +71,10 @@ known_state_key <- amwo_hmm %>%
   mutate(known = ifelse(ID == "VA-2021-92-2021" & ranks %in% c(6, 7, 8), 2, known)) %>% #crw stops the bird from slipping into mig
   mutate(known = ifelse(ID == "NJ-2018-15-2019" & julian_day == 46, 2, known)) %>% 
   mutate(known = ifelse(ID == "VA-2019-22-2019" & julian_day == 99, 2, known)) %>% 
-  mutate(known = ifelse(ID == "ME-2018-13-2019" & julian_day == 161, 2, known))  
+  mutate(known = ifelse(ID == "ME-2018-13-2019" & julian_day == 161, 2, known)) %>% 
+  mutate(known = ifelse(ID == "NY-2022-40-2022" & ranks == 1, 3, known)) %>%  #bird that migrated after nesting starts in stopover state
+  mutate(known = ifelse(ID == "RI-2018-11-2019" & ranks == 95, 4, known)) #bird is recaptured and re-transmittered at the last mig location the following Oct, so we know that it is settled here
+  
   # mutate(known = ifelse(known == 1 & ID %in% RI_problems, 2, known)) %>%
 
 amwo_hmm$known <- known_state_key$known
@@ -262,8 +265,8 @@ amwo_hmm_final <- amwo_hmm_final %>%
          ID != "NS-2019-02-2020",
          ID != "RI-2020-42-2021",
          ID != "RI-2021-47-2022", #midatlantic transitory movement
-         ID != "RI-2021-52-2022", #midatlantic transitory movement
-         ID != "NY-2022-40-2022") #post-nesting dispersal movement
+         ID != "RI-2021-52-2022") #midatlantic transitory movement
+         #ID != "NY-2022-40-2022") #post-nesting dispersal movement
 ```
 
 ```{r}

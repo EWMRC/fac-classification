@@ -7,12 +7,12 @@ output: html_notebook
 library(tidyverse)
 library(sf)
 
-amwo_data_reconstructed <- readRDS("fac_primary_state_delineation.rds")
+amwo_data_reconstructed <- readRDS(here::here("classifier_integrated", "fac_primary_state_delineation.rds"))
 ```
 
 Inspect individual tracks to assess validity
 ```{r}
-relevant_id <- "VT-2020-03"
+relevant_id <- "RI-2020-31"
 
 view_points <- amwo_data_reconstructed %>%
   filter(animal_name == relevant_id) %>% 

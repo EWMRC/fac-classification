@@ -1,0 +1,83 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+amwo_data_reconstructed <- readRDS(here::here("classifier_integrated", "fac_primary_state_delineation.rds")) %>% 
+  mutate(standardized_date = mdy(paste0(month(time), "/", day(time), "/2020"))) %>% 
+  filter(primary_point_state != "Unknown- bugged frequent schedule")
+```
+
+Calculate % of points in any given week that belong to each step
+```{r}
+weekly_pt1 <- amwo_data_reconstructed %>% 
+  mutate(week = week(standardized_date)) %>% 
+  group_by(week) %>% 
+  summarise(standardized_date = mean(standardized_date), total = n()) %>% 
+  ungroup()
+
+weekly_pt2 <- amwo_data_reconstructed %>% 
+  mutate(week = week(standardized_date)) %>% 
+  group_by(week, primary_point_state) %>% 
+  tally() %>% 
+  ungroup() %>% 
+  left_join(weekly_pt1) %>% 
+  mutate(pct = n/total)
+```
+
+
+```{r}
+migratory_state_graph <- weekly_pt2 %>% 
+  ggplot(aes(x = standardized_date, y = pct, group = primary_point_state, col = primary_point_state)) +
+  geom_hline(yintercept = c(2,4,6,8,10)/10, color = "gray90") +
+  theme_bw() +
+  scale_x_date(date_labels = "%b", # "%b %d"
+               breaks = ymd(c("2020-01-15", "2020-02-15", "2020-03-15", "2020-04-15", "2020-05-15", "2020-06-15", "2020-07-15", "2020-08-15", "2020-09-15", "2020-10-15", "2020-11-15", "2020-12-15"))) +
+  #date_breaks = "1 month") +
+  geomtextpath::coord_curvedpolar() +
+  scale_y_continuous(breaks = c(0.2, 0.4, 0.6, 0.8, 1)) +
+  theme(axis.title = element_blank(),
+        axis.ticks = element_blank(),
+        axis.text.y = element_blank(),
+        legend.position = "bottom",
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank()) +
+  labs(col = "Migratory status")
+
+vlines <- c("2020-01-01", "2020-02-01", "2020-03-01", "2020-04-01", "2020-05-01", "2020-06-01", "2020-07-01", "2020-08-01", "2020-09-01", "2020-10-01", "2020-11-01", "2020-12-01")
+
+for(i in vlines){
+  migratory_state_graph <- migratory_state_graph +
+    geom_vline(xintercept = as.numeric(ymd(i)), color = "gray90")
+}
+
+#Adding the geom later so that it graphs over the axis lines, but under the labels
+migratory_state_graph <- migratory_state_graph + geom_line()
+
+pct_labels <- c("10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%")
+
+for(i in c(2,4,6,8,10)){
+  migratory_state_graph <- migratory_state_graph +
+    annotate(
+      x = ymd("2020-07-01"),
+      #x = ymd("2020-01-01"), 
+      y = i/10 + 0.05, 
+      label = pct_labels[i], 
+      geom = "label", 
+      #color = "darkgrey",
+      size = 2,
+      label.size = NA,
+      alpha = 0.7,
+      family = "TT Arial",
+      color = "grey30")
+}
+
+migratory_state_graph
+ggsave("migratory_state_graph.png")
+```
+
