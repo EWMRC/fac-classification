@@ -19,27 +19,15 @@ all good = )
 
 *Integrated classifier*
 
-ME-2018-08 ranging movement 12-25 and 12-26. probably okay lumping this into migratory (as it is currently), but it's borderline. Wait to make this determination until I talk to Erik...
-PA-2018-01 currently classified as a winter ranging movement- make sure that is still accurate after talking to Erik
+** done ME-2018-08 ranging movement 12-25 and 12-26. probably okay lumping this into migratory (as it is currently), but it's borderline. Wait to make this determination until I talk to Erik...
+Set as ranging movement, starting 2018-12-24 and ending 2018-12-26
+
+** done PA-2018-01 currently classified as a winter ranging movement- make sure that is still accurate after talking to Erik
 
 
 **Fixes to make**
-*** Add a MATM state
+*** spring foray loops
 RI-2020-31 several MATM
-
-*** Add summer migrations
-** done SC-2020-13 fails to correctly delineate a summer mig. Remove from fall mig list and add a summer mig.
-** done SC-2021-23 missing a mid-summer mig
-** done AL-2021-11 add the summer mig
-
-*** Add summer dispersal movements
-** done VA-2019-23 midsummer dispersal movement
-
-*** Add summer foray loops
-VA-2018-03 summer foray loop
-MD-2020-15 mid-summer ranging movement from 2020-07-26 to 2020-07-30
-GA-2021-18 should be classified as a summer circular ranging movement, not a fall migration.
-VA-2018-02 needs to be classified either as a mig or ranging movement
 
 *** Add winter dispersal movements
 RI-2019-29 has a dispersal movement in december, and then a second dispersal movement in February

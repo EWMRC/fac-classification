@@ -582,11 +582,12 @@ remove a transient summer movement which throws off the hmm for VA-2020-52-2020.
 amwo_hmm <- amwo_hmm %>%
   filter(!(ID == "SC-2020-13-2020" & time > ymd_hms("2020-08-27 00:00:00"))) %>%
   filter(!(ID == "RI-2020-31-2020")) %>% 
-  filter(!(ID == "ME-2018-08-2018" & time > ymd_hms("2018-12-24 00:00:00") & time < ymd_hms("2018-12-26 00:00:00"))) %>% 
+  #filter(!(ID == "ME-2018-08-2018" & time > ymd_hms("2018-12-24 00:00:00") & time < ymd_hms("2018-12-26 00:00:00"))) %>% 
   filter(!(ID == "NY-2018-04-2018" & time > ymd_hms("2018-11-22 00:00:00") & time < ymd_hms("2018-11-24 00:00:00"))) %>% 
 filter(!(ID == "PA-2021-38-2021" & time > ymd_hms("2022-01-29 12:00:00"))) %>% 
   filter(!(ID == "NJ-2018-03-2018" & time == ymd_hms("2019-01-18 02:59:12"))) %>% 
-  filter(!(ID == "PA-2018-01-2018" & julian_day == 298)) #%>% #ranging movement
+  filter(!(ID == "PA-2018-01-2018" & julian_day == 298)) %>% #ranging movement
+  filter(!(ID == "ME-2018-08-2018" & julian_day %in% c(301, 302, 303)))
   # filter(!(ID == "PA-2019-15-2019" & julian_day == 290)) %>%  #ranging movement pt1
   # filter(!(ID == "PA-2019-15-2019" & julian_day == 291)) #ranging movement pt2
   #Note: this is going to either have to be manually categorized or categorized as "not designated" in the final model

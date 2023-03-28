@@ -6,6 +6,6 @@ Mid-Atlantic Transitory Movements (MATMs): Foray loops up and down a latitudinal
 
 Summer migrations: Movements initiating between XX/XX and XX/XX that move a bird from the breeding to the wintering range, precluding further migratory movements in the fall
 
-Foray loops: Non-MATMs that include step lengths > 30.2 km but result in < 30.2 km of net displacement between the first and last point, and do not preclude a fall or spring migration. In the summer, dispersal events are initiated between 7/1 and 8/1 (Note: Once incidence from 6/26).
+Foray loops: Non-MATMs that include step lengths > 30.2 km but result in < 30.2 km of net displacement between the first and last point, and do not preclude a fall or spring migration. In the summer, dispersal events are initiated between 7/1 and 8/1 (Note: Once incidence from 6/26). In the spring, these can occur at any time in non-migratory birds.
 
 Dispersal events: Non-MATMs that include step lengths > 30.2 km and result in > 30.2 km of net displacement between the first and last point, and do not preclude a fall or spring migration. In the summer, dispersal events are initiated between 7/1 and 8/1.
