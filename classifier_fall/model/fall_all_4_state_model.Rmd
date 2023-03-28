@@ -281,7 +281,8 @@ amwo_hmm_final <- amwo_hmm_final %>%
          ID != "VT-2020-04-2020",
          ID != "FL-2021-01-2021",
          ID != "NJ-2018-11-2018",
-         ID != "SC-2020-13-2020") #this is probably a residential bird with a 30km movement, like FL 03
+         ID != "SC-2020-13-2020",
+         ID != "GA-2021-18-2021") 
 ```
 SC-2020-13
 ```{r}
