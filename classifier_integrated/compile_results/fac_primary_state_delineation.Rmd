@@ -256,7 +256,8 @@ Arrange by animal_id and time to ensure that the tracks graph correctly
 amwo_data_reconstructed <- amwo_data_reconstructed %>%
   group_by(animal_name) %>%
   arrange(time, .by_group = TRUE) %>%
-  ungroup()
+  ungroup() %>% 
+  dplyr::select(-init_state)
 ```
 
 Set any bugged tracks to "Unknown- bugged frequent schedule"
@@ -269,3 +270,9 @@ amwo_data_reconstructed <- amwo_data_reconstructed %>%
 ```{r}
 saveRDS(amwo_data_reconstructed, file = here::here("classifier_integrated", "fac_primary_state_delineation.rds"))
 ```
+
+Run auxiliary state designations
+```{r}
+source(here::here("classifier_integrated", "compile_results", "summer_dispersal_movements.R"))
+```
+

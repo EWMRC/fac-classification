@@ -33,7 +33,7 @@ SC-2021-23 missing a mid-summer mig
 AL-2021-11 add the summer mig
 
 *** Add summer dispersal movements
-VA-2019-23 midsummer dispersal movement
+** done VA-2019-23 midsummer dispersal movement
 
 *** Add summer foray loops
 VA-2018-03 summer foray loop

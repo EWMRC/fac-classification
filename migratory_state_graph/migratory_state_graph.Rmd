@@ -5,6 +5,7 @@ output: html_notebook
 
 ```{r}
 library(tidyverse)
+library(lubridate)
 ```
 
 ```{r}
@@ -47,7 +48,8 @@ migratory_state_graph <- weekly_pt2 %>%
         legend.position = "bottom",
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank()) +
-  labs(col = "Migratory status")
+  labs(col = "Migratory status",
+       caption = "Y axis: Percent of all locations in a week that belong to a given migratory state")
 
 vlines <- c("2020-01-01", "2020-02-01", "2020-03-01", "2020-04-01", "2020-05-01", "2020-06-01", "2020-07-01", "2020-08-01", "2020-09-01", "2020-10-01", "2020-11-01", "2020-12-01")
 

@@ -12,11 +12,11 @@ amwo_data_reconstructed <- readRDS(here::here("classifier_integrated", "fac_prim
 
 Inspect individual tracks to assess validity
 ```{r}
-relevant_id <- "MD-2021-24"
+relevant_id <- "VA-2019-23"
 
 view_points <- amwo_data_reconstructed %>%
   filter(animal_name == relevant_id) %>% 
-  dplyr::select(animal_name, time, long, lat, primary_step_state, primary_point_state) %>%
+  dplyr::select(animal_name, time, long, lat, primary_step_state, primary_point_state, event_id) %>%
   sf::st_as_sf(coords = c("long", "lat"), crs = 4326, remove = FALSE) 
 
 view_lines <- view_points %>%
