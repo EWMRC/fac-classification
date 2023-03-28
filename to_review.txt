@@ -28,9 +28,9 @@ PA-2018-01 currently classified as a winter ranging movement- make sure that is 
 RI-2020-31 several MATM
 
 *** Add summer migrations
-SC-2020-13 fails to correctly delineate a summer mig. Remove from fall mig list and add a summer mig.
-SC-2021-23 missing a mid-summer mig
-AL-2021-11 add the summer mig
+** done SC-2020-13 fails to correctly delineate a summer mig. Remove from fall mig list and add a summer mig.
+** done SC-2021-23 missing a mid-summer mig
+** done AL-2021-11 add the summer mig
 
 *** Add summer dispersal movements
 ** done VA-2019-23 midsummer dispersal movement

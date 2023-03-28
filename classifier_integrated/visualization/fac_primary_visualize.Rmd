@@ -12,7 +12,7 @@ amwo_data_reconstructed <- readRDS(here::here("classifier_integrated", "fac_prim
 
 Inspect individual tracks to assess validity
 ```{r}
-relevant_id <- "VA-2019-23"
+relevant_id <- "AL-2021-11"
 
 view_points <- amwo_data_reconstructed %>%
   filter(animal_name == relevant_id) %>% 

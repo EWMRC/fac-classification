@@ -274,5 +274,6 @@ saveRDS(amwo_data_reconstructed, file = here::here("classifier_integrated", "fac
 Run auxiliary state designations
 ```{r}
 source(here::here("classifier_integrated", "compile_results", "summer_dispersal_movements.R"))
+source(here::here("classifier_integrated", "compile_results", "summer_migrations.R"))
 ```
 

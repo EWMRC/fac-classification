@@ -280,9 +280,10 @@ amwo_hmm_final <- amwo_hmm_final %>%
          ID != "RI-2019-29-2019",
          ID != "VT-2020-04-2020",
          ID != "FL-2021-01-2021",
-         ID != "NJ-2018-11-2018") #this is probably a residential bird with a 30km movement, like FL 03
+         ID != "NJ-2018-11-2018",
+         ID != "SC-2020-13-2020") #this is probably a residential bird with a 30km movement, like FL 03
 ```
-
+SC-2020-13
 ```{r}
 amwo_hmm_final <- amwo_hmm_final %>%
   mutate(unk_init_flag = if_else(ID %in% individuals_tagged_too_late$ID, TRUE, FALSE)) %>%
