@@ -579,9 +579,11 @@ remove a transient summer movement which throws off the hmm for VA-2020-52-2020.
 #   mutate(id_time = NULL)
 
 # remove a late summer movement which throws off the hmm for SC-2020-13. Also removing all of RI-2020-31-2020, as it runs up and down the midatlantic coast and doesn't have consistency in southerly direction like we'd expect for a migration
+#actually keeping RI-2020-31-2020 in, and removing its foray loop
 amwo_hmm <- amwo_hmm %>%
   filter(!(ID == "SC-2020-13-2020" & time > ymd_hms("2020-08-27 00:00:00"))) %>%
-  filter(!(ID == "RI-2020-31-2020")) %>% 
+  #filter(!(ID == "RI-2020-31-2020")) %>% 
+  filter(!(ID == "RI-2020-31-2020" & time == ymd_hms("2020-11-21 13:32:48"))) %>% #take out a foray loop
   #filter(!(ID == "ME-2018-08-2018" & time > ymd_hms("2018-12-24 00:00:00") & time < ymd_hms("2018-12-26 00:00:00"))) %>% 
   filter(!(ID == "NY-2018-04-2018" & time > ymd_hms("2018-11-22 00:00:00") & time < ymd_hms("2018-11-24 00:00:00"))) %>% 
 filter(!(ID == "PA-2021-38-2021" & time > ymd_hms("2022-01-29 12:00:00"))) %>% 

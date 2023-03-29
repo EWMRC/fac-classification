@@ -279,5 +279,7 @@ source(here::here("classifier_integrated", "compile_results", "summer_dispersal_
 source(here::here("classifier_integrated", "compile_results", "summer_foray_loops.R"))
 source(here::here("classifier_integrated", "compile_results", "winter_foray_loops.R"))
 source(here::here("classifier_integrated", "compile_results", "winter_dispersal_movements.R"))
+source(here::here("classifier_integrated", "compile_results", "spring_foray_loops.R"))
+source(here::here("classifier_integrated", "compile_results", "fall_foray_loops.R"))
 ```
 

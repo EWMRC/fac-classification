@@ -28,14 +28,12 @@ Set as ranging movement, starting 2018-12-24 and ending 2018-12-26
 **Fixes to make**
 *** spring foray loops
 RI-2020-31 several MATM
-
-*** Add winter dispersal movements
-RI-2019-29 has a dispersal movement in december, and then a second dispersal movement in February
+Categorize FL-2021-01 however I'd like
 
 *** Capture point RI
 RI-2021-59 points started getting taken late. At the very least put this into mig for the initial state.
 
-Categorize FL-2021-01 however I'd like
+
 
 
 **Fixes not to make**
