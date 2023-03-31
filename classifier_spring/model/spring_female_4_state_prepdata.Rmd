@@ -25,7 +25,9 @@ Extract all locations from 2019, 2020, and 2021 from Jan 5th through June 30th
 ```{r include=FALSE}
 amwo_2018 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS("movebank_credentials.rds"), timestamp_start = "20180105000000000", timestamp_end = "20180630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
 
-amwo_2019 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS("movebank_credentials.rds"), timestamp_start = "20190105000000000", timestamp_end = "20190630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
+amwo_2019 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS("movebank_credentials.rds"), timestamp_start = "20190105000000000", timestamp_end = "20190730000000000", removeDuplicatedTimestamps=TRUE) %>% 
+  as.data.frame() %>% 
+  filter(timestamp < if_else(local_identifier == "SC-2019-03", ymd_hms("2019-7-30 00:00:00"), ymd_hms("2019-6-30 00:00:00"))) #include an additional month worth of locations, but only for one bird that settles late
 
 amwo_2020 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS("movebank_credentials.rds"), timestamp_start = "20200105000000000", timestamp_end = "20200630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
 
@@ -545,7 +547,8 @@ amwo_hmm <- amwo_hmm %>% #removing ranging movements
   filter(!(ID == "AL-2021-10-2021" & time == ymd_hms("2021-05-21 03:58:56"))) %>%
   filter(!(ID == "AL-2021-10-2021" & time == ymd_hms("2021-05-21 17:00:00"))) %>% 
   filter(!(ID == "AL-2021-12-2021" & time == ymd_hms("2021-02-26 05:02:56"))) %>% 
-  filter(!(ID == "ME-2018-13-2019" & julian_day == 7))
+  filter(!(ID == "ME-2018-13-2019" & julian_day == 7)) %>% 
+  filter(!(ID == "RI-2021-46-2022" & julian_day %in% c(41, 43, 45)))
 ```
 
 remove birds with no individual step lengths >30.2km (20 miles). In practice this pulls birds that never initiate a substantial migratory movement but doesn't penalize birds that DO migrate, as they always make at least one substantial movement.
