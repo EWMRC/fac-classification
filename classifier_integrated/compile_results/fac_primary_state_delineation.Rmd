@@ -283,3 +283,8 @@ source(here::here("classifier_integrated", "compile_results", "spring_foray_loop
 source(here::here("classifier_integrated", "compile_results", "fall_foray_loops.R"))
 ```
 
+Run nesting script
+```{r}
+source(here::here("nests", "nest_location_assignment.R"))
+```
+

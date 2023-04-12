@@ -1,11 +1,9 @@
-Stationary: Recursive movements with steps < 30.2 km related to resource acquisition in a fairly discrete space that are associated with non-migratory behavior.
+Stationary: Recursive movements with steps < 30.2 km that are associated with non-migratory behavior.
 
-Migratory: Directional movements along a latitudinal gradient that bring the bird from the breeding to the wintering range, or visa-versa. 
+Migratory (fall/spring): Directional movements along a latitudinal gradient that bring the bird from the breeding to the wintering range, or visa-versa. Steps can be >, =, or < 30.2 km. Fall migratory movements initiate between Aug 1 and Feb 1, while spring migratory movements initiate between Jan 1 and June 1 (I may be able to tighten up this range a bit).
 
-Mid-Atlantic Transitory Movements (MATMs): Foray loops up and down a latitudinal gradient occuring in RI, DE, MD, NJ, and VA in either winter or early spring resulting in minimal net displacement, while utilizing habitat within X m of the Atlantic coast
+Migratory (summer): Post-breeding movements initiating before Aug 1 that move a bird from the breeding to the wintering range, precluding further migratory movements in the fall.
 
-Summer migrations: Movements initiating between XX/XX and XX/XX that move a bird from the breeding to the wintering range, precluding further migratory movements in the fall
+Foray loops: Movements that include step lengths > 30.2 km but result in < 30.2 km of net displacement between the first and last point. Can occur in any season, as long as the starting and ending state is stationary.
 
-Foray loops: Non-MATMs that include step lengths > 30.2 km but result in < 30.2 km of net displacement between the first and last point, and do not preclude a fall or spring migration. In the summer, dispersal events are initiated between 7/1 and 8/1 (Note: Once incidence from 6/26). In the spring, these can occur at any time in non-migratory birds.
-
-Dispersal events: Non-MATMs that include step lengths > 30.2 km and result in > 30.2 km of net displacement between the first and last point, and do not preclude a fall or spring migration. In the summer, dispersal events are initiated between 7/1 and 8/1.
+Dispersal events: Movements that include step lengths > 30.2 km and result in > 30.2 km of net displacement between the first and last point, and do not preclude a fall or spring migration. Can occur in any season, as long as the starting and ending state is stationary. 
