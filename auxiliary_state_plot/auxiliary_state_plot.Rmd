@@ -1,0 +1,47 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(sf)
+```
+
+Load GPS locations
+```{r}
+amwo_data_reconstructed <- readRDS(file = here::here("classifier_integrated", "fac_primary_state_delineation.rds"))
+```
+
+Load a basemap
+```{r}
+basemap_ras <- raster::stack(there::here_file("Data", "basemaps", "esri_lightgrey", "esri_lightgrey_36_48_4326.tif"))
+```
+
+Load range map and merge fall and spring migratory ranges
+```{r}
+range_shp <- st_read(here::here("auxiliary_state_plot", "ebird", "amwo_combined_2021_4326.shp")) %>%
+  mutate(season = recode(season, 
+                         "Spring Migratory Range" = "Migratory Range",
+                         "Fall Migratory Range" = "Migratory Range",
+                         "Nonbreeding Range" = "Wintering Range")) %>%
+  group_by(season) %>%
+  summarise(geometry = sf::st_union(geometry)) %>%
+  ungroup() %>% 
+  filter(season != "Migratory Range") #remove the migratory range from the figure
+```
+
+```{r}
+range_map_ggplot <- ggplot(range_shp) +
+  geom_sf(aes(fill = season), alpha = 0.75) +
+  scale_fill_manual(values = c("#A65141FF", "#80A0C7FF", "#394165FF")) +
+  lims(x = c(-100, -60), y = c(25, 55)) +
+  labs(fill = NULL)
+
+range_map_ggplot <- range_map_ggplot %>%
+  gginnards::append_layers(ggspatial::layer_spatial(data = basemap_ras, lazy = TRUE, dpi = 150), position = "bottom")
+
+ggsave(filename = here::here("auxiliary_state_plot", "auxiliary_state_plot_5_3_23.png"), plot = range_map_ggplot, dpi = 300)  
+```
+
+

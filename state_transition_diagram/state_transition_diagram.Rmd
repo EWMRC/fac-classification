@@ -1,0 +1,86 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(DiagrammeR)
+```
+
+```{r}
+fall_graph <- create_graph(attr_theme = "lr") %>%
+  add_node(label = "Pre-migration", node_aes = node_aes(shape = "rectangle", fillcolor = "white")) %>% 
+  add_node(label = "Migration") %>% 
+  add_node(label = "Post-migration", node_aes = node_aes(shape = "rectangle", fillcolor = "white")) %>% 
+  add_node(label = "Stopover") %>%
+  add_edge(from = "Pre-migration", to = "Migration") %>% 
+  add_edge(from = "Migration", to = "Post-migration") %>% 
+  add_edge(from = "Migration", to = "Stopover") %>% 
+  add_edge(from = "Stopover", to = "Migration")
+
+fall_graph %>% render_graph()
+```
+
+```{r}
+t <- grViz("
+digraph {
+  layout = dot
+    node [shape = circle,color=green,style=filled,fontsize=45,fixedsize=True,width=4.0]
+    edge[color=grey,arrowhead=vee,penwidth=5,arrowsize=5]
+    A[label = 'A= @@1']
+    B[label = 'B=@@2']
+    C[label = 'C=@@3']
+    D[label = 'D=@@4']
+    E[label = 'E=@@5']
+    
+blank1[label = '', width = 0.01, height = 0.01]    
+A -> blank1;
+blank1 -> B[minlen=10];
+  {{ rank = same; blank1 B }}
+blank1 -> C
+blank2[label = '', width = 0.01, height = 0.01] 
+C -> blank2;
+blank2 -> D[minlen=1];
+  {{ rank = same; blank2 E }}
+blank2 -> E [minlen=10]
+    
+  }
+  [1]:15
+  [2]:10
+  [3]:20
+  [4]:2
+  [5]:2
+      ")
+t
+```
+
+```{r}
+t <- grViz("
+digraph {
+  subgraph cluster_0 {
+		style=filled;
+		color=lightgrey;
+		node [style=filled,color=white];
+		a0 -> a1 -> a2 -> a3;
+		label = 'process #1';
+	}
+      ")
+
+t
+```
+
+
+Example of how to combine graphs
+```{r}
+b_graph <- create_graph() %>%
+  add_node(type = "b", label = "mig")
+
+c_graph <- create_graph() %>%
+  add_node(type = "a", label = "mig")
+
+d_graph <- combine_graphs(b_graph, c_graph)
+
+render_graph(d_graph)
+```
+
