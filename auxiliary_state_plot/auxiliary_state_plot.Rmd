@@ -6,6 +6,11 @@ output: html_notebook
 ```{r}
 library(tidyverse)
 library(sf)
+library(terra)
+library(tidyterra)
+library(ggspatial)
+library(lubridate)
+library(ggpubr)
 ```
 
 Load GPS locations
@@ -15,7 +20,7 @@ amwo_data_reconstructed <- readRDS(file = here::here("classifier_integrated", "f
 
 Load a basemap
 ```{r}
-basemap_ras <- raster::stack(there::here_file("Data", "basemaps", "esri_lightgrey", "esri_lightgrey_36_48_4326.tif"))
+basemap_ras <- rast(there::here_file("Data", "basemaps", "esri_lightgrey", "esri_lightgrey_36_48_4326.tif"))
 ```
 
 Load range map and merge fall and spring migratory ranges
@@ -31,17 +36,98 @@ range_shp <- st_read(here::here("auxiliary_state_plot", "ebird", "amwo_combined_
   filter(season != "Migratory Range") #remove the migratory range from the figure
 ```
 
+Creating template for the auxiliary state maps
 ```{r}
-range_map_ggplot <- ggplot(range_shp) +
-  geom_sf(aes(fill = season), alpha = 0.75) +
+template_map <- ggplot(range_shp) +
+  theme_void() +
+  geom_spatraster_rgb(data = basemap_ras, maxcell = 5e+05) + #5e+07
+  geom_sf(aes(fill = season), alpha = 0.5) +
   scale_fill_manual(values = c("#A65141FF", "#80A0C7FF", "#394165FF")) +
-  lims(x = c(-100, -60), y = c(25, 55)) +
-  labs(fill = NULL)
-
-range_map_ggplot <- range_map_ggplot %>%
-  gginnards::append_layers(ggspatial::layer_spatial(data = basemap_ras, lazy = TRUE, dpi = 150), position = "bottom")
-
-ggsave(filename = here::here("auxiliary_state_plot", "auxiliary_state_plot_5_3_23.png"), plot = range_map_ggplot, dpi = 300)  
+  coord_sf(xlim = c(-100, -60), ylim = c(25, 55), expand = FALSE) +
+  labs(fill = NULL) +
+  annotation_north_arrow(location = "br",
+                         which_north = "true",
+                         height = unit(1.5/3, "cm"),
+                         width = unit(1.5/3, "cm"),
+                         pad_x = unit(0.3, "cm"), 
+                         pad_y = unit(0.3, "cm"), 
+                         style = ggspatial::north_arrow_orienteering(
+                           fill = c("grey40", "white"),
+                           line_col = "grey20",
+                           text_size = 6
+                         )) +
+  annotation_scale(location = "bl", width_hint = 0.2, bar_cols = c("grey40", "white"),
+                   pad_x = unit(0.3, "cm"), 
+                   pad_y = unit(0.3, "cm"),) 
 ```
 
+# Making a template timeline
+Make a dataframe of the summer migrations to date
+```{r}
+#make a column that has the prior steps for each location
+amwo_data_reconstructed <- amwo_data_reconstructed %>% 
+  group_by(animal_name) %>% 
+  group_modify(.f = function(x, y){
+    if(nrow(x) == 1){
+      x$prior_step <- NA
+    } else {
+      x$prior_step <- c(NA, x$primary_step_state[1:(nrow(x)-1)])
+    }
+    return(x)
+  }) %>% 
+  ungroup()
+
+#find min and max dates for each summer migration
+example_movement <- amwo_data_reconstructed %>% 
+  filter(primary_step_state == "Migratory (summer)" | prior_step == "Migratory (summer)") %>% 
+  mutate(date_standardized = ymd(paste0("2020-", month(time), "-", day(time)))) %>% 
+  group_by(animal_name) %>% 
+  summarise(min_date = min(date_standardized), max_date = max(date_standardized))
+```
+
+Coding the timeline
+```{r}
+template_timeline <- ggplot(data = example_movement, mapping = aes(y = animal_name)) +
+  theme_bw() +
+  geom_errorbarh(mapping = aes(xmin = min_date, xmax = max_date), height = 0.1, linewidth = 1) +
+  theme(axis.title.y = element_blank()) +
+  scale_x_date(limits = c(ymd("2020-01-01"), ymd("2020-12-31")),
+               breaks = c(ymd("2020-01-01"),ymd("2020-02-01"),ymd("2020-03-01"),ymd("2020-04-01"),ymd("2020-05-01"),ymd("2020-06-01"),ymd("2020-07-01"),ymd("2020-08-01"),ymd("2020-09-01"), ymd("2020-10-01"), ymd("2020-11-01"), ymd("2020-12-01"), ymd("2021-1-01")),
+               labels = c('J','F','M','A','M','J','J','A','S','O','N','D', 'J'))#date_labels = "%b"
+```
+
+Putting the map and the timeline in a single gg object
+```{r}
+template_map_2 <- template_map + 
+  theme(legend.position = "none")
+
+template_timeline_2 <- template_timeline +
+  theme(axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+
+blank <- ggplot() + theme_void()
+
+map_timeline_combo <- ggarrange(blank,
+                                template_map_2, 
+                                template_timeline_2, 
+                                ncol = 1, nrow = 3,
+                                heights = c(1,10,2),
+                                align = "v")
+```
+
+Showing how these can all be rendered in a single plot
+```{r}
+legend_desc <- get_legend(template_map)
+
+plots_arranged <- ggarrange(map_timeline_combo, 
+               map_timeline_combo, 
+               map_timeline_combo, 
+               legend_desc, 
+               ncol = 2, nrow = 2, 
+               labels = c("Dispersal movements", "Foray loops", "Summer migrations"),
+               label.x = c(-0.05,0.18,0),
+               label.y = c(1,1,1))
+
+ggsave(filename = here::here("auxiliary_state_plot", "auxiliary_state_plot_2.png"), plot = plots_arranged, dpi = 300, bg = "white", height = 7, width = 7)
+```
 

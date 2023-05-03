@@ -1754,27 +1754,15 @@ display: none;
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGAifQ== -->
-<pre class="r"><code>library(tidyverse)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KHNmKVxubGlicmFyeSh0ZXJyYSlcbmxpYnJhcnkodGlkeXRlcnJhKVxubGlicmFyeShnZ3NwYXRpYWwpXG5saWJyYXJ5KGx1YnJpZGF0ZSlcbmxpYnJhcnkoZ2dwdWJyKVxuYGBgIn0= -->
+<pre class="r"><code>library(tidyverse)
+library(sf)
+library(terra)
+library(tidyterra)
+library(ggspatial)
+library(lubridate)
+library(ggpubr)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJlZCBTMyBtZXRob2RzIG92ZXJ3cml0dGVuIGJ5ICdkYnBseXInOlxuICBtZXRob2QgICAgICAgICBmcm9tXG4gIHByaW50LnRibF9sYXp5ICAgICBcbiAgcHJpbnQudGJsX3NxbCAgICAgIFxu4pSA4pSAIEF0dGFjaGluZyBwYWNrYWdlcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlIDEuMy4yIOKUgOKUgOKclCBnZ3Bsb3QyIDMuNC4wICAgICAg4pyUIHB1cnJyICAgMS4wLjEgXG7inJQgdGliYmxlICAzLjEuOCAgICAgIOKclCBkcGx5ciAgIDEuMC4xMFxu4pyUIHRpZHlyICAgMS4yLjEgICAgICDinJQgc3RyaW5nciAxLjUuMCBcbuKclCByZWFkciAgIDIuMS4zICAgICAg4pyUIGZvcmNhdHMgMC41LjIg4pSA4pSAIENvbmZsaWN0cyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlX2NvbmZsaWN0cygpIOKUgOKUgFxu4pyWIGRwbHlyOjpmaWx0ZXIoKSBtYXNrcyBzdGF0czo6ZmlsdGVyKClcbuKcliBkcGx5cjo6bGFnKCkgICAgbWFza3Mgc3RhdHM6OmxhZygpXG4ifQ== -->
-<pre><code>Registered S3 methods overwritten by &#39;dbplyr&#39;:
-  method         from
-  print.tbl_lazy     
-  print.tbl_sql      
-── Attaching packages ──────────────────────────────────────── tidyverse 1.3.2 ──✔ ggplot2 3.4.0      ✔ purrr   1.0.1 
-✔ tibble  3.1.8      ✔ dplyr   1.0.10
-✔ tidyr   1.2.1      ✔ stringr 1.5.0 
-✔ readr   2.1.3      ✔ forcats 0.5.2 ── Conflicts ─────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShzZilcbmBgYCJ9 -->
-<pre class="r"><code>library(sf)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTGlua2luZyB0byBHRU9TIDMuOS4zLCBHREFMIDMuNS4yLCBQUk9KIDguMi4xOyBzZl91c2VfczIoKSBpcyBUUlVFXG4ifQ== -->
-<pre><code>Linking to GEOS 3.9.3, GDAL 3.5.2, PROJ 8.2.1; sf_use_s2() is TRUE</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Load GPS locations</p>
@@ -1788,8 +1776,8 @@ display: none;
 <p>Load a basemap</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmFzZW1hcF9yYXMgPC0gcmFzdGVyOjpzdGFjayh0aGVyZTo6aGVyZV9maWxlKFwiRGF0YVwiLCBcImJhc2VtYXBzXCIsIFwiZXNyaV9saWdodGdyZXlcIiwgXCJlc3JpX2xpZ2h0Z3JleV8zNl80OF80MzI2LnRpZlwiKSlcbmBgYCJ9 -->
-<pre class="r"><code>basemap_ras &lt;- raster::stack(there::here_file(&quot;Data&quot;, &quot;basemaps&quot;, &quot;esri_lightgrey&quot;, &quot;esri_lightgrey_36_48_4326.tif&quot;))</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmFzZW1hcF9yYXMgPC0gcmFzdCh0aGVyZTo6aGVyZV9maWxlKFwiRGF0YVwiLCBcImJhc2VtYXBzXCIsIFwiZXNyaV9saWdodGdyZXlcIiwgXCJlc3JpX2xpZ2h0Z3JleV8zNl80OF80MzI2LnRpZlwiKSlcbmBgYCJ9 -->
+<pre class="r"><code>basemap_ras &lt;- rast(there::here_file(&quot;Data&quot;, &quot;basemaps&quot;, &quot;esri_lightgrey&quot;, &quot;esri_lightgrey_36_48_4326.tif&quot;))</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1807,37 +1795,136 @@ display: none;
   ungroup() %&gt;% 
   filter(season != &quot;Migratory Range&quot;) #remove the migratory range from the figure</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUmVhZGluZyBsYXllciBgYW13b19jb21iaW5lZF8yMDIxXzQzMjYnIGZyb20gZGF0YSBzb3VyY2UgXG4gIGBDOlxcVXNlcnNcXGxpYW1hXFxPbmVEcml2ZSAtIFVuaXZlcnNpdHkgb2YgTWFpbmUgU3lzdGVtXFxNYWluZUFuYWx5c2lzXFxQcm9qZWN0c1xcZmFjLWNsYXNzaWZpY2F0aW9uXFxhdXhpbGlhcnlfc3RhdGVfcGxvdFxcZWJpcmRcXGFtd29fY29tYmluZWRfMjAyMV80MzI2LnNocCcgXG4gIHVzaW5nIGRyaXZlciBgRVNSSSBTaGFwZWZpbGUnXG5TaW1wbGUgZmVhdHVyZSBjb2xsZWN0aW9uIHdpdGggNSBmZWF0dXJlcyBhbmQgOSBmaWVsZHNcbkdlb21ldHJ5IHR5cGU6IE1VTFRJUE9MWUdPTlxuRGltZW5zaW9uOiAgICAgWFlcbkJvdW5kaW5nIGJveDogIHhtaW46IC0xMDUuNDQ0MyB5bWluOiAyNS4xNzcwMiB4bWF4OiAtNTkuOTEzNCB5bWF4OiA1Mi45MDUzM1xuR2VvZGV0aWMgQ1JTOiAgV0dTIDg0XG4ifQ== -->
-<pre><code>Reading layer `amwo_combined_2021_4326&#39; from data source 
-  `C:\Users\liama\OneDrive - University of Maine System\MaineAnalysis\Projects\fac-classification\auxiliary_state_plot\ebird\amwo_combined_2021_4326.shp&#39; 
-  using driver `ESRI Shapefile&#39;
-Simple feature collection with 5 features and 9 fields
-Geometry type: MULTIPOLYGON
-Dimension:     XY
-Bounding box:  xmin: -105.4443 ymin: 25.17702 xmax: -59.9134 ymax: 52.90533
-Geodetic CRS:  WGS 84</code></pre>
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Creating template for the auxiliary state maps</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGVtcGxhdGVfbWFwIDwtIGdncGxvdChyYW5nZV9zaHApICtcbiAgdGhlbWVfdm9pZCgpICtcbiAgZ2VvbV9zcGF0cmFzdGVyX3JnYihkYXRhID0gYmFzZW1hcF9yYXMsIG1heGNlbGwgPSA1ZSswNSkgKyAjNWUrMDdcbiAgZ2VvbV9zZihhZXMoZmlsbCA9IHNlYXNvbiksIGFscGhhID0gMC41KSArXG4gIHNjYWxlX2ZpbGxfbWFudWFsKHZhbHVlcyA9IGMoXCIjQTY1MTQxRkZcIiwgXCIjODBBMEM3RkZcIiwgXCIjMzk0MTY1RkZcIikpICtcbiAgY29vcmRfc2YoeGxpbSA9IGMoLTEwMCwgLTYwKSwgeWxpbSA9IGMoMjUsIDU1KSwgZXhwYW5kID0gRkFMU0UpICtcbiAgbGFicyhmaWxsID0gTlVMTCkgK1xuICBhbm5vdGF0aW9uX25vcnRoX2Fycm93KGxvY2F0aW9uID0gXCJiclwiLFxuICAgICAgICAgICAgICAgICAgICAgICAgIHdoaWNoX25vcnRoID0gXCJ0cnVlXCIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgaGVpZ2h0ID0gdW5pdCgxLjUvMywgXCJjbVwiKSxcbiAgICAgICAgICAgICAgICAgICAgICAgICB3aWR0aCA9IHVuaXQoMS41LzMsIFwiY21cIiksXG4gICAgICAgICAgICAgICAgICAgICAgICAgcGFkX3ggPSB1bml0KDAuMywgXCJjbVwiKSwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgcGFkX3kgPSB1bml0KDAuMywgXCJjbVwiKSwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgc3R5bGUgPSBnZ3NwYXRpYWw6Om5vcnRoX2Fycm93X29yaWVudGVlcmluZyhcbiAgICAgICAgICAgICAgICAgICAgICAgICAgIGZpbGwgPSBjKFwiZ3JleTQwXCIsIFwid2hpdGVcIiksXG4gICAgICAgICAgICAgICAgICAgICAgICAgICBsaW5lX2NvbCA9IFwiZ3JleTIwXCIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICB0ZXh0X3NpemUgPSA2XG4gICAgICAgICAgICAgICAgICAgICAgICAgKSkgK1xuICBhbm5vdGF0aW9uX3NjYWxlKGxvY2F0aW9uID0gXCJibFwiLCB3aWR0aF9oaW50ID0gMC4yLCBiYXJfY29scyA9IGMoXCJncmV5NDBcIiwgXCJ3aGl0ZVwiKSxcbiAgICAgICAgICAgICAgICAgICBwYWRfeCA9IHVuaXQoMC4zLCBcImNtXCIpLCBcbiAgICAgICAgICAgICAgICAgICBwYWRfeSA9IHVuaXQoMC4zLCBcImNtXCIpLCkgXG5gYGAifQ== -->
+<pre class="r"><code>template_map &lt;- ggplot(range_shp) +
+  theme_void() +
+  geom_spatraster_rgb(data = basemap_ras, maxcell = 5e+05) + #5e+07
+  geom_sf(aes(fill = season), alpha = 0.5) +
+  scale_fill_manual(values = c(&quot;#A65141FF&quot;, &quot;#80A0C7FF&quot;, &quot;#394165FF&quot;)) +
+  coord_sf(xlim = c(-100, -60), ylim = c(25, 55), expand = FALSE) +
+  labs(fill = NULL) +
+  annotation_north_arrow(location = &quot;br&quot;,
+                         which_north = &quot;true&quot;,
+                         height = unit(1.5/3, &quot;cm&quot;),
+                         width = unit(1.5/3, &quot;cm&quot;),
+                         pad_x = unit(0.3, &quot;cm&quot;), 
+                         pad_y = unit(0.3, &quot;cm&quot;), 
+                         style = ggspatial::north_arrow_orienteering(
+                           fill = c(&quot;grey40&quot;, &quot;white&quot;),
+                           line_col = &quot;grey20&quot;,
+                           text_size = 6
+                         )) +
+  annotation_scale(location = &quot;bl&quot;, width_hint = 0.2, bar_cols = c(&quot;grey40&quot;, &quot;white&quot;),
+                   pad_x = unit(0.3, &quot;cm&quot;), 
+                   pad_y = unit(0.3, &quot;cm&quot;),) </code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiU3BhdFJhc3RlciByZXNhbXBsZWQgdG8gbmNlbGxzID0gNTAwODIxXG4ifQ== -->
+<pre><code>SpatRaster resampled to ncells = 500821</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<div id="making-a-template-timeline" class="section level1">
+<h1>Making a template timeline</h1>
+<p>Make a dataframe of the summer migrations to date</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmFuZ2VfbWFwX2dncGxvdCA8LSBnZ3Bsb3QocmFuZ2Vfc2hwKSArXG4gIGdlb21fc2YoYWVzKGZpbGwgPSBzZWFzb24pLCBhbHBoYSA9IDAuNzUpICtcbiAgc2NhbGVfZmlsbF9tYW51YWwodmFsdWVzID0gYyhcIiNBNjUxNDFGRlwiLCBcIiM4MEEwQzdGRlwiLCBcIiMzOTQxNjVGRlwiKSkgK1xuICBsaW1zKHggPSBjKC0xMDAsIC02MCksIHkgPSBjKDI1LCA1NSkpICtcbiAgbGFicyhmaWxsID0gTlVMTClcblxucmFuZ2VfbWFwX2dncGxvdCA8LSByYW5nZV9tYXBfZ2dwbG90ICU+JVxuICBnZ2lubmFyZHM6OmFwcGVuZF9sYXllcnMoZ2dzcGF0aWFsOjpsYXllcl9zcGF0aWFsKGRhdGEgPSBiYXNlbWFwX3JhcywgbGF6eSA9IFRSVUUsIGRwaSA9IDE1MCksIHBvc2l0aW9uID0gXCJib3R0b21cIilcblxuZ2dzYXZlKGZpbGVuYW1lID0gaGVyZTo6aGVyZShcImF1eGlsaWFyeV9zdGF0ZV9wbG90XCIsIFwiYXV4aWxpYXJ5X3N0YXRlX3Bsb3RfNV8zXzIzLnBuZ1wiKSwgcGxvdCA9IHJhbmdlX21hcF9nZ3Bsb3QsIGRwaSA9IDMwMCkgIFxuYGBgIn0= -->
-<pre class="r"><code>range_map_ggplot &lt;- ggplot(range_shp) +
-  geom_sf(aes(fill = season), alpha = 0.75) +
-  scale_fill_manual(values = c(&quot;#A65141FF&quot;, &quot;#80A0C7FF&quot;, &quot;#394165FF&quot;)) +
-  lims(x = c(-100, -60), y = c(25, 55)) +
-  labs(fill = NULL)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI21ha2UgYSBjb2x1bW4gdGhhdCBoYXMgdGhlIHByaW9yIHN0ZXBzIGZvciBlYWNoIGxvY2F0aW9uXG5hbXdvX2RhdGFfcmVjb25zdHJ1Y3RlZCA8LSBhbXdvX2RhdGFfcmVjb25zdHJ1Y3RlZCAlPiUgXG4gIGdyb3VwX2J5KGFuaW1hbF9uYW1lKSAlPiUgXG4gIGdyb3VwX21vZGlmeSguZiA9IGZ1bmN0aW9uKHgsIHkpe1xuICAgIGlmKG5yb3coeCkgPT0gMSl7XG4gICAgICB4JHByaW9yX3N0ZXAgPC0gTkFcbiAgICB9IGVsc2Uge1xuICAgICAgeCRwcmlvcl9zdGVwIDwtIGMoTkEsIHgkcHJpbWFyeV9zdGVwX3N0YXRlWzE6KG5yb3coeCktMSldKVxuICAgIH1cbiAgICByZXR1cm4oeClcbiAgfSkgJT4lIFxuICB1bmdyb3VwKClcblxuI2ZpbmQgbWluIGFuZCBtYXggZGF0ZXMgZm9yIGVhY2ggc3VtbWVyIG1pZ3JhdGlvblxuZXhhbXBsZV9tb3ZlbWVudCA8LSBhbXdvX2RhdGFfcmVjb25zdHJ1Y3RlZCAlPiUgXG4gIGZpbHRlcihwcmltYXJ5X3N0ZXBfc3RhdGUgPT0gXCJNaWdyYXRvcnkgKHN1bW1lcilcIiB8IHByaW9yX3N0ZXAgPT0gXCJNaWdyYXRvcnkgKHN1bW1lcilcIikgJT4lIFxuICBtdXRhdGUoZGF0ZV9zdGFuZGFyZGl6ZWQgPSB5bWQocGFzdGUwKFwiMjAyMC1cIiwgbW9udGgodGltZSksIFwiLVwiLCBkYXkodGltZSkpKSkgJT4lIFxuICBncm91cF9ieShhbmltYWxfbmFtZSkgJT4lIFxuICBzdW1tYXJpc2UobWluX2RhdGUgPSBtaW4oZGF0ZV9zdGFuZGFyZGl6ZWQpLCBtYXhfZGF0ZSA9IG1heChkYXRlX3N0YW5kYXJkaXplZCkpXG5gYGAifQ== -->
+<pre class="r"><code>#make a column that has the prior steps for each location
+amwo_data_reconstructed &lt;- amwo_data_reconstructed %&gt;% 
+  group_by(animal_name) %&gt;% 
+  group_modify(.f = function(x, y){
+    if(nrow(x) == 1){
+      x$prior_step &lt;- NA
+    } else {
+      x$prior_step &lt;- c(NA, x$primary_step_state[1:(nrow(x)-1)])
+    }
+    return(x)
+  }) %&gt;% 
+  ungroup()
 
-range_map_ggplot &lt;- range_map_ggplot %&gt;%
-  gginnards::append_layers(ggspatial::layer_spatial(data = basemap_ras, lazy = TRUE, dpi = 150), position = &quot;bottom&quot;)
-
-ggsave(filename = here::here(&quot;auxiliary_state_plot&quot;, &quot;auxiliary_state_plot_5_3_23.png&quot;), plot = range_map_ggplot, dpi = 300)  </code></pre>
+#find min and max dates for each summer migration
+example_movement &lt;- amwo_data_reconstructed %&gt;% 
+  filter(primary_step_state == &quot;Migratory (summer)&quot; | prior_step == &quot;Migratory (summer)&quot;) %&gt;% 
+  mutate(date_standardized = ymd(paste0(&quot;2020-&quot;, month(time), &quot;-&quot;, day(time)))) %&gt;% 
+  group_by(animal_name) %&gt;% 
+  summarise(min_date = min(date_standardized), max_date = max(date_standardized))</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>Coding the timeline</p>
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGVtcGxhdGVfdGltZWxpbmUgPC0gZ2dwbG90KGRhdGEgPSBleGFtcGxlX21vdmVtZW50LCBtYXBwaW5nID0gYWVzKHkgPSBhbmltYWxfbmFtZSkpICtcbiAgdGhlbWVfYncoKSArXG4gIGdlb21fZXJyb3JiYXJoKG1hcHBpbmcgPSBhZXMoeG1pbiA9IG1pbl9kYXRlLCB4bWF4ID0gbWF4X2RhdGUpLCBoZWlnaHQgPSAwLjEsIGxpbmV3aWR0aCA9IDEpICtcbiAgdGhlbWUoYXhpcy50aXRsZS55ID0gZWxlbWVudF9ibGFuaygpKSArXG4gIHNjYWxlX3hfZGF0ZShsaW1pdHMgPSBjKHltZChcIjIwMjAtMDEtMDFcIiksIHltZChcIjIwMjAtMTItMzFcIikpLFxuICAgICAgICAgICAgICAgYnJlYWtzID0gYyh5bWQoXCIyMDIwLTAxLTAxXCIpLHltZChcIjIwMjAtMDItMDFcIikseW1kKFwiMjAyMC0wMy0wMVwiKSx5bWQoXCIyMDIwLTA0LTAxXCIpLHltZChcIjIwMjAtMDUtMDFcIikseW1kKFwiMjAyMC0wNi0wMVwiKSx5bWQoXCIyMDIwLTA3LTAxXCIpLHltZChcIjIwMjAtMDgtMDFcIikseW1kKFwiMjAyMC0wOS0wMVwiKSwgeW1kKFwiMjAyMC0xMC0wMVwiKSwgeW1kKFwiMjAyMC0xMS0wMVwiKSwgeW1kKFwiMjAyMC0xMi0wMVwiKSwgeW1kKFwiMjAyMS0xLTAxXCIpKSxcbiAgICAgICAgICAgICAgIGxhYmVscyA9IGMoJ0onLCdGJywnTScsJ0EnLCdNJywnSicsJ0onLCdBJywnUycsJ08nLCdOJywnRCcsICdKJykpI2RhdGVfbGFiZWxzID0gXCIlYlwiXG5gYGAifQ== -->
+<pre class="r"><code>template_timeline &lt;- ggplot(data = example_movement, mapping = aes(y = animal_name)) +
+  theme_bw() +
+  geom_errorbarh(mapping = aes(xmin = min_date, xmax = max_date), height = 0.1, linewidth = 1) +
+  theme(axis.title.y = element_blank()) +
+  scale_x_date(limits = c(ymd(&quot;2020-01-01&quot;), ymd(&quot;2020-12-31&quot;)),
+               breaks = c(ymd(&quot;2020-01-01&quot;),ymd(&quot;2020-02-01&quot;),ymd(&quot;2020-03-01&quot;),ymd(&quot;2020-04-01&quot;),ymd(&quot;2020-05-01&quot;),ymd(&quot;2020-06-01&quot;),ymd(&quot;2020-07-01&quot;),ymd(&quot;2020-08-01&quot;),ymd(&quot;2020-09-01&quot;), ymd(&quot;2020-10-01&quot;), ymd(&quot;2020-11-01&quot;), ymd(&quot;2020-12-01&quot;), ymd(&quot;2021-1-01&quot;)),
+               labels = c(&#39;J&#39;,&#39;F&#39;,&#39;M&#39;,&#39;A&#39;,&#39;M&#39;,&#39;J&#39;,&#39;J&#39;,&#39;A&#39;,&#39;S&#39;,&#39;O&#39;,&#39;N&#39;,&#39;D&#39;, &#39;J&#39;))#date_labels = &quot;%b&quot;</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Putting the map and the timeline in a single gg object</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGVtcGxhdGVfbWFwXzIgPC0gdGVtcGxhdGVfbWFwICsgXG4gIHRoZW1lKGxlZ2VuZC5wb3NpdGlvbiA9IFwibm9uZVwiKVxuXG50ZW1wbGF0ZV90aW1lbGluZV8yIDwtIHRlbXBsYXRlX3RpbWVsaW5lICtcbiAgdGhlbWUoYXhpcy50ZXh0Lnk9ZWxlbWVudF9ibGFuaygpLFxuICAgICAgICBheGlzLnRpY2tzLnk9ZWxlbWVudF9ibGFuaygpKVxuXG5ibGFuayA8LSBnZ3Bsb3QoKSArIHRoZW1lX3ZvaWQoKVxuXG5tYXBfdGltZWxpbmVfY29tYm8gPC0gZ2dhcnJhbmdlKGJsYW5rLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0ZW1wbGF0ZV9tYXBfMiwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRlbXBsYXRlX3RpbWVsaW5lXzIsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuY29sID0gMSwgbnJvdyA9IDMsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGhlaWdodHMgPSBjKDEsMTAsMiksXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGFsaWduID0gXCJ2XCIpXG5gYGAifQ== -->
+<pre class="r"><code>template_map_2 &lt;- template_map + 
+  theme(legend.position = &quot;none&quot;)
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpgYGB7cn0NCmxpYnJhcnkodGlkeXZlcnNlKQ0KbGlicmFyeShzZikNCmBgYA0KDQpMb2FkIEdQUyBsb2NhdGlvbnMNCmBgYHtyfQ0KYW13b19kYXRhX3JlY29uc3RydWN0ZWQgPC0gcmVhZFJEUyhmaWxlID0gaGVyZTo6aGVyZSgiY2xhc3NpZmllcl9pbnRlZ3JhdGVkIiwgImZhY19wcmltYXJ5X3N0YXRlX2RlbGluZWF0aW9uLnJkcyIpKQ0KYGBgDQoNCkxvYWQgYSBiYXNlbWFwDQpgYGB7cn0NCmJhc2VtYXBfcmFzIDwtIHJhc3Rlcjo6c3RhY2sodGhlcmU6OmhlcmVfZmlsZSgiRGF0YSIsICJiYXNlbWFwcyIsICJlc3JpX2xpZ2h0Z3JleSIsICJlc3JpX2xpZ2h0Z3JleV8zNl80OF80MzI2LnRpZiIpKQ0KYGBgDQoNCkxvYWQgcmFuZ2UgbWFwIGFuZCBtZXJnZSBmYWxsIGFuZCBzcHJpbmcgbWlncmF0b3J5IHJhbmdlcw0KYGBge3J9DQpyYW5nZV9zaHAgPC0gc3RfcmVhZChoZXJlOjpoZXJlKCJhdXhpbGlhcnlfc3RhdGVfcGxvdCIsICJlYmlyZCIsICJhbXdvX2NvbWJpbmVkXzIwMjFfNDMyNi5zaHAiKSkgJT4lDQogIG11dGF0ZShzZWFzb24gPSByZWNvZGUoc2Vhc29uLCANCiAgICAgICAgICAgICAgICAgICAgICAgICAiU3ByaW5nIE1pZ3JhdG9yeSBSYW5nZSIgPSAiTWlncmF0b3J5IFJhbmdlIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAiRmFsbCBNaWdyYXRvcnkgUmFuZ2UiID0gIk1pZ3JhdG9yeSBSYW5nZSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgIk5vbmJyZWVkaW5nIFJhbmdlIiA9ICJXaW50ZXJpbmcgUmFuZ2UiKSkgJT4lDQogIGdyb3VwX2J5KHNlYXNvbikgJT4lDQogIHN1bW1hcmlzZShnZW9tZXRyeSA9IHNmOjpzdF91bmlvbihnZW9tZXRyeSkpICU+JQ0KICB1bmdyb3VwKCkgJT4lIA0KICBmaWx0ZXIoc2Vhc29uICE9ICJNaWdyYXRvcnkgUmFuZ2UiKSAjcmVtb3ZlIHRoZSBtaWdyYXRvcnkgcmFuZ2UgZnJvbSB0aGUgZmlndXJlDQpgYGANCg0KYGBge3J9DQpyYW5nZV9tYXBfZ2dwbG90IDwtIGdncGxvdChyYW5nZV9zaHApICsNCiAgZ2VvbV9zZihhZXMoZmlsbCA9IHNlYXNvbiksIGFscGhhID0gMC43NSkgKw0KICBzY2FsZV9maWxsX21hbnVhbCh2YWx1ZXMgPSBjKCIjQTY1MTQxRkYiLCAiIzgwQTBDN0ZGIiwgIiMzOTQxNjVGRiIpKSArDQogIGxpbXMoeCA9IGMoLTEwMCwgLTYwKSwgeSA9IGMoMjUsIDU1KSkgKw0KICBsYWJzKGZpbGwgPSBOVUxMKQ0KDQpyYW5nZV9tYXBfZ2dwbG90IDwtIHJhbmdlX21hcF9nZ3Bsb3QgJT4lDQogIGdnaW5uYXJkczo6YXBwZW5kX2xheWVycyhnZ3NwYXRpYWw6OmxheWVyX3NwYXRpYWwoZGF0YSA9IGJhc2VtYXBfcmFzLCBsYXp5ID0gVFJVRSwgZHBpID0gMTUwKSwgcG9zaXRpb24gPSAiYm90dG9tIikNCg0KZ2dzYXZlKGZpbGVuYW1lID0gaGVyZTo6aGVyZSgiYXV4aWxpYXJ5X3N0YXRlX3Bsb3QiLCAiYXV4aWxpYXJ5X3N0YXRlX3Bsb3RfNV8zXzIzLnBuZyIpLCBwbG90ID0gcmFuZ2VfbWFwX2dncGxvdCwgZHBpID0gMzAwKSAgDQpgYGANCg0KDQo=</div>
+template_timeline_2 &lt;- template_timeline +
+  theme(axis.text.y=element_blank(),
+        axis.ticks.y=element_blank())
+
+blank &lt;- ggplot() + theme_void()
+
+map_timeline_combo &lt;- ggarrange(blank,
+                                template_map_2, 
+                                template_timeline_2, 
+                                ncol = 1, nrow = 3,
+                                heights = c(1,10,2),
+                                align = &quot;v&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiU2NhbGUgb24gbWFwIHZhcmllcyBieSBtb3JlIHRoYW4gMTAlLCBzY2FsZSBiYXIgbWF5IGJlIGluYWNjdXJhdGVcbiJ9 -->
+<pre><code>Scale on map varies by more than 10%, scale bar may be inaccurate</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Showing how these can all be rendered in a single plot</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGVnZW5kX2Rlc2MgPC0gZ2V0X2xlZ2VuZCh0ZW1wbGF0ZV9tYXApXG5gYGAifQ== -->
+<pre class="r"><code>legend_desc &lt;- get_legend(template_map)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiU2NhbGUgb24gbWFwIHZhcmllcyBieSBtb3JlIHRoYW4gMTAlLCBzY2FsZSBiYXIgbWF5IGJlIGluYWNjdXJhdGVcbiJ9 -->
+<pre><code>Scale on map varies by more than 10%, scale bar may be inaccurate</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudCA8LSBnZ2FycmFuZ2UobWFwX3RpbWVsaW5lX2NvbWJvLCBcbiAgICAgICAgICAgICAgIG1hcF90aW1lbGluZV9jb21ibywgXG4gICAgICAgICAgICAgICBtYXBfdGltZWxpbmVfY29tYm8sIFxuICAgICAgICAgICAgICAgbGVnZW5kX2Rlc2MsIFxuICAgICAgICAgICAgICAgbmNvbCA9IDIsIG5yb3cgPSAyLCBcbiAgICAgICAgICAgICAgIGxhYmVscyA9IGMoXCJEaXNwZXJzYWwgbW92ZW1lbnRzXCIsIFwiRm9yYXkgbG9vcHNcIiwgXCJTdW1tZXIgbWlncmF0aW9uc1wiKSxcbiAgICAgICAgICAgICAgIGxhYmVsLnggPSBjKC0wLjA1LDAuMTgsMCksXG4gICAgICAgICAgICAgICBsYWJlbC55ID0gYygxLDEsMSkpXG5cbmdnc2F2ZShmaWxlbmFtZSA9IGhlcmU6OmhlcmUoXCJhdXhpbGlhcnlfc3RhdGVfcGxvdFwiLCBcImF1eGlsaWFyeV9zdGF0ZV9wbG90XzIucG5nXCIpLCBwbG90ID0gdCwgZHBpID0gMzAwLCBiZyA9IFwid2hpdGVcIiwgaGVpZ2h0ID0gNywgd2lkdGggPSA3KVxuYGBgIn0= -->
+<pre class="r"><code>t &lt;- ggarrange(map_timeline_combo, 
+               map_timeline_combo, 
+               map_timeline_combo, 
+               legend_desc, 
+               ncol = 2, nrow = 2, 
+               labels = c(&quot;Dispersal movements&quot;, &quot;Foray loops&quot;, &quot;Summer migrations&quot;),
+               label.x = c(-0.05,0.18,0),
+               label.y = c(1,1,1))
+
+ggsave(filename = here::here(&quot;auxiliary_state_plot&quot;, &quot;auxiliary_state_plot_2.png&quot;), plot = t, dpi = 300, bg = &quot;white&quot;, height = 7, width = 7)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-plot-begin eyJoZWlnaHQiOjM0NS40ODgzLCJ3aWR0aCI6NTU5LCJzaXplX2JlaGF2aW9yIjowLCJjb25kaXRpb25zIjpbXX0= -->
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAwAAAAHbCAMAAABLOQ15AAAAA1BMVEX///+nxBvIAAAACXBIWXMAABRMAAAUTAFGjW/LAAABeElEQVR4nO3BAQ0AAADCoPdPbQ8HFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcGSTJgABFRbHVgAAAABJRU5ErkJggg==" /></p>
+<!-- rnb-plot-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+</div>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpgYGB7cn0NCmxpYnJhcnkodGlkeXZlcnNlKQ0KbGlicmFyeShzZikNCmxpYnJhcnkodGVycmEpDQpsaWJyYXJ5KHRpZHl0ZXJyYSkNCmxpYnJhcnkoZ2dzcGF0aWFsKQ0KbGlicmFyeShsdWJyaWRhdGUpDQpsaWJyYXJ5KGdncHVicikNCmBgYA0KDQpMb2FkIEdQUyBsb2NhdGlvbnMNCmBgYHtyfQ0KYW13b19kYXRhX3JlY29uc3RydWN0ZWQgPC0gcmVhZFJEUyhmaWxlID0gaGVyZTo6aGVyZSgiY2xhc3NpZmllcl9pbnRlZ3JhdGVkIiwgImZhY19wcmltYXJ5X3N0YXRlX2RlbGluZWF0aW9uLnJkcyIpKQ0KYGBgDQoNCkxvYWQgYSBiYXNlbWFwDQpgYGB7cn0NCmJhc2VtYXBfcmFzIDwtIHJhc3QodGhlcmU6OmhlcmVfZmlsZSgiRGF0YSIsICJiYXNlbWFwcyIsICJlc3JpX2xpZ2h0Z3JleSIsICJlc3JpX2xpZ2h0Z3JleV8zNl80OF80MzI2LnRpZiIpKQ0KYGBgDQoNCkxvYWQgcmFuZ2UgbWFwIGFuZCBtZXJnZSBmYWxsIGFuZCBzcHJpbmcgbWlncmF0b3J5IHJhbmdlcw0KYGBge3J9DQpyYW5nZV9zaHAgPC0gc3RfcmVhZChoZXJlOjpoZXJlKCJhdXhpbGlhcnlfc3RhdGVfcGxvdCIsICJlYmlyZCIsICJhbXdvX2NvbWJpbmVkXzIwMjFfNDMyNi5zaHAiKSkgJT4lDQogIG11dGF0ZShzZWFzb24gPSByZWNvZGUoc2Vhc29uLCANCiAgICAgICAgICAgICAgICAgICAgICAgICAiU3ByaW5nIE1pZ3JhdG9yeSBSYW5nZSIgPSAiTWlncmF0b3J5IFJhbmdlIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAiRmFsbCBNaWdyYXRvcnkgUmFuZ2UiID0gIk1pZ3JhdG9yeSBSYW5nZSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgIk5vbmJyZWVkaW5nIFJhbmdlIiA9ICJXaW50ZXJpbmcgUmFuZ2UiKSkgJT4lDQogIGdyb3VwX2J5KHNlYXNvbikgJT4lDQogIHN1bW1hcmlzZShnZW9tZXRyeSA9IHNmOjpzdF91bmlvbihnZW9tZXRyeSkpICU+JQ0KICB1bmdyb3VwKCkgJT4lIA0KICBmaWx0ZXIoc2Vhc29uICE9ICJNaWdyYXRvcnkgUmFuZ2UiKSAjcmVtb3ZlIHRoZSBtaWdyYXRvcnkgcmFuZ2UgZnJvbSB0aGUgZmlndXJlDQpgYGANCg0KQ3JlYXRpbmcgdGVtcGxhdGUgZm9yIHRoZSBhdXhpbGlhcnkgc3RhdGUgbWFwcw0KYGBge3J9DQp0ZW1wbGF0ZV9tYXAgPC0gZ2dwbG90KHJhbmdlX3NocCkgKw0KICB0aGVtZV92b2lkKCkgKw0KICBnZW9tX3NwYXRyYXN0ZXJfcmdiKGRhdGEgPSBiYXNlbWFwX3JhcywgbWF4Y2VsbCA9IDVlKzA1KSArICM1ZSswNw0KICBnZW9tX3NmKGFlcyhmaWxsID0gc2Vhc29uKSwgYWxwaGEgPSAwLjUpICsNCiAgc2NhbGVfZmlsbF9tYW51YWwodmFsdWVzID0gYygiI0E2NTE0MUZGIiwgIiM4MEEwQzdGRiIsICIjMzk0MTY1RkYiKSkgKw0KICBjb29yZF9zZih4bGltID0gYygtMTAwLCAtNjApLCB5bGltID0gYygyNSwgNTUpLCBleHBhbmQgPSBGQUxTRSkgKw0KICBsYWJzKGZpbGwgPSBOVUxMKSArDQogIGFubm90YXRpb25fbm9ydGhfYXJyb3cobG9jYXRpb24gPSAiYnIiLA0KICAgICAgICAgICAgICAgICAgICAgICAgIHdoaWNoX25vcnRoID0gInRydWUiLA0KICAgICAgICAgICAgICAgICAgICAgICAgIGhlaWdodCA9IHVuaXQoMS41LzMsICJjbSIpLA0KICAgICAgICAgICAgICAgICAgICAgICAgIHdpZHRoID0gdW5pdCgxLjUvMywgImNtIiksDQogICAgICAgICAgICAgICAgICAgICAgICAgcGFkX3ggPSB1bml0KDAuMywgImNtIiksIA0KICAgICAgICAgICAgICAgICAgICAgICAgIHBhZF95ID0gdW5pdCgwLjMsICJjbSIpLCANCiAgICAgICAgICAgICAgICAgICAgICAgICBzdHlsZSA9IGdnc3BhdGlhbDo6bm9ydGhfYXJyb3dfb3JpZW50ZWVyaW5nKA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgZmlsbCA9IGMoImdyZXk0MCIsICJ3aGl0ZSIpLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgbGluZV9jb2wgPSAiZ3JleTIwIiwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgIHRleHRfc2l6ZSA9IDYNCiAgICAgICAgICAgICAgICAgICAgICAgICApKSArDQogIGFubm90YXRpb25fc2NhbGUobG9jYXRpb24gPSAiYmwiLCB3aWR0aF9oaW50ID0gMC4yLCBiYXJfY29scyA9IGMoImdyZXk0MCIsICJ3aGl0ZSIpLA0KICAgICAgICAgICAgICAgICAgIHBhZF94ID0gdW5pdCgwLjMsICJjbSIpLCANCiAgICAgICAgICAgICAgICAgICBwYWRfeSA9IHVuaXQoMC4zLCAiY20iKSwpIA0KYGBgDQoNCiMgTWFraW5nIGEgdGVtcGxhdGUgdGltZWxpbmUNCk1ha2UgYSBkYXRhZnJhbWUgb2YgdGhlIHN1bW1lciBtaWdyYXRpb25zIHRvIGRhdGUNCmBgYHtyfQ0KI21ha2UgYSBjb2x1bW4gdGhhdCBoYXMgdGhlIHByaW9yIHN0ZXBzIGZvciBlYWNoIGxvY2F0aW9uDQphbXdvX2RhdGFfcmVjb25zdHJ1Y3RlZCA8LSBhbXdvX2RhdGFfcmVjb25zdHJ1Y3RlZCAlPiUgDQogIGdyb3VwX2J5KGFuaW1hbF9uYW1lKSAlPiUgDQogIGdyb3VwX21vZGlmeSguZiA9IGZ1bmN0aW9uKHgsIHkpew0KICAgIGlmKG5yb3coeCkgPT0gMSl7DQogICAgICB4JHByaW9yX3N0ZXAgPC0gTkENCiAgICB9IGVsc2Ugew0KICAgICAgeCRwcmlvcl9zdGVwIDwtIGMoTkEsIHgkcHJpbWFyeV9zdGVwX3N0YXRlWzE6KG5yb3coeCktMSldKQ0KICAgIH0NCiAgICByZXR1cm4oeCkNCiAgfSkgJT4lIA0KICB1bmdyb3VwKCkNCg0KI2ZpbmQgbWluIGFuZCBtYXggZGF0ZXMgZm9yIGVhY2ggc3VtbWVyIG1pZ3JhdGlvbg0KZXhhbXBsZV9tb3ZlbWVudCA8LSBhbXdvX2RhdGFfcmVjb25zdHJ1Y3RlZCAlPiUgDQogIGZpbHRlcihwcmltYXJ5X3N0ZXBfc3RhdGUgPT0gIk1pZ3JhdG9yeSAoc3VtbWVyKSIgfCBwcmlvcl9zdGVwID09ICJNaWdyYXRvcnkgKHN1bW1lcikiKSAlPiUgDQogIG11dGF0ZShkYXRlX3N0YW5kYXJkaXplZCA9IHltZChwYXN0ZTAoIjIwMjAtIiwgbW9udGgodGltZSksICItIiwgZGF5KHRpbWUpKSkpICU+JSANCiAgZ3JvdXBfYnkoYW5pbWFsX25hbWUpICU+JSANCiAgc3VtbWFyaXNlKG1pbl9kYXRlID0gbWluKGRhdGVfc3RhbmRhcmRpemVkKSwgbWF4X2RhdGUgPSBtYXgoZGF0ZV9zdGFuZGFyZGl6ZWQpKQ0KYGBgDQoNCkNvZGluZyB0aGUgdGltZWxpbmUNCmBgYHtyfQ0KdGVtcGxhdGVfdGltZWxpbmUgPC0gZ2dwbG90KGRhdGEgPSBleGFtcGxlX21vdmVtZW50LCBtYXBwaW5nID0gYWVzKHkgPSBhbmltYWxfbmFtZSkpICsNCiAgdGhlbWVfYncoKSArDQogIGdlb21fZXJyb3JiYXJoKG1hcHBpbmcgPSBhZXMoeG1pbiA9IG1pbl9kYXRlLCB4bWF4ID0gbWF4X2RhdGUpLCBoZWlnaHQgPSAwLjEsIGxpbmV3aWR0aCA9IDEpICsNCiAgdGhlbWUoYXhpcy50aXRsZS55ID0gZWxlbWVudF9ibGFuaygpKSArDQogIHNjYWxlX3hfZGF0ZShsaW1pdHMgPSBjKHltZCgiMjAyMC0wMS0wMSIpLCB5bWQoIjIwMjAtMTItMzEiKSksDQogICAgICAgICAgICAgICBicmVha3MgPSBjKHltZCgiMjAyMC0wMS0wMSIpLHltZCgiMjAyMC0wMi0wMSIpLHltZCgiMjAyMC0wMy0wMSIpLHltZCgiMjAyMC0wNC0wMSIpLHltZCgiMjAyMC0wNS0wMSIpLHltZCgiMjAyMC0wNi0wMSIpLHltZCgiMjAyMC0wNy0wMSIpLHltZCgiMjAyMC0wOC0wMSIpLHltZCgiMjAyMC0wOS0wMSIpLCB5bWQoIjIwMjAtMTAtMDEiKSwgeW1kKCIyMDIwLTExLTAxIiksIHltZCgiMjAyMC0xMi0wMSIpLCB5bWQoIjIwMjEtMS0wMSIpKSwNCiAgICAgICAgICAgICAgIGxhYmVscyA9IGMoJ0onLCdGJywnTScsJ0EnLCdNJywnSicsJ0onLCdBJywnUycsJ08nLCdOJywnRCcsICdKJykpI2RhdGVfbGFiZWxzID0gIiViIg0KYGBgDQoNClB1dHRpbmcgdGhlIG1hcCBhbmQgdGhlIHRpbWVsaW5lIGluIGEgc2luZ2xlIGdnIG9iamVjdA0KYGBge3J9DQp0ZW1wbGF0ZV9tYXBfMiA8LSB0ZW1wbGF0ZV9tYXAgKyANCiAgdGhlbWUobGVnZW5kLnBvc2l0aW9uID0gIm5vbmUiKQ0KDQp0ZW1wbGF0ZV90aW1lbGluZV8yIDwtIHRlbXBsYXRlX3RpbWVsaW5lICsNCiAgdGhlbWUoYXhpcy50ZXh0Lnk9ZWxlbWVudF9ibGFuaygpLA0KICAgICAgICBheGlzLnRpY2tzLnk9ZWxlbWVudF9ibGFuaygpKQ0KDQpibGFuayA8LSBnZ3Bsb3QoKSArIHRoZW1lX3ZvaWQoKQ0KDQptYXBfdGltZWxpbmVfY29tYm8gPC0gZ2dhcnJhbmdlKGJsYW5rLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB0ZW1wbGF0ZV9tYXBfMiwgDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHRlbXBsYXRlX3RpbWVsaW5lXzIsIA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBuY29sID0gMSwgbnJvdyA9IDMsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGhlaWdodHMgPSBjKDEsMTAsMiksDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGFsaWduID0gInYiKQ0KYGBgDQoNClNob3dpbmcgaG93IHRoZXNlIGNhbiBhbGwgYmUgcmVuZGVyZWQgaW4gYSBzaW5nbGUgcGxvdA0KYGBge3J9DQpsZWdlbmRfZGVzYyA8LSBnZXRfbGVnZW5kKHRlbXBsYXRlX21hcCkNCg0KcGxvdHNfYXJyYW5nZWQgPC0gZ2dhcnJhbmdlKG1hcF90aW1lbGluZV9jb21ibywgDQogICAgICAgICAgICAgICBtYXBfdGltZWxpbmVfY29tYm8sIA0KICAgICAgICAgICAgICAgbWFwX3RpbWVsaW5lX2NvbWJvLCANCiAgICAgICAgICAgICAgIGxlZ2VuZF9kZXNjLCANCiAgICAgICAgICAgICAgIG5jb2wgPSAyLCBucm93ID0gMiwgDQogICAgICAgICAgICAgICBsYWJlbHMgPSBjKCJEaXNwZXJzYWwgbW92ZW1lbnRzIiwgIkZvcmF5IGxvb3BzIiwgIlN1bW1lciBtaWdyYXRpb25zIiksDQogICAgICAgICAgICAgICBsYWJlbC54ID0gYygtMC4wNSwwLjE4LDApLA0KICAgICAgICAgICAgICAgbGFiZWwueSA9IGMoMSwxLDEpKQ0KDQpnZ3NhdmUoZmlsZW5hbWUgPSBoZXJlOjpoZXJlKCJhdXhpbGlhcnlfc3RhdGVfcGxvdCIsICJhdXhpbGlhcnlfc3RhdGVfcGxvdF8yLnBuZyIpLCBwbG90ID0gcGxvdHNfYXJyYW5nZWQsIGRwaSA9IDMwMCwgYmcgPSAid2hpdGUiLCBoZWlnaHQgPSA3LCB3aWR0aCA9IDcpDQpgYGANCg0K</div>
 
 
 
