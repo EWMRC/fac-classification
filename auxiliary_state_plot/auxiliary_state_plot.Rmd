@@ -11,11 +11,25 @@ library(tidyterra)
 library(ggspatial)
 library(lubridate)
 library(ggpubr)
+library(ggborderline)
 ```
 
 Load GPS locations
 ```{r}
-amwo_data_reconstructed <- readRDS(file = here::here("classifier_integrated", "fac_primary_state_delineation.rds"))
+amwo_data_reconstructed <- readRDS(file = here::here("classifier_integrated", "fac_primary_state_delineation.rds")) %>% 
+  arrange(animal_name, time)
+#make a column that has the prior steps for each location
+amwo_data_reconstructed <- amwo_data_reconstructed %>% 
+  group_by(animal_name) %>% 
+  group_modify(.f = function(x, y){
+    if(nrow(x) == 1){
+      x$prior_step <- NA
+    } else {
+      x$prior_step <- c(NA, x$primary_step_state[1:(nrow(x)-1)])
+    }
+    return(x)
+  }) %>% 
+  ungroup()
 ```
 
 Load a basemap
@@ -61,73 +75,196 @@ template_map <- ggplot(range_shp) +
                    pad_y = unit(0.3, "cm"),) 
 ```
 
-# Making a template timeline
-Make a dataframe of the summer migrations to date
+Dispersal event plots
 ```{r}
-#make a column that has the prior steps for each location
-amwo_data_reconstructed <- amwo_data_reconstructed %>% 
-  group_by(animal_name) %>% 
-  group_modify(.f = function(x, y){
-    if(nrow(x) == 1){
-      x$prior_step <- NA
-    } else {
-      x$prior_step <- c(NA, x$primary_step_state[1:(nrow(x)-1)])
-    }
-    return(x)
-  }) %>% 
-  ungroup()
-
-#find min and max dates for each summer migration
-example_movement <- amwo_data_reconstructed %>% 
-  filter(primary_step_state == "Migratory (summer)" | prior_step == "Migratory (summer)") %>% 
+# Data summaries
+dispersal_movements <- amwo_data_reconstructed %>% 
+  filter(primary_step_state == "Dispersal" | prior_step == "Dispersal") %>% 
   mutate(date_standardized = ymd(paste0("2020-", month(time), "-", day(time)))) %>% 
+  mutate(animal_name = if_else(animal_name == "RI-2019-29", if_else(year(time) == 2019, "RI-2019-29-2019", "RI-2019-29-2020"), animal_name)) #bug fix: RI-2019-29 has two dispersal events
+
+dispersal_summary <- dispersal_movements %>% 
   group_by(animal_name) %>% 
-  summarise(min_date = min(date_standardized), max_date = max(date_standardized))
-```
+  summarise(min_date = min(date_standardized), max_date = max(date_standardized)) %>% 
+  pivot_longer(cols = c(min_date, max_date), 
+               names_to = "summary_type")
 
-Coding the timeline
-```{r}
-template_timeline <- ggplot(data = example_movement, mapping = aes(y = animal_name)) +
-  theme_bw() +
-  geom_errorbarh(mapping = aes(xmin = min_date, xmax = max_date), height = 0.1, linewidth = 1) +
-  theme(axis.title.y = element_blank()) +
-  scale_x_date(limits = c(ymd("2020-01-01"), ymd("2020-12-31")),
-               breaks = c(ymd("2020-01-01"),ymd("2020-02-01"),ymd("2020-03-01"),ymd("2020-04-01"),ymd("2020-05-01"),ymd("2020-06-01"),ymd("2020-07-01"),ymd("2020-08-01"),ymd("2020-09-01"), ymd("2020-10-01"), ymd("2020-11-01"), ymd("2020-12-01"), ymd("2021-1-01")),
-               labels = c('J','F','M','A','M','J','J','A','S','O','N','D', 'J'))#date_labels = "%b"
-```
+dispersal_sf <- dispersal_movements %>% 
+  st_as_sf(coords = c("long", "lat"), crs = 4326) %>% 
+  group_by(animal_name) %>%
+  summarise()
 
-Putting the map and the timeline in a single gg object
-```{r}
-template_map_2 <- template_map + 
+dispersal_line <- dispersal_movements %>% 
+  st_as_sf(coords = c("long", "lat"), crs = 4326) %>% 
+  group_by(animal_name) %>%
+  summarise() %>% 
+  st_cast("LINESTRING")
+
+# Revised map
+dispersal_map <- template_map +
+  geom_sf(data = dispersal_line, linewidth = 0.5, colour = c("blue", "pink", "green")) +
+  geom_sf(data = dispersal_sf, size = 1, color = "black") +
+  geom_sf(data = dispersal_sf, size = 0.8, color = c("blue", "pink", "green")) +
+  coord_sf(xlim = c(-100, -60), ylim = c(25, 55), expand = FALSE) +
   theme(legend.position = "none")
 
-template_timeline_2 <- template_timeline +
-  theme(axis.text.y=element_blank(),
-        axis.ticks.y=element_blank())
+# Revised timeline
+dispersal_timeline <- ggplot(data = dispersal_summary, mapping = aes(x = value, y = animal_name, group = animal_name, color = animal_name)) +
+  theme_bw() +
+  geom_borderline(linewidth = 0.8,
+                  bordercolour = "black",
+                  borderwidth = 0.3,
+                  lineend = "round") +
+  scale_x_date(limits = c(ymd("2020-01-01"), ymd("2020-12-31")),
+               breaks = c(ymd("2020-01-01"),ymd("2020-02-01"),ymd("2020-03-01"),ymd("2020-04-01"),ymd("2020-05-01"),ymd("2020-06-01"),ymd("2020-07-01"),ymd("2020-08-01"),ymd("2020-09-01"), ymd("2020-10-01"), ymd("2020-11-01"), ymd("2020-12-01"), ymd("2021-1-01")),
+               labels = c('J','F','M','A','M','J','J','A','S','O','N','D', 'J')) +
+  theme(axis.title.y = element_blank(),
+        axis.title.x = element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        legend.position = "none") +
+  scale_color_manual(values = c("blue", "pink", "green"))
 
+# Combining them together
 blank <- ggplot() + theme_void()
 
-map_timeline_combo <- ggarrange(blank,
-                                template_map_2, 
-                                template_timeline_2, 
+map_timeline_dispersal <- ggarrange(blank,
+                                    dispersal_map, 
+                                    dispersal_timeline, 
+                                    ncol = 1, nrow = 3,
+                                    heights = c(1,10,2),
+                                    align = "v")
+```
+
+Foray loop plots
+```{r}
+# Data summaries
+foray_movements <- amwo_data_reconstructed %>% 
+  filter(primary_step_state == "Foray loop" | prior_step == "Foray loop") %>% 
+  mutate(date_standardized = ymd(paste0("2020-", month(time), "-", day(time)))) #%>% 
+  #mutate(animal_name = if_else(animal_name == "ME-2018-08", if_else(year(time) == 2019, "RI-2019-29-2019", "RI-2019-29-2020"), animal_name))
+
+
+foray_summary <- foray_movements %>% 
+  group_by(animal_name) %>% 
+  summarise(min_date = min(date_standardized), max_date = max(date_standardized)) %>% 
+  pivot_longer(cols = c(min_date, max_date), 
+               names_to = "summary_type")
+
+foray_sf <- foray_movements %>% 
+  st_as_sf(coords = c("long", "lat"), crs = 4326) %>% 
+  group_by(animal_name) %>%
+  summarise()
+
+foray_line <- foray_movements %>% 
+  st_as_sf(coords = c("long", "lat"), crs = 4326) %>% 
+  group_by(animal_name) %>%
+  summarise() %>% 
+  st_cast("LINESTRING")
+
+# Revised map
+foray_map <- template_map +
+  geom_sf(data = foray_line, linewidth = 0.5, colour = c("blue", "pink", "green","blue", "pink", "green","blue", "pink", "green","red","orange", "green", "blue")) + 
+  geom_sf(data = foray_sf, size = 1, color = "black") +
+  geom_sf(data = foray_sf, size = 0.8, color = c("blue", "pink", "green","blue", "pink", "green","blue", "pink", "green","red","orange", "green", "blue")) +
+  coord_sf(xlim = c(-100, -60), ylim = c(25, 55), expand = FALSE) +
+  theme(legend.position = "none")
+
+# Revised timeline
+foray_timeline <- ggplot(data = foray_summary, mapping = aes(x = value, y = animal_name, group = animal_name, color = animal_name)) +
+  theme_bw() +
+  geom_borderline(linewidth = 0.8,
+                  bordercolour = "black",
+                  borderwidth = 0.3,
+                  lineend = "round") +
+  scale_x_date(limits = c(ymd("2020-01-01"), ymd("2020-12-31")),
+               breaks = c(ymd("2020-01-01"),ymd("2020-02-01"),ymd("2020-03-01"),ymd("2020-04-01"),ymd("2020-05-01"),ymd("2020-06-01"),ymd("2020-07-01"),ymd("2020-08-01"),ymd("2020-09-01"), ymd("2020-10-01"), ymd("2020-11-01"), ymd("2020-12-01"), ymd("2021-1-01")),
+               labels = c('J','F','M','A','M','J','J','A','S','O','N','D', 'J')) +
+  theme(axis.title.y = element_blank(),
+        axis.title.x = element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        legend.position = "none") +
+  scale_color_manual(values = c("blue", "pink", "green","blue", "pink", "green","blue", "pink", "green","red","orange", "green", "blue"))
+
+map_timeline_foray <- ggarrange(blank,
+                                foray_map, 
+                                foray_timeline, 
                                 ncol = 1, nrow = 3,
                                 heights = c(1,10,2),
                                 align = "v")
+```
+
+Summer plots
+```{r}
+# Data summaries
+summer_movements <- amwo_data_reconstructed %>% 
+  filter(primary_step_state == "Migratory (summer)" | prior_step == "Migratory (summer)") %>% 
+  mutate(date_standardized = ymd(paste0("2020-", month(time), "-", day(time))))
+
+summer_summary <- summer_movements %>% 
+  group_by(animal_name) %>% 
+  summarise(min_date = min(date_standardized), max_date = max(date_standardized)) %>% 
+  pivot_longer(cols = c(min_date, max_date), 
+               names_to = "summary_type")
+
+summer_sf <- summer_movements %>% 
+  st_as_sf(coords = c("long", "lat"), crs = 4326) %>% 
+  group_by(animal_name) %>%
+  summarise()
+
+summer_line <- summer_movements %>% 
+  st_as_sf(coords = c("long", "lat"), crs = 4326) %>% 
+  group_by(animal_name) %>%
+  summarise() %>% 
+  st_cast("LINESTRING")
+
+# Revised map
+summer_map <- template_map +
+  geom_sf(data = summer_line, linewidth = 0.5, colour = c("blue", "pink", "green")) + 
+  geom_sf(data = summer_sf, size = 1, color = "black") +
+  geom_sf(data = summer_sf, size = 0.8, color = c("blue", "pink", "green")) +
+  coord_sf(xlim = c(-100, -60), ylim = c(25, 55), expand = FALSE) +
+  theme(legend.position = "none")
+
+# Revised timeline
+summer_timeline <- ggplot(data = summer_summary, mapping = aes(x = value, y = animal_name, group = animal_name, color = animal_name)) +
+  theme_bw() +
+  geom_borderline(linewidth = 0.8,
+                  bordercolour = "black",
+                  borderwidth = 0.3,
+                  lineend = "round") +
+  scale_x_date(limits = c(ymd("2020-01-01"), ymd("2020-12-31")),
+               breaks = c(ymd("2020-01-01"),ymd("2020-02-01"),ymd("2020-03-01"),ymd("2020-04-01"),ymd("2020-05-01"),ymd("2020-06-01"),ymd("2020-07-01"),ymd("2020-08-01"),ymd("2020-09-01"), ymd("2020-10-01"), ymd("2020-11-01"), ymd("2020-12-01"), ymd("2021-1-01")),
+               labels = c('J','F','M','A','M','J','J','A','S','O','N','D', 'J')) +
+  theme(axis.title.y = element_blank(),
+        axis.title.x = element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        legend.position = "none") +
+  scale_color_manual(values = c("blue", "pink", "green"))
+
+map_timeline_summer <- ggarrange(blank,
+                                 summer_map, 
+                                 summer_timeline, 
+                                 ncol = 1, nrow = 3,
+                                 heights = c(1,10,2),
+                                 align = "v")
 ```
 
 Showing how these can all be rendered in a single plot
 ```{r}
 legend_desc <- get_legend(template_map)
 
-plots_arranged <- ggarrange(map_timeline_combo, 
-               map_timeline_combo, 
-               map_timeline_combo, 
-               legend_desc, 
-               ncol = 2, nrow = 2, 
-               labels = c("Dispersal movements", "Foray loops", "Summer migrations"),
-               label.x = c(-0.05,0.18,0),
-               label.y = c(1,1,1))
+plots_arranged <- ggarrange(map_timeline_dispersal, 
+                            map_timeline_foray, 
+                            map_timeline_summer, 
+                            legend_desc, 
+                            ncol = 2, nrow = 2, 
+                            labels = c("Dispersal movements", "Foray loops", "Summer migrations"),
+                            label.x = c(-0.05,0.18,0),
+                            label.y = c(1,1,1))
 
-ggsave(filename = here::here("auxiliary_state_plot", "auxiliary_state_plot_2.png"), plot = plots_arranged, dpi = 300, bg = "white", height = 7, width = 7)
+ggsave(filename = here::here("auxiliary_state_plot", "auxiliary_state_plot_4.png"), plot = plots_arranged, dpi = 300, bg = "white", height = 7, width = 7)
 ```
 
