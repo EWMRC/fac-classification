@@ -35,17 +35,18 @@ weekly_pt2 <- amwo_data_reconstructed %>%
   ungroup() %>% 
   left_join(weekly_pt1) %>% 
   mutate(pct = n/total)
-```
 
+weekly_pt2$primary_point_state <- factor(weekly_pt2$primary_point_state, levels = c("Stationary", "Migratory (fall)", "Migratory (spring)", "Nesting"), ordered = TRUE)
+```
 
 ```{r}
 migratory_state_graph <- weekly_pt2 %>% 
-  ggplot(aes(x = standardized_date, y = pct, group = primary_point_state, col = primary_point_state)) +
+  ggplot(aes(x = standardized_date, group = primary_point_state, fill = primary_point_state)) + 
   geom_hline(yintercept = c(2,4,6,8,10)/10, color = "gray90") +
   theme_bw() +
-  scale_x_date(date_labels = "%b", # "%b %d"
-               breaks = ymd(c("2020-01-15", "2020-02-15", "2020-03-15", "2020-04-15", "2020-05-15", "2020-06-15", "2020-07-15", "2020-08-15", "2020-09-15", "2020-10-15", "2020-11-15", "2020-12-15"))) +
-  #date_breaks = "1 month") +
+  scale_x_date(date_labels = "%b",
+               breaks = ymd(c("2020-01-15", "2020-02-15", "2020-03-15", "2020-04-15", "2020-05-15", "2020-06-15", "2020-07-15", "2020-08-15", "2020-09-15", "2020-10-15", "2020-11-15", "2020-12-15")),
+               expand = c(0, 0)) +
   geomtextpath::coord_curvedpolar() +
   scale_y_continuous(breaks = c(0.2, 0.4, 0.6, 0.8, 1)) +
   theme(axis.title = element_blank(),
@@ -54,8 +55,7 @@ migratory_state_graph <- weekly_pt2 %>%
         legend.position = "bottom",
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank()) +
-  labs(col = "Migratory status",
-       caption = "Y axis: Percent of all locations in a week that belong to a given migratory state")
+  labs(fill = "Migratory status")
 
 vlines <- c("2020-01-01", "2020-02-01", "2020-03-01", "2020-04-01", "2020-05-01", "2020-06-01", "2020-07-01", "2020-08-01", "2020-09-01", "2020-10-01", "2020-11-01", "2020-12-01")
 
@@ -65,7 +65,10 @@ for(i in vlines){
 }
 
 #Adding the geom later so that it graphs over the axis lines, but under the labels
-migratory_state_graph <- migratory_state_graph + geom_line()
+migratory_state_graph <- migratory_state_graph + 
+  geom_ribbon(mapping = aes(ymin = 0, ymax = pct), alpha = 0.5, col = "black", size = 0.1) + 
+  paletteer::scale_fill_paletteer_d("ggthemes::wsj_rgby")
+  #scale_fill_manual(values = c("#889f95", "#7c4728", "#00295d", "#d9b196")) 
 
 pct_labels <- c("10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%")
 
@@ -80,12 +83,12 @@ for(i in c(2,4,6,8,10)){
       #color = "darkgrey",
       size = 2,
       label.size = NA,
-      alpha = 0.7,
+      alpha = 0.1, #0.7
       family = "TT Arial",
       color = "grey30")
 }
 
 migratory_state_graph
-ggsave("migratory_state_graph.png")
+ggsave("migratory_state_graph_5_12_23.png")
 ```
 

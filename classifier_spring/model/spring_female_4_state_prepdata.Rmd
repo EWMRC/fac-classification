@@ -29,7 +29,9 @@ amwo_2019 <- getMovebankData(study = "American Woodcock Migration Ecology in Eas
   as.data.frame() %>% 
   filter(timestamp < if_else(local_identifier == "SC-2019-03", ymd_hms("2019-7-30 00:00:00"), ymd_hms("2019-6-30 00:00:00"))) #include an additional month worth of locations, but only for one bird that settles late
 
-amwo_2020 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS("movebank_credentials.rds"), timestamp_start = "20200105000000000", timestamp_end = "20200630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
+amwo_2020 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS("movebank_credentials.rds"), timestamp_start = "20200105000000000", timestamp_end = "20200730000000000", removeDuplicatedTimestamps=TRUE) %>% 
+  as.data.frame() %>% 
+  filter(timestamp < if_else(local_identifier == "VA-2019-36", ymd_hms("2020-7-30 00:00:00"), ymd_hms("2020-6-30 00:00:00"))) #include an additional month worth of locations, but only for one bird that settles late
 
 amwo_2021 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS("movebank_credentials.rds"), timestamp_start = "20210105000000000", timestamp_end = "20210630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
 
@@ -543,7 +545,7 @@ amwo_hmm <- amwo_hmm %>% #removing ranging movements
   # filter(!(ID == "VA-2019-45-2020" & time > ymd_hms("2020-06-22 04:00:00"))) %>% #same thing with midsummer movements
   filter(!(ID == "VA-2021-98-2022" & time > ymd_hms("2022-05-30 15:00:00"))) %>%
   filter(!(ID == "VA-2022-100-2022" & time > ymd_hms("2022-06-19 09:00:00"))) %>% 
-  filter(!(ID == "VA-2019-36-2020" & time > ymd_hms("2020-06-19 01:59:28"))) %>% 
+  #filter(!(ID == "VA-2019-36-2020" & time > ymd_hms("2020-06-19 01:59:28"))) %>% 
   filter(!(ID == "AL-2021-10-2021" & time == ymd_hms("2021-05-21 03:58:56"))) %>%
   filter(!(ID == "AL-2021-10-2021" & time == ymd_hms("2021-05-21 17:00:00"))) %>% 
   filter(!(ID == "AL-2021-12-2021" & time == ymd_hms("2021-02-26 05:02:56"))) %>% 

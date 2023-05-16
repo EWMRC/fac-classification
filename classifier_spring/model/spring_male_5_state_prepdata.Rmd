@@ -521,7 +521,7 @@ remove a transient summer movement which throws off the hmm for VA-2020-52-2020.
   #mutate(id_time = NULL)
 
 amwo_hmm <- amwo_hmm %>%
-  # filter(!(ID == "VA-2020-52-2020" & julian_day > 160)) %>% 
+  filter(!(ID == "VA-2020-52-2020" & julian_day >= 170)) %>% 
   filter(!(ID == "NJ-2018-03-2019" & julian_day %in% c(10,17)))
   # mutate(id_time = paste(ID, as.character(time))) %>% 
   # filter(id_time != "VA-2020-52-2020 2020-06-19 01:59:28") %>%
