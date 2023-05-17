@@ -1754,59 +1754,113 @@ display: none;
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGAifQ== -->
-<pre class="r"><code>library(tidyverse)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJlZCBTMyBtZXRob2RzIG92ZXJ3cml0dGVuIGJ5ICdkYnBseXInOlxuICBtZXRob2QgICAgICAgICBmcm9tXG4gIHByaW50LnRibF9sYXp5ICAgICBcbiAgcHJpbnQudGJsX3NxbCAgICAgIFxu4pSA4pSAIEF0dGFjaGluZyBwYWNrYWdlcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlIDEuMy4yIOKUgOKUgOKclCBnZ3Bsb3QyIDMuNC4wICAgICAg4pyUIHB1cnJyICAgMS4wLjEgXG7inJQgdGliYmxlICAzLjEuOCAgICAgIOKclCBkcGx5ciAgIDEuMC4xMFxu4pyUIHRpZHlyICAgMS4zLjAgICAgICDinJQgc3RyaW5nciAxLjUuMCBcbuKclCByZWFkciAgIDIuMS4zICAgICAg4pyUIGZvcmNhdHMgMC41LjIg4pSA4pSAIENvbmZsaWN0cyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlX2NvbmZsaWN0cygpIOKUgOKUgFxu4pyWIGRwbHlyOjpmaWx0ZXIoKSBtYXNrcyBzdGF0czo6ZmlsdGVyKClcbuKcliBkcGx5cjo6bGFnKCkgICAgbWFza3Mgc3RhdHM6OmxhZygpXG4ifQ== -->
-<pre><code>Registered S3 methods overwritten by &#39;dbplyr&#39;:
-  method         from
-  print.tbl_lazy     
-  print.tbl_sql      
-── Attaching packages ───────────────────────────────────────────────────── tidyverse 1.3.2 ──✔ ggplot2 3.4.0      ✔ purrr   1.0.1 
-✔ tibble  3.1.8      ✔ dplyr   1.0.10
-✔ tidyr   1.3.0      ✔ stringr 1.5.0 
-✔ readr   2.1.3      ✔ forcats 0.5.2 ── Conflicts ──────────────────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShsdWJyaWRhdGUpXG5gYGAifQ== -->
-<pre class="r"><code>library(lubridate)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiB0aW1lY2hhbmdlXG5cbkF0dGFjaGluZyBwYWNrYWdlOiDigJhsdWJyaWRhdGXigJlcblxuVGhlIGZvbGxvd2luZyBvYmplY3RzIGFyZSBtYXNrZWQgZnJvbSDigJhwYWNrYWdlOmJhc2XigJk6XG5cbiAgICBkYXRlLCBpbnRlcnNlY3QsIHNldGRpZmYsIHVuaW9uXG4ifQ== -->
-<pre><code>Loading required package: timechange
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGBcbmBgYCJ9 -->
+<pre class="r"><code>```r
+library(tidyverse)</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
 
-Attaching package: ‘lubridate’
+&lt;!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJlZCBTMyBtZXRob2RzIG92ZXJ3cml0dGVuIGJ5ICdkYnBseXInOlxuICBtZXRob2QgICAgICAgICBmcm9tXG4gIHByaW50LnRibF9sYXp5ICAgICBcbiAgcHJpbnQudGJsX3NxbCAgICAgIFxu4pSA4pSAIEF0dGFjaGluZyBwYWNrYWdlcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlIDEuMy4yIOKUgOKUgOKclCBnZ3Bsb3QyIDMuNC4wICAgICAg4pyUIHB1cnJyICAgMS4wLjEgXG7inJQgdGliYmxlICAzLjEuOCAgICAgIOKclCBkcGx5ciAgIDEuMC4xMFxu4pyUIHRpZHlyICAgMS4zLjAgICAgICDinJQgc3RyaW5nciAxLjUuMCBcbuKclCByZWFkciAgIDIuMS4zICAgICAg4pyUIGZvcmNhdHMgMC41LjIg4pSA4pSAIENvbmZsaWN0cyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlX2NvbmZsaWN0cygpIOKUgOKUgFxu4pyWIGRwbHlyOjpmaWx0ZXIoKSBtYXNrcyBzdGF0czo6ZmlsdGVyKClcbuKcliBkcGx5cjo6bGFnKCkgICAgbWFza3Mgc3RhdHM6OmxhZygpXG4ifQ== --&gt;
+</code></pre>
+<p>Registered S3 methods overwritten by ‘dbplyr’: method from
+print.tbl_lazy<br />
+print.tbl_sql<br />
+── Attaching packages
+───────────────────────────────────────────────────── tidyverse 1.3.2
+──✔ ggplot2 3.4.0 ✔ purrr 1.0.1 ✔ tibble 3.1.8 ✔ dplyr 1.0.10 ✔ tidyr
+1.3.0 ✔ stringr 1.5.0 ✔ readr 2.1.3 ✔ forcats 0.5.2 ── Conflicts
+────────────────────────────────────────────────────────
+tidyverse_conflicts() ── ✖ dplyr::filter() masks stats::filter() ✖
+dplyr::lag() masks stats::lag()</p>
+<pre><code>
 
-The following objects are masked from ‘package:base’:
 
-    date, intersect, setdiff, union</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW13b19kYXRhX3JlY29uc3RydWN0ZWQgPC0gcmVhZFJEUyhoZXJlOjpoZXJlKFwiY2xhc3NpZmllcl9pbnRlZ3JhdGVkXCIsIFwiZmFjX3ByaW1hcnlfc3RhdGVfZGVsaW5lYXRpb24ucmRzXCIpKSAlPiUgXG4gIG11dGF0ZShzdGFuZGFyZGl6ZWRfZGF0ZSA9IG1keShwYXN0ZTAobW9udGgodGltZSksIFwiL1wiLCBkYXkodGltZSksIFwiLzIwMjBcIikpKVxuYGBgIn0= -->
-<pre class="r"><code>amwo_data_reconstructed &lt;- readRDS(here::here(&quot;classifier_integrated&quot;, &quot;fac_primary_state_delineation.rds&quot;)) %&gt;% 
-  mutate(standardized_date = mdy(paste0(month(time), &quot;/&quot;, day(time), &quot;/2020&quot;)))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Reclassify based on nesting attempts (use only for graphing) and
-remove classes that I don’t want to graph</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW13b19kYXRhX3JlY29uc3RydWN0ZWQgPC0gYW13b19kYXRhX3JlY29uc3RydWN0ZWQgJT4lIFxuICBtdXRhdGUocHJpbWFyeV9wb2ludF9zdGF0ZSA9IGlmX2Vsc2UobmVzdGluZ19hdHRlbXB0ID09IFwiTmVzdGluZ1wiLCBcIk5lc3RpbmdcIiwgcHJpbWFyeV9wb2ludF9zdGF0ZSkpICU+JSBcbiAgZmlsdGVyKCEocHJpbWFyeV9wb2ludF9zdGF0ZSAlaW4lIGMoXCJVbmtub3duLSBidWdnZWQgZnJlcXVlbnQgc2NoZWR1bGVcIiwgXCJEaXNwZXJzYWxcIiwgXCJGb3JheSBsb29wXCIsIFwiTWlncmF0b3J5IChzdW1tZXIpXCIpKSlcbmBgYCJ9 -->
-<pre class="r"><code>amwo_data_reconstructed &lt;- amwo_data_reconstructed %&gt;% 
-  mutate(primary_point_state = if_else(nesting_attempt == &quot;Nesting&quot;, &quot;Nesting&quot;, primary_point_state)) %&gt;% 
-  filter(!(primary_point_state %in% c(&quot;Unknown- bugged frequent schedule&quot;, &quot;Dispersal&quot;, &quot;Foray loop&quot;, &quot;Migratory (summer)&quot;)))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Calculate % of points in any given week that belong to each step</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud2Vla2x5X3B0MSA8LSBhbXdvX2RhdGFfcmVjb25zdHJ1Y3RlZCAlPiUgXG4gIG11dGF0ZSh3ZWVrID0gd2VlayhzdGFuZGFyZGl6ZWRfZGF0ZSkpICU+JSBcbiAgZ3JvdXBfYnkod2VlaykgJT4lIFxuICBzdW1tYXJpc2Uoc3RhbmRhcmRpemVkX2RhdGUgPSBtZWFuKHN0YW5kYXJkaXplZF9kYXRlKSwgdG90YWwgPSBuKCkpICU+JSBcbiAgdW5ncm91cCgpXG5cbndlZWtseV9wdDIgPC0gYW13b19kYXRhX3JlY29uc3RydWN0ZWQgJT4lIFxuICBtdXRhdGUod2VlayA9IHdlZWsoc3RhbmRhcmRpemVkX2RhdGUpKSAlPiUgXG4gIGdyb3VwX2J5KHdlZWssIHByaW1hcnlfcG9pbnRfc3RhdGUpICU+JSBcbiAgdGFsbHkoKSAlPiUgXG4gIHVuZ3JvdXAoKSAlPiUgXG4gIGxlZnRfam9pbih3ZWVrbHlfcHQxKSAlPiUgXG4gIG11dGF0ZShwY3QgPSBuL3RvdGFsKVxuYGBgIn0= -->
-<pre class="r"><code>weekly_pt1 &lt;- amwo_data_reconstructed %&gt;% 
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxubGlicmFyeShsdWJyaWRhdGUpXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+library(lubridate)</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiB0aW1lY2hhbmdlXG5cbkF0dGFjaGluZyBwYWNrYWdlOiDigJhsdWJyaWRhdGXigJlcblxuVGhlIGZvbGxvd2luZyBvYmplY3RzIGFyZSBtYXNrZWQgZnJvbSDigJhwYWNrYWdlOmJhc2XigJk6XG5cbiAgICBkYXRlLCBpbnRlcnNlY3QsIHNldGRpZmYsIHVuaW9uXG4ifQ== --&gt;
+</code></pre>
+<p>Loading required package: timechange</p>
+<p>Attaching package: ‘lubridate’</p>
+<p>The following objects are masked from ‘package:base’:</p>
+<pre><code>date, intersect, setdiff, union</code></pre>
+<pre><code>
+
+
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuYW13b19kYXRhX3JlY29uc3RydWN0ZWQgPC0gcmVhZFJEUyhoZXJlOjpoZXJlKFxcY2xhc3NpZmllcl9pbnRlZ3JhdGVkXFwsIFxcZmFjX3ByaW1hcnlfc3RhdGVfZGVsaW5lYXRpb24ucmRzXFwpKSAlPiUgXG4gIG11dGF0ZShzdGFuZGFyZGl6ZWRfZGF0ZSA9IG1keShwYXN0ZTAobW9udGgodGltZSksIFxcL1xcLCBkYXkodGltZSksIFxcLzIwMjBcXCkpKVxuYGBgXG5gYGAifQ== --&gt;
+
+```r
+```r
+amwo_data_reconstructed &lt;- readRDS(here::here(\classifier_integrated\, \fac_primary_state_delineation.rds\)) %&gt;% 
+  mutate(standardized_date = mdy(paste0(month(time), \/\, day(time), \/2020\)))</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Reclassify based on nesting attempts (use only for graphing) and remove classes that I don&#39;t want to graph
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuYW13b19kYXRhX3JlY29uc3RydWN0ZWQgPC0gYW13b19kYXRhX3JlY29uc3RydWN0ZWQgJT4lIFxuICBtdXRhdGUocHJpbWFyeV9wb2ludF9zdGF0ZSA9IGlmX2Vsc2UobmVzdGluZ19hdHRlbXB0ID09IFxcTmVzdGluZ1xcLCBcXE5lc3RpbmdcXCwgcHJpbWFyeV9wb2ludF9zdGF0ZSkpICU+JSBcbiAgZmlsdGVyKCEocHJpbWFyeV9wb2ludF9zdGF0ZSAlaW4lIGMoXFxVbmtub3duLSBidWdnZWQgZnJlcXVlbnQgc2NoZWR1bGVcXCwgXFxEaXNwZXJzYWxcXCwgXFxGb3JheSBsb29wXFwsIFxcTWlncmF0b3J5IChzdW1tZXIpXFwpKSlcbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+amwo_data_reconstructed &lt;- amwo_data_reconstructed %&gt;% 
+  mutate(primary_point_state = if_else(nesting_attempt == \Nesting\, \Nesting\, primary_point_state)) %&gt;% 
+  filter(!(primary_point_state %in% c(\Unknown- bugged frequent schedule\, \Dispersal\, \Foray loop\, \Migratory (summer)\)))</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+Calculate % of points in any given week that belong to each step
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxud2Vla2x5X3B0MSA8LSBhbXdvX2RhdGFfcmVjb25zdHJ1Y3RlZCAlPiUgXG4gIG11dGF0ZSh3ZWVrID0gd2VlayhzdGFuZGFyZGl6ZWRfZGF0ZSkpICU+JSBcbiAgZ3JvdXBfYnkod2VlaykgJT4lIFxuICBzdW1tYXJpc2Uoc3RhbmRhcmRpemVkX2RhdGUgPSBtZWFuKHN0YW5kYXJkaXplZF9kYXRlKSwgdG90YWwgPSBuKCkpICU+JSBcbiAgdW5ncm91cCgpXG5cbndlZWtseV9wdDIgPC0gYW13b19kYXRhX3JlY29uc3RydWN0ZWQgJT4lIFxuICBtdXRhdGUod2VlayA9IHdlZWsoc3RhbmRhcmRpemVkX2RhdGUpKSAlPiUgXG4gIGdyb3VwX2J5KHdlZWssIHByaW1hcnlfcG9pbnRfc3RhdGUpICU+JSBcbiAgdGFsbHkoKSAlPiUgXG4gIHVuZ3JvdXAoKSAlPiUgXG4gIGxlZnRfam9pbih3ZWVrbHlfcHQxKSAlPiUgXG4gIG11dGF0ZShwY3QgPSBuL3RvdGFsKVxuYGBgXG5gYGAifQ== --&gt;
+
+```r
+```r
+weekly_pt1 &lt;- amwo_data_reconstructed %&gt;% 
   mutate(week = week(standardized_date)) %&gt;% 
   group_by(week) %&gt;% 
   summarise(standardized_date = mean(standardized_date), total = n()) %&gt;% 
@@ -1819,23 +1873,51 @@ weekly_pt2 &lt;- amwo_data_reconstructed %&gt;%
   ungroup() %&gt;% 
   left_join(weekly_pt1) %&gt;% 
   mutate(pct = n/total)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiSm9pbmluZywgYnkgPSBcIndlZWtcIlxuIn0= -->
-<pre><code>Joining, by = &quot;week&quot;</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud2Vla2x5X3B0MiRwcmltYXJ5X3BvaW50X3N0YXRlPC0gZmFjdG9yKHdlZWtseV9wdDIkcHJpbWFyeV9wb2ludF9zdGF0ZSwgbGV2ZWxzID0gYyhcIlN0YXRpb25hcnlcIiwgXCJNaWdyYXRvcnkgKGZhbGwpXCIsIFwiTWlncmF0b3J5IChzcHJpbmcpXCIsIFwiTmVzdGluZ1wiKSwgb3JkZXJlZCA9IFRSVUUpXG5gYGAifQ== -->
-<pre class="r"><code>weekly_pt2$primary_point_state&lt;- factor(weekly_pt2$primary_point_state, levels = c(&quot;Stationary&quot;, &quot;Migratory (fall)&quot;, &quot;Migratory (spring)&quot;, &quot;Nesting&quot;), ordered = TRUE)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2dzYXZlKFwibWlncmF0b3J5X3N0YXRlX2dyYXBoXzVfMTJfMjMucG5nXCIpXG5cbmBgYCJ9 -->
-<pre class="r"><code>ggsave(&quot;migratory_state_graph_5_12_23.png&quot;)
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiSm9pbmluZywgYnkgPSBcXHdlZWtcXFxuIn0= --&gt;
 </code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiU2F2aW5nIDcgeCA3IGluIGltYWdlXG4ifQ== -->
-<pre><code>Saving 7 x 7 in image</code></pre>
+<p>Joining, by = <br />
+</p>
+<pre><code>
+
+
+&lt;!-- rnb-output-end --&gt;
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxud2Vla2x5X3B0MiRwcmltYXJ5X3BvaW50X3N0YXRlPC0gZmFjdG9yKHdlZWtseV9wdDIkcHJpbWFyeV9wb2ludF9zdGF0ZSwgbGV2ZWxzID0gYyhcXFN0YXRpb25hcnlcXCwgXFxNaWdyYXRvcnkgKGZhbGwpXFwsIFxcTWlncmF0b3J5IChzcHJpbmcpXFwsIFxcTmVzdGluZ1xcKSwgb3JkZXJlZCA9IFRSVUUpXG5gYGBcbmBgYCJ9 --&gt;
+
+```r
+```r
+weekly_pt2$primary_point_state&lt;- factor(weekly_pt2$primary_point_state, levels = c(\Stationary\, \Migratory (fall)\, \Migratory (spring)\, \Nesting\), ordered = TRUE)</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-chunk-end --&gt;
+
+
+&lt;!-- rnb-text-begin --&gt;
+
+
+
+&lt;!-- rnb-text-end --&gt;
+
+
+&lt;!-- rnb-chunk-begin --&gt;
+
+
+&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZ2dzYXZlKFxcbWlncmF0b3J5X3N0YXRlX2dyYXBoXzVfMTJfMjMucG5nXFwpXG5cbmBgYFxuYGBgIn0= --&gt;
+
+```r
+```r
+ggsave(\migratory_state_graph_5_12_23.png\)
+</code></pre>
+<pre><code>
+&lt;!-- rnb-source-end --&gt;
+
+&lt;!-- rnb-output-begin eyJkYXRhIjoiU2F2aW5nIDcgeCA3IGluIGltYWdlXG4ifQ== --&gt;
+</code></pre>
+<p>Saving 7 x 7 in image ```</p>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->

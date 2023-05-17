@@ -1,0 +1,93 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r include=FALSE}
+library(tidyverse)
+library(lubridate)
+```
+
+```{r}
+amwo_data_reconstructed <- readRDS(here::here("classifier_integrated", "fac_primary_state_delineation.rds")) %>% 
+  mutate(standardized_date = mdy(paste0(month(time), "/", day(time), "/2020")))
+```
+
+Reclassify based on nesting attempts (use only for graphing) and remove classes that I don't want to graph
+```{r}
+amwo_data_reconstructed <- amwo_data_reconstructed %>% 
+  # mutate(primary_point_state = if_else(nesting_attempt == "Nesting", "Nesting", primary_point_state)) %>% 
+  filter(!(primary_point_state %in% c("Unknown- bugged frequent schedule", "Dispersal", "Foray loop", "Migratory (summer)")))
+```
+
+Calculate % of points in any given week that belong to each step
+```{r}
+weekly_pt1 <- amwo_data_reconstructed %>% 
+  mutate(week = week(standardized_date)) %>% 
+  group_by(week) %>% 
+  summarise(standardized_date = mean(standardized_date), total = n()) %>% #mean
+  ungroup()
+
+weekly_pt2 <- amwo_data_reconstructed %>% 
+  mutate(week = week(standardized_date)) %>% 
+  group_by(week, primary_point_state) %>% 
+  tally() %>% 
+  ungroup() %>% 
+  left_join(weekly_pt1) %>% 
+  mutate(pct = n/total) #%>% 
+  # mutate(wday = wday(standardized_date)) %>% 
+  # mutate(standardized_date = standardized_date - wday)
+
+
+days_of_month <- seq.Date(as.Date("2020-01-01"), as.Date("2020-12-31"), by = 1) %>% 
+  ceiling_date(., "weeks") %>% 
+  unique(.) - 4
+
+tibble(week = 1:53, week_end = days_of_month)
+
+weekly_pt2 <- weekly_pt2 %>% 
+  left_join(tibble(week = 1:53, week_end = days_of_month)) %>% 
+  mutate(standardized_date = week_end,
+         week_end = NULL)
+
+weekly_pt2$primary_point_state <- factor(weekly_pt2$primary_point_state, levels = c("Stationary", "Migratory (fall)", "Migratory (spring)"), ordered = TRUE)
+```
+
+
+```{r}
+mig_plot_fall <- weekly_pt2 %>% 
+  filter(primary_point_state == "Migratory (fall)") %>% 
+  mutate(standardized_date = if_else(month(standardized_date) %in% c(1:7), mdy(paste0(month(standardized_date), "/", day(standardized_date), "/2021")), standardized_date)) %>% 
+  filter(!(week %in% c(1, 53))) %>% # 1 replace the 53rd week with a week starting on Jan 1 with an averaged value 
+  bind_rows(tibble(week = 1, primary_point_state = "Migratory (fall)", n = 29 + 55, standardized_date = ymd("2020-12-31"), total = 244 + 523, pct = (29 + 55)/(244 + 523))) %>% 
+  ggplot(data = ., mapping = aes(x = standardized_date, y = pct)) +
+  geom_col() +
+  theme_bw() + 
+  scale_x_date(name = "Date",
+               date_labels = "%b %d",
+               breaks = ymd(c("2021-01-1", "2021-02-1", "2021-03-1", "2021-04-1", "2021-05-1", "2021-06-1", "2021-07-1", "2020-08-1", "2020-09-1", "2020-10-1", "2020-11-1", "2020-12-1"))) +
+  scale_y_continuous(name = "Percent migratory",
+                     labels = scales::percent,
+                     breaks = seq(from = 0.1, to = 1, by = 0.1)) +
+  theme(panel.grid.minor = element_blank())
+
+mig_plot_fall
+```
+
+
+```{r}
+mig_plot_spring <- weekly_pt2 %>% 
+  filter(primary_point_state == "Migratory (spring)") %>% 
+  ggplot(data = ., mapping = aes(x = standardized_date, y = pct)) +
+  geom_col() +
+  theme_bw() + 
+  scale_x_date(name = "Date",
+               date_labels = "%b %d",
+               breaks = ymd(c("2020-01-1", "2020-02-1", "2020-03-1", "2020-04-1", "2020-05-1", "2020-06-1", "2020-07-1", "2020-08-1", "2020-09-1", "2020-10-1", "2020-11-1", "2020-12-1"))) +
+  scale_y_continuous(name = "Percent migratory",
+                     labels = scales::percent,
+                     breaks = seq(from = 0.1, to = 1, by = 0.1)) +
+  theme(panel.grid.minor = element_blank())
+
+mig_plot_spring
+```

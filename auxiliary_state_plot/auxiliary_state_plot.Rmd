@@ -3,7 +3,7 @@ title: "R Notebook"
 output: html_notebook
 ---
 
-```{r}
+```{r include=FALSE}
 library(tidyverse)
 library(sf)
 library(terra)
@@ -115,9 +115,9 @@ dispersal_line <- dispersal_movements %>%
 
 # Revised map
 dispersal_map <- template_map +
-  geom_sf(data = dispersal_line, linewidth = 0.5, colour = c("#F0A0FF", "#4C005C", "#0075DC")) +
+  geom_sf(data = dispersal_line, linewidth = 0.5, colour = c("#F0A0FF", "#4C005C", "#0075DC", "#C20088")) +
   geom_sf(data = dispersal_sf, size = 1, color = "black") +
-  geom_sf(data = dispersal_sf, size = 0.8, color = c("#F0A0FF", "#4C005C", "#0075DC")) +
+  geom_sf(data = dispersal_sf, size = 0.8, color = c("#F0A0FF", "#4C005C", "#0075DC", "#C20088")) +
   coord_sf(xlim = c(1637348, 2215039), ylim = c(2192378, 2770069), expand = FALSE) +
   theme(legend.position = "bottom",
         legend.margin=margin(t = 10),
@@ -139,7 +139,7 @@ dispersal_timeline <- ggplot(data = dispersal_summary, mapping = aes(x = value, 
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank(),
         legend.position = "none") +
-  scale_color_manual(values = c("#F0A0FF", "#4C005C", "#0075DC")) +
+  scale_color_manual(values = c("#F0A0FF", "#4C005C", "#0075DC", "#C20088")) +
   ggtitle("Dispersal")
 
 # Combining them together
@@ -280,10 +280,10 @@ Showing how these can all be rendered in a single plot
 ```{r}
 # legend_desc <- get_legend(template_map)
 
-timelines_combined <- ggarrange(summer_timeline, dispersal_timeline, foray_timeline, nrow = 3, ncol = 1, heights = c(3+5, 3+5, 13+5))
+timelines_combined <- ggarrange(summer_timeline, dispersal_timeline, foray_timeline, nrow = 3, ncol = 1, heights = c(3+5, 4+5, 13+5))
 
 plots_arranged <- ggarrange(summer_map, dispersal_map, foray_map, timelines_combined, ncol = 2, nrow = 2, common.legend = TRUE, legend = "bottom") #legend.grob = legend_desc,
 
-ggsave(filename = here::here("auxiliary_state_plot", "auxiliary_state_plot_5_5_2023.png"), plot = plots_arranged, dpi = 300, bg = "white", height = 7.5, width = 7)
+ggsave(filename = here::here("auxiliary_state_plot", "auxiliary_state_plot_5_17_2023_2.png"), plot = plots_arranged, dpi = 300, bg = "white", height = 7.5, width = 7)
 ```
 

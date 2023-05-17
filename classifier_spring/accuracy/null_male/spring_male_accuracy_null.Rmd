@@ -1,0 +1,254 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+editor_options:
+  chunk_output_type: inline
+---
+```{r include=FALSE}
+library(tidyverse)
+library(lubridate)
+library(move)
+library(momentuHMM)
+library(leaflet)
+library(RColorBrewer)
+library(sf)
+library(furrr)
+library(here)
+library(crawl)
+```
+
+Load data for use in the assessment
+```{r}
+load(file=here("classifier_spring", "spring_male_data.RData"))
+```
+
+Determine which individuals *didn't* die too early (here defined as 5/15)
+```{r}
+id_list <- unique(amwo_hmm$ID)
+id_list <- id_list[!(id_list %in% individuals_died_too_early)]
+```
+
+Load the results object
+```{r}
+results <- readRDS(here("classifier_spring", "spring_male_5_state_model.rds"))
+```
+
+Frontmatter: prepare the model
+
+Label states and create distributions for movements
+```{r}
+stateNames <- c("pre", "migration", "stopover", "settling", "post")
+dist <- list(step="gamma", angle="wrpcauchy")
+```
+
+fix step length parameters and state transitions
+```{r}
+fixPar <- list(beta=matrix(c(NA,	-10000,	-10000,	-10000,	
+                             -10000,	NA,	NA,	NA,	
+                             -10000,	NA,	-10000, -10000, 
+                             -10000, -10000, -10000, NA, 
+                             -10000,	-10000,	-10000,	NA), nrow = 1, byrow = TRUE)) 
+```
+
+These serve as the starting parameters for the HMM to optimize.
+```{r}
+Par0_m1 <- list(step=c(0.293641627, 79.029506936, 0.157361645, 0.250739740, 0.086056474, #mean in km
+                       0.455493251, 95.302307236, 0.211421668, 0.384581337, 0.128558113, # SD in km
+                       0.005159307, 0.006024863, 0.006664064, 0.005636388, 0.006973284), #zeromass ie how many zeroes expected in the distribution
+                angle=c(0.001353412, 0.0006979447, 0.01168102, 0.0005445842, 0, #mean
+                        0.917280917, 0.9754146876, 0.59501513, 0.7614896594, 0.99999))
+```
+
+Create a function that fits the model, predicts states for each step (predicted and observed) and input in the dataset. Note: the listed x y is the starting location of the step. Then use this to determine what the bird's state was at any given point
+```{r}
+fit_and_predict <- function(.x, ks){
+  set.seed(8)
+  m1 <- fitHMM(data=.x, nbStates=5, dist=dist, Par0 = Par0_m1,
+               estAngleMean = list(angle=TRUE),
+               fixPar=fixPar,
+               #userBounds = userBounds,
+               #workBounds = workBounds,
+               #DM = DM,
+               knownStates = ks,
+               #formula = ~step_cov, #state 2 to 3. page 47 of vignette shows how to create the beta matrix
+               stateNames = stateNames)
+  
+  .x$step_state <- viterbi(m1)
+  
+  #step state shows the bird's behavior between points, point state shows the birds behavior at points
+  .x$point_state <- map(1:nrow(.x),  function(i){
+    if(i == 1){
+      return(1) #for the first row, return 1
+    } else if(.x[i,"ID"] != .x[i-1,"ID"]){ #is this the first point for this ID? Return the starting state
+      return(1)
+    } else if(.x[i,"step_state"] == .x[i-1,"step_state"]){ #is the current step state the same as the last step state? Return the current step state
+      return(.x[i,"step_state"])
+    } else if(.x[i,"step_state"] == 2 & .x[i-1,"step_state"] == 1){ #is the current step state mig and the previous step pre-mig? Return pre-mig
+      return(1)
+    } else if(.x[i,"step_state"] == 2 & .x[i-1,"step_state"] == 3){#is the current step state mig and the previous step stopover? Return stopover
+      return(3)
+    } else{ #in all other circumstances, return the current step state
+      return(.x[i,"step_state"])
+    }
+    
+  }) %>% unlist()
+  
+  #Fix the RI problem birds
+  # .x <- .x %>% 
+  #   group_by(ID) %>%
+  #   mutate(ranks = row_number()) %>%
+  #   mutate(point_state = ifelse(ranks == "1" & ID %in% RI_problems, 1, point_state)) %>% 
+  #   ungroup() %>% 
+  #   dplyr::select(-ranks)
+  
+  return(list(model = m1, results = .x))
+}
+```
+
+
+# and now for the accuracy assessment
+
+```{r}
+iterate_ids_male <- function(id_iter, jul_day_cutoff, rn){
+  amwo_hmm_clipped <- amwo_hmm %>% #remove locations for the ID in question after the cutoff date
+    filter(!(ID == id_iter & julian_day > jul_day_cutoff))
+  
+  # Assigning starting state
+  starting_state_key <- amwo_hmm_clipped %>% #How many days before the first location of the season was this bird captured?
+    left_join(capture_dates) %>% 
+    group_by(ID) %>% 
+    nest() %>%
+    mutate(days_from_capture_to_first_loc = map(.x = data, .f = function(iter_df){
+      first_time <- iter_df %>% 
+        head(n = 1) %>% 
+        pull(time)
+      
+      cap_date <- iter_df %>% 
+        head(n = 1) %>% 
+        pull(capture_date)
+      
+      as.numeric(first_time - cap_date)/24 %>% #diff time is in hours, convert to days
+        return()
+    }))
+  
+  starting_state_key <- starting_state_key %>% 
+    mutate(estimate_starting_state = if_else((str_detect(ID, pattern = "VA") | str_detect(ID, pattern = "NJ") | str_detect(ID, pattern = "MD")) & days_from_capture_to_first_loc < 60, true = TRUE, false = FALSE)) %>% 
+    dplyr::select(ID, estimate_starting_state) %>% 
+    ungroup()
+  
+  amwo_hmm_clipped <- amwo_hmm_clipped %>% 
+    left_join(starting_state_key)
+  
+  known_state_key <- known_state_key <- amwo_hmm_clipped %>% 
+    group_by(ID) %>% 
+    mutate(ranks = row_number()) %>% # rank observations (requires correct sorting), ifelse to convert first observations to state 1 and all others NA
+    ungroup() %>%
+    mutate(known = ifelse(estimate_starting_state == FALSE & ranks == 1, yes = 1, no = NA)) %>% #if this is the first row of an ID for which I don't want to estimate starting state, the initial step is 1
+    mutate(r1p1s2 = if_else(known == 1 & step > 30.2, true = TRUE, false = FALSE)) %>% #if known == 1 and step >30.2, mark as a "rank 1 point 1 step 2" event to be reclassified in post-processing
+    mutate(r1p1s2 = replace_na(r1p1s2, replace = FALSE)) %>% #deals with NA issues 
+    mutate(known = ifelse(step > 30.2, 2, known)) #if step length is >30.2, then it must be mig (even if known is already 1) 
+  
+  amwo_hmm_clipped$known <- known_state_key$known
+  amwo_hmm_clipped$r1p1s2 <- known_state_key$r1p1s2
+  
+  knownStates <- amwo_hmm_clipped$known
+  
+  # Running the model
+  results_modified <- fit_and_predict(amwo_hmm_clipped, ks = knownStates)
+  
+  #retrieve the modified ending state
+  end_state_modified <- results_modified$results %>% 
+    filter(ID == id_iter & julian_day == jul_day_cutoff) %>% 
+    pull(point_state)
+  
+  #retrieve the real ending state
+  end_state_true <- results %>% 
+    filter(ID == id_iter & julian_day == jul_day_cutoff) %>% 
+    pull(point_state)
+  
+  #report the cutoff date, ID, modified ending state, and real ending state in a tibble, which will be the output of the loop
+  tibble(cutoff_date = jul_day_cutoff,
+         ID = id_iter,
+         end_modified = end_state_modified,
+         end_true = end_state_true) %>% 
+    return()
+}
+```
+
+
+```{r}
+cutoffs <- c("3/15/2020", "4/1/2020", "4/15/2020", "5/1/2020", "5/15/2020", "6/1/2020", "6/15/2020") %>% 
+  mdy() %>% 
+  yday()
+
+#now iterating through individuals
+set.seed(8)
+id_subsample <- id_list %>% sample(size = 50)
+
+parameters_to_run <- expand.grid(id_subsample, cutoffs) %>%
+  mutate(rn = row_number())
+colnames(parameters_to_run) <- c("id_iter", "jul_day_cutoff", "rn")
+
+parameters_to_run <- parameters_to_run %>% #if I omit the bird from the model, omit it from the accuracy evaluation
+  filter(!(id_iter %in% c("RI-2019-21-2020", "RI-2019-28-2020", "RI-2019-29-2020", "VA-2018-03-2018", "FL-2021-01-2021")))
+
+# prior_results <- read.csv("accuracy_results_male.csv") %>% #ensure that I'm not duplicating past labor
+#   transmute(combined = paste0(cutoff_date, "_",ID))
+# 
+# parameters_to_run <- parameters_to_run %>% 
+#   mutate(combined = paste0(jul_day_cutoff, "_",id_iter)) %>% 
+#   filter(!(combined %in% prior_results$combined)) %>% 
+#   mutate(combined = NULL)
+```
+
+```{r}
+plan(multisession)
+tbl_list <- future_pmap(.l = parameters_to_run, 
+                        .f = iterate_ids_male, 
+                        .options = furrr_options(seed = 8))
+plan(sequential)
+```
+
+```{r}
+accuracy_results_male <- tbl_list %>% 
+  do.call(rbind, .)
+
+# Append results to previous runs
+write.table(accuracy_results_male, "accuracy_results_male_null.csv",
+            append = TRUE,
+            sep = ",",
+            col.names = FALSE,
+            row.names = FALSE,
+            quote = FALSE)
+```
+
+# Read the results back in and plot
+```{r}
+accuracy_results_male <- read_csv("accuracy_results_male_null.csv")
+```
+
+Coding the results in a ggplot-friendly format
+```{r}
+accuracy_results_male <- accuracy_results_male %>% 
+  mutate(false_mig = if_else((end_modified == 2 | end_modified == 3) & (end_true == 4 | end_true == 5), 1, 0)) %>% 
+  mutate(false_postmig = if_else((end_true == 2 | end_true == 3) & (end_modified == 4 | end_modified == 5), 1, 0)) %>% 
+  pivot_longer(cols = c("false_mig", "false_postmig"), names_to = "test", values_to = "result") %>% 
+  group_by(cutoff_date, test) %>% 
+  summarise(percent_error = mean(result), std_err = plotrix::std.error(result)) %>% 
+  ungroup()
+```
+
+```{r}
+ggplot(data = accuracy_results_male, mapping = aes(x = cutoff_date, y = percent_error, col = test)) +
+  geom_point(position=position_dodge(width=4)) +
+  geom_errorbar(aes(ymin = percent_error - std_err*1.96, ymax = percent_error + std_err*1.96), width = 2,
+                position=position_dodge(width=4),) +
+  theme_bw() +
+  scale_y_continuous(labels = scales::percent) +
+  labs(y = "Percent error", x = "Julian day", col = "Classification error")
+
+ggsave("spring_male_classification_error_2_27_23.png", width = 7, height = 5)
+```
+
