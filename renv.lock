@@ -835,6 +835,19 @@
         "sp"
       ]
     },
+    "ggborderline": {
+      "Package": "ggborderline",
+      "Version": "0.2.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "52873d13a808e9711c636560f01ce393",
+      "Requirements": [
+        "cli",
+        "ggplot2",
+        "rlang",
+        "vctrs"
+      ]
+    },
     "ggplot2": {
       "Package": "ggplot2",
       "Version": "3.4.0",
@@ -1579,6 +1592,19 @@
         "askpass"
       ]
     },
+    "paletteer": {
+      "Package": "paletteer",
+      "Version": "1.5.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "2cc72e89c9f4dc12c38d848914aac313",
+      "Requirements": [
+        "prismatic",
+        "rematch2",
+        "rlang",
+        "rstudioapi"
+      ]
+    },
     "parallelly": {
       "Package": "parallelly",
       "Version": "1.33.0",
@@ -1735,6 +1761,16 @@
       "Repository": "CRAN",
       "Hash": "95ef9167b75dde9d2ccc3c7528393e7e",
       "Requirements": []
+    },
+    "prismatic": {
+      "Package": "prismatic",
+      "Version": "1.1.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "faa2193fdec94a45b4390aefc1280a62",
+      "Requirements": [
+        "farver"
+      ]
     },
     "processx": {
       "Package": "processx",

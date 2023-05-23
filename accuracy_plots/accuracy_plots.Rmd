@@ -1,0 +1,136 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(here)
+```
+
+Define a function to process results to identify the % of type 1 or type 2 errors
+```{r}
+identify_errors <- function(.x) {
+  .x %>% 
+    mutate(false_mig = if_else((end_modified == 2 | end_modified == 3) & (end_true == 4 | end_true == 5), 1, 0)) %>% 
+    mutate(false_postmig = if_else((end_true == 2 | end_true == 3) & (end_modified == 4 | end_modified == 5), 1, 0)) %>% 
+    pivot_longer(cols = c("false_mig", "false_postmig"), names_to = "test", values_to = "result") %>% 
+    group_by(cutoff_date, test) %>% 
+    summarise(percent_error = mean(result), std_err = plotrix::std.error(result)) %>% 
+    ungroup() %>% 
+    mutate(test = recode(test, false_mig = "Type II", false_postmig = "Type I"),
+           ymin = if_else((percent_error - std_err*1.96) < 0, 0, percent_error - std_err*1.96),
+           ymax = percent_error + std_err*1.96) %>% 
+    return()
+}
+
+standardize_date_spring <- function(.x){
+  .x$standardized_date <- map(.x$cutoff_date, function(.y){
+    sample_date <- as.Date("2020-01-01")
+    yday(sample_date) <- .y
+    return(sample_date)
+  }) %>% 
+    unlist() %>% 
+    as_date()
+  return(.x)
+}
+
+standardize_date_fall <- function(.x){ 
+  .x$standardized_date <- map(.x$cutoff_date, function(.y){
+    sample_date <- as.Date("2020-01-01")
+    yday(sample_date) <- .y
+    sample_date <- sample_date + 56 # add 56 to deal with standardization in prep_data (days_subtract)
+    return(sample_date)
+  }) %>% 
+    unlist() %>% 
+    as_date()
+  return(.x)
+}
+```
+
+Read in results from the classification tests
+```{r include = FALSE}
+results_spring_female_full <- here("classifier_spring", "accuracy", "full_female", "accuracy_results_female_full.csv") %>% 
+  read_csv() %>% 
+  identify_errors() %>% 
+  standardize_date_spring() %>% 
+  mutate(season = "Spring Female",
+         model_type = "Full")
+
+results_spring_female_null <- here("classifier_spring", "accuracy", "null_female", "accuracy_results_female_null.csv") %>% 
+  read_csv() %>% 
+  identify_errors() %>% 
+  standardize_date_spring() %>% 
+  mutate(season = "Spring Female",
+         model_type = "Null")
+
+results_spring_male_full <- here("classifier_spring", "accuracy", "full_male", "accuracy_results_male_full.csv") %>% 
+  read_csv() %>% 
+  identify_errors() %>% 
+  standardize_date_spring() %>% 
+  mutate(season = "Spring Male",
+         model_type = "Full")
+
+results_spring_male_null <- here("classifier_spring", "accuracy", "null_male", "accuracy_results_male_null.csv") %>% 
+  read_csv() %>% 
+  identify_errors() %>% 
+  standardize_date_spring() %>% 
+  mutate(season = "Spring Male",
+         model_type = "Null")
+
+results_fall_full <- here("classifier_fall", "accuracy", "full_acc_assessment", "accuracy_results_fall_full.csv") %>% 
+  read_csv() %>% 
+  identify_errors() %>% 
+  standardize_date_fall() %>% 
+  mutate(season = "Fall",
+         model_type = "Full")
+
+results_fall_null <- here("classifier_fall", "accuracy", "null_acc_assessment", "accuracy_results_fall_null.csv") %>% 
+  read_csv() %>% 
+  identify_errors() %>% 
+  standardize_date_fall() %>% 
+  mutate(season = "Fall",
+         model_type = "Null")
+```
+
+Defining errors here:
+- Type 1 Error: Falsely classified as post-migratory while it's still migratory
+- Type 2 Error: Falsely classified as migratory while it's actually post-migratory
+
+Creating dfs for graphing
+```{r}
+combined_df <- bind_rows(results_fall_full, 
+                         results_fall_null, 
+                         results_spring_female_full, 
+                         results_spring_female_null, 
+                         results_spring_male_full, 
+                         results_spring_male_null)
+
+# This allows for custom limits for each plot
+dummy <- tibble(standardized_date = ymd(c("2020-10-01", "2020-10-01", "2020-03-01", "2020-03-01", "2020-03-01", "2020-03-01", "2021-03-01", "2021-03-01", "2020-07-01", "2020-07-01", "2020-07-01", "2020-07-01")), percent_error = 0, season = c("Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female", "Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female"), model_type = c("Full", "Null", "Full", "Null", "Full", "Null", "Full", "Null", "Full", "Null", "Full", "Null"), test = "Type I") %>% 
+  bind_rows(tibble(standardized_date = ymd(c("2020-10-01", "2020-10-01", "2020-03-01", "2020-03-01", "2020-03-01", "2020-03-01", "2021-03-01", "2021-03-01", "2020-07-01", "2020-07-01", "2020-07-01", "2020-07-01")), percent_error = 0, season = c("Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female", "Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female"), model_type = c("Full", "Null", "Full", "Null", "Full", "Null", "Full", "Null", "Full", "Null", "Full", "Null"), test = "Type II"))
+```
+
+```{r}
+ggplot(data = combined_df, mapping = aes(x = standardized_date, y = percent_error, col = test)) +
+  geom_point(position=position_dodge(width=4)) +
+  geom_errorbar(aes(ymin = ymin, ymax = ymax), width = 4, #2
+                position=position_dodge(width=4),) +
+  theme_bw() +
+  scale_y_continuous(labels = scales::percent, limits = c(0,1)) +
+  scale_x_date(name = "Date",
+               date_labels = "%b" #"%b %d"
+               # breaks = c(ymd("2020-01-01"),ymd("2020-02-01"),ymd("2020-03-01"),ymd("2020-04-01"),ymd("2020-05-01"),ymd("2020-06-01"),ymd("2020-07-01"),ymd("2020-08-01"),ymd("2020-09-01"), ymd("2020-10-01"), ymd("2020-11-01"), ymd("2020-12-01"), ymd("2021-1-01"), ymd("2021-2-01"), ymd("2021-3-01"), ymd("2021-4-01")),
+               # labels = c('J','F','M','A','M','J','J','A','S','O','N','D', 'J', 'F', 'M', 'A')
+  ) +
+  labs(y = "Percent error", col = "Classification error") +
+  scale_color_manual(values = c("#07646DFF", "#D4419EFF")) +
+  theme(legend.position="bottom") +
+  facet_grid(cols = vars(season), rows = vars(model_type),
+             scales = "free_x") +
+  geom_blank(data=dummy)
+
+ggsave("accuracy_plot_5_23_23.png", width = 7, height = 5)
+```
+

@@ -50,11 +50,11 @@ fixPar <- list(beta=matrix(c(NA, -1000,	-1000,	-1000,	NA,	NA,	-1000,	NA,	-1000,	
 
 These serve as the starting parameters for the HMM to optimize.
 ```{r}
-Par0_m1 <- list(step=c(0.260832696, 9.429288e+01, 0.323209095, 0.1581120, #mean in km
-                       0.434046082, 9.829083e+01, 0.565636024 , 0.2682378, # SD in km
-                       0.002864053, 1.549953e-09, 0.008935152, 0.0101826), #zeromass ie how many zeroes expected in the distribution
-                angle=c(0.001212793, -0.004443658, -0.004534878, 0.0003999368, #mean
-                        0.882238488, 0.911903062, 0.405040026, 0.7535390314)) #prob
+Par0_m1 <- list(step=c(0.215581430, 2.327105e+02, 0.765139476, 0.165041155, #mean in km
+                       0.346142137, 2.101144e+02, 1.510767790, 0.279555846, # SD in km
+                       0.002934171, 1.566103e-09, 0.006099425, 0.009866825), #zeromass ie how many zeroes expected in the distribution
+                angle=c(0.001519699, -0.09475137, -0.006933088, 0.0007521754, #mean
+                        0.852843337, 0.33560275, 0.379823754, 0.7379986808)) #prob
 ```
 
 Create a function that fits the model, predicts states for each step (predicted and observed) and input in the dataset. Note: the listed x y is the starting location of the step. Then use this to determine what the bird's state was at any given point
@@ -101,75 +101,83 @@ iterate_ids <- function(id_iter, jul_day_cutoff, rn){
   amwo_hmm_clipped <- amwo_hmm %>% #remove locations for the ID in question after the cutoff date
     filter(!(ID == id_iter & julian_day > jul_day_cutoff))
   
-  starting_state_key <- amwo_hmm_clipped %>% #How many days before the first location of the season was this bird captured?
-    left_join(capture_dates) %>% 
-    group_by(ID) %>% 
-    nest() %>%
-    mutate(days_from_capture_to_first_loc = map(.x = data, .f = function(iter_df){
-      first_time <- iter_df %>% 
-        head(n = 1) %>% 
-        pull(time)
-      
-      cap_date <- iter_df %>% 
-        head(n = 1) %>% 
-        pull(capture_date)
-      
-      as.numeric(first_time - cap_date)/24 %>% #diff time is in hours, convert to days
-        return()
-    }))
-  
-  starting_state_key <- starting_state_key %>% 
-    mutate(estimate_starting_state = if_else((str_detect(ID, pattern = "VA") | str_detect(ID, pattern = "NJ") | str_detect(ID, pattern = "MD")) & days_from_capture_to_first_loc < 60, true = TRUE, false = FALSE)) %>% 
-    mutate(estimate_starting_state = if_else(ID %in% c("NJ-2018-13-2019", "NJ-2018-15-2019"), true = FALSE, false = estimate_starting_state)) %>% #Two birds were tagged in Dec, but didn't start taking points until much later, which causes the estimator to push them into mig as an initial states
-    dplyr::select(ID, estimate_starting_state) %>% 
-    ungroup()
-  
-  amwo_hmm_clipped <- amwo_hmm_clipped %>% 
-    left_join(starting_state_key)
-  
-  ## rank observations (requires correct sorting), ifelse to covert first observations to state 1 and all others NA
-  known_state_key <- amwo_hmm_clipped %>%
-    group_by(ID) %>%
-    mutate(ranks = row_number()) %>% # rank observations (requires correct sorting), ifelse to convert first observations to state 1 and all others NA
-    ungroup() %>% 
-    mutate(known = ifelse(estimate_starting_state == FALSE & ranks == 1, yes = 1, no = NA)) %>%
-    mutate(r1p1s2 = if_else(known == 1 & step > 30.2, true = TRUE, false = FALSE)) %>% #if known == 1 and step >30.2, mark as a "rank 1 point 1 step 2" event to be reclassified in post-processing
-    mutate(r1p1s2 = replace_na(r1p1s2, replace = FALSE)) %>% #deals with NA issues
-    mutate(known = ifelse(step > 30.2, 2, known)) %>% #if step length is >30.2, then it must be mig (even if known is already 1) 
-    mutate(known = ifelse(ID == "VA-2021-91-2021" & ranks %in% c(16, 17, 18), 2, known)) %>% #crw stops the bird from slipping into mig
-    mutate(known = ifelse(ID == "VA-2021-92-2021" & ranks %in% c(6, 7, 8), 2, known)) %>% #crw stops the bird from slipping into mig
-    mutate(known = ifelse(ID == "NJ-2018-15-2019" & julian_day == 46, 2, known)) %>% 
-    mutate(known = ifelse(ID == "VA-2019-22-2019" & julian_day == 99, 2, known)) %>% 
-    mutate(known = ifelse(ID == "ME-2018-13-2019" & julian_day == 161, 2, known)) %>% 
-    mutate(known = ifelse(ID == "NY-2022-40-2022" & ranks == 1, 3, known)) %>%  #bird that migrated after nesting starts in stopover state
-    mutate(known = ifelse(ID == "RI-2018-11-2019" & ranks == 95, 4, known)) #bird is recaptured and re-transmittered at the last mig location the following Oct, so we know that it is settled here
-  
-  # mutate(known = ifelse(known == 1 & ID %in% RI_problems, 2, known)) %>%
-  
-  amwo_hmm_clipped$known <- known_state_key$known
-  amwo_hmm_clipped$r1p1s2 <- known_state_key$r1p1s2
-  
-  knownStates <- amwo_hmm_clipped$known
-  
-  # fit the model
-  results_modified <- fit_and_predict(amwo_hmm_clipped, ks = knownStates)
-  
-  #retrieve the modified ending state
-  end_state_modified <- results_modified$results %>% 
-    filter(ID == id_iter & julian_day == jul_day_cutoff) %>% 
-    pull(point_state)
-  
-  #retrieve the real ending state
-  end_state_true <- results %>% 
-    filter(ID == id_iter & julian_day == jul_day_cutoff) %>% 
-    pull(point_state)
-  
-  #report the cutoff date, ID, modified ending state, and real ending state in a tibble, which will be the output of the loop
-  tibble(cutoff_date = jul_day_cutoff,
-         ID = id_iter,
-         end_modified = end_state_modified,
-         end_true = end_state_true) %>% 
-    return()
+  result <- tryCatch({
+    starting_state_key <- amwo_hmm_clipped %>% #How many days before the first location of the season was this bird captured?
+      left_join(capture_dates) %>% 
+      group_by(ID) %>% 
+      nest() %>%
+      mutate(days_from_capture_to_first_loc = map(.x = data, .f = function(iter_df){
+        first_time <- iter_df %>% 
+          head(n = 1) %>% 
+          pull(time)
+        
+        cap_date <- iter_df %>% 
+          head(n = 1) %>% 
+          pull(capture_date)
+        
+        as.numeric(first_time - cap_date)/24 %>% #diff time is in hours, convert to days
+          return()
+      }))
+    
+    starting_state_key <- starting_state_key %>% 
+      mutate(estimate_starting_state = if_else((str_detect(ID, pattern = "VA") | str_detect(ID, pattern = "NJ") | str_detect(ID, pattern = "MD")) & days_from_capture_to_first_loc < 60, true = TRUE, false = FALSE)) %>% 
+      mutate(estimate_starting_state = if_else(ID %in% c("NJ-2018-13-2019", "NJ-2018-15-2019"), true = FALSE, false = estimate_starting_state)) %>% #Two birds were tagged in Dec, but didn't start taking points until much later, which causes the estimator to push them into mig as an initial states
+      dplyr::select(ID, estimate_starting_state) %>% 
+      ungroup()
+    
+    amwo_hmm_clipped <- amwo_hmm_clipped %>% 
+      left_join(starting_state_key)
+    
+    ## rank observations (requires correct sorting), ifelse to covert first observations to state 1 and all others NA
+    known_state_key <- amwo_hmm_clipped %>%
+      group_by(ID) %>%
+      mutate(ranks = row_number()) %>% # rank observations (requires correct sorting), ifelse to convert first observations to state 1 and all others NA
+      ungroup() %>% 
+      mutate(known = ifelse(estimate_starting_state == FALSE & ranks == 1, yes = 1, no = NA)) %>%
+      mutate(r1p1s2 = if_else(known == 1 & step > 30.2, true = TRUE, false = FALSE)) %>% #if known == 1 and step >30.2, mark as a "rank 1 point 1 step 2" event to be reclassified in post-processing
+      mutate(r1p1s2 = replace_na(r1p1s2, replace = FALSE)) %>% #deals with NA issues
+      mutate(known = ifelse(step > 30.2, 2, known)) %>% #if step length is >30.2, then it must be mig (even if known is already 1) 
+      mutate(known = ifelse(ID == "VA-2021-91-2021" & ranks %in% c(16, 17, 18), 2, known)) %>% #crw stops the bird from slipping into mig
+      mutate(known = ifelse(ID == "VA-2021-92-2021" & ranks %in% c(6, 7, 8), 2, known)) %>% #crw stops the bird from slipping into mig
+      mutate(known = ifelse(ID == "NJ-2018-15-2019" & julian_day == 46, 2, known)) %>% 
+      mutate(known = ifelse(ID == "VA-2019-22-2019" & julian_day == 99, 2, known)) %>% 
+      mutate(known = ifelse(ID == "ME-2018-13-2019" & julian_day == 161, 2, known)) %>% 
+      mutate(known = ifelse(ID == "NY-2022-40-2022" & ranks == 1, 3, known)) %>%  #bird that migrated after nesting starts in stopover state
+      mutate(known = ifelse(ID == "RI-2018-11-2019" & ranks == 95, 4, known)) #bird is recaptured and re-transmittered at the last mig location the following Oct, so we know that it is settled here
+    
+    # mutate(known = ifelse(known == 1 & ID %in% RI_problems, 2, known)) %>%
+    
+    amwo_hmm_clipped$known <- known_state_key$known
+    amwo_hmm_clipped$r1p1s2 <- known_state_key$r1p1s2
+    
+    knownStates <- amwo_hmm_clipped$known
+    
+    # fit the model
+    results_modified <- fit_and_predict(amwo_hmm_clipped, ks = knownStates)
+    
+    #retrieve the modified ending state
+    end_state_modified <- results_modified$results %>% 
+      filter(ID == id_iter & julian_day == jul_day_cutoff) %>% 
+      pull(point_state)
+    
+    #retrieve the real ending state
+    end_state_true <- results %>% 
+      filter(ID == id_iter & julian_day == jul_day_cutoff) %>% 
+      pull(point_state)
+    
+    #report the cutoff date, ID, modified ending state, and real ending state in a tibble, which will be the output of the loop
+    tibble(cutoff_date = jul_day_cutoff,
+           ID = id_iter,
+           end_modified = end_state_modified,
+           end_true = end_state_true)
+  },
+  error = function(e){
+    tibble(cutoff_date = jul_day_cutoff,
+           ID = id_iter,
+           end_modified = NA,
+           end_true = NA)
+  })
+  return(result)
 }
 ```
 
@@ -188,19 +196,58 @@ parameters_to_run <- expand.grid(id_subsample, cutoffs) %>%
 colnames(parameters_to_run) <- c("id_iter", "jul_day_cutoff", "rn")
 
 parameters_to_run <- parameters_to_run %>% #if I omit the bird from the model, omit it from the accuracy evaluation
-  filter(!(id_iter %in% c("NJ-2019-28-2020", "NS-2019-02-2020", "RI-2020-42-2021", "RI-2021-47-2022", "RI-2021-52-2022")))
-
-# prior_results <- read.csv("accuracy_results_female.csv") %>% #ensure that I'm not duplicating past labor
-#   transmute(combined = paste0(cutoff_date, "_",ID))
-# 
-# parameters_to_run <- parameters_to_run %>% 
-#   mutate(combined = paste0(jul_day_cutoff, "_",id_iter)) %>% 
-#   filter(!(combined %in% prior_results$combined)) %>% 
-#   mutate(combined = NULL)
+  filter(!(id_iter %in% c("NJ-2019-28-2020", "NS-2019-02-2020", "RI-2020-42-2021", "RI-2021-47-2022", "RI-2021-52-2022"))) %>% 
+  filter(!(id_iter %in% c("RI-2018-11-2019")))# omit birds that needed to be set as settled manually
 ```
 
+Take out iterations that would result in fewer than 1 rows for the bird of concern, birds that don't have a location on the cutoff date, and eliminate iterations that I've already run
 ```{r}
-plan(sequential)
+parameters_to_run$valid <- parameters_to_run %>% 
+  dplyr::select(id_iter, jul_day_cutoff) %>% 
+  pmap(.f = function(id_iter, jul_day_cutoff){
+    amwo_hmm_clipped <- amwo_hmm %>% #remove locations for the ID in question after the cutoff date
+      filter(ID == id_iter & julian_day < jul_day_cutoff)
+    
+    observed_on_cutff <- amwo_hmm %>% #ensure that there's a sighting on the cutoff date
+      filter(ID == id_iter & julian_day == jul_day_cutoff) %>% 
+      nrow()
+    
+    logic_flag_1 <- nrow(amwo_hmm_clipped) > 1
+    
+    logic_flag_2 <- observed_on_cutff != 0
+    
+    if_else(logic_flag_1 & logic_flag_2, TRUE, FALSE) %>% 
+      return()
+  })
+
+parameters_to_run <- parameters_to_run %>% 
+  filter(valid == TRUE) %>% 
+  dplyr::select(-valid)
+
+prior_results <- read.csv("accuracy_results_female_null.csv") %>% #ensure that I'm not duplicating past labor
+  transmute(combined = paste0(cutoff_date, "_",ID))
+
+#How many more samples do I need?
+read.csv("accuracy_results_female_null.csv") %>% 
+  pull(ID) %>% 
+  unique() %>% 
+  length()
+
+parameters_to_run <- parameters_to_run %>%
+  mutate(combined = paste0(jul_day_cutoff, "_",id_iter)) %>%
+  filter(!(combined %in% prior_results$combined)) %>%
+  mutate(combined = NULL)
+
+#How many more samples will this give me?
+parameters_to_run %>% 
+  pull(id_iter) %>% 
+  unique() %>% 
+  length()
+```
+
+Run
+```{r}
+plan(multisession)
 tbl_list <- future_pmap(.l = parameters_to_run, 
                         .f = iterate_ids, 
                         .options = furrr_options(seed = 8),
@@ -246,6 +293,6 @@ ggplot(data = accuracy_results_female, mapping = aes(x = cutoff_date, y = percen
   scale_y_continuous(labels = scales::percent) +
   labs(y = "Percent error", x = "Julian day", col = "Classification error")
 
-ggsave("spring_female_classification_error_2_27_23.png", width = 7, height = 5)
+ggsave("spring_female_null_classification_error_DRAFT_5_22_23.png", width = 7, height = 5)
 ```
 

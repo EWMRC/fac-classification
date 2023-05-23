@@ -6,6 +6,7 @@ output: html_notebook
 ```{r include=FALSE}
 library(tidyverse)
 library(lubridate)
+library(ggpubr)
 ```
 
 ```{r}
@@ -61,15 +62,20 @@ mig_plot_fall <- weekly_pt2 %>%
   filter(!(week %in% c(1, 53))) %>% # 1 replace the 53rd week with a week starting on Jan 1 with an averaged value 
   bind_rows(tibble(week = 1, primary_point_state = "Migratory (fall)", n = 29 + 55, standardized_date = ymd("2020-12-31"), total = 244 + 523, pct = (29 + 55)/(244 + 523))) %>% 
   ggplot(data = ., mapping = aes(x = standardized_date, y = pct)) +
-  geom_col() +
+  geom_col(fill = "#FA6900FF", col = "black") +
   theme_bw() + 
   scale_x_date(name = "Date",
                date_labels = "%b %d",
-               breaks = ymd(c("2021-01-1", "2021-02-1", "2021-03-1", "2021-04-1", "2021-05-1", "2021-06-1", "2021-07-1", "2020-08-1", "2020-09-1", "2020-10-1", "2020-11-1", "2020-12-1"))) +
+               breaks = ymd(c("2021-01-1", "2021-02-1", "2021-03-1", "2021-04-1", "2021-05-1", "2021-06-1", "2021-07-1", "2020-08-1", "2020-09-1", "2020-10-1", "2020-11-1", "2020-12-1")),
+               minor_breaks = ymd(c("2021-01-15", "2021-02-15", "2021-03-15", "2021-04-15", "2021-05-15", "2021-06-15", "2020-07-15", "2020-08-15", "2020-09-15", "2020-10-15", "2020-11-15", "2020-12-15")),
+               limits = c(ymd("2020-10-1"), ymd("2021-3-1"))) +
   scale_y_continuous(name = "Percent migratory",
                      labels = scales::percent,
-                     breaks = seq(from = 0.1, to = 1, by = 0.1)) +
-  theme(panel.grid.minor = element_blank())
+                     breaks = seq(from = 0.2, to = 1, by = 0.2),
+                     minor_breaks = seq(from = 0.1, to = 0.9, by = 0.2),
+                     limits = c(0, .8)) +
+  #theme(panel.grid.minor = element_blank()) +
+  ggtitle("Fall")
 
 mig_plot_fall
 ```
@@ -79,15 +85,28 @@ mig_plot_fall
 mig_plot_spring <- weekly_pt2 %>% 
   filter(primary_point_state == "Migratory (spring)") %>% 
   ggplot(data = ., mapping = aes(x = standardized_date, y = pct)) +
-  geom_col() +
+  geom_col(fill = "#69D2E7FF", col = "black") +
   theme_bw() + 
   scale_x_date(name = "Date",
                date_labels = "%b %d",
-               breaks = ymd(c("2020-01-1", "2020-02-1", "2020-03-1", "2020-04-1", "2020-05-1", "2020-06-1", "2020-07-1", "2020-08-1", "2020-09-1", "2020-10-1", "2020-11-1", "2020-12-1"))) +
+               breaks = ymd(c("2020-01-1", "2020-02-1", "2020-03-1", "2020-04-1", "2020-05-1", "2020-06-1", "2020-07-1", "2020-08-1", "2020-09-1", "2020-10-1", "2020-11-1", "2020-12-1")),
+               minor_breaks = ymd(c("2020-01-15", "2020-02-15", "2020-03-15", "2020-04-15", "2020-05-15", "2020-06-15", "2020-07-15", "2020-08-15", "2020-09-15", "2020-10-15", "2020-11-15", "2020-12-15"))) +
   scale_y_continuous(name = "Percent migratory",
                      labels = scales::percent,
-                     breaks = seq(from = 0.1, to = 1, by = 0.1)) +
-  theme(panel.grid.minor = element_blank())
+                     breaks = seq(from = 0.2, to = 1, by = 0.2),
+                     minor_breaks = seq(from = 0.1, to = 0.9, by = 0.2),
+                     limits = c(0, .8)) +
+  #theme(panel.grid.minor = element_blank()) +
+  ggtitle("Spring")
 
 mig_plot_spring
 ```
+
+```{r}
+ggarrange(mig_plot_fall, mig_plot_spring, 
+          ncol = 1, 
+          nrow = 2)
+
+ggsave(filename = "migratory_state_histograms_5_17_23.png", width = 10/1.5, height = 7/1.5)
+```
+
