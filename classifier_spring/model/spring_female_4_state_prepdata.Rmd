@@ -539,17 +539,17 @@ amwo_hmm <- amwo_hmm %>%
   filter(!(ID == "RI-2020-31-2021" & time <= ymd_hms("2021-03-02 18:59:12")))
 
 amwo_hmm <- amwo_hmm %>% #removing ranging movements
-  filter(!(ID == "AL-2022-15-2022" & time == ymd_hms("2022-02-28 17:00:00"))) %>% #may need to check if some of these need to go back in...
-  filter(!(ID == "AL-2021-12-2021" & time == ymd_hms("2021-02-25 17:00:00"))) %>%
-  filter(!(ID == "NJ-2018-15-2019" & time == ymd_hms("2019-01-14 04:00:00"))) %>% 
+  filter(!(ID == "AL-2022-15-2022" & time == ymd_hms("2022-02-28 17:00:00"))) %>% #This shouldn't throw off the designation in the new model. Exclude from paper, maybe remove later.
+  filter(!(ID == "AL-2021-12-2021" & time == ymd_hms("2021-02-25 17:00:00"))) %>% #This shouldn't throw off the designation in the new model. Exclude from paper, maybe remove later.
+  filter(!(ID == "NJ-2018-15-2019" & time == ymd_hms("2019-01-14 04:00:00"))) %>% # duplicate of exclusion code from above, uses a non-existent location. Exclude from paper, maybe remove later.
   # filter(!(ID == "VA-2019-45-2020" & time > ymd_hms("2020-06-22 04:00:00"))) %>% #same thing with midsummer movements
-  filter(!(ID == "VA-2021-98-2022" & time > ymd_hms("2022-05-30 15:00:00"))) %>%
-  filter(!(ID == "VA-2022-100-2022" & time > ymd_hms("2022-06-19 09:00:00"))) %>% 
+  filter(!(ID == "VA-2021-98-2022" & time > ymd_hms("2022-05-30 15:00:00"))) %>% #This shouldn't throw off the designation in the new model. Exclude from paper, maybe remove later.
+  filter(!(ID == "VA-2022-100-2022" & time > ymd_hms("2022-06-19 09:00:00"))) %>% #This shouldn't throw off the designation in the new model. Exclude from paper, maybe remove later.
   #filter(!(ID == "VA-2019-36-2020" & time > ymd_hms("2020-06-19 01:59:28"))) %>% 
-  filter(!(ID == "AL-2021-10-2021" & time == ymd_hms("2021-05-21 03:58:56"))) %>%
-  filter(!(ID == "AL-2021-10-2021" & time == ymd_hms("2021-05-21 17:00:00"))) %>% 
-  filter(!(ID == "AL-2021-12-2021" & time == ymd_hms("2021-02-26 05:02:56"))) %>% 
-  filter(!(ID == "ME-2018-13-2019" & julian_day == 7)) %>% 
+  filter(!(ID == "AL-2021-10-2021" & time == ymd_hms("2021-05-21 03:58:56"))) %>% #This shouldn't throw off the designation in the new model. Exclude from paper, maybe remove later.
+  filter(!(ID == "AL-2021-10-2021" & time == ymd_hms("2021-05-21 17:00:00"))) %>% #This shouldn't throw off the designation in the new model. Exclude from paper, maybe remove later.
+  filter(!(ID == "AL-2021-12-2021" & time == ymd_hms("2021-02-26 05:02:56"))) %>% #This shouldn't throw off the designation in the new model. Exclude from paper, maybe remove later.
+  filter(!(ID == "ME-2018-13-2019" & julian_day == 7)) %>% #late fall migration
   filter(!(ID == "RI-2021-46-2022" & julian_day %in% c(41, 43, 45)))
 ```
 
@@ -558,6 +558,7 @@ Also recording which individuals are removed
 ```{r}
 amwo_hmm$min.step <- ifelse(amwo_hmm$step > 30.2, 1, 0)
 individuals_removed_for_no_migratory_steps <- unique(amwo_hmm$ID [amwo_hmm$min.step == 1])
+
 amwo_hmm <- amwo_hmm[(amwo_hmm$ID %in% amwo_hmm$ID [amwo_hmm$min.step == 1]) , ]
 amwo_hmm$min.step <- NULL
 ```

@@ -1,0 +1,116 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+```
+
+Read in data
+```{r include=FALSE}
+amwo_data_reconstructed <- readRDS(file = here::here("classifier_integrated", "fac_primary_state_delineation.rds")) %>% 
+  arrange(animal_name, time) 
+
+capture_dates <- readxl::read_excel(here("capture_sheet.xlsx"), col_types = c("text", "text", "date", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text")) %>%
+        mutate(`Argos_ID` = as.character(`Argos_ID`)) %>%
+  transmute(animal_name = `Movebank_ID`,
+            sex = Sex) %>% 
+  filter(animal_name != "NA")
+
+amwo_data_reconstructed <- amwo_data_reconstructed %>% 
+  left_join(capture_dates)
+
+#make a column that has the prior steps for each location
+amwo_data_reconstructed <- amwo_data_reconstructed %>% 
+  group_by(animal_name) %>% 
+  group_modify(.f = function(x, y){
+    if(nrow(x) == 1){
+      x$prior_step <- NA
+    } else {
+      x$prior_step <- c(NA, x$primary_step_state[1:(nrow(x)-1)])
+    }
+    return(x)
+  }) %>% 
+  ungroup()
+
+amwo_data_fall <- amwo_data_reconstructed %>% 
+  mutate(date = as_date(time)) %>% 
+  mutate(date = date - 56) %>% 
+  mutate(date_standardized = ymd(paste0("2020-", month(date), "-", day(date)))) %>% 
+  mutate(date = date + 56,
+         date_standardized = date_standardized + 56)
+
+amwo_data_spring <- amwo_data_reconstructed %>% 
+  mutate(date = as_date(time)) %>% 
+  mutate(date_standardized = ymd(paste0("2020-", month(date), "-", day(date))))
+```
+
+Fall migration departure dates
+```{r}
+fall_departure_dates <- amwo_data_fall %>% 
+  filter(primary_point_state == "Stationary",
+         primary_step_state == "Migratory (fall)") %>% 
+  pull(date_standardized)
+
+median(fall_departure_dates)
+range(fall_departure_dates)
+```
+
+Fall migration termination dates
+```{r}
+fall_departure_dates <- amwo_data_fall %>% 
+  filter(primary_point_state == "Stationary",
+         prior_step == "Migratory (fall)") %>% 
+  pull(date_standardized)
+
+median(fall_departure_dates)
+range(fall_departure_dates)
+```
+
+
+Spring migration departure dates
+```{r}
+spring_male_departure_dates <- amwo_data_spring %>% 
+  filter(primary_point_state == "Stationary",
+         primary_step_state == "Migratory (spring)",
+         sex == "Male") %>% 
+  pull(date_standardized)
+
+print("Male")
+median(spring_male_departure_dates)
+range(spring_male_departure_dates)
+
+spring_female_departure_dates <- amwo_data_spring %>% 
+  filter(primary_point_state == "Stationary",
+         primary_step_state == "Migratory (spring)",
+         sex == "Female") %>% 
+  pull(date_standardized)
+
+print("Female")
+median(spring_female_departure_dates)
+range(spring_female_departure_dates)
+```
+
+Spring migration termination dates
+```{r}
+spring_male_departure_dates <- amwo_data_spring %>% 
+  filter(primary_point_state == "Stationary",
+         prior_step == "Migratory (spring)",
+         sex == "Male") %>% 
+  pull(date_standardized)
+
+print("Male")
+median(spring_male_departure_dates)
+range(spring_male_departure_dates)
+
+spring_female_departure_dates <- amwo_data_spring %>% 
+  filter(primary_point_state == "Stationary",
+         prior_step == "Migratory (spring)",
+         sex == "Female") %>% 
+  pull(date_standardized)
+
+print("Female")
+median(spring_female_departure_dates)
+range(spring_female_departure_dates)
+```

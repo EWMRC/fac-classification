@@ -122,7 +122,7 @@ dispersal_map <- template_map +
   theme(legend.position = "bottom",
         legend.margin=margin(t = 10),
         plot.margin = margin(b = 10)) +
-  ggtitle("Dispersal")
+  ggtitle("Dispersal movement")
 
 # Revised timeline
 dispersal_timeline <- ggplot(data = dispersal_summary, mapping = aes(x = value, y = animal_name, group = animal_name, color = animal_name)) +
@@ -140,7 +140,7 @@ dispersal_timeline <- ggplot(data = dispersal_summary, mapping = aes(x = value, 
         axis.ticks.y=element_blank(),
         legend.position = "none") +
   scale_color_manual(values = c("#F0A0FF", "#4C005C", "#0075DC", "#C20088")) +
-  ggtitle("Dispersal")
+  ggtitle("Dispersal movement")
 
 # Combining them together
 # blank <- ggplot() + theme_void()
@@ -247,9 +247,9 @@ summer_line <- summer_movements %>%
 
 # Revised map
 summer_map <- template_map +
-  geom_sf(data = summer_line, linewidth = 0.5, colour = c("#F0A0FF", "#0075DC", "#993F00")) + 
+  geom_sf(data = summer_line, linewidth = 0.5, colour = c("#4C005C", "#0075DC", "#993F00")) + 
   geom_sf(data = summer_sf, size = 1, color = "black") +
-  geom_sf(data = summer_sf, size = 0.8, color = c("#F0A0FF", "#0075DC", "#993F00")) +
+  geom_sf(data = summer_sf, size = 0.8, color = c("#4C005C", "#0075DC", "#993F00")) +
   #coord_sf(xlim = c(-100, -60), ylim = c(25, 55), expand = FALSE) +
   coord_sf(xlim = c(-408613, 2763993), ylim = c(226720.6, 3589842), expand = FALSE) +
   theme(legend.position = "bottom",
@@ -272,7 +272,7 @@ summer_timeline <- ggplot(data = summer_summary, mapping = aes(x = value, y = an
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank(),
         legend.position = "none") +
-  scale_color_manual(values = c("#F0A0FF", "#0075DC", "#993F00")) +
+  scale_color_manual(values = c("#4C005C", "#0075DC", "#993F00")) +
   ggtitle("Summer migration")
 ```
 
@@ -284,6 +284,6 @@ timelines_combined <- ggarrange(summer_timeline, dispersal_timeline, foray_timel
 
 plots_arranged <- ggarrange(summer_map, dispersal_map, foray_map, timelines_combined, ncol = 2, nrow = 2, common.legend = TRUE, legend = "bottom") #legend.grob = legend_desc,
 
-ggsave(filename = here::here("auxiliary_state_plot", "auxiliary_state_plot_5_17_2023_2.png"), plot = plots_arranged, dpi = 300, bg = "white", height = 7.5, width = 7)
+ggsave(filename = here::here("auxiliary_state_plot", "auxiliary_state_plot_5_25_2023.png"), plot = plots_arranged, dpi = 300, bg = "white", height = 7.5, width = 7)
 ```
 

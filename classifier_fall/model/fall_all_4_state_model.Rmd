@@ -65,10 +65,10 @@ known_state_key <- amwo_hmm %>%
   mutate(r1p1s2 = if_else(known == 1 & step > 30.2 & animal_name != "RI-2021-59", true = TRUE, false = FALSE)) %>% #if known == 1 and step >30.2, mark as a "rank 1 point 1 step 2" event to be reclassified in post-processing
   mutate(r1p1s2 = replace_na(r1p1s2, replace = FALSE)) %>% #deals with NA issues 
   mutate(known = ifelse(step > 30.2, 2, known)) %>% #if step length is >30.2, then it must be mig (even if known is already 1) 
-  mutate(known = ifelse(ID == "RI-2020-42-2020" & julian_day == 331, 2, known)) %>% #fix a bird which goes into 4 too early
+  mutate(known = ifelse(ID == "RI-2020-42-2020" & julian_day == 331, 2, known)) %>% #fix a bird which goes into 4 too early. This should be superflous after line 67.
   mutate(known = ifelse(ID == "VA-2019-48-2019" & julian_day == 300, 4, known)) %>% #fix a bird which settles after 2/25
   mutate(known = ifelse(ID == "RI-2021-58-2021" & julian_day >= 349, 4, known)) %>% #fix a bird which settles after 2/25
-  mutate(known = ifelse(ID == "NY-2019-11-2019" & julian_day == 309, 4, known)) %>% #fix a bird which has a spring mig route starting after 2/25
+  mutate(known = ifelse(ID == "NY-2019-11-2019" & julian_day == 309, 4, known)) %>% #fix a bird which has a spring mig route starting after 2/25. This should be superflous after line 74.
   mutate(known = ifelse(ID == "RI-2021-59-2021" & ranks == 1, 3, known)) %>% 
   # mutate(known = ifelse(known == 1 & ID %in% RI_problems, 2, known)) %>%
   group_modify(.f = function(x, y){ #if we know that the bird has a spring migration after this, it must settle
@@ -209,7 +209,7 @@ amwo_hmm_final <- amwo_hmm_final %>%
   ungroup()
 ```
 
-Ruleset: If the total step distance between the end of 1 and the 1st 3 is less than 30.2 km, then everything until the last 3 in that sequence is 1
+Ruleset: If the total step distance between the end of 1 and the 1st 3 is less than 30.2 km, then everything until the last 3 in that sequence is 1. Fixes a bug in the HMM.
 ```{r}
 amwo_hmm_final <- amwo_hmm_final %>%
   group_by(ID) %>%
@@ -239,7 +239,7 @@ amwo_hmm_final <- amwo_hmm_final %>%
   mutate(row_num = NULL)
 ```
 
-Ruleset: If the total step distance between the start of 4 and the most recent 3 is less than 30.2 km, then everything from the top of the most recent 3 down is 4
+Ruleset: If the total step distance between the start of 4 and the most recent 3 is less than 30.2 km, then everything from the top of the most recent 3 down is 4. Fixes a bug in the HMM
 ```{r}
 amwo_hmm_final <- amwo_hmm_final %>%
   group_by(ID) %>%
@@ -279,11 +279,11 @@ Add back in the movement from the summer transient bird (VA-2020-52-2020), manua
 Remove all of the false migrations
 ```{r}
 amwo_hmm_final <- amwo_hmm_final %>%
-  filter(ID != "PA-2019-13-2019",
-         ID != "RI-2019-18-2019",
-         ID != "RI-2019-29-2019",
-         ID != "VT-2020-04-2020",
-         ID != "FL-2021-01-2021",
+  filter(ID != "PA-2019-13-2019", #already excluded
+         ID != "RI-2019-18-2019", #already excluded
+         ID != "RI-2019-29-2019", #foray loop, not a migration
+         ID != "VT-2020-04-2020", #erroneously programmed transmitter, can't delineate migration. No need to mention in manuscript
+         ID != "FL-2021-01-2021", #already excluded
          ID != "NJ-2018-11-2018",
          ID != "SC-2020-13-2020",
          ID != "GA-2021-18-2021") 

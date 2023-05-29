@@ -9,16 +9,27 @@ library(lubridate)
 library(ggpubr)
 ```
 
-```{r}
+```{r include=FALSE}
 amwo_data_reconstructed <- readRDS(here::here("classifier_integrated", "fac_primary_state_delineation.rds")) %>% 
   mutate(standardized_date = mdy(paste0(month(time), "/", day(time), "/2020")))
+
+capture_dates <- readxl::read_excel(here("capture_sheet.xlsx"), col_types = c("text", "text", "date", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text")) %>%
+        mutate(`Argos_ID` = as.character(`Argos_ID`)) %>%
+  transmute(animal_name = `Movebank_ID`,
+            sex = Sex) %>% 
+  filter(animal_name != "NA")
+
+amwo_data_reconstructed <- amwo_data_reconstructed %>% 
+  left_join(capture_dates)
 ```
 
 Reclassify based on nesting attempts (use only for graphing) and remove classes that I don't want to graph
 ```{r}
 amwo_data_reconstructed <- amwo_data_reconstructed %>% 
-  # mutate(primary_point_state = if_else(nesting_attempt == "Nesting", "Nesting", primary_point_state)) %>% 
-  filter(!(primary_point_state %in% c("Unknown- bugged frequent schedule", "Dispersal", "Foray loop", "Migratory (summer)")))
+  # mutate(primary_step_state = if_else(nesting_attempt == "Nesting", "Nesting", primary_step_state)) %>% 
+  filter(!(primary_step_state %in% c("Unknown- bugged frequent schedule", "Dispersal", "Foray loop", "Migratory (summer)"))) %>% 
+  mutate(primary_step_state = paste(primary_step_state, sex)) %>% 
+  mutate(primary_step_state = recode(primary_step_state, "Migratory (fall) Male" = "Migratory (fall)", "Migratory (fall) Female" = "Migratory (fall)"))
 ```
 
 Calculate % of points in any given week that belong to each step
@@ -31,7 +42,7 @@ weekly_pt1 <- amwo_data_reconstructed %>%
 
 weekly_pt2 <- amwo_data_reconstructed %>% 
   mutate(week = week(standardized_date)) %>% 
-  group_by(week, primary_point_state) %>% 
+  group_by(week, primary_step_state) %>% 
   tally() %>% 
   ungroup() %>% 
   left_join(weekly_pt1) %>% 
@@ -51,27 +62,27 @@ weekly_pt2 <- weekly_pt2 %>%
   mutate(standardized_date = week_end,
          week_end = NULL)
 
-weekly_pt2$primary_point_state <- factor(weekly_pt2$primary_point_state, levels = c("Stationary", "Migratory (fall)", "Migratory (spring)"), ordered = TRUE)
+weekly_pt2$primary_step_state <- factor(weekly_pt2$primary_step_state, levels = c("Stationary", "Migratory (fall)", "Migratory (spring) Male", "Migratory (spring) Female"), ordered = TRUE)
 ```
 
 
 ```{r}
 mig_plot_fall <- weekly_pt2 %>% 
-  filter(primary_point_state == "Migratory (fall)") %>% 
+  filter(primary_step_state == "Migratory (fall)") %>% 
   mutate(standardized_date = if_else(month(standardized_date) %in% c(1:7), mdy(paste0(month(standardized_date), "/", day(standardized_date), "/2021")), standardized_date)) %>% 
   filter(!(week %in% c(1, 53))) %>% # 1 replace the 53rd week with a week starting on Jan 1 with an averaged value 
-  bind_rows(tibble(week = 1, primary_point_state = "Migratory (fall)", n = 29 + 55, standardized_date = ymd("2020-12-31"), total = 244 + 523, pct = (29 + 55)/(244 + 523))) %>% 
+  bind_rows(tibble(week = 1, primary_step_state = "Migratory (fall)", n = 29 + 55, standardized_date = ymd("2020-12-31"), total = 244 + 523, pct = (29 + 55)/(244 + 523))) %>% 
   ggplot(data = ., mapping = aes(x = standardized_date, y = pct)) +
   geom_col(fill = "#FA6900FF", col = "black") +
   theme_bw() + 
-  scale_x_date(name = "Date",
+  scale_x_date(name = NULL,
                date_labels = "%b %d",
                breaks = ymd(c("2021-01-1", "2021-02-1", "2021-03-1", "2021-04-1", "2021-05-1", "2021-06-1", "2021-07-1", "2020-08-1", "2020-09-1", "2020-10-1", "2020-11-1", "2020-12-1")),
                minor_breaks = ymd(c("2021-01-15", "2021-02-15", "2021-03-15", "2021-04-15", "2021-05-15", "2021-06-15", "2020-07-15", "2020-08-15", "2020-09-15", "2020-10-15", "2020-11-15", "2020-12-15")),
                limits = c(ymd("2020-10-1"), ymd("2021-3-1"))) +
-  scale_y_continuous(name = "Percent migratory",
+  scale_y_continuous(name = NULL,
                      labels = scales::percent,
-                     breaks = seq(from = 0.2, to = 1, by = 0.2),
+                     breaks = seq(from = 0, to = 1, by = 0.2),
                      minor_breaks = seq(from = 0.1, to = 0.9, by = 0.2),
                      limits = c(0, .8)) +
   #theme(panel.grid.minor = element_blank()) +
@@ -82,31 +93,56 @@ mig_plot_fall
 
 
 ```{r}
-mig_plot_spring <- weekly_pt2 %>% 
-  filter(primary_point_state == "Migratory (spring)") %>% 
+mig_plot_spring_male <- weekly_pt2 %>% 
+  filter(primary_step_state == "Migratory (spring) Male") %>% 
   ggplot(data = ., mapping = aes(x = standardized_date, y = pct)) +
   geom_col(fill = "#69D2E7FF", col = "black") +
   theme_bw() + 
-  scale_x_date(name = "Date",
+  scale_x_date(name = NULL,
                date_labels = "%b %d",
                breaks = ymd(c("2020-01-1", "2020-02-1", "2020-03-1", "2020-04-1", "2020-05-1", "2020-06-1", "2020-07-1", "2020-08-1", "2020-09-1", "2020-10-1", "2020-11-1", "2020-12-1")),
-               minor_breaks = ymd(c("2020-01-15", "2020-02-15", "2020-03-15", "2020-04-15", "2020-05-15", "2020-06-15", "2020-07-15", "2020-08-15", "2020-09-15", "2020-10-15", "2020-11-15", "2020-12-15"))) +
-  scale_y_continuous(name = "Percent migratory",
+               minor_breaks = ymd(c("2020-01-15", "2020-02-15", "2020-03-15", "2020-04-15", "2020-05-15", "2020-06-15", "2020-07-15", "2020-08-15", "2020-09-15", "2020-10-15", "2020-11-15", "2020-12-15")),
+               limits = ymd(c("2020-01-1", "2020-07-01"))) +
+  scale_y_continuous(name = NULL,
                      labels = scales::percent,
-                     breaks = seq(from = 0.2, to = 1, by = 0.2),
+                     breaks = seq(from = 0, to = 1, by = 0.2),
                      minor_breaks = seq(from = 0.1, to = 0.9, by = 0.2),
                      limits = c(0, .8)) +
   #theme(panel.grid.minor = element_blank()) +
-  ggtitle("Spring")
+  ggtitle("Spring (male)")
 
-mig_plot_spring
+mig_plot_spring_male
 ```
 
 ```{r}
-ggarrange(mig_plot_fall, mig_plot_spring, 
-          ncol = 1, 
-          nrow = 2)
+mig_plot_spring_female <- weekly_pt2 %>% 
+  filter(primary_step_state == "Migratory (spring) Female") %>% 
+  ggplot(data = ., mapping = aes(x = standardized_date, y = pct)) +
+  geom_col(fill = "#69D2E7FF", col = "black") +
+  theme_bw() + 
+  scale_x_date(name = NULL,
+               date_labels = "%b %d",
+               breaks = ymd(c("2020-01-1", "2020-02-1", "2020-03-1", "2020-04-1", "2020-05-1", "2020-06-1", "2020-07-1", "2020-08-1", "2020-09-1", "2020-10-1", "2020-11-1", "2020-12-1")),
+               minor_breaks = ymd(c("2020-01-15", "2020-02-15", "2020-03-15", "2020-04-15", "2020-05-15", "2020-06-15", "2020-07-15", "2020-08-15", "2020-09-15", "2020-10-15", "2020-11-15", "2020-12-15")),
+               limits = ymd(c("2020-01-1", "2020-07-01"))) +
+  scale_y_continuous(name = NULL,
+                     labels = scales::percent,
+                     breaks = seq(from = 0, to = 1, by = 0.2),
+                     minor_breaks = seq(from = 0.1, to = 0.9, by = 0.2),
+                     limits = c(0, .8)) +
+  #theme(panel.grid.minor = element_blank()) +
+  ggtitle("Spring (female)")
 
-ggsave(filename = "migratory_state_histograms_5_17_23.png", width = 10/1.5, height = 7/1.5)
+mig_plot_spring_female
+```
+
+```{r}
+ggarrange(mig_plot_fall, mig_plot_spring_male, mig_plot_spring_female, 
+          ncol = 1, 
+          nrow = 3) %>% 
+  annotate_figure(bottom = "Date", left = "Percent migratory") +
+  bgcolor("#FFFFFF")
+
+ggsave(filename = "migratory_state_histograms_5_25_23.png", width = 10/1.5, height = 10.5/1.5)
 ```
 
