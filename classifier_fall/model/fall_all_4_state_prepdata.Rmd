@@ -31,7 +31,7 @@ amwo_2018 <- getMovebankData(study = "American Woodcock Migration Ecology in Eas
 
 amwo_2019 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS("movebank_credentials.rds"), timestamp_start = "20190801000000000", timestamp_end = "20200225000000000", removeDuplicatedTimestamps=TRUE) %>% 
   as.data.frame() #%>% 
-  # filter(timestamp < if_else(local_identifier == "VA-2019-48", ymd_hms("2020-3-30 00:00:00"), ymd_hms("2020-2-25 00:00:00")))
+# filter(timestamp < if_else(local_identifier == "VA-2019-48", ymd_hms("2020-3-30 00:00:00"), ymd_hms("2020-2-25 00:00:00")))
 
 amwo_2020 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS("movebank_credentials.rds"), timestamp_start = "20200801000000000", timestamp_end = "20210225000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
 
@@ -57,7 +57,7 @@ amwo_spring <- amwo_spring %>%
 amwo_spring <- amwo_spring %>%
   mutate(t = strftime(time, format="%H:%M"),
          date = strftime(time, format="%Y-%m-%d")) #%>%
-  #distinct(date, ID, .keep_all = TRUE) # remove multiple locations on same day, mainly retaining only 1 of 3 locations 1st day after marking
+#distinct(date, ID, .keep_all = TRUE) # remove multiple locations on same day, mainly retaining only 1 of 3 locations 1st day after marking
 ```
 
 Converting all age classes to juvenile and adult
@@ -112,7 +112,7 @@ No longer using these in the analysis, but keeping for future reference
 #         googledrive::drive_download(path = here("capture_sheet.xlsx"), overwrite = TRUE)
 
 capture_dates <- readxl::read_excel(here("capture_sheet.xlsx"), col_types = c("text", "text", "date", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text")) %>%
-        mutate(`Argos_ID` = as.character(`Argos_ID`)) %>%
+  mutate(`Argos_ID` = as.character(`Argos_ID`)) %>%
   transmute(animal_name = `Movebank_ID`,
             capture_date = Date)
 
@@ -195,24 +195,24 @@ nested_birds <- group_by(amwo_spring_males, ID) %>%
 # Fit model to each bird. Constrain velocity autoregression parameter to c(-7,2)
 # full effective range of the beta parameter (according to D Johnson)
 nested_birds <- mutate(nested_birds,
-                fit = purrr::map(data, ~{crawl::crwMLE(mov.model=~1, 
-                                                       data=.x, 
-                                                       coord=c("lon", "lat"), # movement model = ~1 bc no covariates
-                                                       Time.name="time",
-                                                       #time.scale='hours', # sometimes need to turn this on, sometimes don't
-                                                       method="L-BFGS-B", # there are different optimization methods, default didn't work but this did
-                                                       constr=list(lower=c(-Inf,-7), upper=c(Inf,2)),
-                                                       attempts=50,
-                                                       time.scale = "hours")}
-                )
+                       fit = purrr::map(data, ~{crawl::crwMLE(mov.model=~1, 
+                                                              data=.x, 
+                                                              coord=c("lon", "lat"), # movement model = ~1 bc no covariates
+                                                              Time.name="time",
+                                                              #time.scale='hours', # sometimes need to turn this on, sometimes don't
+                                                              method="L-BFGS-B", # there are different optimization methods, default didn't work but this did
+                                                              constr=list(lower=c(-Inf,-7), upper=c(Inf,2)),
+                                                              attempts=50,
+                                                              time.scale = "hours")}
+                       )
 )
 
 nested_birds <- mutate(nested_birds,
-                pred = purrr::map(fit, ~{
-                  crawl::crwPredict(.x, predTime="24 hours", return.type='flat') %>% # use 24 hours, NOT 1 day (because it rounds to the unit)
-                    crawl::crw_as_tibble()
-                }
-                )
+                       pred = purrr::map(fit, ~{
+                         crawl::crwPredict(.x, predTime="24 hours", return.type='flat') %>% # use 24 hours, NOT 1 day (because it rounds to the unit)
+                           crawl::crw_as_tibble()
+                       }
+                       )
 )
 
 unnested_birds <- dplyr::select(nested_birds, ID, pred) %>% unnest(cols=pred)
@@ -297,7 +297,7 @@ nested_birds_2 <- amwo_hmm %>%
 nested_birds_2$data <- nested_birds_2 %>% 
   pull(data) %>% 
   future_map(.f = function(x){
-
+    
     x <- x %>% 
       mutate(., rownum = 1:nrow(.))
     
@@ -380,7 +380,7 @@ nested_birds_2.5 <- amwo_hmm %>%
 nested_birds_2.5$data <- nested_birds_2 %>% 
   pull(data) %>% 
   future_map(.f = function(x){
-
+    
     x <- x %>% 
       mutate(., rownum = 1:nrow(.))
     
@@ -589,8 +589,8 @@ amwo_hmm <- amwo_hmm %>%
   filter(!(ID == "RI-2020-31-2020" & julian_day == 185)) %>% 
   #filter(!(ID == "ME-2018-08-2018" & time > ymd_hms("2018-12-24 00:00:00") & time < ymd_hms("2018-12-26 00:00:00"))) %>% 
   # filter(!(ID == "NY-2018-04-2018" & time > ymd_hms("2018-11-22 00:00:00") & time < ymd_hms("2018-11-24 00:00:00"))) %>% 
-    filter(!(ID == "NY-2018-04-2018" & julian_day %in% c(269, 270, 271))) %>% 
-filter(!(ID == "PA-2021-38-2021" & time > ymd_hms("2022-01-29 12:00:00"))) %>% # This doesn't seem to do anything. Not going to change it, because I'm paranoid, but won't list it in the manuscript.
+  filter(!(ID == "NY-2018-04-2018" & julian_day %in% c(269, 270, 271))) %>% 
+  #filter(!(ID == "PA-2021-38-2021" & time > ymd_hms("2022-01-29 12:00:00"))) %>% # This doesn't seem to do anything. Not going to change it, because I'm paranoid, but won't list it in the manuscript.
   filter(!(ID == "NJ-2018-03-2018" & time == ymd_hms("2019-01-18 02:59:12"))) %>% 
   filter(!(ID == "PA-2018-01-2018" & julian_day %in% c(296, 297, 298))) %>% #ranging movement
   filter(!(ID == "ME-2018-08-2018" & julian_day %in% c(301, 302, 303))) %>% 

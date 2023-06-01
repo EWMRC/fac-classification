@@ -1,5 +1,5 @@
 m_1 <- amwo_hmm %>% 
-  filter(ID == "RI-2021-52-2022") %>% 
+  filter(ID == "RI-2019-28-2020") %>% 
   st_as_sf(coords = c("x", "y"), crs = 4326)
 
 m_2 <- m_1 %>% 

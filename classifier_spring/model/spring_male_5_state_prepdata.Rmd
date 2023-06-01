@@ -521,8 +521,8 @@ remove a transient summer movement which throws off the hmm for VA-2020-52-2020.
   #mutate(id_time = NULL)
 
 amwo_hmm <- amwo_hmm %>%
-  filter(!(ID == "VA-2020-52-2020" & julian_day >= 170)) %>% 
-  filter(!(ID == "NJ-2018-03-2019" & julian_day %in% c(10,17)))
+  filter(!(ID == "VA-2020-52-2020" & julian_day >= 170)) %>%  #Dispersal movement caused late termination of migration
+  filter(!(ID == "NJ-2018-03-2019" & julian_day %in% c(10,17))) #Foray loop caused early initiation of migration
   # mutate(id_time = paste(ID, as.character(time))) %>% 
   # filter(id_time != "VA-2020-52-2020 2020-06-19 01:59:28") %>%
   # filter(id_time != "VA-2020-52-2020 2020-06-28 19:01:20") %>%

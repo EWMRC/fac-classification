@@ -46,7 +46,8 @@ server <- function(input, output) {
            y = lat,
            date = as.Date(time),
            point_state = primary_point_state,
-           step_state = primary_step_state)
+           step_state = primary_step_state) %>% 
+    arrange(animal_name, time)
   
   animal_list <- amwoData.sm$animal_name %>% 
     unique()
@@ -88,15 +89,9 @@ server <- function(input, output) {
         "red"
       } else if(states == "Migratory (spring)"){
         "green"
-      } else if(states == "Foray loop (spring)"){
+      } else if(states == "Foray loop"){
         "cadetblue"
-      } else if(states == "Foray loop (summer)"){
-        "cadetblue"
-      } else if(states == "Foray loop (winter)"){
-        "cadetblue"
-      } else if(states == "Foray loop (fall)"){
-        "cadetblue"
-      } else if(states == "Dispersal (winter)"){
+      } else if(states == "Dispersal"){
         "darkred"
       } else{
         "orange"
