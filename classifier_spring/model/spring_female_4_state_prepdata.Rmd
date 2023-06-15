@@ -21,7 +21,7 @@ library(here)
 library(crawl)
 ```
 
-Extract all locations from 2019, 2020, and 2021 from Jan 5th through June 30th
+Extract all locations from 2018, 2019, 2020, 2021, and 2022 from Jan 5th through June 30th
 ```{r include=FALSE}
 amwo_2018 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS("movebank_credentials.rds"), timestamp_start = "20180105000000000", timestamp_end = "20180630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
 

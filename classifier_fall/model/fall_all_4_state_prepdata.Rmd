@@ -19,7 +19,7 @@ library(here)
 library(crawl)
 ```
 
-Extract all locations from 2018, 2019, 2020, and 2021 from August 1st through January 4th
+Extract all locations from 2017, 2018, 2019, 2020, and 2021 from August 1st through January 4th
 ```{r include=FALSE}
 ending_consideration_date <- mdy("2/25/2022")
 

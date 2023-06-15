@@ -24,7 +24,7 @@ Load data for use in the assessment
 load(file=here("classifier_spring", "spring_male_data.RData"))
 ```
 
-Determine which individuals *didn't* die too early (here defined as 5/15)
+Determine which individuals *didn't* die too early (here defined as 6/15)
 ```{r}
 id_list <- unique(amwo_hmm$ID)
 id_list <- id_list[!(id_list %in% individuals_died_too_early)]

@@ -57,6 +57,29 @@ Creating template for the auxiliary state maps
 template_map <- ggplot(range_shp) +
   theme_void() +
   geom_spatraster_rgb(data = basemap_ras, maxcell = 5e+07) + #5e+05
+  geom_sf(aes(fill = season), alpha = 0.5, fill = c("#A65141FF", "#80A0C7FF", "#394165FF")) +
+  #scale_fill_manual(values = c("#A65141FF", "#80A0C7FF", "#394165FF")) +
+  coord_sf(xlim = c(-408613, 2763993), ylim = c(226720.6, 3589842), expand = FALSE) +
+  #coord_sf(xlim = c(-100, -60), ylim = c(25, 55), expand = FALSE) +
+  labs(fill = NULL) +
+  annotation_north_arrow(location = "br",
+                         which_north = "true",
+                         height = unit(1.5/3, "cm"),
+                         width = unit(1.5/3, "cm"),
+                         pad_x = unit(0.3, "cm"), 
+                         pad_y = unit(0.3, "cm"), 
+                         style = ggspatial::north_arrow_orienteering(
+                           fill = c("grey40", "white"),
+                           line_col = "grey20",
+                           text_size = 6
+                         )) +
+  annotation_scale(location = "bl", width_hint = 0.2, bar_cols = c("grey40", "white"),
+                   pad_x = unit(0.3, "cm"), 
+                   pad_y = unit(0.3, "cm"))
+
+template_map_legend <- ggplot(range_shp) +
+  theme_void() +
+  geom_spatraster_rgb(data = basemap_ras, maxcell = 5e+07) + #5e+05
   geom_sf(aes(fill = season), alpha = 0.5) +
   scale_fill_manual(values = c("#A65141FF", "#80A0C7FF", "#394165FF")) +
   coord_sf(xlim = c(-408613, 2763993), ylim = c(226720.6, 3589842), expand = FALSE) +
@@ -75,7 +98,10 @@ template_map <- ggplot(range_shp) +
                          )) +
   annotation_scale(location = "bl", width_hint = 0.2, bar_cols = c("grey40", "white"),
                    pad_x = unit(0.3, "cm"), 
-                   pad_y = unit(0.3, "cm"),) 
+                   pad_y = unit(0.3, "cm")) +
+  theme(legend.position = "bottom",
+        legend.margin = margin(t = 10),
+        plot.margin = margin(b = 10))
 ```
 
 Dispersal event plots
@@ -104,25 +130,38 @@ dispersal_sf <- dispersal_movements %>%
   st_as_sf(coords = c("long", "lat"), crs = 4326) %>% 
   st_transform(5070) %>% 
   group_by(animal_name) %>%
-  summarise()
+  summarise(do_union = FALSE) %>% 
+  arrange(animal_name)
 
 dispersal_line <- dispersal_movements %>% 
   st_as_sf(coords = c("long", "lat"), crs = 4326) %>% 
   st_transform(5070) %>% 
   group_by(animal_name) %>%
-  summarise() %>% 
-  st_cast("LINESTRING")
+  summarise(do_union = FALSE) %>% 
+  st_cast("LINESTRING") %>% 
+  arrange(animal_name)
+
+colors_dispersal <- c("#005C31", "#4C005C", "#0075DC", "#C20088")
+names(colors_dispersal) <- dispersal_sorted
 
 # Revised map
 dispersal_map <- template_map +
-  geom_sf(data = dispersal_line, linewidth = 0.5, colour = c("#F0A0FF", "#4C005C", "#0075DC", "#C20088")) +
-  geom_sf(data = dispersal_sf, size = 1, color = "black") +
-  geom_sf(data = dispersal_sf, size = 0.8, color = c("#F0A0FF", "#4C005C", "#0075DC", "#C20088")) +
+  geom_sf(data = dispersal_line,
+          mapping = aes(fill = animal_name, color = animal_name),
+          linewidth = 0.5,
+          arrow = arrow(length = unit(0.2, "cm"), type = "closed"))+#,
+          #colour = c("#005C31", "#4C005C", "#0075DC", "#C20088"),
+          #fill = c("#005C31", "#4C005C", "#0075DC", "#C20088")) +
+  #geom_sf(data = dispersal_sf, size = 1, color = "black") +
+  #geom_sf(data = dispersal_sf, size = 0.8, color = c("#F0A0FF", "#4C005C", "#0075DC", "#C20088")) +
   coord_sf(xlim = c(1637348, 2215039), ylim = c(2192378, 2770069), expand = FALSE) +
   theme(legend.position = "bottom",
         legend.margin=margin(t = 10),
         plot.margin = margin(b = 10)) +
-  ggtitle("Dispersal movement")
+  ggtitle("Dispersal movement") +
+  scale_color_manual(values = colors_dispersal) +
+  scale_fill_manual(values = colors_dispersal) +
+  theme(legend.position = "none")
 
 # Revised timeline
 dispersal_timeline <- ggplot(data = dispersal_summary, mapping = aes(x = value, y = animal_name, group = animal_name, color = animal_name)) +
@@ -139,7 +178,7 @@ dispersal_timeline <- ggplot(data = dispersal_summary, mapping = aes(x = value, 
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank(),
         legend.position = "none") +
-  scale_color_manual(values = c("#F0A0FF", "#4C005C", "#0075DC", "#C20088")) +
+  scale_color_manual(values = colors_dispersal) +
   ggtitle("Dispersal movement")
 
 # Combining them together
@@ -171,26 +210,35 @@ foray_sf <- foray_movements %>%
   st_as_sf(coords = c("long", "lat"), crs = 4326) %>%
   st_transform(5070) %>% 
   group_by(animal_name) %>%
-  summarise()
+  summarise(do_union = FALSE) %>% 
+  mutate(animal_name = factor(animal_name, levels = foray_sorted))
 
 foray_line <- foray_movements %>% 
   st_as_sf(coords = c("long", "lat"), crs = 4326) %>%
   st_transform(5070) %>% 
   group_by(animal_name) %>%
-  summarise() %>% 
-  st_cast("LINESTRING")
+  summarise(do_union = FALSE) %>% 
+  st_cast("LINESTRING") %>% 
+  mutate(animal_name = factor(animal_name, levels = foray_sorted))
+
+colors_foray <- c("black", "#0075DC", "#993F00","#4A6990FF", "#4C005C", "#C20088", "#005C31", "#2BCE48", "#FFCC99", "#808080","#94FFB5", "#8F7C00", "#9DCC00")
+names(colors_foray) <- foray_sorted
 
 # Revised map
 foray_map <- template_map +
-  geom_sf(data = foray_line, linewidth = 0.5, colour = c("#F0A0FF", "#0075DC", "#993F00","#4A6990FF", "#4C005C", "#C20088", "#005C31", "#2BCE48", "#FFCC99", "#808080","#94FFB5", "#8F7C00", "#9DCC00")) + 
+  geom_sf(data = foray_line, 
+          mapping = aes(color = animal_name),
+          linewidth = 0.5) + 
   geom_sf(data = foray_sf, size = 1, color = "black") +
-  geom_sf(data = foray_sf, size = 0.8, color = c("#F0A0FF", "#0075DC", "#993F00","#4A6990FF", "#4C005C", "#C20088", "#005C31", "#2BCE48", "#FFCC99", "#808080","#94FFB5", "#8F7C00", "#9DCC00")) +
+  geom_sf(data = foray_sf, mapping = aes(color = animal_name, 
+                                         fill = animal_name), 
+          size = 0.8) +
   #coord_sf(xlim = c(-100, -60), ylim = c(25, 55), expand = FALSE) +
   coord_sf(xlim = c(-408613, 2763993), ylim = c(226720.6, 3589842), expand = FALSE) +
-  theme(legend.position = "bottom",
-        legend.margin = margin(t = 10),
-        plot.margin = margin(b = 10)) +
-  ggtitle("Foray loop")
+  theme(legend.position = "none") +
+  ggtitle("Foray loop") +
+  scale_color_manual(values = colors_foray) +
+  scale_fill_manual(values = colors_foray)
 
 # Revised timeline
 foray_timeline <- ggplot(data = foray_summary, mapping = aes(x = value, y = animal_name, group = animal_name, color = animal_name)) +
@@ -207,7 +255,7 @@ foray_timeline <- ggplot(data = foray_summary, mapping = aes(x = value, y = anim
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank(),
         legend.position = "none") +
-  scale_color_manual(values = c("#F0A0FF", "#0075DC", "#993F00","#4A6990FF", "#4C005C", "#C20088", "#005C31", "#2BCE48", "#FFCC99", "#808080","#94FFB5", "#8F7C00", "#9DCC00")) +
+  scale_color_manual(values = colors_foray) +
   ggtitle("Foray loop")
 ```
 
@@ -236,26 +284,35 @@ summer_sf <- summer_movements %>%
   st_as_sf(coords = c("long", "lat"), crs = 4326) %>%
   st_transform(5070) %>% 
   group_by(animal_name) %>%
-  summarise()
+  summarise(do_union = FALSE) %>% 
+  mutate(animal_name = factor(animal_name, levels = summer_sorted))
 
 summer_line <- summer_movements %>% 
   st_as_sf(coords = c("long", "lat"), crs = 4326) %>%
   st_transform(5070) %>% 
   group_by(animal_name) %>%
-  summarise() %>% 
-  st_cast("LINESTRING")
+  summarise(do_union = FALSE) %>% 
+  st_cast("LINESTRING") %>% 
+  mutate(animal_name = factor(animal_name, levels = summer_sorted))
+
+colors_summer <- c("#4C005C", "#0075DC", "#993F00")
+names(colors_summer) <- summer_sorted
 
 # Revised map
 summer_map <- template_map +
-  geom_sf(data = summer_line, linewidth = 0.5, colour = c("#4C005C", "#0075DC", "#993F00")) + 
-  geom_sf(data = summer_sf, size = 1, color = "black") +
-  geom_sf(data = summer_sf, size = 0.8, color = c("#4C005C", "#0075DC", "#993F00")) +
+  geom_sf(data = summer_line,
+          mapping = aes(color = animal_name,
+                        fill = animal_name),
+          linewidth = 0.5,
+          arrow = arrow(length = unit(0.2, "cm"), type = "closed")) +
+  #geom_sf(data = summer_sf, size = 1, color = "black") +
+  #geom_sf(data = summer_sf, size = 0.8, color = c("#4C005C", "#0075DC", "#993F00")) +
   #coord_sf(xlim = c(-100, -60), ylim = c(25, 55), expand = FALSE) +
   coord_sf(xlim = c(-408613, 2763993), ylim = c(226720.6, 3589842), expand = FALSE) +
-  theme(legend.position = "bottom",
-        legend.margin=margin(t = 10),
-        plot.margin = margin(b = 10)) +
-  ggtitle("Summer migration")
+  theme(legend.position = "none") +
+  ggtitle("Summer migration") +
+  scale_color_manual(values = colors_summer) +
+  scale_fill_manual(values = colors_summer)
 
 # Revised timeline
 summer_timeline <- ggplot(data = summer_summary, mapping = aes(x = value, y = animal_name, group = animal_name, color = animal_name)) +
@@ -272,18 +329,18 @@ summer_timeline <- ggplot(data = summer_summary, mapping = aes(x = value, y = an
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank(),
         legend.position = "none") +
-  scale_color_manual(values = c("#4C005C", "#0075DC", "#993F00")) +
+  scale_color_manual(values = colors_summer) +
   ggtitle("Summer migration")
 ```
 
 Showing how these can all be rendered in a single plot
 ```{r}
-# legend_desc <- get_legend(template_map)
+legend_desc <- get_legend(template_map_legend)
 
 timelines_combined <- ggarrange(summer_timeline, dispersal_timeline, foray_timeline, nrow = 3, ncol = 1, heights = c(3+5, 4+5, 13+5))
 
-plots_arranged <- ggarrange(summer_map, dispersal_map, foray_map, timelines_combined, ncol = 2, nrow = 2, common.legend = TRUE, legend = "bottom") #legend.grob = legend_desc,
+plots_arranged <- ggarrange(summer_map, dispersal_map, foray_map, timelines_combined, ncol = 2, nrow = 2, common.legend = TRUE, legend = "bottom", legend.grob = legend_desc)
 
-ggsave(filename = here::here("auxiliary_state_plot", "auxiliary_state_plot_5_25_2023.png"), plot = plots_arranged, dpi = 300, bg = "white", height = 7.5, width = 7)
+ggsave(filename = here::here("auxiliary_state_plot", "auxiliary_state_plot_6_15_2023.png"), plot = plots_arranged, dpi = 300, bg = "white", height = 7.5, width = 7)
 ```
 

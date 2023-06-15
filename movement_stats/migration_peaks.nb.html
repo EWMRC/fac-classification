@@ -1753,15 +1753,122 @@ display: none;
 
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-text-begin -->
+<p>Reclassify based on nesting attempts (use only for graphing) and
+remove classes that I don’t want to graph</p>
+<!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGAifQ== -->
-<pre class="r"><code>library(tidyverse)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW13b19kYXRhX3JlY29uc3RydWN0ZWRfbWFsZSA8LSBhbXdvX2RhdGFfcmVjb25zdHJ1Y3RlZCAlPiUgXG4gIGZpbHRlcighKHByaW1hcnlfc3RlcF9zdGF0ZSAlaW4lIGMoXCJVbmtub3duLSBidWdnZWQgZnJlcXVlbnQgc2NoZWR1bGVcIiwgXCJEaXNwZXJzYWxcIiwgXCJGb3JheSBsb29wXCIsIFwiTWlncmF0b3J5IChzdW1tZXIpXCIpKSxcbiAgICAgICAgIHNleCA9PSBcIk1hbGVcIilcblxuYW13b19kYXRhX3JlY29uc3RydWN0ZWRfZmVtYWxlIDwtIGFtd29fZGF0YV9yZWNvbnN0cnVjdGVkICU+JSBcbiAgZmlsdGVyKCEocHJpbWFyeV9zdGVwX3N0YXRlICVpbiUgYyhcIlVua25vd24tIGJ1Z2dlZCBmcmVxdWVudCBzY2hlZHVsZVwiLCBcIkRpc3BlcnNhbFwiLCBcIkZvcmF5IGxvb3BcIiwgXCJNaWdyYXRvcnkgKHN1bW1lcilcIikpLFxuICAgICAgICAgc2V4ID09IFwiRmVtYWxlXCIpXG5gYGAifQ== -->
+<pre class="r"><code>amwo_data_reconstructed_male &lt;- amwo_data_reconstructed %&gt;% 
+  filter(!(primary_step_state %in% c(&quot;Unknown- bugged frequent schedule&quot;, &quot;Dispersal&quot;, &quot;Foray loop&quot;, &quot;Migratory (summer)&quot;)),
+         sex == &quot;Male&quot;)
+
+amwo_data_reconstructed_female &lt;- amwo_data_reconstructed %&gt;% 
+  filter(!(primary_step_state %in% c(&quot;Unknown- bugged frequent schedule&quot;, &quot;Dispersal&quot;, &quot;Foray loop&quot;, &quot;Migratory (summer)&quot;)),
+         sex == &quot;Female&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Calculate % of points in any given week that belong to each step</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud2Vla2x5X3B0MV9tYWxlIDwtIGFtd29fZGF0YV9yZWNvbnN0cnVjdGVkX21hbGUgJT4lIFxuICBtdXRhdGUod2VlayA9IHdlZWsoc3RhbmRhcmRpemVkX2RhdGUpKSAlPiUgXG4gIGdyb3VwX2J5KHdlZWspICU+JSBcbiAgc3VtbWFyaXNlKHN0YW5kYXJkaXplZF9kYXRlID0gbWVhbihzdGFuZGFyZGl6ZWRfZGF0ZSksIHRvdGFsID0gbigpKSAlPiUgI21lYW5cbiAgdW5ncm91cCgpXG5cbndlZWtseV9wdDJfbWFsZSA8LSBhbXdvX2RhdGFfcmVjb25zdHJ1Y3RlZF9tYWxlICU+JSBcbiAgbXV0YXRlKHdlZWsgPSB3ZWVrKHN0YW5kYXJkaXplZF9kYXRlKSkgJT4lIFxuICBncm91cF9ieSh3ZWVrLCBwcmltYXJ5X3N0ZXBfc3RhdGUpICU+JSBcbiAgdGFsbHkoKSAlPiUgXG4gIHVuZ3JvdXAoKSAlPiUgXG4gIGxlZnRfam9pbih3ZWVrbHlfcHQxX21hbGUpICU+JSBcbiAgbXV0YXRlKHBjdCA9IG4vdG90YWwpXG5cbndlZWtseV9wdDFfZmVtYWxlIDwtIGFtd29fZGF0YV9yZWNvbnN0cnVjdGVkX2ZlbWFsZSAlPiUgXG4gIG11dGF0ZSh3ZWVrID0gd2VlayhzdGFuZGFyZGl6ZWRfZGF0ZSkpICU+JSBcbiAgZ3JvdXBfYnkod2VlaykgJT4lIFxuICBzdW1tYXJpc2Uoc3RhbmRhcmRpemVkX2RhdGUgPSBtZWFuKHN0YW5kYXJkaXplZF9kYXRlKSwgdG90YWwgPSBuKCkpICU+JSAjbWVhblxuICB1bmdyb3VwKClcblxud2Vla2x5X3B0Ml9mZW1hbGUgPC0gYW13b19kYXRhX3JlY29uc3RydWN0ZWRfZmVtYWxlICU+JSBcbiAgbXV0YXRlKHdlZWsgPSB3ZWVrKHN0YW5kYXJkaXplZF9kYXRlKSkgJT4lIFxuICBncm91cF9ieSh3ZWVrLCBwcmltYXJ5X3N0ZXBfc3RhdGUpICU+JSBcbiAgdGFsbHkoKSAlPiUgXG4gIHVuZ3JvdXAoKSAlPiUgXG4gIGxlZnRfam9pbih3ZWVrbHlfcHQxX2ZlbWFsZSkgJT4lIFxuICBtdXRhdGUocGN0ID0gbi90b3RhbClcblxuZGF5c19vZl9tb250aCA8LSBzZXEuRGF0ZShhcy5EYXRlKFwiMjAyMC0wMS0wMVwiKSwgYXMuRGF0ZShcIjIwMjAtMTItMzFcIiksIGJ5ID0gMSkgJT4lIFxuICBjZWlsaW5nX2RhdGUoLiwgXCJ3ZWVrc1wiKSAlPiUgXG4gIHVuaXF1ZSguKSAtIDRcblxudGliYmxlKHdlZWsgPSAxOjUzLCB3ZWVrX2VuZCA9IGRheXNfb2ZfbW9udGgpXG5cbndlZWtseV9wdDJfbWFsZSA8LSB3ZWVrbHlfcHQyX21hbGUgJT4lIFxuICBsZWZ0X2pvaW4odGliYmxlKHdlZWsgPSAxOjUzLCB3ZWVrX2VuZCA9IGRheXNfb2ZfbW9udGgpKSAlPiUgXG4gIG11dGF0ZShzdGFuZGFyZGl6ZWRfZGF0ZSA9IHdlZWtfZW5kLFxuICAgICAgICAgd2Vla19lbmQgPSBOVUxMLFxuICAgICAgICAgc2V4ID0gXCJNYWxlXCIpXG5cbndlZWtseV9wdDJfZmVtYWxlIDwtIHdlZWtseV9wdDJfZmVtYWxlICU+JSBcbiAgbGVmdF9qb2luKHRpYmJsZSh3ZWVrID0gMTo1Mywgd2Vla19lbmQgPSBkYXlzX29mX21vbnRoKSkgJT4lIFxuICBtdXRhdGUoc3RhbmRhcmRpemVkX2RhdGUgPSB3ZWVrX2VuZCxcbiAgICAgICAgIHdlZWtfZW5kID0gTlVMTCxcbiAgICAgICAgIHNleCA9IFwiRmVtYWxlXCIpXG5cbndlZWtseV9wdDIgPC0gd2Vla2x5X3B0Ml9tYWxlICU+JSBcbiAgYmluZF9yb3dzKHdlZWtseV9wdDJfZmVtYWxlKVxuXG53ZWVrbHlfcHQyJHByaW1hcnlfc3RlcF9zdGF0ZSA8LSBmYWN0b3Iod2Vla2x5X3B0MiRwcmltYXJ5X3N0ZXBfc3RhdGUsIGxldmVscyA9IGMoXCJTdGF0aW9uYXJ5XCIsIFwiTWlncmF0b3J5IChmYWxsKVwiLCBcIk1pZ3JhdG9yeSAoc3ByaW5nKVwiKSwgb3JkZXJlZCA9IFRSVUUpXG5gYGAifQ== -->
+<pre class="r"><code>weekly_pt1_male &lt;- amwo_data_reconstructed_male %&gt;% 
+  mutate(week = week(standardized_date)) %&gt;% 
+  group_by(week) %&gt;% 
+  summarise(standardized_date = mean(standardized_date), total = n()) %&gt;% #mean
+  ungroup()
+
+weekly_pt2_male &lt;- amwo_data_reconstructed_male %&gt;% 
+  mutate(week = week(standardized_date)) %&gt;% 
+  group_by(week, primary_step_state) %&gt;% 
+  tally() %&gt;% 
+  ungroup() %&gt;% 
+  left_join(weekly_pt1_male) %&gt;% 
+  mutate(pct = n/total)
+
+weekly_pt1_female &lt;- amwo_data_reconstructed_female %&gt;% 
+  mutate(week = week(standardized_date)) %&gt;% 
+  group_by(week) %&gt;% 
+  summarise(standardized_date = mean(standardized_date), total = n()) %&gt;% #mean
+  ungroup()
+
+weekly_pt2_female &lt;- amwo_data_reconstructed_female %&gt;% 
+  mutate(week = week(standardized_date)) %&gt;% 
+  group_by(week, primary_step_state) %&gt;% 
+  tally() %&gt;% 
+  ungroup() %&gt;% 
+  left_join(weekly_pt1_female) %&gt;% 
+  mutate(pct = n/total)
+
+days_of_month &lt;- seq.Date(as.Date(&quot;2020-01-01&quot;), as.Date(&quot;2020-12-31&quot;), by = 1) %&gt;% 
+  ceiling_date(., &quot;weeks&quot;) %&gt;% 
+  unique(.) - 4
+
+tibble(week = 1:53, week_end = days_of_month)
+
+weekly_pt2_male &lt;- weekly_pt2_male %&gt;% 
+  left_join(tibble(week = 1:53, week_end = days_of_month)) %&gt;% 
+  mutate(standardized_date = week_end,
+         week_end = NULL,
+         sex = &quot;Male&quot;)
+
+weekly_pt2_female &lt;- weekly_pt2_female %&gt;% 
+  left_join(tibble(week = 1:53, week_end = days_of_month)) %&gt;% 
+  mutate(standardized_date = week_end,
+         week_end = NULL,
+         sex = &quot;Female&quot;)
+
+weekly_pt2 &lt;- weekly_pt2_male %&gt;% 
+  bind_rows(weekly_pt2_female)
+
+weekly_pt2$primary_step_state &lt;- factor(weekly_pt2$primary_step_state, levels = c(&quot;Stationary&quot;, &quot;Migratory (fall)&quot;, &quot;Migratory (spring)&quot;), ordered = TRUE)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Get the first and last day of each week</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud2Vla2x5X3B0MiA8LSB3ZWVrbHlfcHQyICU+JSBcbiAgbGVmdF9qb2luKHdlZWtfYm91bmRhcmllcylcblxuYGBgIn0= -->
+<pre class="r"><code>weekly_pt2 &lt;- weekly_pt2 %&gt;% 
+  left_join(week_boundaries)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiSm9pbmluZywgYnkgPSBcIndlZWtcIlxuIn0= -->
+<pre><code>Joining, by = &quot;week&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxud2Vla2x5X3B0MiAlPiUgXG4gIGZpbHRlcihwcmltYXJ5X3N0ZXBfc3RhdGUgPT0gXCJNaWdyYXRvcnkgKGZhbGwpXCIsIHNleCA9PSBcIk1hbGVcIikgJT4lIFxuICBhcnJhbmdlKGRlc2MocGN0KSkgJT4lIFxuICBoZWFkKG4gPSAxKVxuXG53ZWVrbHlfcHQyICU+JSBcbiAgZmlsdGVyKHByaW1hcnlfc3RlcF9zdGF0ZSA9PSBcIk1pZ3JhdG9yeSAoZmFsbClcIiwgc2V4ID09IFwiRmVtYWxlXCIpICU+JSBcbiAgYXJyYW5nZShkZXNjKHBjdCkpICU+JSBcbiAgaGVhZChuID0gMSlcblxud2Vla2x5X3B0MiAlPiUgXG4gIGZpbHRlcihwcmltYXJ5X3N0ZXBfc3RhdGUgPT0gXCJNaWdyYXRvcnkgKHNwcmluZylcIiwgc2V4ID09IFwiTWFsZVwiKSAlPiUgXG4gIGFycmFuZ2UoZGVzYyhwY3QpKSAlPiUgXG4gIGhlYWQobiA9IDEpXG5cbndlZWtseV9wdDIgJT4lIFxuICBmaWx0ZXIocHJpbWFyeV9zdGVwX3N0YXRlID09IFwiTWlncmF0b3J5IChzcHJpbmcpXCIsIHNleCA9PSBcIkZlbWFsZVwiKSAlPiUgXG4gIGFycmFuZ2UoZGVzYyhwY3QpKSAlPiUgXG4gIGhlYWQobiA9IDEpXG5gYGAifQ== -->
+<pre class="r"><code>weekly_pt2 %&gt;% 
+  filter(primary_step_state == &quot;Migratory (fall)&quot;, sex == &quot;Male&quot;) %&gt;% 
+  arrange(desc(pct)) %&gt;% 
+  head(n = 1)
+
+weekly_pt2 %&gt;% 
+  filter(primary_step_state == &quot;Migratory (fall)&quot;, sex == &quot;Female&quot;) %&gt;% 
+  arrange(desc(pct)) %&gt;% 
+  head(n = 1)
+
+weekly_pt2 %&gt;% 
+  filter(primary_step_state == &quot;Migratory (spring)&quot;, sex == &quot;Male&quot;) %&gt;% 
+  arrange(desc(pct)) %&gt;% 
+  head(n = 1)
+
+weekly_pt2 %&gt;% 
+  filter(primary_step_state == &quot;Migratory (spring)&quot;, sex == &quot;Female&quot;) %&gt;% 
+  arrange(desc(pct)) %&gt;% 
+  head(n = 1)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpgYGB7cn0NCmxpYnJhcnkodGlkeXZlcnNlKQ0KYGBgDQoNCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KYGBge3IgaW5jbHVkZT1GQUxTRX0NCmxpYnJhcnkodGlkeXZlcnNlKQ0KbGlicmFyeShsdWJyaWRhdGUpDQpsaWJyYXJ5KGhlcmUpDQpgYGANCg0KYGBge3IgaW5jbHVkZT1GQUxTRX0NCmFtd29fZGF0YV9yZWNvbnN0cnVjdGVkIDwtIHJlYWRSRFMoaGVyZSgiY2xhc3NpZmllcl9pbnRlZ3JhdGVkIiwgImZhY19wcmltYXJ5X3N0YXRlX2RlbGluZWF0aW9uLnJkcyIpKSAlPiUgDQogIG11dGF0ZShzdGFuZGFyZGl6ZWRfZGF0ZSA9IG1keShwYXN0ZTAobW9udGgodGltZSksICIvIiwgZGF5KHRpbWUpLCAiLzIwMjAiKSkpDQoNCmNhcHR1cmVfZGF0ZXMgPC0gcmVhZHhsOjpyZWFkX2V4Y2VsKGhlcmUoImNhcHR1cmVfc2hlZXQueGxzeCIpLCBjb2xfdHlwZXMgPSBjKCJ0ZXh0IiwgInRleHQiLCAiZGF0ZSIsICJudW1lcmljIiwgIm51bWVyaWMiLCAibnVtZXJpYyIsICJudW1lcmljIiwgInRleHQiLCAidGV4dCIsICJ0ZXh0IiwgInRleHQiLCAidGV4dCIsICJ0ZXh0IiwgIm51bWVyaWMiLCAibnVtZXJpYyIsICJudW1lcmljIiwgIm51bWVyaWMiLCAibnVtZXJpYyIsICJ0ZXh0IiwgInRleHQiLCAidGV4dCIsICJ0ZXh0IiwgInRleHQiLCAidGV4dCIpKSAlPiUNCiAgbXV0YXRlKGBBcmdvc19JRGAgPSBhcy5jaGFyYWN0ZXIoYEFyZ29zX0lEYCkpICU+JQ0KICB0cmFuc211dGUoYW5pbWFsX25hbWUgPSBgTW92ZWJhbmtfSURgLA0KICAgICAgICAgICAgc2V4ID0gU2V4KSAlPiUgDQogIGZpbHRlcihhbmltYWxfbmFtZSAhPSAiTkEiKQ0KDQphbXdvX2RhdGFfcmVjb25zdHJ1Y3RlZCA8LSBhbXdvX2RhdGFfcmVjb25zdHJ1Y3RlZCAlPiUgDQogIGxlZnRfam9pbihjYXB0dXJlX2RhdGVzKQ0KYGBgDQoNClJlY2xhc3NpZnkgYmFzZWQgb24gbmVzdGluZyBhdHRlbXB0cyAodXNlIG9ubHkgZm9yIGdyYXBoaW5nKSBhbmQgcmVtb3ZlIGNsYXNzZXMgdGhhdCBJIGRvbid0IHdhbnQgdG8gZ3JhcGgNCmBgYHtyfQ0KYW13b19kYXRhX3JlY29uc3RydWN0ZWRfbWFsZSA8LSBhbXdvX2RhdGFfcmVjb25zdHJ1Y3RlZCAlPiUgDQogIGZpbHRlcighKHByaW1hcnlfc3RlcF9zdGF0ZSAlaW4lIGMoIlVua25vd24tIGJ1Z2dlZCBmcmVxdWVudCBzY2hlZHVsZSIsICJEaXNwZXJzYWwiLCAiRm9yYXkgbG9vcCIsICJNaWdyYXRvcnkgKHN1bW1lcikiKSksDQogICAgICAgICBzZXggPT0gIk1hbGUiKQ0KDQphbXdvX2RhdGFfcmVjb25zdHJ1Y3RlZF9mZW1hbGUgPC0gYW13b19kYXRhX3JlY29uc3RydWN0ZWQgJT4lIA0KICBmaWx0ZXIoIShwcmltYXJ5X3N0ZXBfc3RhdGUgJWluJSBjKCJVbmtub3duLSBidWdnZWQgZnJlcXVlbnQgc2NoZWR1bGUiLCAiRGlzcGVyc2FsIiwgIkZvcmF5IGxvb3AiLCAiTWlncmF0b3J5IChzdW1tZXIpIikpLA0KICAgICAgICAgc2V4ID09ICJGZW1hbGUiKQ0KYGBgDQoNCkNhbGN1bGF0ZSAlIG9mIHBvaW50cyBpbiBhbnkgZ2l2ZW4gd2VlayB0aGF0IGJlbG9uZyB0byBlYWNoIHN0ZXANCmBgYHtyfQ0Kd2Vla2x5X3B0MV9tYWxlIDwtIGFtd29fZGF0YV9yZWNvbnN0cnVjdGVkX21hbGUgJT4lIA0KICBtdXRhdGUod2VlayA9IHdlZWsoc3RhbmRhcmRpemVkX2RhdGUpKSAlPiUgDQogIGdyb3VwX2J5KHdlZWspICU+JSANCiAgc3VtbWFyaXNlKHN0YW5kYXJkaXplZF9kYXRlID0gbWVhbihzdGFuZGFyZGl6ZWRfZGF0ZSksIHRvdGFsID0gbigpKSAlPiUgI21lYW4NCiAgdW5ncm91cCgpDQoNCndlZWtseV9wdDJfbWFsZSA8LSBhbXdvX2RhdGFfcmVjb25zdHJ1Y3RlZF9tYWxlICU+JSANCiAgbXV0YXRlKHdlZWsgPSB3ZWVrKHN0YW5kYXJkaXplZF9kYXRlKSkgJT4lIA0KICBncm91cF9ieSh3ZWVrLCBwcmltYXJ5X3N0ZXBfc3RhdGUpICU+JSANCiAgdGFsbHkoKSAlPiUgDQogIHVuZ3JvdXAoKSAlPiUgDQogIGxlZnRfam9pbih3ZWVrbHlfcHQxX21hbGUpICU+JSANCiAgbXV0YXRlKHBjdCA9IG4vdG90YWwpDQoNCndlZWtseV9wdDFfZmVtYWxlIDwtIGFtd29fZGF0YV9yZWNvbnN0cnVjdGVkX2ZlbWFsZSAlPiUgDQogIG11dGF0ZSh3ZWVrID0gd2VlayhzdGFuZGFyZGl6ZWRfZGF0ZSkpICU+JSANCiAgZ3JvdXBfYnkod2VlaykgJT4lIA0KICBzdW1tYXJpc2Uoc3RhbmRhcmRpemVkX2RhdGUgPSBtZWFuKHN0YW5kYXJkaXplZF9kYXRlKSwgdG90YWwgPSBuKCkpICU+JSAjbWVhbg0KICB1bmdyb3VwKCkNCg0Kd2Vla2x5X3B0Ml9mZW1hbGUgPC0gYW13b19kYXRhX3JlY29uc3RydWN0ZWRfZmVtYWxlICU+JSANCiAgbXV0YXRlKHdlZWsgPSB3ZWVrKHN0YW5kYXJkaXplZF9kYXRlKSkgJT4lIA0KICBncm91cF9ieSh3ZWVrLCBwcmltYXJ5X3N0ZXBfc3RhdGUpICU+JSANCiAgdGFsbHkoKSAlPiUgDQogIHVuZ3JvdXAoKSAlPiUgDQogIGxlZnRfam9pbih3ZWVrbHlfcHQxX2ZlbWFsZSkgJT4lIA0KICBtdXRhdGUocGN0ID0gbi90b3RhbCkNCg0KZGF5c19vZl9tb250aCA8LSBzZXEuRGF0ZShhcy5EYXRlKCIyMDIwLTAxLTAxIiksIGFzLkRhdGUoIjIwMjAtMTItMzEiKSwgYnkgPSAxKSAlPiUgDQogIGNlaWxpbmdfZGF0ZSguLCAid2Vla3MiKSAlPiUgDQogIHVuaXF1ZSguKSAtIDQNCg0KdGliYmxlKHdlZWsgPSAxOjUzLCB3ZWVrX2VuZCA9IGRheXNfb2ZfbW9udGgpDQoNCndlZWtseV9wdDJfbWFsZSA8LSB3ZWVrbHlfcHQyX21hbGUgJT4lIA0KICBsZWZ0X2pvaW4odGliYmxlKHdlZWsgPSAxOjUzLCB3ZWVrX2VuZCA9IGRheXNfb2ZfbW9udGgpKSAlPiUgDQogIG11dGF0ZShzdGFuZGFyZGl6ZWRfZGF0ZSA9IHdlZWtfZW5kLA0KICAgICAgICAgd2Vla19lbmQgPSBOVUxMLA0KICAgICAgICAgc2V4ID0gIk1hbGUiKQ0KDQp3ZWVrbHlfcHQyX2ZlbWFsZSA8LSB3ZWVrbHlfcHQyX2ZlbWFsZSAlPiUgDQogIGxlZnRfam9pbih0aWJibGUod2VlayA9IDE6NTMsIHdlZWtfZW5kID0gZGF5c19vZl9tb250aCkpICU+JSANCiAgbXV0YXRlKHN0YW5kYXJkaXplZF9kYXRlID0gd2Vla19lbmQsDQogICAgICAgICB3ZWVrX2VuZCA9IE5VTEwsDQogICAgICAgICBzZXggPSAiRmVtYWxlIikNCg0Kd2Vla2x5X3B0MiA8LSB3ZWVrbHlfcHQyX21hbGUgJT4lIA0KICBiaW5kX3Jvd3Mod2Vla2x5X3B0Ml9mZW1hbGUpDQoNCndlZWtseV9wdDIkcHJpbWFyeV9zdGVwX3N0YXRlIDwtIGZhY3Rvcih3ZWVrbHlfcHQyJHByaW1hcnlfc3RlcF9zdGF0ZSwgbGV2ZWxzID0gYygiU3RhdGlvbmFyeSIsICJNaWdyYXRvcnkgKGZhbGwpIiwgIk1pZ3JhdG9yeSAoc3ByaW5nKSIpLCBvcmRlcmVkID0gVFJVRSkNCmBgYA0KDQpHZXQgdGhlIGZpcnN0IGFuZCBsYXN0IGRheSBvZiBlYWNoIHdlZWsNCmBgYHtyfQ0Kd2Vla19ib3VuZGFyaWVzIDwtIHRpYmJsZShkYXRlID0gc2VxLkRhdGUoYXMuRGF0ZSgiMjAyMC0wMS0wMSIpLCBhcy5EYXRlKCIyMDIwLTEyLTMxIiksIGJ5ID0gMSkpICU+JSANCiAgbXV0YXRlKHdlZWsgPSB3ZWVrKGRhdGUpLCBzdGFydCA9IGZsb29yX2RhdGUoZGF0ZSwgdW5pdCA9ICJ3ZWVrcyIsIHdlZWtfc3RhcnQgPSBnZXRPcHRpb24oImx1YnJpZGF0ZS53ZWVrLnN0YXJ0IiwgMykpLCANCiAgICAgICAgIGVuZCA9IGNlaWxpbmdfZGF0ZShkYXRlLCB1bml0ID0gIndlZWtzIiwgd2Vla19zdGFydCA9IGdldE9wdGlvbigibHVicmlkYXRlLndlZWsuc3RhcnQiLCAzKSkpICU+JSANCiAgbXV0YXRlKGRhdGUgPSBOVUxMKSAlPiUgDQogIGRpc3RpbmN0KCkNCg0Kd2Vla2x5X3B0MiA8LSB3ZWVrbHlfcHQyICU+JSANCiAgbGVmdF9qb2luKHdlZWtfYm91bmRhcmllcykNCmBgYA0KDQoNCmBgYHtyfQ0Kd2Vla2x5X3B0MiAlPiUgDQogIGZpbHRlcihwcmltYXJ5X3N0ZXBfc3RhdGUgPT0gIk1pZ3JhdG9yeSAoZmFsbCkiLCBzZXggPT0gIk1hbGUiKSAlPiUgDQogIGFycmFuZ2UoZGVzYyhwY3QpKSAlPiUgDQogIGhlYWQobiA9IDEpDQoNCndlZWtseV9wdDIgJT4lIA0KICBmaWx0ZXIocHJpbWFyeV9zdGVwX3N0YXRlID09ICJNaWdyYXRvcnkgKGZhbGwpIiwgc2V4ID09ICJGZW1hbGUiKSAlPiUgDQogIGFycmFuZ2UoZGVzYyhwY3QpKSAlPiUgDQogIGhlYWQobiA9IDEpDQoNCndlZWtseV9wdDIgJT4lIA0KICBmaWx0ZXIocHJpbWFyeV9zdGVwX3N0YXRlID09ICJNaWdyYXRvcnkgKHNwcmluZykiLCBzZXggPT0gIk1hbGUiKSAlPiUgDQogIGFycmFuZ2UoZGVzYyhwY3QpKSAlPiUgDQogIGhlYWQobiA9IDEpDQoNCndlZWtseV9wdDIgJT4lIA0KICBmaWx0ZXIocHJpbWFyeV9zdGVwX3N0YXRlID09ICJNaWdyYXRvcnkgKHNwcmluZykiLCBzZXggPT0gIkZlbWFsZSIpICU+JSANCiAgYXJyYW5nZShkZXNjKHBjdCkpICU+JSANCiAgaGVhZChuID0gMSkNCmBgYA0KDQo=</div>
 
 
 

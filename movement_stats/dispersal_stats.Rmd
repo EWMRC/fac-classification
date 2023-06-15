@@ -1,0 +1,117 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(here)
+library(amt)
+library(sf)
+```
+
+```{r}
+integrated_results <- readRDS(here("classifier_integrated", "fac_primary_state_delineation.rds"))
+
+#make a column that has the prior steps for each location
+integrated_results <- integrated_results %>% 
+  group_by(animal_name) %>% 
+  group_modify(.f = function(x, y){
+    if(nrow(x) == 1){
+      x$prior_step <- NA
+    } else {
+      x$prior_step <- c(NA, x$primary_step_state[1:(nrow(x)-1)])
+    }
+    return(x)
+  }) %>% 
+  ungroup() %>% 
+  mutate(date = as_date(time)) %>% 
+  mutate(date_standardized = ymd(paste0("2020-", month(date), "-", day(date))))
+```
+
+Did a bird keep transmitting for at least a month? If so, did it make a dispersal movement?
+```{r}
+dispersal_frequency <- integrated_results %>% 
+  group_by(animal_name) %>%
+  group_map(.f = function(x, y){
+    ml <- max(x$time) - min(x$time)
+    ml <- ml %>% 
+      as.numeric
+    if (ml >= 30){
+      dispersed <- "Dispersal" %in% x$primary_step_state
+      
+      tibble(animal_name = y$animal_name,
+             over_30 = TRUE,
+             dispersed = dispersed) %>% 
+        return()
+      
+    } else {
+      tibble(animal_name = y$animal_name,
+             over_30 = FALSE,
+             dispersed = NA) %>% 
+        return()
+    }
+  }) %>% 
+  bind_rows() %>% 
+  filter(over_30)
+
+sum(dispersal_frequency$dispersed) #3
+nrow(dispersal_frequency) #456
+sum(dispersal_frequency$dispersed)/nrow(dispersal_frequency) #0.7%
+```
+
+Measure dispersal length
+```{r}
+#Break RI-2019-29 into two tracks, as it has two dispersal movements
+integrated_results <- integrated_results %>% 
+  mutate(animal_name = if_else(animal_name == "RI-2019-29", if_else(date < ymd("2019-12-31"), "RI-2019-29A", "RI-2019-29B"), animal_name))
+
+dispersal_tracks <- integrated_results %>% 
+  filter(primary_step_state == "Dispersal" | (primary_point_state == "Stationary" & prior_step == "Dispersal")) %>% 
+  group_by(animal_name) %>% 
+  nest() %>% 
+  mutate(track = map(data, .f = function(i){
+    i <- i %>% 
+      st_as_sf(crs = 4326, coords = c("long", "lat")) %>% 
+      st_transform(5070)
+    
+    cbind(st_drop_geometry(i), st_coordinates(i)) %>%
+      make_track(.x = X, .y = Y, .t = time, crs = 5070)
+    
+  })) %>% 
+  mutate(step_lengths = map(track, .f = function(x){
+    x %>%
+      step_lengths()
+  })) %>% 
+  mutate(mig_dist = map(step_lengths, .f = function(x){
+    x %>% 
+      sum(., na.rm = TRUE)/1000
+  })
+  ) %>% 
+  mutate(mig_length = map(data, function(x){
+    ml <- max(x$time) - min(x$time)
+    ml %>% 
+      round() %>% 
+      return()
+  }))
+
+#distance of dispersal movements (km)
+dispersal_tracks$mig_dist %>% 
+  as.numeric() %>% 
+  mean()
+
+dispersal_tracks$mig_dist %>% 
+  as.numeric() %>% 
+  range()
+
+#length of dispersal movements (days)
+dispersal_tracks$mig_length %>% 
+  as.numeric() %>% 
+  mean()
+
+dispersal_tracks$mig_length %>% 
+  as.numeric() %>% 
+  range()
+```
+

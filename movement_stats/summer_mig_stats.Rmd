@@ -1,0 +1,168 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(here)
+library(amt)
+library(sf)
+```
+
+```{r}
+integrated_results <- readRDS(here("classifier_integrated", "fac_primary_state_delineation.rds"))
+```
+
+How many birds, of those monitored throughout the summer, underwent a summer migration?
+```{r}
+did_you_summer_mig <- function(season_start_date, season_end_date){
+  integrated_results %>% 
+    group_by(animal_name) %>% 
+    group_map(.f = function(x, y){
+      locations_before_start <- x %>% 
+        filter(time < season_start_date) %>% 
+        nrow()
+      
+      locations_before_start <- locations_before_start > 0
+      
+      locations_after_end <- x %>% 
+        filter(time > season_end_date) %>% 
+        nrow()
+      
+      locations_after_end <- locations_after_end > 0
+      
+      locations_during_period <- x %>% 
+        filter(time > season_start_date & time < season_end_date) %>% 
+        nrow()
+      
+      locations_during_period <- locations_during_period > 0
+      
+      #Combined logical flag
+      active_during_period <- locations_before_start & locations_after_end & locations_during_period
+      
+      #If active during period, then return whether there was a mig step. Else, return NA
+      if(active_during_period){
+        all_step_states <- x %>% 
+          filter(time > season_start_date & time < season_end_date) %>%
+          pull(primary_step_state)
+        
+        migrated_flag <- ("Migratory (summer)" %in% all_step_states)
+        
+        tibble(animal_name = y[1,1], active = active_during_period, migrated = migrated_flag) %>% 
+          return()
+        
+      } else {
+        tibble(animal_name = y[1,1], active = active_during_period, migrated = NA) %>% 
+          return()
+      }
+    }) %>% 
+    bind_rows() %>%
+    filter(!is.na(migrated)) %>% 
+    return()
+}
+```
+
+Seasons to delineate:
+Summer: 2018, 2019, 2020, 2021, 2022
+June 1 - Sep. 1
+```{r}
+summer_2018 <- did_you_summer_mig(season_start_date = ymd("2018-5-1"), season_end_date = ymd("2018-9-1"))
+summer_2019 <- did_you_summer_mig(season_start_date = ymd("2019-5-1"), season_end_date = ymd("2019-9-1"))
+summer_2020 <- did_you_summer_mig(season_start_date = ymd("2020-5-1"), season_end_date = ymd("2020-9-1"))
+summer_2021 <- did_you_summer_mig(season_start_date = ymd("2021-5-1"), season_end_date = ymd("2021-9-1"))
+summer_2022 <- did_you_summer_mig(season_start_date = ymd("2022-5-1"), season_end_date = ymd("2022-9-1"))
+```
+
+```{r}
+summer_birds <- bind_rows(summer_2018, summer_2019, summer_2020, summer_2021, summer_2022)
+
+summer_migs <- summer_birds %>% 
+  filter(migrated == TRUE)
+```
+
+Initiation and termination dates
+```{r}
+#make a column that has the prior steps for each location
+integrated_results <- integrated_results %>% 
+  group_by(animal_name) %>% 
+  group_modify(.f = function(x, y){
+    if(nrow(x) == 1){
+      x$prior_step <- NA
+    } else {
+      x$prior_step <- c(NA, x$primary_step_state[1:(nrow(x)-1)])
+    }
+    return(x)
+  }) %>% 
+  ungroup() %>% 
+  mutate(date = as_date(time)) %>% 
+  mutate(date_standardized = ymd(paste0("2020-", month(date), "-", day(date))))
+
+summer_departure_dates <- integrated_results %>% 
+  filter(primary_point_state == "Stationary",
+         primary_step_state == "Migratory (summer)") %>% 
+  pull(date_standardized)
+
+mean(summer_departure_dates)
+range(summer_departure_dates)
+
+summer_termination_dates <- integrated_results %>% 
+  filter(primary_point_state == "Stationary",
+         prior_step == "Migratory (summer)") %>% 
+  pull(date_standardized)
+
+mean(summer_termination_dates)
+range(summer_termination_dates)
+```
+
+Delineate the length and distance of summer migrations
+```{r}
+summer_mig_tracks <- integrated_results %>% 
+  filter(primary_step_state == "Migratory (summer)" | (primary_point_state == "Stationary" & prior_step == "Migratory (summer)")) %>% 
+  group_by(animal_name) %>% 
+  nest() %>% 
+  mutate(track = map(data, .f = function(i){
+    i <- i %>% 
+      st_as_sf(crs = 4326, coords = c("long", "lat")) %>% 
+      st_transform(5070)
+    
+    cbind(st_drop_geometry(i), st_coordinates(i)) %>%
+      make_track(.x = X, .y = Y, .t = time, crs = 5070)
+    
+  })) %>% 
+  mutate(step_lengths = map(track, .f = function(x){
+    x %>%
+      step_lengths()
+  })) %>% 
+  mutate(mig_dist = map(step_lengths, .f = function(x){
+    x %>% 
+      sum(., na.rm = TRUE)/1000
+  })
+  ) %>% 
+  mutate(mig_length = map(data, function(x){
+    ml <- max(x$time) - min(x$time)
+    ml %>% 
+      round() %>% 
+      return()
+  }))
+
+#distance of summer migrations (km)
+summer_mig_tracks$mig_dist %>% 
+  as.numeric() %>% 
+  mean()
+
+summer_mig_tracks$mig_dist %>% 
+  as.numeric() %>% 
+  range()
+
+#length of summer migrations (days)
+summer_mig_tracks$mig_length %>% 
+  as.numeric() %>% 
+  mean()
+
+summer_mig_tracks$mig_length %>% 
+  as.numeric() %>% 
+  range()
+```
+

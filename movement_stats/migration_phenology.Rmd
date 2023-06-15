@@ -5,6 +5,8 @@ output: html_notebook
 
 ```{r}
 library(tidyverse)
+library(lubridate)
+library(here)
 ```
 
 Read in data
@@ -48,26 +50,53 @@ amwo_data_spring <- amwo_data_reconstructed %>%
 
 Fall migration departure dates
 ```{r}
-fall_departure_dates <- amwo_data_fall %>% 
+fall_male_departure_dates <- amwo_data_fall %>% 
   filter(primary_point_state == "Stationary",
-         primary_step_state == "Migratory (fall)") %>% 
+         primary_step_state == "Migratory (fall)",
+         sex == "Male") %>% 
   pull(date_standardized)
 
-median(fall_departure_dates)
-range(fall_departure_dates)
+median(fall_male_departure_dates)
+range(fall_male_departure_dates)
+
+fall_female_departure_dates <- amwo_data_fall %>% 
+  filter(primary_point_state == "Stationary",
+         primary_step_state == "Migratory (fall)",
+         sex == "Female") %>% 
+  pull(date_standardized)
+
+median(fall_female_departure_dates)
+range(fall_female_departure_dates)
+
+#95th quantile of all departure dates
+c(fall_male_departure_dates, fall_female_departure_dates) %>% 
+  quantile(c(0.05, 0.95), type = 1)
 ```
 
 Fall migration termination dates
 ```{r}
-fall_departure_dates <- amwo_data_fall %>% 
+fall_male_termination_dates <- amwo_data_fall %>% 
   filter(primary_point_state == "Stationary",
-         prior_step == "Migratory (fall)") %>% 
+         prior_step == "Migratory (fall)",
+         sex == "Male") %>% 
   pull(date_standardized)
 
-median(fall_departure_dates)
-range(fall_departure_dates)
-```
+median(fall_male_termination_dates)
+range(fall_male_termination_dates)
 
+fall_female_termination_dates <- amwo_data_fall %>% 
+  filter(primary_point_state == "Stationary",
+         prior_step == "Migratory (fall)",
+         sex == "Female") %>% 
+  pull(date_standardized)
+
+median(fall_female_termination_dates)
+range(fall_female_termination_dates)
+
+#95th quantile of all termination dates
+c(fall_male_termination_dates, fall_female_termination_dates) %>%
+  quantile(c(0.05, 0.95), type = 1)
+```
 
 Spring migration departure dates
 ```{r}
@@ -90,27 +119,35 @@ spring_female_departure_dates <- amwo_data_spring %>%
 print("Female")
 median(spring_female_departure_dates)
 range(spring_female_departure_dates)
+
+#95th quantile of all departure dates
+c(spring_male_departure_dates, spring_female_departure_dates) %>% 
+  quantile(c(0.05, 0.95), type = 1)
 ```
 
 Spring migration termination dates
 ```{r}
-spring_male_departure_dates <- amwo_data_spring %>% 
+spring_male_termination_dates <- amwo_data_spring %>% 
   filter(primary_point_state == "Stationary",
          prior_step == "Migratory (spring)",
          sex == "Male") %>% 
   pull(date_standardized)
 
 print("Male")
-median(spring_male_departure_dates)
-range(spring_male_departure_dates)
+median(spring_male_termination_dates)
+range(spring_male_termination_dates)
 
-spring_female_departure_dates <- amwo_data_spring %>% 
+spring_female_termination_dates <- amwo_data_spring %>% 
   filter(primary_point_state == "Stationary",
          prior_step == "Migratory (spring)",
          sex == "Female") %>% 
   pull(date_standardized)
 
 print("Female")
-median(spring_female_departure_dates)
-range(spring_female_departure_dates)
+median(spring_female_termination_dates)
+range(spring_female_termination_dates)
+
+#95th quantile of all termination dates
+# c(spring_male_termination_dates, spring_female_termination_dates) %>% 
+#   quantile(c(0.05, 0.95), type = 1)
 ```

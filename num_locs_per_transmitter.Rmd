@@ -1,0 +1,27 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(move)
+```
+
+```{r}
+amwo_data <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS("movebank_credentials.rds"), timestamp_start = "20170801000000000", timestamp_end = "20220225000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame() #20190115000000000
+```
+
+```{r}
+#make sure that there's only one tally per deployment
+amwo_processed <- amwo_data %>% 
+  mutate(ind_id = paste(local_identifier, tag_local_identifier))
+
+num <- amwo_processed %>% 
+  group_by(ind_id) %>% 
+  tally()
+
+hist(num$n, n = 30)
+quantile(num$n)
+```
+

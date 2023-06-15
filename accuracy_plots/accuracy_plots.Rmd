@@ -84,14 +84,16 @@ results_fall_full <- here("classifier_fall", "accuracy", "full_acc_assessment", 
   identify_errors() %>% 
   standardize_date_fall() %>% 
   mutate(season = "Fall",
-         model_type = "Full")
+         model_type = "Full") %>% 
+  filter(standardized_date < ymd("2021-1-31"))
 
 results_fall_null <- here("classifier_fall", "accuracy", "null_acc_assessment", "accuracy_results_fall_null.csv") %>% 
   read_csv() %>% 
   identify_errors() %>% 
   standardize_date_fall() %>% 
   mutate(season = "Fall",
-         model_type = "Reduced")
+         model_type = "Reduced") %>% 
+  filter(standardized_date < ymd("2021-1-31"))
 ```
 
 Defining errors here:
@@ -109,9 +111,18 @@ combined_df <- bind_rows(results_fall_full,
   mutate(season = factor(season, levels = c("Fall", "Spring Male", "Spring Female"), ordered = TRUE))
 
 # This allows for custom limits for each plot
-dummy <- tibble(standardized_date = ymd(c("2020-10-01", "2020-10-01", "2020-03-01", "2020-03-01", "2020-03-01", "2020-03-01", "2021-03-01", "2021-03-01", "2020-07-01", "2020-07-01", "2020-07-01", "2020-07-01")), percent_error = 0, season = c("Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female", "Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female"), model_type = c("Full", "Reduced", "Full", "Reduced", "Full", "Reduced", "Full", "Reduced", "Full", "Reduced", "Full", "Reduced"), test = "Type I") %>% 
-  bind_rows(tibble(standardized_date = ymd(c("2020-10-01", "2020-10-01", "2020-03-01", "2020-03-01", "2020-03-01", "2020-03-01", "2021-03-01", "2021-03-01", "2020-07-01", "2020-07-01", "2020-07-01", "2020-07-01")), percent_error = 0, season = c("Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female", "Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female"), model_type = c("Full", "Reduced", "Full", "Reduced", "Full", "Reduced", "Full", "Reduced", "Full", "Reduced", "Full", "Reduced"), test = "Type II")) %>% 
-  mutate(season = factor(season, levels = c("Fall", "Spring Male", "Spring Female"), ordered = TRUE))
+dummy <- tibble(standardized_date = ymd(c("2020-10-01", "2020-10-01", "2020-03-01", "2020-03-01", "2020-03-01", "2020-03-01", "2021-02-05", "2021-02-05", "2020-07-01", "2020-07-01", "2020-07-01", "2020-07-01")), percent_error = 0, season = c("Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female", "Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female"), model_type = c("Full", "Reduced", "Full", "Reduced", "Full", "Reduced", "Full", "Reduced", "Full", "Reduced", "Full", "Reduced"), test = "Type I") %>% 
+  bind_rows(tibble(standardized_date = ymd(c("2020-10-01", "2020-10-01", "2020-03-01", "2020-03-01", "2020-03-01", "2020-03-01", "2021-02-05", "2021-02-05", "2020-07-01", "2020-07-01", "2020-07-01", "2020-07-01")), percent_error = 0, season = c("Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female", "Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female"), model_type = c("Full", "Reduced", "Full", "Reduced", "Full", "Reduced", "Full", "Reduced", "Full", "Reduced", "Full", "Reduced"), test = "Type II")) %>% 
+  mutate(season = recode(season, 
+                         "Spring Male" = "Spring (male)",
+                         "Spring Female" = "Spring (female)")) %>% 
+  mutate(season = factor(season, levels = c("Fall", "Spring (male)", "Spring (female)"), ordered = TRUE))
+
+combined_df <- combined_df %>% 
+  mutate(season = recode(season, 
+                         "Spring Male" = "Spring (male)",
+                         "Spring Female" = "Spring (female)")) %>% 
+  mutate(season = factor(season, levels = c("Fall", "Spring (male)", "Spring (female)"), ordered = TRUE))
 ```
 
 ```{r}
@@ -133,6 +144,6 @@ ggplot(data = combined_df, mapping = aes(x = standardized_date, y = percent_erro
              scales = "free_x") +
   geom_blank(data=dummy)
 
-ggsave("accuracy_plot_5_25_23.png", width = 7, height = 5)
+ggsave("accuracy_plot_6_9_23.png", width = 7, height = 5)
 ```
 

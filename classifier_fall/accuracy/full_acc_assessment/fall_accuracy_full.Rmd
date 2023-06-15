@@ -28,7 +28,7 @@ load(file=here("classifier_fall", "fall_all_data.RData"))
 # RI_problems <- c("RI-2020-33-2020", "RI-2020-34-2020", "RI-2020-35-2020", "RI-2020-42-2020", "RI-2020-43-2020", "RI-2020-44-2020", "RI-2021-48-2021", "RI-2021-49-2021", "RI-2020-30-2020", "RI-2020-32-2020", "SC-2020-13-2020", "VT-2020-14-2020")
 ```
 
-Determine which individuals *didn't* die too early (here defined as 12/15, probably need to bump this up to 1/15)
+Determine which individuals *didn't* die too early (here defined as 1/15)
 ```{r}
 id_list <- unique(amwo_hmm$ID)
 id_list <- id_list[!(id_list %in% individuals_died_too_early)]
