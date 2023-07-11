@@ -64,9 +64,9 @@ known_state_key <- amwo_hmm %>%
   mutate(ranks = row_number()) %>% # rank observations (requires correct sorting), ifelse to convert first observations to state 1 and all others NA
   ungroup() %>% 
   mutate(known = ifelse(estimate_starting_state == FALSE & ranks == 1, yes = 1, no = NA)) %>%
-  mutate(r1p1s2 = if_else(known == 1 & step > 30.2, true = TRUE, false = FALSE)) %>% #if known == 1 and step >30.2, mark as a "rank 1 point 1 step 2" event to be reclassified in post-processing
+  mutate(r1p1s2 = if_else(known == 1 & step >= 16.1, true = TRUE, false = FALSE)) %>% #if known == 1 and step >30.2, mark as a "rank 1 point 1 step 2" event to be reclassified in post-processing
   mutate(r1p1s2 = replace_na(r1p1s2, replace = FALSE)) %>% #deals with NA issues
-  mutate(known = ifelse(step > 30.2, 2, known)) %>% #if step length is >30.2, then it must be mig (even if known is already 1) 
+  mutate(known = ifelse(step >= 16.1, 2, known)) %>% #if step length is >30.2, then it must be mig (even if known is already 1) 
   #mutate(known = ifelse(ID == "VA-2021-91-2021" & ranks %in% c(16, 17, 18), 2, known)) %>% #This seems to be a holdover from an old model. Remove
   #mutate(known = ifelse(ID == "VA-2021-92-2021" & ranks %in% c(6, 7, 8), 2, known)) %>% #This seems to be a holdover from an old model. Remove
   #mutate(known = ifelse(ID == "NJ-2018-15-2019" & julian_day == 46, 2, known)) %>% #This seems to be a holdover from an old model. Remove
@@ -198,7 +198,7 @@ amwo_hmm_final <- amwo_hmm_final %>%
       mutate(., row_num = 1:nrow(.))
     
     first_30km_step <- iter_df %>%
-      filter(step > 30.2) %>%
+      filter(step >= 16.1) %>%
       pull(row_num) %>%
       min(na.rm = TRUE)
     
@@ -230,7 +230,7 @@ amwo_hmm_final <- amwo_hmm_final %>%
         mutate(., row_num = 1:nrow(.))
       
       last_30km_step <- iter_df %>%
-        filter(step > 30.2) %>%
+        filter(step >= 16.1) %>%
         pull(row_num) %>%
         max(na.rm = TRUE)
       

@@ -17,7 +17,7 @@ identify_errors <- function(.x) {
     mutate(false_postmig = if_else((end_true == 2 | end_true == 3) & (end_modified == 4 | end_modified == 5), 1, 0)) %>% 
     pivot_longer(cols = c("false_mig", "false_postmig"), names_to = "test", values_to = "result") %>% 
     group_by(cutoff_date, test) %>% 
-    summarise(percent_error = mean(result), std_err = plotrix::std.error(result)) %>% 
+    summarise(percent_error = mean(result, na.rm = TRUE), std_err = plotrix::std.error(result)) %>% 
     ungroup() %>% 
     mutate(test = recode(test, false_mig = "Type II", false_postmig = "Type I"),
            ymin = if_else((percent_error - std_err*1.96) < 0, 0, percent_error - std_err*1.96),
@@ -144,6 +144,6 @@ ggplot(data = combined_df, mapping = aes(x = standardized_date, y = percent_erro
              scales = "free_x") +
   geom_blank(data=dummy)
 
-ggsave("accuracy_plot_6_9_23.png", width = 7, height = 5)
+ggsave("accuracy_plot_7_11_23_prelim.png", width = 7, height = 5)
 ```
 

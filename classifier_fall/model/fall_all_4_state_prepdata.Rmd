@@ -563,7 +563,7 @@ amwo_hmm <- amwo_hmm %>%
   as.data.frame() %>% 
   prepData(type = "LL") %>% #, covNames = c("julian_day", "log_mean_dist_7")
   mutate(step = round(step, digits = 4)) %>%   #round down to a tenth of a meter, which is higher than our GPS precision
-  mutate(step_500 = if_else(step < 30.2, 0, 1)) %>% #larger than 5km
+  mutate(step_500 = if_else(step < 16.1, 0, 1)) %>% #larger than 5km
   mutate(step_500 = if_else(!is.na(step_500), step_500, 0))
 ```
 
@@ -604,7 +604,7 @@ Also recording which individuals are removed.
 
 Small, one-way movements do not move along a resource gradient, and thus are not migrations
 ```{r}
-amwo_hmm$min.step <- ifelse(amwo_hmm$step > 30.2, 1, 0)
+amwo_hmm$min.step <- ifelse(amwo_hmm$step >= 16.1, 1, 0)
 individuals_removed_for_no_migratory_steps <- unique(amwo_hmm$ID [amwo_hmm$min.step == 1])
 amwo_hmm <- amwo_hmm[(amwo_hmm$ID %in% amwo_hmm$ID [amwo_hmm$min.step == 1]) , ]
 amwo_hmm$min.step <- NULL

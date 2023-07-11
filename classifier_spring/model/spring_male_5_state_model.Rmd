@@ -61,9 +61,9 @@ known_state_key <- amwo_hmm %>%
   mutate(ranks = row_number()) %>% # rank observations (requires correct sorting), ifelse to convert first observations to state 1 and all others NA
   ungroup() %>%
   mutate(known = ifelse(estimate_starting_state == FALSE & ranks == 1, yes = 1, no = NA)) %>% #if this is the first row of an ID for which I don't want to estimate starting state, the initial step is 1
-  mutate(r1p1s2 = if_else(known == 1 & step > 30.2, true = TRUE, false = FALSE)) %>% #if known == 1 and step >30.2, mark as a "rank 1 point 1 step 2" event to be reclassified in post-processing
+  mutate(r1p1s2 = if_else(known == 1 & step >= 16.1, true = TRUE, false = FALSE)) %>% #if known == 1 and step >30.2, mark as a "rank 1 point 1 step 2" event to be reclassified in post-processing
   mutate(r1p1s2 = replace_na(r1p1s2, replace = FALSE)) %>% #deals with NA issues 
-  mutate(known = ifelse(step > 30.2, 2, known)) #if step length is >30.2, then it must be mig (even if known is already 1) 
+  mutate(known = ifelse(step >= 16.1, 2, known)) #if step length is >30.2, then it must be mig (even if known is already 1) 
 
 amwo_hmm$known <- known_state_key$known
 amwo_hmm$r1p1s2 <- known_state_key$r1p1s2
@@ -204,7 +204,7 @@ amwo_hmm_final <- amwo_hmm_final %>%
       mutate(., row_num = 1:nrow(.))
     
     first_30km_step <- iter_df %>%
-      filter(step > 30.2) %>%
+      filter(step >= 16.1) %>%
       pull(row_num) %>%
       min(na.rm = TRUE)
     
@@ -235,7 +235,7 @@ amwo_hmm_final <- amwo_hmm_final %>%
         mutate(., row_num = 1:nrow(.))
       
       last_30km_step <- iter_df %>%
-        filter(step > 30.2) %>%
+        filter(step >= 16.1) %>%
         pull(row_num) %>%
         max(na.rm = TRUE)
       
