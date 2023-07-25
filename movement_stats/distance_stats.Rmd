@@ -18,7 +18,7 @@ fall_classified <- readRDS(here::here("classifier_fall", "fall_all_4_state_model
   left_join(capture_info)
 spring_male_classified <- readRDS(here::here("classifier_spring", "spring_male_5_state_model.rds")) %>% 
   left_join(capture_info)
-spring_female_classified <-readRDS(here::here("classifier_spring", "spring_female_4_state_model.rds")) %>% 
+spring_female_classified <- readRDS(here::here("classifier_spring", "spring_female_4_state_model.rds")) %>% 
   left_join(capture_info)
 ```
 

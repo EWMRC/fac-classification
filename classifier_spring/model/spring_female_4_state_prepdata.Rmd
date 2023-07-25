@@ -368,7 +368,7 @@ nested_birds_2.5$data <- nested_birds_2 %>%
       #   pull(step) %>%
       #   sum(na.rm = TRUE)
       
-      if(point_dist > 30200 & ((point_2$rownum - point_1$rownum) > 1)){ # there must be predicted points between the observed locations for this to work
+      if(point_dist > 16100 & ((point_2$rownum - point_1$rownum) > 1)){ # there must be predicted points between the observed locations for this to work
         rows_to_delete <- rows_to_delete %>% 
           append(values = (point_1$rownum + 1):(point_2$rownum - 1))
       } 
@@ -508,12 +508,17 @@ amwo_hmm <- amwo_hmm %>% #simplify from abundance to breeding range
 ```
 
 ```{r}
+save.image(file=here("classifier_spring", "spring_male_data_temp.RData"))
+#load(file=here("classifier_fall", "fall_all_data_temp.RData"))
+```
+
+```{r}
 amwo_hmm <- amwo_hmm %>%
   mutate(log_mean_dist_7 = log(mean_dist_7 + 0.1)) %>% #Adding a small # to deal with 0 distances
   as.data.frame() %>%
   prepData(type = "LL") %>% #, covNames = c("julian_day", "log_mean_dist_7")
   mutate(step = round(step, digits = 4)) %>%   #round down to a tenth of a meter, which is higher than our GPS precision
-  mutate(step_500 = if_else(step < 30.2, 0, 1)) %>% #larger than 5km
+  mutate(step_500 = if_else(step < 16.1, 0, 1)) %>% #larger than 5km
   mutate(step_500 = if_else(!is.na(step_500), step_500, 0))
 ```
 
@@ -544,7 +549,7 @@ amwo_hmm <- amwo_hmm %>% #removing ranging movements
 remove birds with no individual step lengths >30.2km (20 miles). In practice this pulls birds that never initiate a substantial migratory movement but doesn't penalize birds that DO migrate, as they always make at least one substantial movement.
 Also recording which individuals are removed
 ```{r}
-amwo_hmm$min.step <- ifelse(amwo_hmm$step > 30.2, 1, 0)
+amwo_hmm$min.step <- ifelse(amwo_hmm$step >= 16.1, 1, 0)
 individuals_removed_for_no_migratory_steps <- unique(amwo_hmm$ID [amwo_hmm$min.step == 1])
 
 amwo_hmm <- amwo_hmm[(amwo_hmm$ID %in% amwo_hmm$ID [amwo_hmm$min.step == 1]) , ]
