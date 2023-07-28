@@ -40,7 +40,7 @@ Frontmatter: prepare the model
 Label states and create distributions for movements
 ```{r}
 stateNames <- c("pre","migration", "stopover", "post")
-dist <- list(step="gamma", angle="wrpcauchy")
+dist <- list(step="gamma", angle="wrpcauchy", step_500 = "bern")
 ```
 
 fix step length parameters and state transitions
@@ -48,8 +48,8 @@ fix step length parameters and state transitions
 fixPar <- list(beta=matrix(c(NA, -1000, -1000, # pre-migration to transitions, can't go pre- to post
                              -1000, NA, NA,  #once entered migration can't go back to pre
                              -1000, NA, -1000, #Once entered stopover, can only go back to migration
-                             -1000, -1000, -1000), nrow = 1, byrow = TRUE)) #once entered post-migration, can't leave
-
+                             -1000, -1000, -1000), nrow = 1, byrow = TRUE), #once entered post-migration, can't leave
+               step_500 = c(0.000000001, 0.999999999, 0.000000001, 0.000000001))
 ```
 
 These serve as the starting parameters for the HMM to optimize.
@@ -58,7 +58,9 @@ Par0_m1 <- list(step=c(0.243451270, 3.008102e+02, 0.952588671, 0.322758191, #mea
                        0.371507995, 2.812091e+02, 1.722086734, 0.527213629, # SD in km
                        0.004520002, 3.196105e-67, 0.002780489, 0.002684457), #zeromass ie how many zeroes expected in the distribution
                 angle=c(-0.0002303861, -0.0930466, 0.01802796, 0.0004041137, #mean
-                        0.9251369010, 0.3917246, 0.18833891, 0.7549546329)) #concentration
+                        0.9251369010, 0.3917246, 0.18833891, 0.7549546329), #concentration
+                step_500 = c(0.00001, 0.99999, 0.00001, 0.00001) #prob
+) 
 ```
 
 Create a function that fits the model, predicts states for each step (predicted and observed) and input in the dataset. Note: the listed x y is the starting location of the step. Then use this to determine what the bird's state was at any given point
@@ -252,19 +254,19 @@ parameters_to_run <- parameters_to_run %>%
   dplyr::select(-valid) #%>% 
   #filter(!(id_iter == "QUE-2019-08-2019" & jul_day_cutoff == 219))
 
-prior_results <- read.csv("accuracy_results_fall_null.csv") %>% #ensure that I'm not duplicating past labor
-  transmute(combined = paste0(cutoff_date, "_",ID))
-
-#How many more samples do I need?
-read.csv("accuracy_results_fall_null.csv") %>% 
-  pull(ID) %>% 
-  unique() %>% 
-  length()
-
-parameters_to_run <- parameters_to_run %>%
-  mutate(combined = paste0(jul_day_cutoff, "_",id_iter)) %>%
-  filter(!(combined %in% prior_results$combined)) %>%
-  mutate(combined = NULL)
+# prior_results <- read.csv("accuracy_results_fall_null.csv") %>% #ensure that I'm not duplicating past labor
+#   transmute(combined = paste0(cutoff_date, "_",ID))
+# 
+# #How many more samples do I need?
+# read.csv("accuracy_results_fall_null.csv") %>% 
+#   pull(ID) %>% 
+#   unique() %>% 
+#   length()
+# 
+# parameters_to_run <- parameters_to_run %>%
+#   mutate(combined = paste0(jul_day_cutoff, "_",id_iter)) %>%
+#   filter(!(combined %in% prior_results$combined)) %>%
+#   mutate(combined = NULL)
 
 #How many more samples will this give me?
 parameters_to_run %>% 
@@ -275,7 +277,7 @@ parameters_to_run %>%
 
 Run the process in parallel
 ```{r}
-plan(multisession, workers = 6)
+plan(multisession)
 tbl_list <- future_pmap(.l = parameters_to_run, 
                         .f = iterate_ids, 
                         .options = furrr_options(seed = 8),
@@ -291,7 +293,7 @@ accuracy_results_fall <- tbl_list %>%
 write.table(accuracy_results_fall, "accuracy_results_fall_null.csv",
             append = TRUE,
             sep = ",",
-            col.names = FALSE,
+            col.names = TRUE,
             row.names = FALSE,
             quote = FALSE)
 ```

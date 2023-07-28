@@ -144,6 +144,6 @@ ggplot(data = combined_df, mapping = aes(x = standardized_date, y = percent_erro
              scales = "free_x") +
   geom_blank(data=dummy)
 
-ggsave("accuracy_plot_7_11_23_prelim.png", width = 7, height = 5)
+ggsave("accuracy_plot_7_28_23.png", width = 7, height = 5)
 ```
 
