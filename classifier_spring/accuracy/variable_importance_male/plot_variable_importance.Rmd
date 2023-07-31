@@ -1,0 +1,72 @@
+
+```{r}
+library(tidyverse)
+library(here)
+library(lubridate)
+```
+
+Define a function to process results to identify the % of type 1 or type 2 errors
+```{r}
+identify_errors_varimp <- function(.x) {
+  .x %>% 
+    mutate(false_mig = if_else((end_modified == 2 | end_modified == 3) & (end_true == 4 | end_true == 5), 1, 0)) %>% 
+    mutate(false_postmig = if_else((end_true == 2 | end_true == 3) & (end_modified == 4 | end_modified == 5), 1, 0)) %>% 
+    pivot_longer(cols = c("false_mig", "false_postmig"), names_to = "test", values_to = "result") %>% 
+    group_by(cutoff_date, variable_to_test, test) %>% 
+    summarise(percent_error = mean(result, na.rm = TRUE), std_err = plotrix::std.error(result)) %>% 
+    ungroup() %>% 
+    mutate(test = recode(test, false_mig = "Type II", false_postmig = "Type I"),
+           ymin = if_else((percent_error - std_err*1.96) < 0, 0, percent_error - std_err*1.96),
+           ymax = percent_error + std_err*1.96) %>% 
+    return()
+}
+
+standardize_date_spring <- function(.x){
+  .x$standardized_date <- map(.x$cutoff_date, function(.y){
+    sample_date <- as.Date("2020-01-01")
+    yday(sample_date) <- .y
+    return(sample_date)
+  }) %>% 
+    unlist() %>% 
+    as_date()
+  return(.x)
+}
+
+standardize_date_fall <- function(.x){ 
+  .x$standardized_date <- map(.x$cutoff_date, function(.y){
+    sample_date <- as.Date("2020-01-01")
+    yday(sample_date) <- .y
+    sample_date <- sample_date + 56 # add 56 to deal with standardization in prep_data (days_subtract)
+    return(sample_date)
+  }) %>% 
+    unlist() %>% 
+    as_date()
+  return(.x)
+}
+```
+
+```{r}
+var_imp <- read.csv("variable_importance_spring_male.csv") %>% 
+  distinct()
+
+results_spring_male_null <- here("classifier_spring", "accuracy", "null_male", "accuracy_results_male_null.csv") %>% 
+  read_csv() %>% 
+  distinct() %>%
+  mutate(variable_to_test = "base")
+
+var_imp <- var_imp %>% 
+  bind_rows(results_spring_male_null) %>% 
+  identify_errors_varimp() %>% 
+  standardize_date_spring() %>% 
+  mutate(season = "Spring Male")
+```
+
+```{r}
+ggplot(data = var_imp,
+       mapping = aes(x = standardized_date, y = percent_error, col = variable_to_test)) +
+  geom_point(position=position_dodge(width=4)) +
+  theme_bw() +
+  facet_grid(rows = vars(test))
+
+```
+

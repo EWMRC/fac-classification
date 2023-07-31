@@ -53,6 +53,7 @@ Read in results from the classification tests
 ```{r include = FALSE}
 results_spring_female_full <- here("classifier_spring", "accuracy", "full_female", "accuracy_results_female_full.csv") %>% 
   read_csv() %>% 
+  distinct() %>% 
   identify_errors() %>% 
   standardize_date_spring() %>% 
   mutate(season = "Spring Female",
@@ -60,6 +61,7 @@ results_spring_female_full <- here("classifier_spring", "accuracy", "full_female
 
 results_spring_female_null <- here("classifier_spring", "accuracy", "null_female", "accuracy_results_female_null.csv") %>% 
   read_csv() %>% 
+  distinct() %>% 
   identify_errors() %>% 
   standardize_date_spring() %>% 
   mutate(season = "Spring Female",
@@ -67,6 +69,7 @@ results_spring_female_null <- here("classifier_spring", "accuracy", "null_female
 
 results_spring_male_full <- here("classifier_spring", "accuracy", "full_male", "accuracy_results_male_full.csv") %>% 
   read_csv() %>% 
+  distinct() %>% 
   identify_errors() %>% 
   standardize_date_spring() %>% 
   mutate(season = "Spring Male",
@@ -74,6 +77,7 @@ results_spring_male_full <- here("classifier_spring", "accuracy", "full_male", "
 
 results_spring_male_null <- here("classifier_spring", "accuracy", "null_male", "accuracy_results_male_null.csv") %>% 
   read_csv() %>% 
+  distinct() %>% 
   identify_errors() %>% 
   standardize_date_spring() %>% 
   mutate(season = "Spring Male",
@@ -81,6 +85,7 @@ results_spring_male_null <- here("classifier_spring", "accuracy", "null_male", "
 
 results_fall_full <- here("classifier_fall", "accuracy", "full_acc_assessment", "accuracy_results_fall_full.csv") %>% 
   read_csv() %>% 
+  distinct() %>% 
   identify_errors() %>% 
   standardize_date_fall() %>% 
   mutate(season = "Fall",
@@ -89,6 +94,7 @@ results_fall_full <- here("classifier_fall", "accuracy", "full_acc_assessment", 
 
 results_fall_null <- here("classifier_fall", "accuracy", "null_acc_assessment", "accuracy_results_fall_null.csv") %>% 
   read_csv() %>% 
+  distinct() %>% 
   identify_errors() %>% 
   standardize_date_fall() %>% 
   mutate(season = "Fall",
