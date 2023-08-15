@@ -1,0 +1,114 @@
+
+```{r}
+library(tidyverse)
+library(here)
+library(momentuHMM)
+```
+
+Read in parameter esimates
+```{r, include=FALSE}
+spring_male_parameters <- here("classifier_spring", "spring_male_5_state_parameters.rds") %>% 
+  readRDS()
+
+spring_female_parameters <- here("classifier_spring", "spring_female_4_state_parameters.rds") %>% 
+  readRDS()
+
+fall_parameters <- here("classifier_fall", "fall_all_4_state_parameters.rds") %>% 
+  readRDS()
+```
+
+Convert into tidy format
+```{r}
+params_tidy <- map(.x = c("step", "angle", "y", "julian_day", "dist_start", "step_500", "breeding_abundance", "log_mean_dist_7", "residence_time"), .f = function(x){
+  # Spring (male)
+  sm_raw <- paste0("as.data.frame(spring_male_parameters$CIreal$", x, "$est)") %>% 
+    parse(text = .) %>% 
+    eval()
+  
+  sm_mean <- sm_raw[1,] %>% 
+    pivot_longer(cols = c("pre", "migration", "stopover", "settling", "post")) %>% 
+    transmute(state = name,
+              mean = value)
+  
+  sm_sd <- sm_raw[2,] %>% 
+    pivot_longer(cols = c("pre", "migration", "stopover", "settling", "post")) %>% 
+    transmute(state = name,
+              sd = value)
+  
+  sm_param_estimates <- left_join(sm_mean, sm_sd) %>% 
+    mutate(season = "Spring (male)")
+  
+  # Spring (female)
+  sf_raw <- paste0("as.data.frame(spring_female_parameters$CIreal$", x, "$est)") %>% 
+    parse(text = .) %>% 
+    eval()
+  
+  sf_mean <- sf_raw[1,] %>% 
+    pivot_longer(cols = c("pre", "migration", "stopover", "post")) %>% 
+    transmute(state = name,
+              mean = value)
+  
+  sf_sd <- sf_raw[2,] %>% 
+    pivot_longer(cols = c("pre", "migration", "stopover", "post")) %>% 
+    transmute(state = name,
+              sd = value)
+  
+  sf_param_estimates <- left_join(sf_mean, sf_sd) %>% 
+    mutate(season = "Spring (female)")
+  
+  # Fall
+  f_raw <- paste0("as.data.frame(fall_parameters$CIreal$", x, "$est)") %>% 
+    parse(text = .) %>% 
+    eval()
+  
+  f_mean <- f_raw[1,] %>% 
+    pivot_longer(cols = c("pre", "migration", "stopover", "post")) %>% 
+    transmute(state = name,
+              mean = value)
+  
+  f_sd <- f_raw[2,] %>% 
+    pivot_longer(cols = c("pre", "migration", "stopover", "post")) %>% 
+    transmute(state = name,
+              sd = value)
+  
+  f_param_estimates <- left_join(f_mean, f_sd) %>% 
+    mutate(season = "Fall")
+  
+  bind_rows(sm_param_estimates, sf_param_estimates, f_param_estimates) %>% 
+    mutate(param = x) %>% 
+    return()
+})
+
+params_tidy <- params_tidy %>% 
+  do.call(bind_rows, .) %>% 
+  mutate(state = recode(state, "migration" = "mig", "stopover" = "stop")) %>% 
+  mutate(state = factor(state, levels = c("pre", "mig", "stop", "settling", "post"), ordered = TRUE),
+         season = factor(season, levels = c("Fall", "Spring (male)", "Spring (female)"), ordered = TRUE),
+         hsd = mean + sd,
+         lsd = mean - sd) %>% 
+  mutate(lsd = if_else(lsd < 0, 0, lsd))
+
+#For the sake of the presentation, invert the breeding probabilities
+params_tidy <- params_tidy %>% 
+  mutate(mean = if_else(param == "breeding_abundance" & season == "Fall", 1 - mean, mean))
+```
+
+Note that standard deviations are missing for those variables which are binomially distributed
+```{r, include = FALSE}
+map(.x = unique(params_tidy$param), .f = function(i){
+  params_tidy %>% 
+    filter(param == i) %>% 
+    filter(state != "settling") %>% 
+    #filter(season == "Fall") %>% #, param == "log_mean_dist_7"
+    ggplot(data = .,
+           mapping = aes(x = state, y = mean, ymin = lsd, ymax = hsd)) +
+    geom_point() +
+    geom_errorbar(width = 0.1) +
+    theme_bw() +
+    theme(axis.title.y = element_blank()) +
+    facet_grid(cols = vars(season))
+  ggsave(filename = paste0(i, "_7_31_23.png"), width = 5, height = 3.5)
+})
+
+
+```

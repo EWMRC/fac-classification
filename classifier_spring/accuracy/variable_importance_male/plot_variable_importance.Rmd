@@ -70,3 +70,26 @@ ggplot(data = var_imp,
 
 ```
 
+Summarize error rates across dates
+```{r}
+var_imp_summary <- var_imp %>% 
+  group_by(variable_to_test, test) %>% 
+  summarize(total_error = sum(percent_error))
+
+var_imp_summary %>% 
+  ggplot(mapping = aes(x = variable_to_test, y = total_error)) +
+  geom_point() +
+  theme_bw() +
+  facet_grid(rows = vars(test))
+```
+
+```{r}
+var_imp_summary_combined <- var_imp %>% 
+  group_by(variable_to_test) %>% 
+  summarize(total_error = sum(percent_error))
+
+var_imp_summary_combined %>% 
+  ggplot(mapping = aes(x = variable_to_test, y = total_error)) +
+  geom_point() +
+  theme_bw()
+```

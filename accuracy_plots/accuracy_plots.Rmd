@@ -65,7 +65,7 @@ results_spring_female_null <- here("classifier_spring", "accuracy", "null_female
   identify_errors() %>% 
   standardize_date_spring() %>% 
   mutate(season = "Spring Female",
-         model_type = "Reduced")
+         model_type = "Base")
 
 results_spring_male_full <- here("classifier_spring", "accuracy", "full_male", "accuracy_results_male_full.csv") %>% 
   read_csv() %>% 
@@ -81,7 +81,7 @@ results_spring_male_null <- here("classifier_spring", "accuracy", "null_male", "
   identify_errors() %>% 
   standardize_date_spring() %>% 
   mutate(season = "Spring Male",
-         model_type = "Reduced")
+         model_type = "Base")
 
 results_fall_full <- here("classifier_fall", "accuracy", "full_acc_assessment", "accuracy_results_fall_full.csv") %>% 
   read_csv() %>% 
@@ -98,7 +98,7 @@ results_fall_null <- here("classifier_fall", "accuracy", "null_acc_assessment", 
   identify_errors() %>% 
   standardize_date_fall() %>% 
   mutate(season = "Fall",
-         model_type = "Reduced") %>% 
+         model_type = "Base") %>% 
   filter(standardized_date < ymd("2021-1-31"))
 ```
 
@@ -117,8 +117,8 @@ combined_df <- bind_rows(results_fall_full,
   mutate(season = factor(season, levels = c("Fall", "Spring Male", "Spring Female"), ordered = TRUE))
 
 # This allows for custom limits for each plot
-dummy <- tibble(standardized_date = ymd(c("2020-10-01", "2020-10-01", "2020-03-01", "2020-03-01", "2020-03-01", "2020-03-01", "2021-02-05", "2021-02-05", "2020-07-01", "2020-07-01", "2020-07-01", "2020-07-01")), percent_error = 0, season = c("Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female", "Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female"), model_type = c("Full", "Reduced", "Full", "Reduced", "Full", "Reduced", "Full", "Reduced", "Full", "Reduced", "Full", "Reduced"), test = "Type I") %>% 
-  bind_rows(tibble(standardized_date = ymd(c("2020-10-01", "2020-10-01", "2020-03-01", "2020-03-01", "2020-03-01", "2020-03-01", "2021-02-05", "2021-02-05", "2020-07-01", "2020-07-01", "2020-07-01", "2020-07-01")), percent_error = 0, season = c("Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female", "Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female"), model_type = c("Full", "Reduced", "Full", "Reduced", "Full", "Reduced", "Full", "Reduced", "Full", "Reduced", "Full", "Reduced"), test = "Type II")) %>% 
+dummy <- tibble(standardized_date = ymd(c("2020-10-01", "2020-10-01", "2020-03-01", "2020-03-01", "2020-03-01", "2020-03-01", "2021-02-05", "2021-02-05", "2020-07-01", "2020-07-01", "2020-07-01", "2020-07-01")), percent_error = 0, season = c("Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female", "Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female"), model_type = c("Full", "Base", "Full", "Base", "Full", "Base", "Full", "Base", "Full", "Base", "Full", "Base"), test = "Type I") %>% 
+  bind_rows(tibble(standardized_date = ymd(c("2020-10-01", "2020-10-01", "2020-03-01", "2020-03-01", "2020-03-01", "2020-03-01", "2021-02-05", "2021-02-05", "2020-07-01", "2020-07-01", "2020-07-01", "2020-07-01")), percent_error = 0, season = c("Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female", "Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female"), model_type = c("Full", "Base", "Full", "Base", "Full", "Base", "Full", "Base", "Full", "Base", "Full", "Base"), test = "Type II")) %>% 
   mutate(season = recode(season, 
                          "Spring Male" = "Spring (male)",
                          "Spring Female" = "Spring (female)")) %>% 

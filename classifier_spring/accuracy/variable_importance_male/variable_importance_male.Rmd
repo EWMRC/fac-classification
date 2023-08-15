@@ -261,9 +261,7 @@ parameters_to_run <- parameters_to_run %>%
 ```
 
 ```{r}
-#artificially constrain the parameters_to_run to make sure that this all works
-
-plan(multisession)
+plan(multisession, workers = 6)
 tbl_list <- future_pmap(.l = parameters_to_run, 
                         .f = iterate_ids_male, 
                         .options = furrr_options(seed = 8),
