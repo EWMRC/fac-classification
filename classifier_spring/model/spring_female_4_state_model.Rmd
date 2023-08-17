@@ -73,7 +73,8 @@ known_state_key <- amwo_hmm %>%
   #mutate(known = ifelse(ID == "VA-2019-22-2019" & julian_day == 99, 2, known)) %>% #This seems to be a holdover from an old model (but unclear). Remove
   #mutate(known = ifelse(ID == "ME-2018-13-2019" & julian_day == 161, 2, known)) %>% #This seems to be a holdover from an old model. Remove
   mutate(known = ifelse(ID == "NY-2022-40-2022" & ranks == 1, 3, known)) %>%  #bird that migrated after nesting starts in stopover state
-  mutate(known = ifelse(ID == "RI-2018-11-2019" & ranks == 95, 4, known)) #bird is recaptured and re-transmittered at the last mig location the following Oct, so we know that it is settled here
+  mutate(known = ifelse(ID == "NY-2022-42-2022" & ranks == 1, 3, known)) %>%  #bird that migrated after nesting starts in stopover state
+  mutate(known = ifelse(ID == "RI-2018-11-2019" & ranks == 94, 4, known)) #bird is recaptured and re-transmittered at the last mig location the following Oct, so we know that it is settled here
 
 amwo_hmm$known <- known_state_key$known
 amwo_hmm$r1p1s2 <- known_state_key$r1p1s2

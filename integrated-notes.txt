@@ -1,0 +1,22 @@
+AL-2022-17
+Is there a full 16.1km between 2022 05-20 and 05-22? Not concerned
+
+NJ-2018-05
+Now starts in a fall mig state
+
+NJ-2018-10
+transition less than 16.1 km between 2020-01-03 and 01-04
+fine: this is caused by a correlated random walk interpolation
+
+NY-2022-42
+**start in either a migratory state or give it a dispersal movement
+***Fixed
+
+RI-2018-11
+**Something is really broken here- why do we have so much data off this bird? Spring migration doesn't end
+***Seems to have been a very minor issue in changing ranks. Fixed.
+
+VA-2020-66
+**needs a foray loop on 2021-01-29 and remove that date from the spring classification
+***changed in spring model and added to appendix- need to add as a foray loop in integrated
+*** Fixed

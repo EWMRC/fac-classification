@@ -1754,12 +1754,26 @@ display: none;
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShoZXJlKVxuXG5gYGAifQ== -->
-<pre class="r"><code>library(here)
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGAifQ== -->
+<pre class="r"><code>library(tidyverse)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiaGVyZSgpIHN0YXJ0cyBhdCBDOi9Vc2Vycy9saWFtYS9PbmVEcml2ZSAtIFVuaXZlcnNpdHkgb2YgTWFpbmUgU3lzdGVtL01haW5lQW5hbHlzaXMvUHJvamVjdHMvZmFjLWNsYXNzaWZpY2F0aW9uXG4ifQ== -->
-<pre><code>here() starts at C:/Users/liama/OneDrive - University of Maine System/MaineAnalysis/Projects/fac-classification</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJlZCBTMyBtZXRob2RzIG92ZXJ3cml0dGVuIGJ5ICdkYnBseXInOlxuICBtZXRob2QgICAgICAgICBmcm9tXG4gIHByaW50LnRibF9sYXp5ICAgICBcbiAgcHJpbnQudGJsX3NxbCAgICAgIFxu4pSA4pSAIEF0dGFjaGluZyBwYWNrYWdlcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlIDEuMy4yIOKUgOKUgOKclCBnZ3Bsb3QyIDMuNC4wICAgICAg4pyUIHB1cnJyICAgMS4wLjEgXG7inJQgdGliYmxlICAzLjEuOCAgICAgIOKclCBkcGx5ciAgIDEuMC4xMFxu4pyUIHRpZHlyICAgMS4zLjAgICAgICDinJQgc3RyaW5nciAxLjUuMCBcbuKclCByZWFkciAgIDIuMS4zICAgICAg4pyUIGZvcmNhdHMgMC41LjIg4pSA4pSAIENvbmZsaWN0cyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlX2NvbmZsaWN0cygpIOKUgOKUgFxu4pyWIGRwbHlyOjpmaWx0ZXIoKSBtYXNrcyBzdGF0czo6ZmlsdGVyKClcbuKcliBkcGx5cjo6bGFnKCkgICAgbWFza3Mgc3RhdHM6OmxhZygpXG4ifQ== -->
+<pre><code>Registered S3 methods overwritten by &#39;dbplyr&#39;:
+  method         from
+  print.tbl_lazy     
+  print.tbl_sql      
+── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──✔ ggplot2 3.4.0      ✔ purrr   1.0.1 
+✔ tibble  3.1.8      ✔ dplyr   1.0.10
+✔ tidyr   1.3.0      ✔ stringr 1.5.0 
+✔ readr   2.1.3      ✔ forcats 0.5.2 ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShoZXJlKVxuYGBgIn0= -->
+<pre class="r"><code>library(here)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiaGVyZSgpIHN0YXJ0cyBhdCBEOi9PbmVEcml2ZSAtIFVuaXZlcnNpdHkgb2YgTWFpbmUgU3lzdGVtL01haW5lQW5hbHlzaXMvUHJvamVjdHMvZmFjLWNsYXNzaWZpY2F0aW9uXG4ifQ== -->
+<pre><code>here() starts at D:/OneDrive - University of Maine System/MaineAnalysis/Projects/fac-classification</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1778,13 +1792,15 @@ habitat</p>
 <p>flight_ground -&gt; data decoding software</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW13b19kYXRhX3JlY29uc3RydWN0ZWQgPC0gcmVhZFJEUyhcImNsYXNzaWZpZXJfaW50ZWdyYXRlZFwiLCBcImZhY19wcmltYXJ5X3N0YXRlX2RlbGluZWF0aW9uLnJkc1wiKVxuXG5gYGAifQ== -->
-<pre class="r"><code>amwo_data_reconstructed &lt;- readRDS(&quot;classifier_integrated&quot;, &quot;fac_primary_state_delineation.rds&quot;)
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW13b19kYXRhX3JlY29uc3RydWN0ZWQgPC0gcmVhZFJEUyhoZXJlKFwiY2xhc3NpZmllcl9pbnRlZ3JhdGVkXCIsIFwiZmFjX3ByaW1hcnlfc3RhdGVfZGVsaW5lYXRpb24ucmRzXCIpKVxuXG50IDwtIGFtd29fZGF0YV9yZWNvbnN0cnVjdGVkICU+JVxuICB0cmFuc211dGUoZXZlbnRfaWQgPSBhcy5jaGFyYWN0ZXIoZXZlbnRfaWQpLCBwcmltYXJ5X3N0ZXBfc3RhdGUgPSBwYXN0ZShcIlN0ZXAgc3RhdGU6XCIsIHByaW1hcnlfc3RlcF9zdGF0ZSksIHByaW1hcnlfcG9pbnRfc3RhdGUgPSBwYXN0ZShcIlBvaW50IHN0YXRlOlwiLCBwcmltYXJ5X3BvaW50X3N0YXRlKSlcblxudCAlPiVcbiAgd3JpdGUuY3N2KGZpbGUgPSBcImZhY19wcmltYXJ5X3N0YXRlX2RlbGluZWF0aW9uLmNzdlwiLCByb3cubmFtZXMgPSBGQUxTRSwgcXVvdGUgPSBGQUxTRSlcbmBgYCJ9 -->
+<pre class="r"><code>amwo_data_reconstructed &lt;- readRDS(here(&quot;classifier_integrated&quot;, &quot;fac_primary_state_delineation.rds&quot;))
+
+t &lt;- amwo_data_reconstructed %&gt;%
+  transmute(event_id = as.character(event_id), primary_step_state = paste(&quot;Step state:&quot;, primary_step_state), primary_point_state = paste(&quot;Point state:&quot;, primary_point_state))
+
+t %&gt;%
+  write.csv(file = &quot;fac_primary_state_delineation.csv&quot;, row.names = FALSE, quote = FALSE)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogY2Fubm90IG9wZW4gY29tcHJlc3NlZCBmaWxlICdjbGFzc2lmaWVyX2ludGVncmF0ZWQnLCBwcm9iYWJsZSByZWFzb24gJ05vIHN1Y2ggZmlsZSBvciBkaXJlY3RvcnknRXJyb3IgaW4gZ3pmaWxlKGZpbGUsIFwicmJcIikgOiBjYW5ub3Qgb3BlbiB0aGUgY29ubmVjdGlvblxuIn0= -->
-<pre><code>Warning: cannot open compressed file &#39;classifier_integrated&#39;, probable reason &#39;No such file or directory&#39;Error in gzfile(file, &quot;rb&quot;) : cannot open the connection</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 </div>
 

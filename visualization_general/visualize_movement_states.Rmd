@@ -129,7 +129,7 @@ leaflet.male <- function(x){
 
 ```{r}
 amwo_hmm_final %>%
-  filter(ID == "NY-2018-03-2018") %>%
+  filter(ID == "RI-2018-11-2019") %>%
   View()
   leaflet.male(.)
 # 

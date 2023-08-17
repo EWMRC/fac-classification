@@ -417,7 +417,7 @@ event_id,primary_step_state,primary_point_state
 7662851837,Step state: Stationary,Point state: Stationary
 7662851838,Step state: Foray loop,Point state: Foray loop
 7662851839,Step state: Foray loop,Point state: Foray loop
-7662851840,Step state: Migratory (fall),Point state: Migratory (fall)
+7662851840,Step state: Stationary,Point state: Stationary
 7662851841,Step state: Stationary,Point state: Stationary
 7662851842,Step state: Stationary,Point state: Stationary
 7662851843,Step state: Stationary,Point state: Stationary
@@ -555,11 +555,11 @@ event_id,primary_step_state,primary_point_state
 7764513358,Step state: Stationary,Point state: Stationary
 7764513359,Step state: Stationary,Point state: Stationary
 7764513360,Step state: Stationary,Point state: Stationary
-7764513361,Step state: Migratory (fall),Point state: Migratory (fall)
-7764513362,Step state: Migratory (fall),Point state: Migratory (fall)
-7764513363,Step state: Migratory (fall),Point state: Migratory (fall)
-7764513364,Step state: Migratory (fall),Point state: Migratory (fall)
-7764513365,Step state: Migratory (fall),Point state: Migratory (fall)
+7764513361,Step state: Stationary,Point state: Stationary
+7764513362,Step state: Stationary,Point state: Stationary
+7764513363,Step state: Stationary,Point state: Stationary
+7764513364,Step state: Stationary,Point state: Stationary
+7764513365,Step state: Stationary,Point state: Stationary
 7764513366,Step state: Stationary,Point state: Stationary
 7764513367,Step state: Stationary,Point state: Stationary
 7764513368,Step state: Stationary,Point state: Stationary
@@ -641,9 +641,9 @@ event_id,primary_step_state,primary_point_state
 7788558659,Step state: Stationary,Point state: Stationary
 7788558660,Step state: Stationary,Point state: Stationary
 7788558661,Step state: Stationary,Point state: Stationary
-7788558662,Step state: Migratory (fall),Point state: Migratory (fall)
-7788558663,Step state: Migratory (fall),Point state: Migratory (fall)
-7788558664,Step state: Migratory (fall),Point state: Migratory (fall)
+7788558662,Step state: Stationary,Point state: Stationary
+7788558663,Step state: Stationary,Point state: Stationary
+7788558664,Step state: Stationary,Point state: Stationary
 7788558665,Step state: Stationary,Point state: Stationary
 7788558666,Step state: Stationary,Point state: Stationary
 7788558667,Step state: Stationary,Point state: Stationary
@@ -692,10 +692,10 @@ event_id,primary_step_state,primary_point_state
 7832786751,Step state: Stationary,Point state: Stationary
 7832786752,Step state: Stationary,Point state: Stationary
 7832786753,Step state: Stationary,Point state: Stationary
-7832786754,Step state: Migratory (fall),Point state: Migratory (fall)
-7832786755,Step state: Migratory (fall),Point state: Migratory (fall)
-7832786756,Step state: Migratory (fall),Point state: Migratory (fall)
-7832786757,Step state: Migratory (fall),Point state: Migratory (fall)
+7832786754,Step state: Stationary,Point state: Stationary
+7832786755,Step state: Stationary,Point state: Stationary
+7832786756,Step state: Stationary,Point state: Stationary
+7832786757,Step state: Stationary,Point state: Stationary
 7832786758,Step state: Stationary,Point state: Stationary
 7832786759,Step state: Stationary,Point state: Stationary
 7832786760,Step state: Stationary,Point state: Stationary
@@ -881,9 +881,9 @@ event_id,primary_step_state,primary_point_state
 7886119383,Step state: Migratory (fall),Point state: Migratory (fall)
 7886119384,Step state: Migratory (fall),Point state: Migratory (fall)
 7886119385,Step state: Migratory (fall),Point state: Migratory (fall)
-7886119386,Step state: Migratory (fall),Point state: Migratory (fall)
-7886119387,Step state: Migratory (fall),Point state: Migratory (fall)
-7886119388,Step state: Migratory (fall),Point state: Migratory (fall)
+7886119386,Step state: Stationary,Point state: Stationary
+7886119387,Step state: Stationary,Point state: Stationary
+7886119388,Step state: Stationary,Point state: Stationary
 7886119389,Step state: Stationary,Point state: Stationary
 7886119390,Step state: Stationary,Point state: Stationary
 7886119391,Step state: Stationary,Point state: Stationary
@@ -903,9 +903,9 @@ event_id,primary_step_state,primary_point_state
 7886119405,Step state: Stationary,Point state: Stationary
 7886119406,Step state: Stationary,Point state: Stationary
 7886119407,Step state: Stationary,Point state: Stationary
-7902062713,Step state: Migratory (fall),Point state: Migratory (fall)
-7902062714,Step state: Migratory (fall),Point state: Migratory (fall)
-7902062715,Step state: Migratory (fall),Point state: Migratory (fall)
+7902062713,Step state: Stationary,Point state: Stationary
+7902062714,Step state: Stationary,Point state: Stationary
+7902062715,Step state: Migratory (fall),Point state: Stationary
 7902062716,Step state: Migratory (fall),Point state: Migratory (fall)
 7902062717,Step state: Migratory (fall),Point state: Migratory (fall)
 7902062718,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -1332,7 +1332,7 @@ event_id,primary_step_state,primary_point_state
 7977579342,Step state: Migratory (fall),Point state: Migratory (fall)
 7977579343,Step state: Stationary,Point state: Stationary
 7977579344,Step state: Stationary,Point state: Stationary
-7977579345,Step state: Stationary,Point state: Stationary
+7977579345,Step state: Foray loop,Point state: Stationary
 7977579346,Step state: Stationary,Point state: Stationary
 7977579347,Step state: Migratory (fall),Point state: Stationary
 7977579348,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -1405,7 +1405,7 @@ event_id,primary_step_state,primary_point_state
 7994489551,Step state: Migratory (fall),Point state: Migratory (fall)
 7994489552,Step state: Migratory (fall),Point state: Migratory (fall)
 7994489553,Step state: Migratory (fall),Point state: Migratory (fall)
-7994489554,Step state: Stationary,Point state: Stationary
+7994489554,Step state: Foray loop,Point state: Foray loop
 7994489555,Step state: Stationary,Point state: Stationary
 7994489556,Step state: Stationary,Point state: Stationary
 7994489557,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -1499,8 +1499,8 @@ event_id,primary_step_state,primary_point_state
 8000761710,Step state: Stationary,Point state: Stationary
 8000761711,Step state: Stationary,Point state: Stationary
 8000761712,Step state: Stationary,Point state: Stationary
-8000761713,Step state: Stationary,Point state: Stationary
-8000761714,Step state: Stationary,Point state: Stationary
+8000761713,Step state: Migratory (fall),Point state: Stationary
+8000761714,Step state: Migratory (fall),Point state: Migratory (fall)
 8003790057,Step state: Migratory (fall),Point state: Migratory (fall)
 8003790058,Step state: Migratory (fall),Point state: Migratory (fall)
 8003790059,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -1616,9 +1616,9 @@ event_id,primary_step_state,primary_point_state
 8031071855,Step state: Migratory (fall),Point state: Migratory (fall)
 8031071856,Step state: Migratory (fall),Point state: Migratory (fall)
 8031071857,Step state: Stationary,Point state: Stationary
-8031071858,Step state: Stationary,Point state: Stationary
-8031071859,Step state: Stationary,Point state: Stationary
-8031071860,Step state: Stationary,Point state: Stationary
+8031071858,Step state: Migratory (fall),Point state: Migratory (fall)
+8031071859,Step state: Migratory (fall),Point state: Migratory (fall)
+8031071860,Step state: Migratory (fall),Point state: Migratory (fall)
 8031071861,Step state: Migratory (fall),Point state: Migratory (fall)
 8031071862,Step state: Migratory (fall),Point state: Migratory (fall)
 8031071863,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -1839,9 +1839,9 @@ event_id,primary_step_state,primary_point_state
 8062948357,Step state: Stationary,Point state: Stationary
 8062948358,Step state: Stationary,Point state: Stationary
 8062948359,Step state: Stationary,Point state: Stationary
-8062948360,Step state: Stationary,Point state: Stationary
-8062948361,Step state: Stationary,Point state: Stationary
-8062948362,Step state: Stationary,Point state: Stationary
+8062948360,Step state: Migratory (fall),Point state: Migratory (fall)
+8062948361,Step state: Migratory (fall),Point state: Migratory (fall)
+8062948362,Step state: Migratory (fall),Point state: Migratory (fall)
 8062948363,Step state: Stationary,Point state: Stationary
 8062948364,Step state: Stationary,Point state: Stationary
 8062948365,Step state: Stationary,Point state: Stationary
@@ -1885,9 +1885,9 @@ event_id,primary_step_state,primary_point_state
 8077521202,Step state: Migratory (fall),Point state: Stationary
 8077521203,Step state: Migratory (fall),Point state: Migratory (fall)
 8077521204,Step state: Migratory (fall),Point state: Migratory (fall)
-8077521208,Step state: Stationary,Point state: Stationary
-8077521209,Step state: Stationary,Point state: Stationary
-8077521210,Step state: Stationary,Point state: Stationary
+8077521208,Step state: Migratory (fall),Point state: Migratory (fall)
+8077521209,Step state: Migratory (fall),Point state: Migratory (fall)
+8077521210,Step state: Migratory (fall),Point state: Migratory (fall)
 8077521211,Step state: Migratory (fall),Point state: Migratory (fall)
 8077521212,Step state: Migratory (fall),Point state: Migratory (fall)
 8077521213,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -2185,9 +2185,9 @@ event_id,primary_step_state,primary_point_state
 8101305801,Step state: Migratory (fall),Point state: Migratory (fall)
 8101305802,Step state: Migratory (fall),Point state: Migratory (fall)
 8101305803,Step state: Migratory (fall),Point state: Migratory (fall)
-8202144302,Step state: Stationary,Point state: Stationary
-8202144303,Step state: Stationary,Point state: Stationary
-8202144304,Step state: Stationary,Point state: Stationary
+8202144302,Step state: Migratory (fall),Point state: Migratory (fall)
+8202144303,Step state: Migratory (fall),Point state: Migratory (fall)
+8202144304,Step state: Migratory (fall),Point state: Migratory (fall)
 8202144305,Step state: Stationary,Point state: Stationary
 8202144306,Step state: Stationary,Point state: Stationary
 8202144307,Step state: Stationary,Point state: Stationary
@@ -2506,9 +2506,9 @@ event_id,primary_step_state,primary_point_state
 8352992070,Step state: Stationary,Point state: Stationary
 8352992071,Step state: Stationary,Point state: Stationary
 8352992072,Step state: Stationary,Point state: Stationary
-8352992073,Step state: Stationary,Point state: Stationary
-8352992074,Step state: Stationary,Point state: Stationary
-8352992075,Step state: Stationary,Point state: Stationary
+8352992073,Step state: Foray loop,Point state: Stationary
+8352992074,Step state: Foray loop,Point state: Foray loop
+8352992075,Step state: Foray loop,Point state: Foray loop
 8352992076,Step state: Stationary,Point state: Stationary
 8352992077,Step state: Stationary,Point state: Stationary
 8352992078,Step state: Stationary,Point state: Stationary
@@ -2544,7 +2544,7 @@ event_id,primary_step_state,primary_point_state
 8352992108,Step state: Stationary,Point state: Stationary
 8352992109,Step state: Stationary,Point state: Stationary
 8352992110,Step state: Migratory (fall),Point state: Migratory (fall)
-8352992111,Step state: Stationary,Point state: Stationary
+8352992111,Step state: Migratory (fall),Point state: Migratory (fall)
 8352992112,Step state: Stationary,Point state: Stationary
 8352992113,Step state: Stationary,Point state: Stationary
 8359378649,Step state: Stationary,Point state: Stationary
@@ -2665,7 +2665,7 @@ event_id,primary_step_state,primary_point_state
 8375242404,Step state: Migratory (fall),Point state: Migratory (fall)
 8375242405,Step state: Migratory (fall),Point state: Migratory (fall)
 8375242406,Step state: Migratory (fall),Point state: Migratory (fall)
-8375242407,Step state: Stationary,Point state: Stationary
+8375242407,Step state: Migratory (fall),Point state: Migratory (fall)
 8375242408,Step state: Stationary,Point state: Stationary
 8375242409,Step state: Stationary,Point state: Stationary
 8375242410,Step state: Stationary,Point state: Stationary
@@ -2674,7 +2674,7 @@ event_id,primary_step_state,primary_point_state
 8375242413,Step state: Migratory (fall),Point state: Migratory (fall)
 8375242414,Step state: Migratory (fall),Point state: Migratory (fall)
 8375242415,Step state: Migratory (fall),Point state: Migratory (fall)
-8375242416,Step state: Stationary,Point state: Stationary
+8375242416,Step state: Migratory (fall),Point state: Migratory (fall)
 8375242417,Step state: Migratory (fall),Point state: Migratory (fall)
 8375242418,Step state: Migratory (fall),Point state: Migratory (fall)
 8375242419,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -3076,8 +3076,8 @@ event_id,primary_step_state,primary_point_state
 8807074708,Step state: Migratory (fall),Point state: Migratory (fall)
 8807074709,Step state: Migratory (fall),Point state: Migratory (fall)
 8807074710,Step state: Migratory (fall),Point state: Migratory (fall)
-8807074711,Step state: Stationary,Point state: Stationary
-8807074712,Step state: Stationary,Point state: Stationary
+8807074711,Step state: Migratory (fall),Point state: Migratory (fall)
+8807074712,Step state: Migratory (fall),Point state: Migratory (fall)
 8807074713,Step state: Stationary,Point state: Stationary
 8807074714,Step state: Stationary,Point state: Stationary
 8807074715,Step state: Stationary,Point state: Stationary
@@ -3172,7 +3172,7 @@ event_id,primary_step_state,primary_point_state
 9064971962,Step state: Stationary,Point state: Stationary
 9064971963,Step state: Stationary,Point state: Stationary
 9064971964,Step state: Stationary,Point state: Stationary
-9064971965,Step state: Stationary,Point state: Stationary
+9064971965,Step state: Migratory (spring),Point state: Stationary
 9064971966,Step state: Stationary,Point state: Stationary
 9064971967,Step state: Stationary,Point state: Stationary
 9064971968,Step state: Stationary,Point state: Stationary
@@ -3290,8 +3290,8 @@ event_id,primary_step_state,primary_point_state
 9122611103,Step state: Stationary,Point state: Stationary
 9122611104,Step state: Stationary,Point state: Stationary
 9122611105,Step state: Stationary,Point state: Stationary
-9126872530,Step state: Stationary,Point state: Stationary
-9126872531,Step state: Stationary,Point state: Stationary
+9126872530,Step state: Migratory (spring),Point state: Migratory (spring)
+9126872531,Step state: Migratory (spring),Point state: Migratory (spring)
 9126872532,Step state: Stationary,Point state: Stationary
 9126872533,Step state: Stationary,Point state: Stationary
 9126872534,Step state: Stationary,Point state: Stationary
@@ -3694,9 +3694,9 @@ event_id,primary_step_state,primary_point_state
 9198671956,Step state: Migratory (spring),Point state: Migratory (spring)
 9198671957,Step state: Migratory (spring),Point state: Migratory (spring)
 9198671958,Step state: Migratory (spring),Point state: Migratory (spring)
-9198671959,Step state: Stationary,Point state: Stationary
-9198671960,Step state: Stationary,Point state: Stationary
-9198671961,Step state: Stationary,Point state: Stationary
+9198671959,Step state: Migratory (spring),Point state: Migratory (spring)
+9198671960,Step state: Migratory (spring),Point state: Migratory (spring)
+9198671961,Step state: Migratory (spring),Point state: Migratory (spring)
 9198671962,Step state: Stationary,Point state: Stationary
 9198671963,Step state: Stationary,Point state: Stationary
 9198671964,Step state: Stationary,Point state: Stationary
@@ -3755,9 +3755,9 @@ event_id,primary_step_state,primary_point_state
 9299481985,Step state: Migratory (spring),Point state: Migratory (spring)
 9299481986,Step state: Migratory (spring),Point state: Migratory (spring)
 9299481987,Step state: Migratory (spring),Point state: Migratory (spring)
-9299481988,Step state: Stationary,Point state: Stationary
-9299481989,Step state: Stationary,Point state: Stationary
-9299481990,Step state: Stationary,Point state: Stationary
+9299481988,Step state: Migratory (spring),Point state: Migratory (spring)
+9299481989,Step state: Migratory (spring),Point state: Migratory (spring)
+9299481990,Step state: Migratory (spring),Point state: Migratory (spring)
 9299481991,Step state: Stationary,Point state: Stationary
 9299481992,Step state: Stationary,Point state: Stationary
 9299481993,Step state: Stationary,Point state: Stationary
@@ -4010,10 +4010,10 @@ event_id,primary_step_state,primary_point_state
 9394901368,Step state: Stationary,Point state: Stationary
 9394901369,Step state: Stationary,Point state: Stationary
 9394901370,Step state: Stationary,Point state: Stationary
-9399407876,Step state: Stationary,Point state: Stationary
-9399407877,Step state: Stationary,Point state: Stationary
-9399407878,Step state: Stationary,Point state: Stationary
-9399407879,Step state: Migratory (spring),Point state: Stationary
+9399407876,Step state: Migratory (spring),Point state: Migratory (spring)
+9399407877,Step state: Migratory (spring),Point state: Migratory (spring)
+9399407878,Step state: Migratory (spring),Point state: Migratory (spring)
+9399407879,Step state: Migratory (spring),Point state: Migratory (spring)
 9399407880,Step state: Migratory (spring),Point state: Migratory (spring)
 9399407881,Step state: Migratory (spring),Point state: Migratory (spring)
 9399407882,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -4138,9 +4138,9 @@ event_id,primary_step_state,primary_point_state
 9455636760,Step state: Migratory (spring),Point state: Migratory (spring)
 9455636761,Step state: Migratory (spring),Point state: Migratory (spring)
 9455636762,Step state: Migratory (spring),Point state: Migratory (spring)
-9455636763,Step state: Stationary,Point state: Stationary
-9455636764,Step state: Stationary,Point state: Stationary
-9455636765,Step state: Stationary,Point state: Stationary
+9455636763,Step state: Migratory (spring),Point state: Migratory (spring)
+9455636764,Step state: Migratory (spring),Point state: Migratory (spring)
+9455636765,Step state: Migratory (spring),Point state: Migratory (spring)
 9455636766,Step state: Migratory (spring),Point state: Migratory (spring)
 9455636767,Step state: Migratory (spring),Point state: Migratory (spring)
 9455636768,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -4271,9 +4271,9 @@ event_id,primary_step_state,primary_point_state
 9487623674,Step state: Migratory (spring),Point state: Migratory (spring)
 9487623675,Step state: Migratory (spring),Point state: Migratory (spring)
 9487623676,Step state: Migratory (spring),Point state: Migratory (spring)
-9487623677,Step state: Stationary,Point state: Stationary
-9487623678,Step state: Stationary,Point state: Stationary
-9487623679,Step state: Stationary,Point state: Stationary
+9487623677,Step state: Migratory (spring),Point state: Migratory (spring)
+9487623678,Step state: Migratory (spring),Point state: Migratory (spring)
+9487623679,Step state: Migratory (spring),Point state: Migratory (spring)
 9487623680,Step state: Migratory (spring),Point state: Migratory (spring)
 9487623681,Step state: Migratory (spring),Point state: Migratory (spring)
 9487623682,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -4319,9 +4319,9 @@ event_id,primary_step_state,primary_point_state
 9497039558,Step state: Migratory (spring),Point state: Migratory (spring)
 9497039559,Step state: Migratory (spring),Point state: Migratory (spring)
 9497039560,Step state: Migratory (spring),Point state: Migratory (spring)
-9497039561,Step state: Stationary,Point state: Stationary
-9497039562,Step state: Stationary,Point state: Stationary
-9497039563,Step state: Stationary,Point state: Stationary
+9497039561,Step state: Migratory (spring),Point state: Migratory (spring)
+9497039562,Step state: Migratory (spring),Point state: Migratory (spring)
+9497039563,Step state: Migratory (spring),Point state: Migratory (spring)
 9497039564,Step state: Migratory (spring),Point state: Migratory (spring)
 9497039565,Step state: Migratory (spring),Point state: Migratory (spring)
 9497039566,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -4419,9 +4419,9 @@ event_id,primary_step_state,primary_point_state
 9529204069,Step state: Migratory (spring),Point state: Migratory (spring)
 9529204070,Step state: Migratory (spring),Point state: Migratory (spring)
 9529204071,Step state: Migratory (spring),Point state: Migratory (spring)
-9529204072,Step state: Stationary,Point state: Stationary
-9529204073,Step state: Stationary,Point state: Stationary
-9529204074,Step state: Stationary,Point state: Stationary
+9529204072,Step state: Migratory (spring),Point state: Migratory (spring)
+9529204073,Step state: Migratory (spring),Point state: Migratory (spring)
+9529204074,Step state: Migratory (spring),Point state: Migratory (spring)
 9529204075,Step state: Migratory (spring),Point state: Migratory (spring)
 9529204076,Step state: Migratory (spring),Point state: Migratory (spring)
 9529204077,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -4485,8 +4485,8 @@ event_id,primary_step_state,primary_point_state
 9554760445,Step state: Migratory (spring),Point state: Migratory (spring)
 9554760446,Step state: Migratory (spring),Point state: Migratory (spring)
 9554760447,Step state: Migratory (spring),Point state: Migratory (spring)
-9554760448,Step state: Stationary,Point state: Stationary
-9554760449,Step state: Stationary,Point state: Stationary
+9554760448,Step state: Migratory (spring),Point state: Migratory (spring)
+9554760449,Step state: Migratory (spring),Point state: Migratory (spring)
 9554760450,Step state: Migratory (spring),Point state: Migratory (spring)
 9554760451,Step state: Migratory (spring),Point state: Migratory (spring)
 9554760452,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -4553,9 +4553,9 @@ event_id,primary_step_state,primary_point_state
 9575509361,Step state: Migratory (spring),Point state: Migratory (spring)
 9575509362,Step state: Migratory (spring),Point state: Migratory (spring)
 9575509363,Step state: Migratory (spring),Point state: Migratory (spring)
-9575509364,Step state: Stationary,Point state: Stationary
-9575509365,Step state: Stationary,Point state: Stationary
-9575509366,Step state: Stationary,Point state: Stationary
+9575509364,Step state: Migratory (spring),Point state: Migratory (spring)
+9575509365,Step state: Migratory (spring),Point state: Migratory (spring)
+9575509366,Step state: Migratory (spring),Point state: Migratory (spring)
 9575509367,Step state: Migratory (spring),Point state: Migratory (spring)
 9575509368,Step state: Migratory (spring),Point state: Migratory (spring)
 9575509369,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -4951,7 +4951,7 @@ event_id,primary_step_state,primary_point_state
 9775062334,Step state: Migratory (spring),Point state: Migratory (spring)
 9775062335,Step state: Migratory (spring),Point state: Migratory (spring)
 9775062336,Step state: Migratory (spring),Point state: Migratory (spring)
-9775062337,Step state: Stationary,Point state: Stationary
+9775062337,Step state: Migratory (spring),Point state: Migratory (spring)
 9775062338,Step state: Stationary,Point state: Stationary
 9775062339,Step state: Stationary,Point state: Stationary
 9775062348,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -5338,8 +5338,8 @@ event_id,primary_step_state,primary_point_state
 10003403801,Step state: Stationary,Point state: Stationary
 10003403802,Step state: Stationary,Point state: Stationary
 10003403803,Step state: Stationary,Point state: Stationary
-10003403804,Step state: Stationary,Point state: Stationary
-10003403805,Step state: Stationary,Point state: Stationary
+10003403804,Step state: Migratory (spring),Point state: Migratory (spring)
+10003403805,Step state: Migratory (spring),Point state: Migratory (spring)
 10003403806,Step state: Stationary,Point state: Stationary
 10003403807,Step state: Stationary,Point state: Stationary
 10003403808,Step state: Stationary,Point state: Stationary
@@ -5611,7 +5611,7 @@ event_id,primary_step_state,primary_point_state
 10233761276,Step state: Migratory (spring),Point state: Migratory (spring)
 10233761277,Step state: Migratory (spring),Point state: Migratory (spring)
 10233761278,Step state: Migratory (spring),Point state: Migratory (spring)
-10233761279,Step state: Stationary,Point state: Stationary
+10233761279,Step state: Migratory (spring),Point state: Migratory (spring)
 10233761280,Step state: Stationary,Point state: Stationary
 10233761281,Step state: Stationary,Point state: Stationary
 10233761282,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -5719,8 +5719,8 @@ event_id,primary_step_state,primary_point_state
 10356897940,Step state: Stationary,Point state: Stationary
 10356897941,Step state: Stationary,Point state: Stationary
 10356897942,Step state: Stationary,Point state: Stationary
-10356897943,Step state: Stationary,Point state: Stationary
-10356897944,Step state: Stationary,Point state: Stationary
+10356897943,Step state: Migratory (spring),Point state: Migratory (spring)
+10356897944,Step state: Migratory (spring),Point state: Migratory (spring)
 10356897945,Step state: Stationary,Point state: Stationary
 10356897946,Step state: Stationary,Point state: Stationary
 10356897947,Step state: Stationary,Point state: Stationary
@@ -5870,9 +5870,9 @@ event_id,primary_step_state,primary_point_state
 10612489651,Step state: Stationary,Point state: Stationary
 10612489652,Step state: Stationary,Point state: Stationary
 10612489653,Step state: Stationary,Point state: Stationary
-10612489654,Step state: Stationary,Point state: Stationary
-10612489655,Step state: Stationary,Point state: Stationary
-10612489656,Step state: Stationary,Point state: Stationary
+10612489654,Step state: Migratory (spring),Point state: Migratory (spring)
+10612489655,Step state: Migratory (spring),Point state: Migratory (spring)
+10612489656,Step state: Migratory (spring),Point state: Migratory (spring)
 10612489657,Step state: Stationary,Point state: Stationary
 10612489658,Step state: Stationary,Point state: Stationary
 10612489659,Step state: Stationary,Point state: Stationary
@@ -6082,7 +6082,7 @@ event_id,primary_step_state,primary_point_state
 11499249322,Step state: Stationary,Point state: Stationary
 11499249323,Step state: Stationary,Point state: Stationary
 11499249324,Step state: Stationary,Point state: Stationary
-11499249325,Step state: Stationary,Point state: Stationary
+11499249325,Step state: Migratory (spring),Point state: Migratory (spring)
 11499249326,Step state: Stationary,Point state: Stationary
 11499249327,Step state: Stationary,Point state: Stationary
 11499249328,Step state: Stationary,Point state: Stationary
@@ -8138,7 +8138,7 @@ event_id,primary_step_state,primary_point_state
 13045577432,Step state: Stationary,Point state: Stationary
 13045577433,Step state: Stationary,Point state: Stationary
 13045577434,Step state: Migratory (fall),Point state: Migratory (fall)
-13045577435,Step state: Stationary,Point state: Stationary
+13045577435,Step state: Migratory (fall),Point state: Migratory (fall)
 13045577436,Step state: Stationary,Point state: Stationary
 13045577437,Step state: Stationary,Point state: Stationary
 13045577438,Step state: Stationary,Point state: Stationary
@@ -8319,7 +8319,7 @@ event_id,primary_step_state,primary_point_state
 13234519891,Step state: Migratory (fall),Point state: Migratory (fall)
 13234519892,Step state: Migratory (fall),Point state: Migratory (fall)
 13234519893,Step state: Migratory (fall),Point state: Migratory (fall)
-13234519894,Step state: Stationary,Point state: Stationary
+13234519894,Step state: Migratory (fall),Point state: Migratory (fall)
 13234519895,Step state: Stationary,Point state: Stationary
 13234519896,Step state: Stationary,Point state: Stationary
 13234519897,Step state: Stationary,Point state: Stationary
@@ -8353,7 +8353,7 @@ event_id,primary_step_state,primary_point_state
 13234519925,Step state: Migratory (fall),Point state: Migratory (fall)
 13234519926,Step state: Migratory (fall),Point state: Migratory (fall)
 13234519927,Step state: Migratory (fall),Point state: Migratory (fall)
-13234519928,Step state: Stationary,Point state: Stationary
+13234519928,Step state: Migratory (fall),Point state: Migratory (fall)
 13234519929,Step state: Stationary,Point state: Stationary
 13234519930,Step state: Stationary,Point state: Stationary
 13234519931,Step state: Stationary,Point state: Stationary
@@ -8547,7 +8547,7 @@ event_id,primary_step_state,primary_point_state
 13252520019,Step state: Stationary,Point state: Stationary
 13252520020,Step state: Stationary,Point state: Stationary
 13252520021,Step state: Stationary,Point state: Stationary
-13259773623,Step state: Stationary,Point state: Stationary
+13259773623,Step state: Migratory (fall),Point state: Migratory (fall)
 13259773624,Step state: Stationary,Point state: Stationary
 13259773625,Step state: Stationary,Point state: Stationary
 13259773626,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -8639,7 +8639,7 @@ event_id,primary_step_state,primary_point_state
 13259773715,Step state: Stationary,Point state: Stationary
 13259773716,Step state: Stationary,Point state: Stationary
 13259773717,Step state: Stationary,Point state: Stationary
-13259773718,Step state: Stationary,Point state: Stationary
+13259773718,Step state: Migratory (fall),Point state: Migratory (fall)
 13259773719,Step state: Stationary,Point state: Stationary
 13259773720,Step state: Stationary,Point state: Stationary
 13259773721,Step state: Stationary,Point state: Stationary
@@ -8838,7 +8838,7 @@ event_id,primary_step_state,primary_point_state
 13316941358,Step state: Stationary,Point state: Stationary
 13316941359,Step state: Stationary,Point state: Stationary
 13316941360,Step state: Stationary,Point state: Stationary
-13316941361,Step state: Stationary,Point state: Stationary
+13316941361,Step state: Migratory (fall),Point state: Migratory (fall)
 13316941362,Step state: Stationary,Point state: Stationary
 13316941363,Step state: Stationary,Point state: Stationary
 13316941364,Step state: Stationary,Point state: Stationary
@@ -8969,7 +8969,7 @@ event_id,primary_step_state,primary_point_state
 13375299177,Step state: Migratory (fall),Point state: Stationary
 13375299178,Step state: Stationary,Point state: Stationary
 13375299179,Step state: Stationary,Point state: Stationary
-13375299180,Step state: Stationary,Point state: Stationary
+13375299180,Step state: Migratory (fall),Point state: Stationary
 13375299181,Step state: Migratory (fall),Point state: Migratory (fall)
 13375299182,Step state: Migratory (fall),Point state: Migratory (fall)
 13375299183,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -8998,7 +8998,7 @@ event_id,primary_step_state,primary_point_state
 13497442812,Step state: Migratory (fall),Point state: Migratory (fall)
 13497442813,Step state: Migratory (fall),Point state: Migratory (fall)
 13497442814,Step state: Migratory (fall),Point state: Migratory (fall)
-13497442815,Step state: Stationary,Point state: Stationary
+13497442815,Step state: Migratory (fall),Point state: Migratory (fall)
 13497442822,Step state: Migratory (fall),Point state: Migratory (fall)
 13497442823,Step state: Migratory (fall),Point state: Migratory (fall)
 13497442824,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -9625,7 +9625,7 @@ event_id,primary_step_state,primary_point_state
 13584059264,Step state: Stationary,Point state: Stationary
 13584059265,Step state: Stationary,Point state: Stationary
 13586336235,Step state: Migratory (fall),Point state: Migratory (fall)
-13586336236,Step state: Stationary,Point state: Stationary
+13586336236,Step state: Migratory (fall),Point state: Migratory (fall)
 13586336237,Step state: Stationary,Point state: Stationary
 13586336238,Step state: Stationary,Point state: Stationary
 13586336239,Step state: Stationary,Point state: Stationary
@@ -9692,9 +9692,9 @@ event_id,primary_step_state,primary_point_state
 13586336300,Step state: Migratory (fall),Point state: Migratory (fall)
 13586336301,Step state: Migratory (fall),Point state: Migratory (fall)
 13586336302,Step state: Migratory (fall),Point state: Migratory (fall)
-13586336303,Step state: Stationary,Point state: Stationary
-13586336304,Step state: Stationary,Point state: Stationary
-13586336305,Step state: Stationary,Point state: Stationary
+13586336303,Step state: Migratory (fall),Point state: Migratory (fall)
+13586336304,Step state: Migratory (fall),Point state: Migratory (fall)
+13586336305,Step state: Migratory (fall),Point state: Migratory (fall)
 13586336306,Step state: Stationary,Point state: Stationary
 13586336307,Step state: Stationary,Point state: Stationary
 13586336308,Step state: Stationary,Point state: Stationary
@@ -10048,11 +10048,11 @@ event_id,primary_step_state,primary_point_state
 13607659355,Step state: Stationary,Point state: Stationary
 13607659356,Step state: Stationary,Point state: Stationary
 13607659357,Step state: Stationary,Point state: Stationary
-13607659358,Step state: Stationary,Point state: Stationary
-13607659359,Step state: Stationary,Point state: Stationary
-13607659360,Step state: Stationary,Point state: Stationary
-13607659361,Step state: Stationary,Point state: Stationary
-13607659362,Step state: Stationary,Point state: Stationary
+13607659358,Step state: Migratory (fall),Point state: Stationary
+13607659359,Step state: Migratory (fall),Point state: Migratory (fall)
+13607659360,Step state: Migratory (fall),Point state: Migratory (fall)
+13607659361,Step state: Migratory (fall),Point state: Migratory (fall)
+13607659362,Step state: Migratory (fall),Point state: Migratory (fall)
 13607659363,Step state: Stationary,Point state: Stationary
 13607659364,Step state: Stationary,Point state: Stationary
 13607659365,Step state: Stationary,Point state: Stationary
@@ -10676,9 +10676,9 @@ event_id,primary_step_state,primary_point_state
 13640880127,Step state: Stationary,Point state: Stationary
 13640880128,Step state: Stationary,Point state: Stationary
 13640880129,Step state: Stationary,Point state: Stationary
-13640880130,Step state: Stationary,Point state: Stationary
-13640880131,Step state: Stationary,Point state: Stationary
-13640880132,Step state: Stationary,Point state: Stationary
+13640880130,Step state: Migratory (fall),Point state: Migratory (fall)
+13640880131,Step state: Migratory (fall),Point state: Migratory (fall)
+13640880132,Step state: Migratory (fall),Point state: Migratory (fall)
 13640880133,Step state: Stationary,Point state: Stationary
 13640880134,Step state: Stationary,Point state: Stationary
 13640880135,Step state: Stationary,Point state: Stationary
@@ -10717,9 +10717,9 @@ event_id,primary_step_state,primary_point_state
 13651470629,Step state: Stationary,Point state: Stationary
 13651470630,Step state: Stationary,Point state: Stationary
 13651470631,Step state: Stationary,Point state: Stationary
-13651470632,Step state: Stationary,Point state: Stationary
-13651470633,Step state: Stationary,Point state: Stationary
-13651470634,Step state: Stationary,Point state: Stationary
+13651470632,Step state: Migratory (fall),Point state: Migratory (fall)
+13651470633,Step state: Migratory (fall),Point state: Migratory (fall)
+13651470634,Step state: Migratory (fall),Point state: Migratory (fall)
 13651470635,Step state: Migratory (fall),Point state: Migratory (fall)
 13651470636,Step state: Migratory (fall),Point state: Migratory (fall)
 13651470637,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -10771,11 +10771,11 @@ event_id,primary_step_state,primary_point_state
 13651600102,Step state: Migratory (spring),Point state: Migratory (spring)
 13651600103,Step state: Migratory (spring),Point state: Migratory (spring)
 13651600104,Step state: Migratory (spring),Point state: Migratory (spring)
-13651600105,Step state: Stationary,Point state: Stationary
-13651600106,Step state: Stationary,Point state: Stationary
-13651600107,Step state: Stationary,Point state: Stationary
-13651600108,Step state: Stationary,Point state: Stationary
-13651600109,Step state: Stationary,Point state: Stationary
+13651600105,Step state: Migratory (spring),Point state: Migratory (spring)
+13651600106,Step state: Migratory (spring),Point state: Migratory (spring)
+13651600107,Step state: Migratory (spring),Point state: Migratory (spring)
+13651600108,Step state: Migratory (spring),Point state: Migratory (spring)
+13651600109,Step state: Migratory (spring),Point state: Migratory (spring)
 13651600110,Step state: Migratory (spring),Point state: Migratory (spring)
 13651600111,Step state: Migratory (spring),Point state: Migratory (spring)
 13651600112,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -10906,10 +10906,10 @@ event_id,primary_step_state,primary_point_state
 13651671578,Step state: Migratory (spring),Point state: Migratory (spring)
 13651671579,Step state: Stationary,Point state: Stationary
 13651671580,Step state: Stationary,Point state: Stationary
-13651671581,Step state: Stationary,Point state: Stationary
-13651671582,Step state: Stationary,Point state: Stationary
-13651671583,Step state: Stationary,Point state: Stationary
-13651671584,Step state: Migratory (spring),Point state: Stationary
+13651671581,Step state: Migratory (spring),Point state: Stationary
+13651671582,Step state: Migratory (spring),Point state: Migratory (spring)
+13651671583,Step state: Migratory (spring),Point state: Migratory (spring)
+13651671584,Step state: Migratory (spring),Point state: Migratory (spring)
 13651671585,Step state: Stationary,Point state: Stationary
 13651671586,Step state: Stationary,Point state: Stationary
 13651671587,Step state: Stationary,Point state: Stationary
@@ -10987,8 +10987,8 @@ event_id,primary_step_state,primary_point_state
 13651672666,Step state: Migratory (spring),Point state: Stationary
 13651672667,Step state: Migratory (spring),Point state: Migratory (spring)
 13651672668,Step state: Migratory (spring),Point state: Migratory (spring)
-13651672669,Step state: Stationary,Point state: Stationary
-13651672670,Step state: Stationary,Point state: Stationary
+13651672669,Step state: Migratory (spring),Point state: Migratory (spring)
+13651672670,Step state: Migratory (spring),Point state: Migratory (spring)
 13651672671,Step state: Migratory (spring),Point state: Migratory (spring)
 13651672672,Step state: Migratory (spring),Point state: Migratory (spring)
 13651672673,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -11462,7 +11462,7 @@ event_id,primary_step_state,primary_point_state
 13652880886,Step state: Migratory (fall),Point state: Migratory (fall)
 13652880887,Step state: Migratory (fall),Point state: Migratory (fall)
 13652880888,Step state: Migratory (fall),Point state: Migratory (fall)
-13652880889,Step state: Stationary,Point state: Stationary
+13652880889,Step state: Migratory (fall),Point state: Migratory (fall)
 13652880890,Step state: Stationary,Point state: Stationary
 13652880891,Step state: Stationary,Point state: Stationary
 13652880892,Step state: Stationary,Point state: Stationary
@@ -11577,13 +11577,13 @@ event_id,primary_step_state,primary_point_state
 13652887235,Step state: Stationary,Point state: Stationary
 13652887236,Step state: Stationary,Point state: Stationary
 13652887237,Step state: Stationary,Point state: Stationary
-13652887238,Step state: Stationary,Point state: Stationary
-13652887239,Step state: Stationary,Point state: Stationary
-13652887240,Step state: Stationary,Point state: Stationary
-13652887241,Step state: Stationary,Point state: Stationary
-13652887242,Step state: Stationary,Point state: Stationary
-13652887243,Step state: Stationary,Point state: Stationary
-13652887244,Step state: Stationary,Point state: Stationary
+13652887238,Step state: Migratory (fall),Point state: Migratory (fall)
+13652887239,Step state: Migratory (fall),Point state: Migratory (fall)
+13652887240,Step state: Migratory (fall),Point state: Migratory (fall)
+13652887241,Step state: Migratory (fall),Point state: Migratory (fall)
+13652887242,Step state: Migratory (fall),Point state: Migratory (fall)
+13652887243,Step state: Migratory (fall),Point state: Migratory (fall)
+13652887244,Step state: Migratory (fall),Point state: Migratory (fall)
 13652887245,Step state: Stationary,Point state: Stationary
 13652887246,Step state: Stationary,Point state: Stationary
 13652887247,Step state: Stationary,Point state: Stationary
@@ -11754,7 +11754,7 @@ event_id,primary_step_state,primary_point_state
 13661923045,Step state: Stationary,Point state: Stationary
 13661923046,Step state: Stationary,Point state: Stationary
 13661923047,Step state: Stationary,Point state: Stationary
-13661923048,Step state: Stationary,Point state: Stationary
+13661923048,Step state: Migratory (fall),Point state: Migratory (fall)
 13661923049,Step state: Stationary,Point state: Stationary
 13661923050,Step state: Stationary,Point state: Stationary
 13661923051,Step state: Stationary,Point state: Stationary
@@ -11818,11 +11818,11 @@ event_id,primary_step_state,primary_point_state
 13675156945,Step state: Stationary,Point state: Stationary
 13675156946,Step state: Stationary,Point state: Stationary
 13675156947,Step state: Stationary,Point state: Stationary
-13675156948,Step state: Stationary,Point state: Stationary
-13675156949,Step state: Stationary,Point state: Stationary
-13675156950,Step state: Stationary,Point state: Stationary
-13675156951,Step state: Stationary,Point state: Stationary
-13675156952,Step state: Stationary,Point state: Stationary
+13675156948,Step state: Migratory (fall),Point state: Migratory (fall)
+13675156949,Step state: Migratory (fall),Point state: Migratory (fall)
+13675156950,Step state: Migratory (fall),Point state: Migratory (fall)
+13675156951,Step state: Migratory (fall),Point state: Migratory (fall)
+13675156952,Step state: Migratory (fall),Point state: Migratory (fall)
 13675156953,Step state: Stationary,Point state: Stationary
 13675156954,Step state: Stationary,Point state: Stationary
 13675156955,Step state: Stationary,Point state: Stationary
@@ -11930,9 +11930,9 @@ event_id,primary_step_state,primary_point_state
 13675187880,Step state: Stationary,Point state: Stationary
 13675187881,Step state: Stationary,Point state: Stationary
 13675187882,Step state: Stationary,Point state: Stationary
-13675187883,Step state: Stationary,Point state: Stationary
-13675187884,Step state: Stationary,Point state: Stationary
-13675187885,Step state: Stationary,Point state: Stationary
+13675187883,Step state: Migratory (fall),Point state: Migratory (fall)
+13675187884,Step state: Migratory (fall),Point state: Migratory (fall)
+13675187885,Step state: Migratory (fall),Point state: Migratory (fall)
 13675187886,Step state: Stationary,Point state: Stationary
 13675187887,Step state: Stationary,Point state: Stationary
 13675187888,Step state: Stationary,Point state: Stationary
@@ -11942,9 +11942,9 @@ event_id,primary_step_state,primary_point_state
 13682406371,Step state: Stationary,Point state: Stationary
 13682406372,Step state: Stationary,Point state: Stationary
 13682406373,Step state: Stationary,Point state: Stationary
-13682406374,Step state: Stationary,Point state: Stationary
-13682406375,Step state: Stationary,Point state: Stationary
-13682406376,Step state: Stationary,Point state: Stationary
+13682406374,Step state: Migratory (fall),Point state: Migratory (fall)
+13682406375,Step state: Migratory (fall),Point state: Migratory (fall)
+13682406376,Step state: Migratory (fall),Point state: Migratory (fall)
 13682406377,Step state: Stationary,Point state: Stationary
 13682406378,Step state: Stationary,Point state: Stationary
 13682406379,Step state: Stationary,Point state: Stationary
@@ -12077,9 +12077,9 @@ event_id,primary_step_state,primary_point_state
 13724856876,Step state: Migratory (fall),Point state: Migratory (fall)
 13724856877,Step state: Stationary,Point state: Stationary
 13724856878,Step state: Stationary,Point state: Stationary
-13724856879,Step state: Stationary,Point state: Stationary
-13724856880,Step state: Stationary,Point state: Stationary
-13724856881,Step state: Stationary,Point state: Stationary
+13724856879,Step state: Migratory (fall),Point state: Migratory (fall)
+13724856880,Step state: Migratory (fall),Point state: Migratory (fall)
+13724856881,Step state: Migratory (fall),Point state: Migratory (fall)
 13724856882,Step state: Migratory (fall),Point state: Migratory (fall)
 13724856883,Step state: Migratory (fall),Point state: Migratory (fall)
 13724856884,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -12106,8 +12106,8 @@ event_id,primary_step_state,primary_point_state
 13724856905,Step state: Stationary,Point state: Stationary
 13724856906,Step state: Stationary,Point state: Stationary
 13724856907,Step state: Stationary,Point state: Stationary
-13724856908,Step state: Stationary,Point state: Stationary
-13724856909,Step state: Stationary,Point state: Stationary
+13724856908,Step state: Migratory (fall),Point state: Migratory (fall)
+13724856909,Step state: Migratory (fall),Point state: Migratory (fall)
 13724856910,Step state: Stationary,Point state: Stationary
 13724856911,Step state: Stationary,Point state: Stationary
 13724856912,Step state: Stationary,Point state: Stationary
@@ -12154,9 +12154,9 @@ event_id,primary_step_state,primary_point_state
 13741442899,Step state: Stationary,Point state: Stationary
 13741442900,Step state: Stationary,Point state: Stationary
 13741442901,Step state: Stationary,Point state: Stationary
-13741442902,Step state: Stationary,Point state: Stationary
-13741442903,Step state: Stationary,Point state: Stationary
-13741442904,Step state: Stationary,Point state: Stationary
+13741442902,Step state: Migratory (fall),Point state: Migratory (fall)
+13741442903,Step state: Migratory (fall),Point state: Migratory (fall)
+13741442904,Step state: Migratory (fall),Point state: Migratory (fall)
 13741442905,Step state: Stationary,Point state: Stationary
 13741442906,Step state: Stationary,Point state: Stationary
 13741442907,Step state: Stationary,Point state: Stationary
@@ -12267,9 +12267,9 @@ event_id,primary_step_state,primary_point_state
 13750798356,Step state: Migratory (fall),Point state: Migratory (fall)
 13750798357,Step state: Migratory (fall),Point state: Migratory (fall)
 13750798358,Step state: Migratory (fall),Point state: Migratory (fall)
-13750798359,Step state: Stationary,Point state: Stationary
-13750798360,Step state: Stationary,Point state: Stationary
-13750798361,Step state: Stationary,Point state: Stationary
+13750798359,Step state: Migratory (fall),Point state: Migratory (fall)
+13750798360,Step state: Migratory (fall),Point state: Migratory (fall)
+13750798361,Step state: Migratory (fall),Point state: Migratory (fall)
 13750798362,Step state: Stationary,Point state: Stationary
 13750798363,Step state: Stationary,Point state: Stationary
 13750798364,Step state: Stationary,Point state: Stationary
@@ -12353,9 +12353,9 @@ event_id,primary_step_state,primary_point_state
 13764267505,Step state: Stationary,Point state: Stationary
 13764267506,Step state: Stationary,Point state: Stationary
 13764267507,Step state: Stationary,Point state: Stationary
-13764267508,Step state: Stationary,Point state: Stationary
-13764267509,Step state: Stationary,Point state: Stationary
-13764267510,Step state: Stationary,Point state: Stationary
+13764267508,Step state: Migratory (fall),Point state: Migratory (fall)
+13764267509,Step state: Migratory (fall),Point state: Migratory (fall)
+13764267510,Step state: Migratory (fall),Point state: Migratory (fall)
 13764267511,Step state: Stationary,Point state: Stationary
 13764267512,Step state: Stationary,Point state: Stationary
 13764267513,Step state: Stationary,Point state: Stationary
@@ -12372,7 +12372,7 @@ event_id,primary_step_state,primary_point_state
 13764267524,Step state: Stationary,Point state: Stationary
 13764267525,Step state: Stationary,Point state: Stationary
 13764267526,Step state: Stationary,Point state: Stationary
-13764267527,Step state: Stationary,Point state: Stationary
+13764267527,Step state: Migratory (spring),Point state: Migratory (spring)
 13764267528,Step state: Stationary,Point state: Stationary
 13764267529,Step state: Stationary,Point state: Stationary
 13764267530,Step state: Stationary,Point state: Stationary
@@ -12549,9 +12549,9 @@ event_id,primary_step_state,primary_point_state
 13791272216,Step state: Stationary,Point state: Stationary
 13791272217,Step state: Stationary,Point state: Stationary
 13791272218,Step state: Stationary,Point state: Stationary
-13791272219,Step state: Stationary,Point state: Stationary
-13791272220,Step state: Stationary,Point state: Stationary
-13791272221,Step state: Stationary,Point state: Stationary
+13791272219,Step state: Migratory (fall),Point state: Migratory (fall)
+13791272220,Step state: Migratory (fall),Point state: Migratory (fall)
+13791272221,Step state: Migratory (fall),Point state: Migratory (fall)
 13791272222,Step state: Stationary,Point state: Stationary
 13791272223,Step state: Stationary,Point state: Stationary
 13791272224,Step state: Stationary,Point state: Stationary
@@ -12701,15 +12701,15 @@ event_id,primary_step_state,primary_point_state
 13819495050,Step state: Stationary,Point state: Stationary
 13819495051,Step state: Stationary,Point state: Stationary
 13819495052,Step state: Stationary,Point state: Stationary
-13819495053,Step state: Stationary,Point state: Stationary
-13819495054,Step state: Stationary,Point state: Stationary
-13819495055,Step state: Stationary,Point state: Stationary
-13819495056,Step state: Stationary,Point state: Stationary
-13819495057,Step state: Stationary,Point state: Stationary
-13819495058,Step state: Stationary,Point state: Stationary
-13819495059,Step state: Stationary,Point state: Stationary
-13819495060,Step state: Stationary,Point state: Stationary
-13819495061,Step state: Stationary,Point state: Stationary
+13819495053,Step state: Migratory (fall),Point state: Migratory (fall)
+13819495054,Step state: Migratory (fall),Point state: Migratory (fall)
+13819495055,Step state: Migratory (fall),Point state: Migratory (fall)
+13819495056,Step state: Migratory (fall),Point state: Migratory (fall)
+13819495057,Step state: Migratory (fall),Point state: Migratory (fall)
+13819495058,Step state: Migratory (fall),Point state: Migratory (fall)
+13819495059,Step state: Migratory (fall),Point state: Migratory (fall)
+13819495060,Step state: Migratory (fall),Point state: Migratory (fall)
+13819495061,Step state: Migratory (fall),Point state: Migratory (fall)
 13819495062,Step state: Stationary,Point state: Stationary
 13819495063,Step state: Stationary,Point state: Stationary
 13819495064,Step state: Stationary,Point state: Stationary
@@ -12829,7 +12829,7 @@ event_id,primary_step_state,primary_point_state
 13847383708,Step state: Stationary,Point state: Stationary
 13847383709,Step state: Migratory (fall),Point state: Migratory (fall)
 13847383710,Step state: Migratory (fall),Point state: Migratory (fall)
-13847383711,Step state: Stationary,Point state: Stationary
+13847383711,Step state: Migratory (fall),Point state: Migratory (fall)
 13847383712,Step state: Stationary,Point state: Stationary
 13847383713,Step state: Stationary,Point state: Stationary
 13847383714,Step state: Stationary,Point state: Stationary
@@ -13187,7 +13187,7 @@ event_id,primary_step_state,primary_point_state
 14074605773,Step state: Stationary,Point state: Stationary
 14074605774,Step state: Stationary,Point state: Stationary
 14074605775,Step state: Stationary,Point state: Stationary
-14074605776,Step state: Migratory (spring),Point state: Stationary
+14074605776,Step state: Migratory (spring),Point state: Migratory (spring)
 14074605777,Step state: Migratory (spring),Point state: Migratory (spring)
 14074605778,Step state: Migratory (spring),Point state: Migratory (spring)
 14074605779,Step state: Stationary,Point state: Stationary
@@ -13313,7 +13313,7 @@ event_id,primary_step_state,primary_point_state
 14074607029,Step state: Stationary,Point state: Stationary
 14074607030,Step state: Stationary,Point state: Stationary
 14074607031,Step state: Stationary,Point state: Stationary
-14074607032,Step state: Stationary,Point state: Stationary
+14074607032,Step state: Migratory (spring),Point state: Stationary
 14074607033,Step state: Stationary,Point state: Stationary
 14074607034,Step state: Stationary,Point state: Stationary
 14074607035,Step state: Migratory (spring),Point state: Stationary
@@ -15156,7 +15156,7 @@ event_id,primary_step_state,primary_point_state
 14249914833,Step state: Migratory (spring),Point state: Migratory (spring)
 14249914834,Step state: Migratory (spring),Point state: Migratory (spring)
 14249914835,Step state: Migratory (spring),Point state: Migratory (spring)
-14249914836,Step state: Stationary,Point state: Stationary
+14249914836,Step state: Migratory (spring),Point state: Migratory (spring)
 14249914837,Step state: Migratory (spring),Point state: Migratory (spring)
 14249914838,Step state: Migratory (spring),Point state: Migratory (spring)
 14258916631,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -15323,9 +15323,9 @@ event_id,primary_step_state,primary_point_state
 14271288755,Step state: Stationary,Point state: Stationary
 14271288756,Step state: Stationary,Point state: Stationary
 14271288757,Step state: Stationary,Point state: Stationary
-14271288758,Step state: Stationary,Point state: Stationary
-14271288759,Step state: Stationary,Point state: Stationary
-14271288760,Step state: Stationary,Point state: Stationary
+14271288758,Step state: Migratory (spring),Point state: Migratory (spring)
+14271288759,Step state: Migratory (spring),Point state: Migratory (spring)
+14271288760,Step state: Migratory (spring),Point state: Migratory (spring)
 14271288761,Step state: Migratory (spring),Point state: Migratory (spring)
 14271288762,Step state: Migratory (spring),Point state: Migratory (spring)
 14271288763,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -15504,7 +15504,7 @@ event_id,primary_step_state,primary_point_state
 14301614274,Step state: Stationary,Point state: Stationary
 14301614275,Step state: Stationary,Point state: Stationary
 14301614276,Step state: Stationary,Point state: Stationary
-14301614277,Step state: Stationary,Point state: Stationary
+14301614277,Step state: Migratory (spring),Point state: Migratory (spring)
 14301614278,Step state: Stationary,Point state: Stationary
 14301614279,Step state: Stationary,Point state: Stationary
 14301614280,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -15913,7 +15913,7 @@ event_id,primary_step_state,primary_point_state
 14392731088,Step state: Migratory (spring),Point state: Migratory (spring)
 14392731089,Step state: Migratory (spring),Point state: Migratory (spring)
 14392731090,Step state: Migratory (spring),Point state: Migratory (spring)
-14392731091,Step state: Stationary,Point state: Stationary
+14392731091,Step state: Migratory (spring),Point state: Migratory (spring)
 14392731092,Step state: Stationary,Point state: Stationary
 14392731093,Step state: Stationary,Point state: Stationary
 14392731094,Step state: Stationary,Point state: Stationary
@@ -15972,7 +15972,7 @@ event_id,primary_step_state,primary_point_state
 14409659139,Step state: Stationary,Point state: Stationary
 14409659140,Step state: Migratory (spring),Point state: Migratory (spring)
 14409659141,Step state: Migratory (spring),Point state: Migratory (spring)
-14409659142,Step state: Stationary,Point state: Stationary
+14409659142,Step state: Migratory (spring),Point state: Migratory (spring)
 14409659150,Step state: Stationary,Point state: Stationary
 14409659151,Step state: Stationary,Point state: Stationary
 14409659152,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -16044,9 +16044,9 @@ event_id,primary_step_state,primary_point_state
 14435161620,Step state: Migratory (spring),Point state: Migratory (spring)
 14435161621,Step state: Migratory (spring),Point state: Migratory (spring)
 14435161622,Step state: Migratory (spring),Point state: Migratory (spring)
-14435161623,Step state: Stationary,Point state: Stationary
-14435161624,Step state: Stationary,Point state: Stationary
-14435161625,Step state: Stationary,Point state: Stationary
+14435161623,Step state: Migratory (spring),Point state: Migratory (spring)
+14435161624,Step state: Migratory (spring),Point state: Migratory (spring)
+14435161625,Step state: Migratory (spring),Point state: Migratory (spring)
 14435161627,Step state: Migratory (spring),Point state: Migratory (spring)
 14435161628,Step state: Migratory (spring),Point state: Migratory (spring)
 14435161629,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -16154,9 +16154,9 @@ event_id,primary_step_state,primary_point_state
 14450728257,Step state: Stationary,Point state: Stationary
 14450728258,Step state: Stationary,Point state: Stationary
 14450728259,Step state: Stationary,Point state: Stationary
-14456980294,Step state: Stationary,Point state: Stationary
-14456980295,Step state: Stationary,Point state: Stationary
-14456980296,Step state: Stationary,Point state: Stationary
+14456980294,Step state: Migratory (spring),Point state: Migratory (spring)
+14456980295,Step state: Migratory (spring),Point state: Migratory (spring)
+14456980296,Step state: Migratory (spring),Point state: Migratory (spring)
 14456980300,Step state: Stationary,Point state: Stationary
 14456980301,Step state: Stationary,Point state: Stationary
 14456980302,Step state: Stationary,Point state: Stationary
@@ -16176,8 +16176,8 @@ event_id,primary_step_state,primary_point_state
 14470354436,Step state: Migratory (spring),Point state: Migratory (spring)
 14470354437,Step state: Migratory (spring),Point state: Migratory (spring)
 14470354438,Step state: Migratory (spring),Point state: Migratory (spring)
-14470354439,Step state: Stationary,Point state: Stationary
-14470354440,Step state: Stationary,Point state: Stationary
+14470354439,Step state: Migratory (spring),Point state: Migratory (spring)
+14470354440,Step state: Migratory (spring),Point state: Migratory (spring)
 14470354441,Step state: Migratory (spring),Point state: Migratory (spring)
 14470354442,Step state: Migratory (spring),Point state: Migratory (spring)
 14470354443,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -16248,9 +16248,9 @@ event_id,primary_step_state,primary_point_state
 14496707000,Step state: Stationary,Point state: Stationary
 14496707001,Step state: Stationary,Point state: Stationary
 14496707002,Step state: Stationary,Point state: Stationary
-14496707003,Step state: Stationary,Point state: Stationary
-14496707004,Step state: Stationary,Point state: Stationary
-14496707005,Step state: Stationary,Point state: Stationary
+14496707003,Step state: Migratory (spring),Point state: Migratory (spring)
+14496707004,Step state: Migratory (spring),Point state: Migratory (spring)
+14496707005,Step state: Migratory (spring),Point state: Migratory (spring)
 14496707009,Step state: Stationary,Point state: Stationary
 14496707010,Step state: Stationary,Point state: Stationary
 14496707011,Step state: Stationary,Point state: Stationary
@@ -16269,8 +16269,8 @@ event_id,primary_step_state,primary_point_state
 14496707025,Step state: Migratory (spring),Point state: Migratory (spring)
 14496707026,Step state: Migratory (spring),Point state: Migratory (spring)
 14496707027,Step state: Migratory (spring),Point state: Migratory (spring)
-14496707028,Step state: Stationary,Point state: Stationary
-14496707029,Step state: Stationary,Point state: Stationary
+14496707028,Step state: Migratory (spring),Point state: Migratory (spring)
+14496707029,Step state: Migratory (spring),Point state: Migratory (spring)
 14496707030,Step state: Migratory (spring),Point state: Migratory (spring)
 14496707031,Step state: Migratory (spring),Point state: Migratory (spring)
 14496707032,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -16345,9 +16345,9 @@ event_id,primary_step_state,primary_point_state
 14504686088,Step state: Migratory (spring),Point state: Migratory (spring)
 14504686089,Step state: Migratory (spring),Point state: Migratory (spring)
 14504686090,Step state: Migratory (spring),Point state: Migratory (spring)
-14504686091,Step state: Stationary,Point state: Stationary
-14504686092,Step state: Stationary,Point state: Stationary
-14504686093,Step state: Stationary,Point state: Stationary
+14504686091,Step state: Migratory (spring),Point state: Migratory (spring)
+14504686092,Step state: Migratory (spring),Point state: Migratory (spring)
+14504686093,Step state: Migratory (spring),Point state: Migratory (spring)
 14504686094,Step state: Migratory (spring),Point state: Migratory (spring)
 14504686095,Step state: Migratory (spring),Point state: Migratory (spring)
 14504686096,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -16370,9 +16370,9 @@ event_id,primary_step_state,primary_point_state
 14504686113,Step state: Stationary,Point state: Stationary
 14504686114,Step state: Stationary,Point state: Stationary
 14504686115,Step state: Stationary,Point state: Stationary
-14510650800,Step state: Stationary,Point state: Stationary
-14510650801,Step state: Stationary,Point state: Stationary
-14510650802,Step state: Stationary,Point state: Stationary
+14510650800,Step state: Migratory (spring),Point state: Migratory (spring)
+14510650801,Step state: Migratory (spring),Point state: Migratory (spring)
+14510650802,Step state: Migratory (spring),Point state: Migratory (spring)
 14510650803,Step state: Stationary,Point state: Stationary
 14510650804,Step state: Stationary,Point state: Stationary
 14510650805,Step state: Stationary,Point state: Stationary
@@ -16451,9 +16451,9 @@ event_id,primary_step_state,primary_point_state
 14514927317,Step state: Stationary,Point state: Stationary
 14514927318,Step state: Stationary,Point state: Stationary
 14514927319,Step state: Stationary,Point state: Stationary
-14514927320,Step state: Stationary,Point state: Stationary
-14514927321,Step state: Stationary,Point state: Stationary
-14514927322,Step state: Stationary,Point state: Stationary
+14514927320,Step state: Migratory (fall),Point state: Migratory (fall)
+14514927321,Step state: Migratory (fall),Point state: Migratory (fall)
+14514927322,Step state: Migratory (fall),Point state: Migratory (fall)
 14514927323,Step state: Stationary,Point state: Stationary
 14514927324,Step state: Stationary,Point state: Stationary
 14514927325,Step state: Stationary,Point state: Stationary
@@ -16687,15 +16687,15 @@ event_id,primary_step_state,primary_point_state
 14558553311,Step state: Migratory (spring),Point state: Migratory (spring)
 14558553312,Step state: Migratory (spring),Point state: Migratory (spring)
 14558553313,Step state: Migratory (spring),Point state: Migratory (spring)
-14558553314,Step state: Stationary,Point state: Stationary
+14558553314,Step state: Migratory (spring),Point state: Migratory (spring)
 14558553315,Step state: Stationary,Point state: Stationary
 14558553316,Step state: Stationary,Point state: Stationary
 14558553317,Step state: Stationary,Point state: Stationary
 14558553318,Step state: Stationary,Point state: Stationary
 14558553319,Step state: Stationary,Point state: Stationary
-14558553320,Step state: Stationary,Point state: Stationary
-14558553321,Step state: Stationary,Point state: Stationary
-14558553322,Step state: Stationary,Point state: Stationary
+14558553320,Step state: Migratory (spring),Point state: Migratory (spring)
+14558553321,Step state: Migratory (spring),Point state: Migratory (spring)
+14558553322,Step state: Migratory (spring),Point state: Migratory (spring)
 14558553323,Step state: Stationary,Point state: Stationary
 14558553324,Step state: Stationary,Point state: Stationary
 14558553325,Step state: Stationary,Point state: Stationary
@@ -16714,12 +16714,12 @@ event_id,primary_step_state,primary_point_state
 14558553338,Step state: Stationary,Point state: Stationary
 14558553339,Step state: Stationary,Point state: Stationary
 14558553340,Step state: Stationary,Point state: Stationary
-14558553341,Step state: Stationary,Point state: Stationary
-14558553342,Step state: Stationary,Point state: Stationary
-14558553343,Step state: Stationary,Point state: Stationary
-14558553344,Step state: Stationary,Point state: Stationary
-14558553345,Step state: Stationary,Point state: Stationary
-14558553346,Step state: Stationary,Point state: Stationary
+14558553341,Step state: Migratory (spring),Point state: Migratory (spring)
+14558553342,Step state: Migratory (spring),Point state: Migratory (spring)
+14558553343,Step state: Migratory (spring),Point state: Migratory (spring)
+14558553344,Step state: Migratory (spring),Point state: Migratory (spring)
+14558553345,Step state: Migratory (spring),Point state: Migratory (spring)
+14558553346,Step state: Migratory (spring),Point state: Migratory (spring)
 14558553347,Step state: Migratory (spring),Point state: Migratory (spring)
 14558553348,Step state: Migratory (spring),Point state: Migratory (spring)
 14558553349,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -16770,8 +16770,8 @@ event_id,primary_step_state,primary_point_state
 14558553394,Step state: Stationary,Point state: Stationary
 14558553395,Step state: Stationary,Point state: Stationary
 14558553396,Step state: Migratory (spring),Point state: Migratory (spring)
-14558553397,Step state: Stationary,Point state: Stationary
-14558553398,Step state: Stationary,Point state: Stationary
+14558553397,Step state: Migratory (spring),Point state: Migratory (spring)
+14558553398,Step state: Migratory (spring),Point state: Migratory (spring)
 14558553399,Step state: Stationary,Point state: Stationary
 14558553400,Step state: Stationary,Point state: Stationary
 14558553401,Step state: Stationary,Point state: Stationary
@@ -16928,9 +16928,9 @@ event_id,primary_step_state,primary_point_state
 14620630118,Step state: Migratory (spring),Point state: Migratory (spring)
 14620630119,Step state: Migratory (spring),Point state: Migratory (spring)
 14620630120,Step state: Migratory (spring),Point state: Migratory (spring)
-14620630121,Step state: Stationary,Point state: Stationary
-14620630122,Step state: Stationary,Point state: Stationary
-14620630123,Step state: Stationary,Point state: Stationary
+14620630121,Step state: Migratory (spring),Point state: Migratory (spring)
+14620630122,Step state: Migratory (spring),Point state: Migratory (spring)
+14620630123,Step state: Migratory (spring),Point state: Migratory (spring)
 14620630124,Step state: Stationary,Point state: Stationary
 14620630125,Step state: Stationary,Point state: Stationary
 14620630126,Step state: Stationary,Point state: Stationary
@@ -16939,8 +16939,8 @@ event_id,primary_step_state,primary_point_state
 14620630129,Step state: Stationary,Point state: Stationary
 14620630130,Step state: Stationary,Point state: Stationary
 14620630131,Step state: Stationary,Point state: Stationary
-14620630132,Step state: Stationary,Point state: Stationary
-14620630133,Step state: Stationary,Point state: Stationary
+14620630132,Step state: Migratory (spring),Point state: Migratory (spring)
+14620630133,Step state: Migratory (spring),Point state: Migratory (spring)
 14620630134,Step state: Stationary,Point state: Stationary
 14620630141,Step state: Migratory (spring),Point state: Migratory (spring)
 14620630142,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -16968,8 +16968,8 @@ event_id,primary_step_state,primary_point_state
 14620630164,Step state: Migratory (spring),Point state: Migratory (spring)
 14620630165,Step state: Migratory (spring),Point state: Migratory (spring)
 14620630166,Step state: Migratory (spring),Point state: Migratory (spring)
-14620630167,Step state: Stationary,Point state: Stationary
-14620630168,Step state: Stationary,Point state: Stationary
+14620630167,Step state: Migratory (spring),Point state: Migratory (spring)
+14620630168,Step state: Migratory (spring),Point state: Migratory (spring)
 14620630169,Step state: Migratory (spring),Point state: Migratory (spring)
 14620630170,Step state: Migratory (spring),Point state: Migratory (spring)
 14620630171,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -17057,7 +17057,7 @@ event_id,primary_step_state,primary_point_state
 14644000904,Step state: Stationary,Point state: Stationary
 14644000905,Step state: Migratory (spring),Point state: Migratory (spring)
 14644000906,Step state: Migratory (spring),Point state: Migratory (spring)
-14656089847,Step state: Stationary,Point state: Stationary
+14656089847,Step state: Migratory (spring),Point state: Migratory (spring)
 14656089848,Step state: Stationary,Point state: Stationary
 14656089849,Step state: Stationary,Point state: Stationary
 14656089850,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -17256,8 +17256,8 @@ event_id,primary_step_state,primary_point_state
 14774782870,Step state: Stationary,Point state: Stationary
 14774782871,Step state: Stationary,Point state: Stationary
 14774782872,Step state: Stationary,Point state: Stationary
-14774782873,Step state: Stationary,Point state: Stationary
-14774782874,Step state: Stationary,Point state: Stationary
+14774782873,Step state: Migratory (spring),Point state: Migratory (spring)
+14774782874,Step state: Migratory (spring),Point state: Migratory (spring)
 14774782875,Step state: Stationary,Point state: Stationary
 14774782876,Step state: Stationary,Point state: Stationary
 14774782877,Step state: Stationary,Point state: Stationary
@@ -18512,7 +18512,7 @@ event_id,primary_step_state,primary_point_state
 16468348676,Step state: Stationary,Point state: Stationary
 16468348677,Step state: Stationary,Point state: Stationary
 16468348678,Step state: Stationary,Point state: Stationary
-16468348679,Step state: Stationary,Point state: Stationary
+16468348679,Step state: Migratory (fall),Point state: Stationary
 16468348680,Step state: Stationary,Point state: Stationary
 16468348681,Step state: Stationary,Point state: Stationary
 16468348682,Step state: Stationary,Point state: Stationary
@@ -18579,7 +18579,7 @@ event_id,primary_step_state,primary_point_state
 16539016924,Step state: Unknown- bugged frequent schedule,Point state: Unknown- bugged frequent schedule
 16539016925,Step state: Stationary,Point state: Stationary
 16539016926,Step state: Unknown- bugged frequent schedule,Point state: Unknown- bugged frequent schedule
-16539016927,Step state: Stationary,Point state: Stationary
+16539016927,Step state: Migratory (fall),Point state: Migratory (fall)
 16539016928,Step state: Stationary,Point state: Stationary
 16539016929,Step state: Unknown- bugged frequent schedule,Point state: Unknown- bugged frequent schedule
 16539016930,Step state: Unknown- bugged frequent schedule,Point state: Unknown- bugged frequent schedule
@@ -18598,7 +18598,7 @@ event_id,primary_step_state,primary_point_state
 16539016943,Step state: Stationary,Point state: Stationary
 16539016944,Step state: Stationary,Point state: Stationary
 16539016945,Step state: Stationary,Point state: Stationary
-16539016946,Step state: Stationary,Point state: Stationary
+16539016946,Step state: Migratory (fall),Point state: Migratory (fall)
 16539016947,Step state: Stationary,Point state: Stationary
 16539016948,Step state: Stationary,Point state: Stationary
 16539016949,Step state: Stationary,Point state: Stationary
@@ -18685,7 +18685,7 @@ event_id,primary_step_state,primary_point_state
 16544329410,Step state: Stationary,Point state: Stationary
 16544329411,Step state: Stationary,Point state: Stationary
 16544329412,Step state: Migratory (fall),Point state: Migratory (fall)
-16544329413,Step state: Stationary,Point state: Stationary
+16544329413,Step state: Migratory (fall),Point state: Stationary
 16544329414,Step state: Stationary,Point state: Stationary
 16544329415,Step state: Migratory (fall),Point state: Migratory (fall)
 16544329416,Step state: Stationary,Point state: Stationary
@@ -18780,7 +18780,7 @@ event_id,primary_step_state,primary_point_state
 16607535089,Step state: Stationary,Point state: Stationary
 16607535090,Step state: Unknown- bugged frequent schedule,Point state: Unknown- bugged frequent schedule
 16607535091,Step state: Stationary,Point state: Stationary
-16607535092,Step state: Stationary,Point state: Stationary
+16607535092,Step state: Migratory (fall),Point state: Migratory (fall)
 16607535093,Step state: Stationary,Point state: Stationary
 16607535094,Step state: Stationary,Point state: Stationary
 16607535095,Step state: Stationary,Point state: Stationary
@@ -18812,7 +18812,7 @@ event_id,primary_step_state,primary_point_state
 16607535121,Step state: Stationary,Point state: Stationary
 16607535122,Step state: Migratory (fall),Point state: Migratory (fall)
 16607535123,Step state: Stationary,Point state: Stationary
-16607535124,Step state: Stationary,Point state: Stationary
+16607535124,Step state: Migratory (fall),Point state: Migratory (fall)
 16607535125,Step state: Stationary,Point state: Stationary
 16607535126,Step state: Stationary,Point state: Stationary
 16607535127,Step state: Stationary,Point state: Stationary
@@ -18821,7 +18821,7 @@ event_id,primary_step_state,primary_point_state
 16607535130,Step state: Stationary,Point state: Stationary
 16607535131,Step state: Stationary,Point state: Stationary
 16607535132,Step state: Stationary,Point state: Stationary
-16607535133,Step state: Stationary,Point state: Stationary
+16607535133,Step state: Migratory (fall),Point state: Migratory (fall)
 16607535134,Step state: Stationary,Point state: Stationary
 16607535135,Step state: Stationary,Point state: Stationary
 16607535136,Step state: Stationary,Point state: Stationary
@@ -18830,7 +18830,7 @@ event_id,primary_step_state,primary_point_state
 16607535139,Step state: Stationary,Point state: Stationary
 16607535140,Step state: Stationary,Point state: Stationary
 16607535141,Step state: Stationary,Point state: Stationary
-16607535142,Step state: Stationary,Point state: Stationary
+16607535142,Step state: Migratory (fall),Point state: Migratory (fall)
 16607535143,Step state: Stationary,Point state: Stationary
 16607535144,Step state: Stationary,Point state: Stationary
 16607535145,Step state: Stationary,Point state: Stationary
@@ -18838,12 +18838,12 @@ event_id,primary_step_state,primary_point_state
 16607535147,Step state: Stationary,Point state: Stationary
 16607535148,Step state: Migratory (fall),Point state: Migratory (fall)
 16607535149,Step state: Stationary,Point state: Stationary
-16607535150,Step state: Stationary,Point state: Stationary
+16607535150,Step state: Migratory (fall),Point state: Migratory (fall)
 16607535151,Step state: Stationary,Point state: Stationary
 16607535152,Step state: Stationary,Point state: Stationary
 16607535153,Step state: Stationary,Point state: Stationary
 16607535154,Step state: Stationary,Point state: Stationary
-16607535155,Step state: Stationary,Point state: Stationary
+16607535155,Step state: Migratory (fall),Point state: Migratory (fall)
 16607535156,Step state: Stationary,Point state: Stationary
 16607535157,Step state: Stationary,Point state: Stationary
 16607535158,Step state: Stationary,Point state: Stationary
@@ -18971,14 +18971,14 @@ event_id,primary_step_state,primary_point_state
 16662561011,Step state: Stationary,Point state: Stationary
 16662561012,Step state: Stationary,Point state: Stationary
 16662561013,Step state: Stationary,Point state: Stationary
-16662561014,Step state: Stationary,Point state: Stationary
+16662561014,Step state: Migratory (fall),Point state: Migratory (fall)
 16662561015,Step state: Stationary,Point state: Stationary
 16662561016,Step state: Stationary,Point state: Stationary
 16662561017,Step state: Unknown- bugged frequent schedule,Point state: Unknown- bugged frequent schedule
 16662561018,Step state: Stationary,Point state: Stationary
 16662561019,Step state: Stationary,Point state: Stationary
 16662561020,Step state: Stationary,Point state: Stationary
-16662561021,Step state: Stationary,Point state: Stationary
+16662561021,Step state: Migratory (fall),Point state: Migratory (fall)
 16662561022,Step state: Stationary,Point state: Stationary
 16662561023,Step state: Stationary,Point state: Stationary
 16662561024,Step state: Stationary,Point state: Stationary
@@ -18996,7 +18996,7 @@ event_id,primary_step_state,primary_point_state
 16662561036,Step state: Stationary,Point state: Stationary
 16662561037,Step state: Migratory (fall),Point state: Migratory (fall)
 16662561038,Step state: Stationary,Point state: Stationary
-16662561039,Step state: Stationary,Point state: Stationary
+16662561039,Step state: Migratory (fall),Point state: Migratory (fall)
 16662561040,Step state: Stationary,Point state: Stationary
 16662561041,Step state: Stationary,Point state: Stationary
 16662561042,Step state: Stationary,Point state: Stationary
@@ -19005,7 +19005,7 @@ event_id,primary_step_state,primary_point_state
 16662561045,Step state: Migratory (fall),Point state: Migratory (fall)
 16662561046,Step state: Stationary,Point state: Stationary
 16662561047,Step state: Stationary,Point state: Stationary
-16662561048,Step state: Stationary,Point state: Stationary
+16662561048,Step state: Migratory (fall),Point state: Migratory (fall)
 16662561049,Step state: Stationary,Point state: Stationary
 16662561050,Step state: Stationary,Point state: Stationary
 16662561051,Step state: Stationary,Point state: Stationary
@@ -19020,7 +19020,7 @@ event_id,primary_step_state,primary_point_state
 16662561060,Step state: Migratory (fall),Point state: Migratory (fall)
 16662561061,Step state: Stationary,Point state: Stationary
 16662561062,Step state: Stationary,Point state: Stationary
-16662561063,Step state: Stationary,Point state: Stationary
+16662561063,Step state: Migratory (fall),Point state: Migratory (fall)
 16662561064,Step state: Stationary,Point state: Stationary
 16662561065,Step state: Stationary,Point state: Stationary
 16662561066,Step state: Stationary,Point state: Stationary
@@ -19032,7 +19032,7 @@ event_id,primary_step_state,primary_point_state
 16662561072,Step state: Stationary,Point state: Stationary
 16662561073,Step state: Stationary,Point state: Stationary
 16662561074,Step state: Stationary,Point state: Stationary
-16662561075,Step state: Stationary,Point state: Stationary
+16662561075,Step state: Migratory (fall),Point state: Migratory (fall)
 16662561076,Step state: Stationary,Point state: Stationary
 16662561077,Step state: Stationary,Point state: Stationary
 16662561078,Step state: Stationary,Point state: Stationary
@@ -19055,14 +19055,14 @@ event_id,primary_step_state,primary_point_state
 16662561095,Step state: Stationary,Point state: Stationary
 16662561096,Step state: Stationary,Point state: Stationary
 16662561097,Step state: Stationary,Point state: Stationary
-16662561098,Step state: Stationary,Point state: Stationary
+16662561098,Step state: Migratory (fall),Point state: Migratory (fall)
 16662561099,Step state: Stationary,Point state: Stationary
 16662561100,Step state: Stationary,Point state: Stationary
 16662561101,Step state: Stationary,Point state: Stationary
 16662561102,Step state: Stationary,Point state: Stationary
 16662561103,Step state: Stationary,Point state: Stationary
 16662561104,Step state: Stationary,Point state: Stationary
-16662561105,Step state: Stationary,Point state: Stationary
+16662561105,Step state: Migratory (fall),Point state: Migratory (fall)
 16662561106,Step state: Stationary,Point state: Stationary
 16662561107,Step state: Stationary,Point state: Stationary
 16662561108,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -19078,12 +19078,12 @@ event_id,primary_step_state,primary_point_state
 16662561119,Step state: Stationary,Point state: Stationary
 16662561120,Step state: Stationary,Point state: Stationary
 16662561121,Step state: Stationary,Point state: Stationary
-16662561122,Step state: Stationary,Point state: Stationary
+16662561122,Step state: Migratory (fall),Point state: Migratory (fall)
 16662561123,Step state: Stationary,Point state: Stationary
 16662561124,Step state: Stationary,Point state: Stationary
 16662561125,Step state: Stationary,Point state: Stationary
 16662561126,Step state: Stationary,Point state: Stationary
-16662561127,Step state: Stationary,Point state: Stationary
+16662561127,Step state: Migratory (fall),Point state: Migratory (fall)
 16662561128,Step state: Stationary,Point state: Stationary
 16662561129,Step state: Stationary,Point state: Stationary
 16662561130,Step state: Stationary,Point state: Stationary
@@ -19097,9 +19097,9 @@ event_id,primary_step_state,primary_point_state
 16662561138,Step state: Stationary,Point state: Stationary
 16662561139,Step state: Stationary,Point state: Stationary
 16662561140,Step state: Stationary,Point state: Stationary
-16662561141,Step state: Stationary,Point state: Stationary
+16662561141,Step state: Migratory (fall),Point state: Migratory (fall)
 16662561142,Step state: Migratory (fall),Point state: Migratory (fall)
-16662561143,Step state: Stationary,Point state: Stationary
+16662561143,Step state: Migratory (fall),Point state: Migratory (fall)
 16662561144,Step state: Stationary,Point state: Stationary
 16662561145,Step state: Stationary,Point state: Stationary
 16683637971,Step state: Stationary,Point state: Stationary
@@ -19178,7 +19178,7 @@ event_id,primary_step_state,primary_point_state
 16683638046,Step state: Stationary,Point state: Stationary
 16683638047,Step state: Stationary,Point state: Stationary
 16683638048,Step state: Stationary,Point state: Stationary
-16683638049,Step state: Stationary,Point state: Stationary
+16683638049,Step state: Migratory (fall),Point state: Migratory (fall)
 16683638050,Step state: Stationary,Point state: Stationary
 16683638051,Step state: Stationary,Point state: Stationary
 16683638052,Step state: Stationary,Point state: Stationary
@@ -19189,7 +19189,7 @@ event_id,primary_step_state,primary_point_state
 16683638057,Step state: Stationary,Point state: Stationary
 16683638059,Step state: Stationary,Point state: Stationary
 16683638060,Step state: Stationary,Point state: Stationary
-16683638061,Step state: Migratory (fall),Point state: Stationary
+16683638061,Step state: Migratory (fall),Point state: Migratory (fall)
 16683638062,Step state: Stationary,Point state: Stationary
 16683638063,Step state: Stationary,Point state: Stationary
 16683638064,Step state: Stationary,Point state: Stationary
@@ -19200,7 +19200,7 @@ event_id,primary_step_state,primary_point_state
 16683638069,Step state: Stationary,Point state: Stationary
 16683638070,Step state: Stationary,Point state: Stationary
 16683638071,Step state: Stationary,Point state: Stationary
-16683638072,Step state: Stationary,Point state: Stationary
+16683638072,Step state: Migratory (fall),Point state: Migratory (fall)
 16683638073,Step state: Stationary,Point state: Stationary
 16683638074,Step state: Stationary,Point state: Stationary
 16683638075,Step state: Stationary,Point state: Stationary
@@ -19296,7 +19296,7 @@ event_id,primary_step_state,primary_point_state
 16758145431,Step state: Migratory (fall),Point state: Migratory (fall)
 16758145432,Step state: Stationary,Point state: Stationary
 16758145433,Step state: Migratory (fall),Point state: Migratory (fall)
-16758145434,Step state: Stationary,Point state: Stationary
+16758145434,Step state: Migratory (fall),Point state: Migratory (fall)
 16758145435,Step state: Stationary,Point state: Stationary
 16758145436,Step state: Stationary,Point state: Stationary
 16758145437,Step state: Stationary,Point state: Stationary
@@ -19319,7 +19319,7 @@ event_id,primary_step_state,primary_point_state
 16758145454,Step state: Stationary,Point state: Stationary
 16758145455,Step state: Stationary,Point state: Stationary
 16758145456,Step state: Stationary,Point state: Stationary
-16758145457,Step state: Stationary,Point state: Stationary
+16758145457,Step state: Migratory (fall),Point state: Migratory (fall)
 16758145458,Step state: Stationary,Point state: Stationary
 16758145459,Step state: Stationary,Point state: Stationary
 16758145460,Step state: Stationary,Point state: Stationary
@@ -19344,7 +19344,7 @@ event_id,primary_step_state,primary_point_state
 16758145479,Step state: Migratory (fall),Point state: Migratory (fall)
 16758145480,Step state: Migratory (fall),Point state: Stationary
 16758145481,Step state: Stationary,Point state: Stationary
-16758145482,Step state: Stationary,Point state: Stationary
+16758145482,Step state: Migratory (fall),Point state: Migratory (fall)
 16758145483,Step state: Stationary,Point state: Stationary
 16758145484,Step state: Stationary,Point state: Stationary
 16758145485,Step state: Stationary,Point state: Stationary
@@ -19371,8 +19371,8 @@ event_id,primary_step_state,primary_point_state
 16758145507,Step state: Stationary,Point state: Stationary
 16758145508,Step state: Stationary,Point state: Stationary
 16758145509,Step state: Stationary,Point state: Stationary
-16758145510,Step state: Stationary,Point state: Stationary
-16758145511,Step state: Stationary,Point state: Stationary
+16758145510,Step state: Migratory (fall),Point state: Stationary
+16758145511,Step state: Migratory (fall),Point state: Migratory (fall)
 16758145512,Step state: Stationary,Point state: Stationary
 16758145513,Step state: Stationary,Point state: Stationary
 16758145514,Step state: Stationary,Point state: Stationary
@@ -19400,7 +19400,7 @@ event_id,primary_step_state,primary_point_state
 16758145536,Step state: Stationary,Point state: Stationary
 16758145537,Step state: Stationary,Point state: Stationary
 16758145538,Step state: Stationary,Point state: Stationary
-16758145539,Step state: Stationary,Point state: Stationary
+16758145539,Step state: Migratory (fall),Point state: Migratory (fall)
 16758145540,Step state: Stationary,Point state: Stationary
 16758145541,Step state: Stationary,Point state: Stationary
 16758145542,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -19487,7 +19487,7 @@ event_id,primary_step_state,primary_point_state
 16785091385,Step state: Stationary,Point state: Stationary
 16785091386,Step state: Stationary,Point state: Stationary
 16785091387,Step state: Migratory (fall),Point state: Migratory (fall)
-16785091388,Step state: Stationary,Point state: Stationary
+16785091388,Step state: Migratory (fall),Point state: Migratory (fall)
 16785091389,Step state: Stationary,Point state: Stationary
 16785091390,Step state: Migratory (fall),Point state: Migratory (fall)
 16785091391,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -19499,7 +19499,7 @@ event_id,primary_step_state,primary_point_state
 16785091397,Step state: Migratory (fall),Point state: Migratory (fall)
 16785091398,Step state: Stationary,Point state: Stationary
 16785091399,Step state: Stationary,Point state: Stationary
-16785091400,Step state: Stationary,Point state: Stationary
+16785091400,Step state: Migratory (fall),Point state: Migratory (fall)
 16785091401,Step state: Stationary,Point state: Stationary
 16785091402,Step state: Migratory (fall),Point state: Migratory (fall)
 16785091403,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -19523,7 +19523,7 @@ event_id,primary_step_state,primary_point_state
 16785091421,Step state: Stationary,Point state: Stationary
 16785091422,Step state: Stationary,Point state: Stationary
 16785091423,Step state: Stationary,Point state: Stationary
-16785091424,Step state: Stationary,Point state: Stationary
+16785091424,Step state: Migratory (fall),Point state: Migratory (fall)
 16785091425,Step state: Stationary,Point state: Stationary
 16785091426,Step state: Stationary,Point state: Stationary
 16785091427,Step state: Stationary,Point state: Stationary
@@ -19544,7 +19544,7 @@ event_id,primary_step_state,primary_point_state
 16785091442,Step state: Stationary,Point state: Stationary
 16785091443,Step state: Stationary,Point state: Stationary
 16785091444,Step state: Stationary,Point state: Stationary
-16785091445,Step state: Stationary,Point state: Stationary
+16785091445,Step state: Migratory (fall),Point state: Migratory (fall)
 16785091446,Step state: Stationary,Point state: Stationary
 16785091447,Step state: Stationary,Point state: Stationary
 16785091448,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -19572,7 +19572,7 @@ event_id,primary_step_state,primary_point_state
 16785091470,Step state: Stationary,Point state: Stationary
 16785091471,Step state: Stationary,Point state: Stationary
 16785091472,Step state: Stationary,Point state: Stationary
-16785091473,Step state: Stationary,Point state: Stationary
+16785091473,Step state: Migratory (fall),Point state: Migratory (fall)
 16785091474,Step state: Stationary,Point state: Stationary
 16785091475,Step state: Stationary,Point state: Stationary
 16785091476,Step state: Stationary,Point state: Stationary
@@ -19590,7 +19590,7 @@ event_id,primary_step_state,primary_point_state
 16785091488,Step state: Stationary,Point state: Stationary
 16785091489,Step state: Stationary,Point state: Stationary
 16785091490,Step state: Stationary,Point state: Stationary
-16785091491,Step state: Stationary,Point state: Stationary
+16785091491,Step state: Migratory (fall),Point state: Migratory (fall)
 16785091492,Step state: Stationary,Point state: Stationary
 16785091493,Step state: Stationary,Point state: Stationary
 16785091494,Step state: Stationary,Point state: Stationary
@@ -19652,7 +19652,7 @@ event_id,primary_step_state,primary_point_state
 16824935254,Step state: Stationary,Point state: Stationary
 16824935255,Step state: Stationary,Point state: Stationary
 16824935256,Step state: Stationary,Point state: Stationary
-16824935257,Step state: Stationary,Point state: Stationary
+16824935257,Step state: Migratory (fall),Point state: Migratory (fall)
 16824935258,Step state: Stationary,Point state: Stationary
 16824935259,Step state: Stationary,Point state: Stationary
 16824935260,Step state: Stationary,Point state: Stationary
@@ -19678,7 +19678,7 @@ event_id,primary_step_state,primary_point_state
 16824935280,Step state: Stationary,Point state: Stationary
 16824935281,Step state: Migratory (fall),Point state: Migratory (fall)
 16824935282,Step state: Stationary,Point state: Stationary
-16824935283,Step state: Stationary,Point state: Stationary
+16824935283,Step state: Migratory (fall),Point state: Migratory (fall)
 16824935284,Step state: Migratory (fall),Point state: Migratory (fall)
 16824935285,Step state: Stationary,Point state: Stationary
 16824935286,Step state: Stationary,Point state: Stationary
@@ -19694,7 +19694,7 @@ event_id,primary_step_state,primary_point_state
 16824935297,Step state: Stationary,Point state: Stationary
 16824935298,Step state: Stationary,Point state: Stationary
 16824935299,Step state: Stationary,Point state: Stationary
-16824935300,Step state: Stationary,Point state: Stationary
+16824935300,Step state: Migratory (fall),Point state: Migratory (fall)
 16824935301,Step state: Stationary,Point state: Stationary
 16824935302,Step state: Migratory (fall),Point state: Migratory (fall)
 16824935303,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -19702,7 +19702,7 @@ event_id,primary_step_state,primary_point_state
 16824935305,Step state: Migratory (fall),Point state: Migratory (fall)
 16824935306,Step state: Stationary,Point state: Stationary
 16824935307,Step state: Stationary,Point state: Stationary
-16824935308,Step state: Stationary,Point state: Stationary
+16824935308,Step state: Migratory (fall),Point state: Migratory (fall)
 16824935309,Step state: Migratory (fall),Point state: Migratory (fall)
 16824935310,Step state: Stationary,Point state: Stationary
 16824935311,Step state: Stationary,Point state: Stationary
@@ -19714,10 +19714,10 @@ event_id,primary_step_state,primary_point_state
 16836748939,Step state: Migratory (fall),Point state: Migratory (fall)
 16836748940,Step state: Migratory (fall),Point state: Migratory (fall)
 16836748941,Step state: Stationary,Point state: Stationary
-16836748942,Step state: Stationary,Point state: Stationary
+16836748942,Step state: Migratory (fall),Point state: Migratory (fall)
 16836748943,Step state: Migratory (fall),Point state: Migratory (fall)
 16836748944,Step state: Migratory (fall),Point state: Migratory (fall)
-16836748945,Step state: Stationary,Point state: Stationary
+16836748945,Step state: Migratory (fall),Point state: Migratory (fall)
 16836748946,Step state: Stationary,Point state: Stationary
 16836748947,Step state: Migratory (fall),Point state: Migratory (fall)
 16836748948,Step state: Stationary,Point state: Stationary
@@ -19792,7 +19792,7 @@ event_id,primary_step_state,primary_point_state
 16890710186,Step state: Stationary,Point state: Stationary
 16890710187,Step state: Stationary,Point state: Stationary
 16890710188,Step state: Migratory (fall),Point state: Migratory (fall)
-16890710189,Step state: Stationary,Point state: Stationary
+16890710189,Step state: Migratory (fall),Point state: Migratory (fall)
 16890710190,Step state: Stationary,Point state: Stationary
 16890710191,Step state: Migratory (fall),Point state: Migratory (fall)
 16890710192,Step state: Stationary,Point state: Stationary
@@ -19807,8 +19807,8 @@ event_id,primary_step_state,primary_point_state
 16890710201,Step state: Stationary,Point state: Stationary
 16890710202,Step state: Stationary,Point state: Stationary
 16890710203,Step state: Stationary,Point state: Stationary
-16890710204,Step state: Stationary,Point state: Stationary
-16890710205,Step state: Stationary,Point state: Stationary
+16890710204,Step state: Migratory (fall),Point state: Migratory (fall)
+16890710205,Step state: Migratory (fall),Point state: Migratory (fall)
 16890710206,Step state: Migratory (fall),Point state: Migratory (fall)
 16890710207,Step state: Stationary,Point state: Stationary
 16890710208,Step state: Stationary,Point state: Stationary
@@ -19820,7 +19820,7 @@ event_id,primary_step_state,primary_point_state
 16890710214,Step state: Stationary,Point state: Stationary
 16890710215,Step state: Stationary,Point state: Stationary
 16890710216,Step state: Migratory (fall),Point state: Migratory (fall)
-16890710217,Step state: Stationary,Point state: Stationary
+16890710217,Step state: Migratory (fall),Point state: Migratory (fall)
 16890710218,Step state: Migratory (fall),Point state: Migratory (fall)
 16890710219,Step state: Migratory (fall),Point state: Migratory (fall)
 16890710220,Step state: Stationary,Point state: Stationary
@@ -19834,13 +19834,13 @@ event_id,primary_step_state,primary_point_state
 16890710228,Step state: Stationary,Point state: Stationary
 16890710229,Step state: Stationary,Point state: Stationary
 16890710230,Step state: Stationary,Point state: Stationary
-16890710231,Step state: Stationary,Point state: Stationary
+16890710231,Step state: Migratory (fall),Point state: Migratory (fall)
 16890710232,Step state: Stationary,Point state: Stationary
 16890710233,Step state: Stationary,Point state: Stationary
 16890710234,Step state: Migratory (fall),Point state: Migratory (fall)
 16890710235,Step state: Stationary,Point state: Stationary
 16890710236,Step state: Stationary,Point state: Stationary
-16890710237,Step state: Stationary,Point state: Stationary
+16890710237,Step state: Migratory (fall),Point state: Migratory (fall)
 16890710238,Step state: Stationary,Point state: Stationary
 16890710239,Step state: Stationary,Point state: Stationary
 16890710240,Step state: Stationary,Point state: Stationary
@@ -19862,7 +19862,7 @@ event_id,primary_step_state,primary_point_state
 16890710256,Step state: Stationary,Point state: Stationary
 16890710257,Step state: Migratory (fall),Point state: Stationary
 16890710258,Step state: Stationary,Point state: Stationary
-16890710259,Step state: Stationary,Point state: Stationary
+16890710259,Step state: Migratory (fall),Point state: Migratory (fall)
 16890710260,Step state: Migratory (fall),Point state: Stationary
 16890710261,Step state: Migratory (fall),Point state: Stationary
 16890710262,Step state: Stationary,Point state: Stationary
@@ -19888,11 +19888,11 @@ event_id,primary_step_state,primary_point_state
 16890710282,Step state: Stationary,Point state: Stationary
 16890710283,Step state: Stationary,Point state: Stationary
 16890710284,Step state: Stationary,Point state: Stationary
-16890710285,Step state: Stationary,Point state: Stationary
+16890710285,Step state: Migratory (fall),Point state: Migratory (fall)
 16890710286,Step state: Stationary,Point state: Stationary
 16890710287,Step state: Stationary,Point state: Stationary
 16890710288,Step state: Stationary,Point state: Stationary
-16890710289,Step state: Stationary,Point state: Stationary
+16890710289,Step state: Migratory (fall),Point state: Migratory (fall)
 16890710290,Step state: Migratory (fall),Point state: Migratory (fall)
 16890710291,Step state: Migratory (fall),Point state: Stationary
 16890710292,Step state: Stationary,Point state: Stationary
@@ -19905,7 +19905,7 @@ event_id,primary_step_state,primary_point_state
 16890710299,Step state: Migratory (fall),Point state: Migratory (fall)
 16890710300,Step state: Stationary,Point state: Stationary
 16890710301,Step state: Migratory (fall),Point state: Migratory (fall)
-16890710302,Step state: Stationary,Point state: Stationary
+16890710302,Step state: Migratory (fall),Point state: Migratory (fall)
 16890710303,Step state: Migratory (fall),Point state: Migratory (fall)
 16890710304,Step state: Stationary,Point state: Stationary
 16890710305,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -19982,7 +19982,7 @@ event_id,primary_step_state,primary_point_state
 16916874368,Step state: Stationary,Point state: Stationary
 16916874369,Step state: Stationary,Point state: Stationary
 16916874370,Step state: Stationary,Point state: Stationary
-16916874371,Step state: Stationary,Point state: Stationary
+16916874371,Step state: Migratory (fall),Point state: Migratory (fall)
 16916874372,Step state: Stationary,Point state: Stationary
 16916874373,Step state: Stationary,Point state: Stationary
 16916874374,Step state: Stationary,Point state: Stationary
@@ -20010,7 +20010,7 @@ event_id,primary_step_state,primary_point_state
 16916874396,Step state: Migratory (fall),Point state: Migratory (fall)
 16916874397,Step state: Stationary,Point state: Stationary
 16916874398,Step state: Stationary,Point state: Stationary
-16916874399,Step state: Stationary,Point state: Stationary
+16916874399,Step state: Migratory (fall),Point state: Migratory (fall)
 16916874400,Step state: Stationary,Point state: Stationary
 16916874401,Step state: Stationary,Point state: Stationary
 16916874402,Step state: Stationary,Point state: Stationary
@@ -20054,7 +20054,7 @@ event_id,primary_step_state,primary_point_state
 16940116317,Step state: Stationary,Point state: Stationary
 16940116318,Step state: Stationary,Point state: Stationary
 16940116319,Step state: Stationary,Point state: Stationary
-16940116320,Step state: Stationary,Point state: Stationary
+16940116320,Step state: Migratory (fall),Point state: Migratory (fall)
 16940116321,Step state: Stationary,Point state: Stationary
 16940116322,Step state: Migratory (fall),Point state: Migratory (fall)
 16940116323,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -20063,7 +20063,7 @@ event_id,primary_step_state,primary_point_state
 16940116326,Step state: Stationary,Point state: Stationary
 16940116327,Step state: Stationary,Point state: Stationary
 16940116328,Step state: Stationary,Point state: Stationary
-16940116329,Step state: Migratory (fall),Point state: Stationary
+16940116329,Step state: Migratory (fall),Point state: Migratory (fall)
 16940116330,Step state: Stationary,Point state: Stationary
 16940116331,Step state: Migratory (fall),Point state: Migratory (fall)
 16940116332,Step state: Stationary,Point state: Stationary
@@ -20165,7 +20165,7 @@ event_id,primary_step_state,primary_point_state
 16954009366,Step state: Stationary,Point state: Stationary
 16954009367,Step state: Stationary,Point state: Stationary
 16954009368,Step state: Stationary,Point state: Stationary
-16954009369,Step state: Stationary,Point state: Stationary
+16954009369,Step state: Migratory (fall),Point state: Migratory (fall)
 16954009370,Step state: Stationary,Point state: Stationary
 16954009371,Step state: Stationary,Point state: Stationary
 16954009372,Step state: Stationary,Point state: Stationary
@@ -20204,7 +20204,7 @@ event_id,primary_step_state,primary_point_state
 16954009405,Step state: Migratory (fall),Point state: Migratory (fall)
 16954009406,Step state: Stationary,Point state: Stationary
 16954009407,Step state: Stationary,Point state: Stationary
-16954009408,Step state: Stationary,Point state: Stationary
+16954009408,Step state: Migratory (fall),Point state: Migratory (fall)
 16954009409,Step state: Stationary,Point state: Stationary
 16954009410,Step state: Stationary,Point state: Stationary
 16954009411,Step state: Stationary,Point state: Stationary
@@ -20250,7 +20250,7 @@ event_id,primary_step_state,primary_point_state
 17015282717,Step state: Migratory (fall),Point state: Stationary
 17015282718,Step state: Stationary,Point state: Stationary
 17015282719,Step state: Stationary,Point state: Stationary
-17015282720,Step state: Stationary,Point state: Stationary
+17015282720,Step state: Migratory (fall),Point state: Migratory (fall)
 17015282721,Step state: Stationary,Point state: Stationary
 17015282722,Step state: Migratory (fall),Point state: Migratory (fall)
 17015282723,Step state: Stationary,Point state: Stationary
@@ -20261,7 +20261,7 @@ event_id,primary_step_state,primary_point_state
 17015282728,Step state: Stationary,Point state: Stationary
 17015282729,Step state: Migratory (fall),Point state: Migratory (fall)
 17015282730,Step state: Migratory (fall),Point state: Migratory (fall)
-17015282731,Step state: Stationary,Point state: Stationary
+17015282731,Step state: Migratory (fall),Point state: Migratory (fall)
 17015282732,Step state: Stationary,Point state: Stationary
 17015282733,Step state: Stationary,Point state: Stationary
 17015282734,Step state: Stationary,Point state: Stationary
@@ -20300,7 +20300,7 @@ event_id,primary_step_state,primary_point_state
 17015282767,Step state: Stationary,Point state: Stationary
 17015282768,Step state: Stationary,Point state: Stationary
 17015282769,Step state: Stationary,Point state: Stationary
-17015282770,Step state: Stationary,Point state: Stationary
+17015282770,Step state: Migratory (fall),Point state: Migratory (fall)
 17015282771,Step state: Stationary,Point state: Stationary
 17015282772,Step state: Stationary,Point state: Stationary
 17015282773,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -20365,7 +20365,7 @@ event_id,primary_step_state,primary_point_state
 17015282832,Step state: Migratory (fall),Point state: Migratory (fall)
 17015282833,Step state: Stationary,Point state: Stationary
 17015282834,Step state: Stationary,Point state: Stationary
-17015282835,Step state: Migratory (fall),Point state: Stationary
+17015282835,Step state: Migratory (fall),Point state: Migratory (fall)
 17015282836,Step state: Stationary,Point state: Stationary
 17015282837,Step state: Stationary,Point state: Stationary
 17015282838,Step state: Stationary,Point state: Stationary
@@ -20469,7 +20469,7 @@ event_id,primary_step_state,primary_point_state
 17060579743,Step state: Stationary,Point state: Stationary
 17060579744,Step state: Stationary,Point state: Stationary
 17060579745,Step state: Migratory (fall),Point state: Migratory (fall)
-17060579746,Step state: Stationary,Point state: Stationary
+17060579746,Step state: Migratory (fall),Point state: Migratory (fall)
 17060579747,Step state: Stationary,Point state: Stationary
 17060579748,Step state: Stationary,Point state: Stationary
 17060579749,Step state: Stationary,Point state: Stationary
@@ -20482,7 +20482,7 @@ event_id,primary_step_state,primary_point_state
 17060579756,Step state: Migratory (fall),Point state: Migratory (fall)
 17060579757,Step state: Stationary,Point state: Stationary
 17060579758,Step state: Stationary,Point state: Stationary
-17060579759,Step state: Stationary,Point state: Stationary
+17060579759,Step state: Migratory (fall),Point state: Migratory (fall)
 17060579760,Step state: Stationary,Point state: Stationary
 17060579761,Step state: Stationary,Point state: Stationary
 17060579762,Step state: Stationary,Point state: Stationary
@@ -20557,14 +20557,14 @@ event_id,primary_step_state,primary_point_state
 17116905043,Step state: Migratory (fall),Point state: Migratory (fall)
 17116905044,Step state: Stationary,Point state: Stationary
 17116905045,Step state: Migratory (fall),Point state: Migratory (fall)
-17116905046,Step state: Stationary,Point state: Stationary
+17116905046,Step state: Migratory (fall),Point state: Migratory (fall)
 17116905047,Step state: Migratory (fall),Point state: Migratory (fall)
 17116905048,Step state: Stationary,Point state: Stationary
 17116905049,Step state: Migratory (fall),Point state: Migratory (fall)
 17116905050,Step state: Migratory (fall),Point state: Migratory (fall)
 17116905051,Step state: Stationary,Point state: Stationary
 17116905052,Step state: Stationary,Point state: Stationary
-17116905053,Step state: Stationary,Point state: Stationary
+17116905053,Step state: Migratory (fall),Point state: Migratory (fall)
 17116905054,Step state: Migratory (fall),Point state: Migratory (fall)
 17116905055,Step state: Migratory (fall),Point state: Stationary
 17116905056,Step state: Stationary,Point state: Stationary
@@ -20581,7 +20581,7 @@ event_id,primary_step_state,primary_point_state
 17116905067,Step state: Migratory (fall),Point state: Migratory (fall)
 17116905068,Step state: Migratory (fall),Point state: Migratory (fall)
 17116905069,Step state: Migratory (fall),Point state: Migratory (fall)
-17116905070,Step state: Stationary,Point state: Stationary
+17116905070,Step state: Migratory (fall),Point state: Migratory (fall)
 17116905071,Step state: Migratory (fall),Point state: Migratory (fall)
 17116905072,Step state: Stationary,Point state: Stationary
 17116905073,Step state: Stationary,Point state: Stationary
@@ -20642,7 +20642,7 @@ event_id,primary_step_state,primary_point_state
 17135675444,Step state: Migratory (fall),Point state: Migratory (fall)
 17135675445,Step state: Stationary,Point state: Stationary
 17135675446,Step state: Stationary,Point state: Stationary
-17135675447,Step state: Stationary,Point state: Stationary
+17135675447,Step state: Migratory (fall),Point state: Migratory (fall)
 17135675448,Step state: Stationary,Point state: Stationary
 17135675449,Step state: Stationary,Point state: Stationary
 17135675450,Step state: Stationary,Point state: Stationary
@@ -20731,7 +20731,7 @@ event_id,primary_step_state,primary_point_state
 17168889420,Step state: Stationary,Point state: Stationary
 17168889421,Step state: Migratory (fall),Point state: Stationary
 17168889422,Step state: Stationary,Point state: Stationary
-17168889423,Step state: Stationary,Point state: Stationary
+17168889423,Step state: Migratory (fall),Point state: Migratory (fall)
 17168889424,Step state: Stationary,Point state: Stationary
 17168889425,Step state: Stationary,Point state: Stationary
 17168889426,Step state: Stationary,Point state: Stationary
@@ -21190,7 +21190,7 @@ event_id,primary_step_state,primary_point_state
 17233846486,Step state: Stationary,Point state: Stationary
 17233846487,Step state: Stationary,Point state: Stationary
 17233846488,Step state: Stationary,Point state: Stationary
-17233846489,Step state: Stationary,Point state: Stationary
+17233846489,Step state: Migratory (fall),Point state: Migratory (fall)
 17233846490,Step state: Migratory (fall),Point state: Migratory (fall)
 17246297063,Step state: Stationary,Point state: Stationary
 17246297064,Step state: Stationary,Point state: Stationary
@@ -21586,7 +21586,7 @@ event_id,primary_step_state,primary_point_state
 17447307383,Step state: Stationary,Point state: Stationary
 17447307384,Step state: Stationary,Point state: Stationary
 17447307385,Step state: Stationary,Point state: Stationary
-17447307386,Step state: Stationary,Point state: Stationary
+17447307386,Step state: Migratory (fall),Point state: Migratory (fall)
 17447307387,Step state: Stationary,Point state: Stationary
 17447307388,Step state: Stationary,Point state: Stationary
 17447307389,Step state: Stationary,Point state: Stationary
@@ -21618,7 +21618,7 @@ event_id,primary_step_state,primary_point_state
 17447307415,Step state: Stationary,Point state: Stationary
 17447307416,Step state: Stationary,Point state: Stationary
 17447307417,Step state: Stationary,Point state: Stationary
-17447307418,Step state: Stationary,Point state: Stationary
+17447307418,Step state: Migratory (fall),Point state: Migratory (fall)
 17447307419,Step state: Stationary,Point state: Stationary
 17447307420,Step state: Stationary,Point state: Stationary
 17447307421,Step state: Stationary,Point state: Stationary
@@ -21633,7 +21633,7 @@ event_id,primary_step_state,primary_point_state
 17447307430,Step state: Stationary,Point state: Stationary
 17447307431,Step state: Stationary,Point state: Stationary
 17447307432,Step state: Migratory (fall),Point state: Migratory (fall)
-17447307433,Step state: Stationary,Point state: Stationary
+17447307433,Step state: Migratory (fall),Point state: Migratory (fall)
 17447307434,Step state: Stationary,Point state: Stationary
 17447307435,Step state: Stationary,Point state: Stationary
 17447307436,Step state: Stationary,Point state: Stationary
@@ -21737,7 +21737,7 @@ event_id,primary_step_state,primary_point_state
 17521128278,Step state: Stationary,Point state: Stationary
 17521128279,Step state: Stationary,Point state: Stationary
 17521128280,Step state: Stationary,Point state: Stationary
-17521128281,Step state: Stationary,Point state: Stationary
+17521128281,Step state: Migratory (fall),Point state: Migratory (fall)
 17521128282,Step state: Stationary,Point state: Stationary
 17521128283,Step state: Stationary,Point state: Stationary
 17521128284,Step state: Stationary,Point state: Stationary
@@ -21816,7 +21816,7 @@ event_id,primary_step_state,primary_point_state
 17608990243,Step state: Stationary,Point state: Stationary
 17608990244,Step state: Stationary,Point state: Stationary
 17608990245,Step state: Migratory (fall),Point state: Migratory (fall)
-17608990246,Step state: Stationary,Point state: Stationary
+17608990246,Step state: Migratory (fall),Point state: Migratory (fall)
 17608990247,Step state: Stationary,Point state: Stationary
 17608990248,Step state: Stationary,Point state: Stationary
 17608990249,Step state: Stationary,Point state: Stationary
@@ -22166,9 +22166,9 @@ event_id,primary_step_state,primary_point_state
 17816584328,Step state: Stationary,Point state: Stationary
 17816584329,Step state: Stationary,Point state: Stationary
 17816584330,Step state: Stationary,Point state: Stationary
-17816584331,Step state: Stationary,Point state: Stationary
+17816584331,Step state: Foray loop,Point state: Stationary
 17816584332,Step state: Stationary,Point state: Stationary
-17816584333,Step state: Stationary,Point state: Stationary
+17816584333,Step state: Foray loop,Point state: Foray loop
 17816584334,Step state: Stationary,Point state: Stationary
 17816584335,Step state: Stationary,Point state: Stationary
 17816584336,Step state: Stationary,Point state: Stationary
@@ -22782,7 +22782,7 @@ event_id,primary_step_state,primary_point_state
 18052008896,Step state: Migratory (spring),Point state: Migratory (spring)
 18052008897,Step state: Migratory (spring),Point state: Migratory (spring)
 18052008898,Step state: Migratory (spring),Point state: Migratory (spring)
-18052008899,Step state: Stationary,Point state: Stationary
+18052008899,Step state: Migratory (spring),Point state: Stationary
 18052008900,Step state: Stationary,Point state: Stationary
 18052008901,Step state: Stationary,Point state: Stationary
 18052008902,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -23845,7 +23845,7 @@ event_id,primary_step_state,primary_point_state
 18296035965,Step state: Stationary,Point state: Stationary
 18296035966,Step state: Stationary,Point state: Stationary
 18311652229,Step state: Migratory (spring),Point state: Migratory (spring)
-18311652230,Step state: Stationary,Point state: Stationary
+18311652230,Step state: Migratory (spring),Point state: Migratory (spring)
 18311652231,Step state: Migratory (spring),Point state: Migratory (spring)
 18311652232,Step state: Stationary,Point state: Stationary
 18311652233,Step state: Stationary,Point state: Stationary
@@ -24412,7 +24412,7 @@ event_id,primary_step_state,primary_point_state
 18483496176,Step state: Migratory (spring),Point state: Migratory (spring)
 18483496177,Step state: Stationary,Point state: Stationary
 18483496178,Step state: Stationary,Point state: Stationary
-18483496179,Step state: Stationary,Point state: Stationary
+18483496179,Step state: Migratory (spring),Point state: Migratory (spring)
 18483496180,Step state: Stationary,Point state: Stationary
 18483496181,Step state: Stationary,Point state: Stationary
 18483496182,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -24640,7 +24640,7 @@ event_id,primary_step_state,primary_point_state
 18586315617,Step state: Stationary,Point state: Stationary
 18586315618,Step state: Migratory (spring),Point state: Migratory (spring)
 18593363611,Step state: Migratory (spring),Point state: Migratory (spring)
-18593363612,Step state: Stationary,Point state: Stationary
+18593363612,Step state: Migratory (spring),Point state: Migratory (spring)
 18593363613,Step state: Stationary,Point state: Stationary
 18593363614,Step state: Migratory (spring),Point state: Migratory (spring)
 18593363615,Step state: Stationary,Point state: Stationary
@@ -24671,8 +24671,8 @@ event_id,primary_step_state,primary_point_state
 18593363640,Step state: Migratory (spring),Point state: Migratory (spring)
 18593363641,Step state: Migratory (spring),Point state: Migratory (spring)
 18593363642,Step state: Migratory (spring),Point state: Migratory (spring)
-18593363643,Step state: Stationary,Point state: Stationary
-18593363644,Step state: Stationary,Point state: Stationary
+18593363643,Step state: Migratory (spring),Point state: Migratory (spring)
+18593363644,Step state: Migratory (spring),Point state: Migratory (spring)
 18604664716,Step state: Stationary,Point state: Stationary
 18604664717,Step state: Stationary,Point state: Stationary
 18604664718,Step state: Stationary,Point state: Stationary
@@ -24995,15 +24995,15 @@ event_id,primary_step_state,primary_point_state
 18724615605,Step state: Stationary,Point state: Stationary
 18724615606,Step state: Stationary,Point state: Stationary
 18724615607,Step state: Stationary,Point state: Stationary
-18724615608,Step state: Migratory (spring),Point state: Migratory (spring)
+18724615608,Step state: Stationary,Point state: Stationary
 18724615609,Step state: Stationary,Point state: Stationary
 18724615610,Step state: Stationary,Point state: Stationary
-18724615611,Step state: Migratory (spring),Point state: Migratory (spring)
+18724615611,Step state: Stationary,Point state: Stationary
 18724615612,Step state: Stationary,Point state: Stationary
 18724615613,Step state: Migratory (spring),Point state: Migratory (spring)
 18724615614,Step state: Stationary,Point state: Stationary
 18724615615,Step state: Migratory (spring),Point state: Migratory (spring)
-18724615616,Step state: Migratory (spring),Point state: Migratory (spring)
+18724615616,Step state: Stationary,Point state: Stationary
 18724615617,Step state: Stationary,Point state: Stationary
 18724615618,Step state: Stationary,Point state: Stationary
 18724615619,Step state: Stationary,Point state: Stationary
@@ -25014,7 +25014,7 @@ event_id,primary_step_state,primary_point_state
 18724615624,Step state: Stationary,Point state: Stationary
 18724615625,Step state: Stationary,Point state: Stationary
 18724615626,Step state: Migratory (spring),Point state: Migratory (spring)
-18724615627,Step state: Migratory (spring),Point state: Migratory (spring)
+18724615627,Step state: Stationary,Point state: Stationary
 18724615628,Step state: Stationary,Point state: Stationary
 18724615629,Step state: Stationary,Point state: Stationary
 18724615630,Step state: Stationary,Point state: Stationary
@@ -25028,7 +25028,7 @@ event_id,primary_step_state,primary_point_state
 18724615638,Step state: Stationary,Point state: Stationary
 18724615639,Step state: Stationary,Point state: Stationary
 18724615640,Step state: Stationary,Point state: Stationary
-18724615641,Step state: Migratory (spring),Point state: Migratory (spring)
+18724615641,Step state: Stationary,Point state: Stationary
 18724615642,Step state: Migratory (spring),Point state: Migratory (spring)
 18724615643,Step state: Migratory (spring),Point state: Migratory (spring)
 18724615644,Step state: Stationary,Point state: Stationary
@@ -25051,7 +25051,7 @@ event_id,primary_step_state,primary_point_state
 18724615661,Step state: Stationary,Point state: Stationary
 18724615662,Step state: Stationary,Point state: Stationary
 18724615663,Step state: Migratory (spring),Point state: Migratory (spring)
-18724615664,Step state: Migratory (spring),Point state: Migratory (spring)
+18724615664,Step state: Stationary,Point state: Stationary
 18724615665,Step state: Stationary,Point state: Stationary
 18724615666,Step state: Stationary,Point state: Stationary
 18724615667,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -25122,7 +25122,7 @@ event_id,primary_step_state,primary_point_state
 18750320590,Step state: Stationary,Point state: Stationary
 18750320591,Step state: Stationary,Point state: Stationary
 18750320592,Step state: Migratory (spring),Point state: Migratory (spring)
-18750320593,Step state: Migratory (spring),Point state: Migratory (spring)
+18750320593,Step state: Stationary,Point state: Stationary
 18750320594,Step state: Stationary,Point state: Stationary
 18750320595,Step state: Migratory (spring),Point state: Migratory (spring)
 18750320596,Step state: Stationary,Point state: Stationary
@@ -25140,7 +25140,7 @@ event_id,primary_step_state,primary_point_state
 18750320608,Step state: Stationary,Point state: Stationary
 18750320609,Step state: Stationary,Point state: Stationary
 18750320610,Step state: Stationary,Point state: Stationary
-18750320611,Step state: Migratory (spring),Point state: Migratory (spring)
+18750320611,Step state: Stationary,Point state: Stationary
 18750320612,Step state: Stationary,Point state: Stationary
 18784646892,Step state: Stationary,Point state: Stationary
 18784646893,Step state: Stationary,Point state: Stationary
@@ -25204,7 +25204,7 @@ event_id,primary_step_state,primary_point_state
 18784646951,Step state: Migratory (spring),Point state: Migratory (spring)
 18784646952,Step state: Migratory (spring),Point state: Migratory (spring)
 18784646953,Step state: Stationary,Point state: Stationary
-18784646954,Step state: Migratory (spring),Point state: Migratory (spring)
+18784646954,Step state: Stationary,Point state: Stationary
 18784646955,Step state: Stationary,Point state: Stationary
 18784646956,Step state: Migratory (spring),Point state: Migratory (spring)
 18784646957,Step state: Stationary,Point state: Stationary
@@ -25243,7 +25243,7 @@ event_id,primary_step_state,primary_point_state
 18784646990,Step state: Stationary,Point state: Stationary
 18784646991,Step state: Stationary,Point state: Stationary
 18784646992,Step state: Stationary,Point state: Stationary
-18784646993,Step state: Migratory (spring),Point state: Migratory (spring)
+18784646993,Step state: Stationary,Point state: Stationary
 18784646994,Step state: Stationary,Point state: Stationary
 18799202736,Step state: Stationary,Point state: Stationary
 18799202737,Step state: Stationary,Point state: Stationary
@@ -25995,7 +25995,7 @@ event_id,primary_step_state,primary_point_state
 19862859329,Step state: Stationary,Point state: Stationary
 19862859330,Step state: Stationary,Point state: Stationary
 19862859331,Step state: Stationary,Point state: Stationary
-19862859332,Step state: Stationary,Point state: Stationary
+19862859332,Step state: Migratory (fall),Point state: Stationary
 19862859333,Step state: Stationary,Point state: Stationary
 19862859334,Step state: Stationary,Point state: Stationary
 19862859335,Step state: Stationary,Point state: Stationary
@@ -26236,7 +26236,7 @@ event_id,primary_step_state,primary_point_state
 20397874354,Step state: Stationary,Point state: Stationary
 20397874355,Step state: Stationary,Point state: Stationary
 20397874356,Step state: Stationary,Point state: Stationary
-20397874357,Step state: Stationary,Point state: Stationary
+20397874357,Step state: Migratory (fall),Point state: Stationary
 20397874358,Step state: Stationary,Point state: Stationary
 20397874359,Step state: Stationary,Point state: Stationary
 20397874360,Step state: Stationary,Point state: Stationary
@@ -26247,7 +26247,7 @@ event_id,primary_step_state,primary_point_state
 20397874365,Step state: Stationary,Point state: Stationary
 20397874366,Step state: Stationary,Point state: Stationary
 20397874367,Step state: Stationary,Point state: Stationary
-20397874368,Step state: Stationary,Point state: Stationary
+20397874368,Step state: Migratory (fall),Point state: Migratory (fall)
 20397874369,Step state: Stationary,Point state: Stationary
 20397874370,Step state: Stationary,Point state: Stationary
 20397874371,Step state: Stationary,Point state: Stationary
@@ -26255,7 +26255,7 @@ event_id,primary_step_state,primary_point_state
 20397874373,Step state: Stationary,Point state: Stationary
 20397874374,Step state: Migratory (fall),Point state: Migratory (fall)
 20397874375,Step state: Stationary,Point state: Stationary
-20397874376,Step state: Stationary,Point state: Stationary
+20397874376,Step state: Migratory (fall),Point state: Migratory (fall)
 20397874377,Step state: Stationary,Point state: Stationary
 20397874378,Step state: Stationary,Point state: Stationary
 20397874379,Step state: Stationary,Point state: Stationary
@@ -26320,7 +26320,7 @@ event_id,primary_step_state,primary_point_state
 20425967963,Step state: Stationary,Point state: Stationary
 20425967964,Step state: Stationary,Point state: Stationary
 20425967965,Step state: Stationary,Point state: Stationary
-20425967966,Step state: Stationary,Point state: Stationary
+20425967966,Step state: Migratory (fall),Point state: Migratory (fall)
 20425967967,Step state: Stationary,Point state: Stationary
 20425967969,Step state: Migratory (fall),Point state: Migratory (fall)
 20425967970,Step state: Stationary,Point state: Stationary
@@ -26337,7 +26337,7 @@ event_id,primary_step_state,primary_point_state
 20425967981,Step state: Stationary,Point state: Stationary
 20425967982,Step state: Stationary,Point state: Stationary
 20425967984,Step state: Stationary,Point state: Stationary
-20425967985,Step state: Stationary,Point state: Stationary
+20425967985,Step state: Migratory (fall),Point state: Migratory (fall)
 20425967986,Step state: Stationary,Point state: Stationary
 20425967987,Step state: Stationary,Point state: Stationary
 20425967988,Step state: Stationary,Point state: Stationary
@@ -26374,7 +26374,7 @@ event_id,primary_step_state,primary_point_state
 20452986010,Step state: Stationary,Point state: Stationary
 20452986011,Step state: Stationary,Point state: Stationary
 20452986012,Step state: Stationary,Point state: Stationary
-20452986013,Step state: Stationary,Point state: Stationary
+20452986013,Step state: Migratory (fall),Point state: Migratory (fall)
 20452986014,Step state: Migratory (fall),Point state: Migratory (fall)
 20452986015,Step state: Stationary,Point state: Stationary
 20452986016,Step state: Stationary,Point state: Stationary
@@ -26407,7 +26407,7 @@ event_id,primary_step_state,primary_point_state
 20452986043,Step state: Stationary,Point state: Stationary
 20452986044,Step state: Stationary,Point state: Stationary
 20452986045,Step state: Stationary,Point state: Stationary
-20452986046,Step state: Stationary,Point state: Stationary
+20452986046,Step state: Migratory (fall),Point state: Migratory (fall)
 20452986047,Step state: Migratory (fall),Point state: Migratory (fall)
 20452986048,Step state: Stationary,Point state: Stationary
 20452986049,Step state: Stationary,Point state: Stationary
@@ -26421,7 +26421,7 @@ event_id,primary_step_state,primary_point_state
 20452986057,Step state: Stationary,Point state: Stationary
 20452986058,Step state: Stationary,Point state: Stationary
 20452986059,Step state: Stationary,Point state: Stationary
-20452986060,Step state: Stationary,Point state: Stationary
+20452986060,Step state: Migratory (fall),Point state: Migratory (fall)
 20452986061,Step state: Stationary,Point state: Stationary
 20452986062,Step state: Stationary,Point state: Stationary
 20452986063,Step state: Stationary,Point state: Stationary
@@ -26515,12 +26515,12 @@ event_id,primary_step_state,primary_point_state
 20611751959,Step state: Migratory (fall),Point state: Migratory (fall)
 20611751960,Step state: Stationary,Point state: Stationary
 20611751961,Step state: Stationary,Point state: Stationary
-20611751962,Step state: Stationary,Point state: Stationary
+20611751962,Step state: Migratory (fall),Point state: Migratory (fall)
 20611751963,Step state: Stationary,Point state: Stationary
 20611751964,Step state: Stationary,Point state: Stationary
 20611751965,Step state: Stationary,Point state: Stationary
 20611751966,Step state: Migratory (fall),Point state: Migratory (fall)
-20611751967,Step state: Stationary,Point state: Stationary
+20611751967,Step state: Migratory (fall),Point state: Migratory (fall)
 20611751968,Step state: Stationary,Point state: Stationary
 20611751969,Step state: Stationary,Point state: Stationary
 20611751970,Step state: Stationary,Point state: Stationary
@@ -26597,7 +26597,7 @@ event_id,primary_step_state,primary_point_state
 20771299525,Step state: Migratory (fall),Point state: Migratory (fall)
 20771299526,Step state: Stationary,Point state: Stationary
 20771299527,Step state: Stationary,Point state: Stationary
-20771299528,Step state: Stationary,Point state: Stationary
+20771299528,Step state: Migratory (fall),Point state: Migratory (fall)
 20771299529,Step state: Stationary,Point state: Stationary
 20771299530,Step state: Stationary,Point state: Stationary
 20771299531,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -26617,7 +26617,7 @@ event_id,primary_step_state,primary_point_state
 20771299546,Step state: Stationary,Point state: Stationary
 20771299547,Step state: Stationary,Point state: Stationary
 20771299548,Step state: Stationary,Point state: Stationary
-20771299549,Step state: Stationary,Point state: Stationary
+20771299549,Step state: Migratory (fall),Point state: Migratory (fall)
 20771299550,Step state: Stationary,Point state: Stationary
 20771299551,Step state: Stationary,Point state: Stationary
 20771299552,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -26673,7 +26673,7 @@ event_id,primary_step_state,primary_point_state
 20888105844,Step state: Migratory (fall),Point state: Migratory (fall)
 20888105845,Step state: Stationary,Point state: Stationary
 20888105846,Step state: Stationary,Point state: Stationary
-20888105847,Step state: Stationary,Point state: Stationary
+20888105847,Step state: Migratory (fall),Point state: Migratory (fall)
 20888105848,Step state: Stationary,Point state: Stationary
 20888105849,Step state: Stationary,Point state: Stationary
 20888105850,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -26689,7 +26689,7 @@ event_id,primary_step_state,primary_point_state
 20888105860,Step state: Migratory (fall),Point state: Migratory (fall)
 20888105861,Step state: Migratory (fall),Point state: Stationary
 20888105862,Step state: Stationary,Point state: Stationary
-20888105863,Step state: Migratory (fall),Point state: Stationary
+20888105863,Step state: Migratory (fall),Point state: Migratory (fall)
 20888105864,Step state: Migratory (fall),Point state: Stationary
 20888105865,Step state: Stationary,Point state: Stationary
 20888105866,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -26798,7 +26798,7 @@ event_id,primary_step_state,primary_point_state
 20920375411,Step state: Stationary,Point state: Stationary
 20920375413,Step state: Migratory (fall),Point state: Migratory (fall)
 20920375414,Step state: Stationary,Point state: Stationary
-20920375415,Step state: Stationary,Point state: Stationary
+20920375415,Step state: Migratory (fall),Point state: Migratory (fall)
 20920375416,Step state: Migratory (fall),Point state: Migratory (fall)
 20920375417,Step state: Stationary,Point state: Stationary
 20920375418,Step state: Stationary,Point state: Stationary
@@ -26834,7 +26834,7 @@ event_id,primary_step_state,primary_point_state
 20920375450,Step state: Stationary,Point state: Stationary
 20920375451,Step state: Migratory (fall),Point state: Migratory (fall)
 20920375452,Step state: Migratory (fall),Point state: Migratory (fall)
-20920375453,Step state: Stationary,Point state: Stationary
+20920375453,Step state: Migratory (fall),Point state: Migratory (fall)
 20920375454,Step state: Migratory (fall),Point state: Migratory (fall)
 20920375455,Step state: Stationary,Point state: Stationary
 20920375456,Step state: Stationary,Point state: Stationary
@@ -26926,7 +26926,7 @@ event_id,primary_step_state,primary_point_state
 20931904813,Step state: Migratory (fall),Point state: Migratory (fall)
 20931904814,Step state: Stationary,Point state: Stationary
 20931904815,Step state: Stationary,Point state: Stationary
-20931904816,Step state: Stationary,Point state: Stationary
+20931904816,Step state: Migratory (fall),Point state: Migratory (fall)
 20931904817,Step state: Stationary,Point state: Stationary
 20931904818,Step state: Migratory (fall),Point state: Migratory (fall)
 20931904819,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -27028,7 +27028,7 @@ event_id,primary_step_state,primary_point_state
 20953998376,Step state: Migratory (fall),Point state: Migratory (fall)
 20953998377,Step state: Stationary,Point state: Stationary
 20953998378,Step state: Stationary,Point state: Stationary
-20953998379,Step state: Stationary,Point state: Stationary
+20953998379,Step state: Migratory (fall),Point state: Migratory (fall)
 20953998380,Step state: Stationary,Point state: Stationary
 20953998381,Step state: Stationary,Point state: Stationary
 20953998382,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -27056,19 +27056,19 @@ event_id,primary_step_state,primary_point_state
 20953998404,Step state: Stationary,Point state: Stationary
 20953998405,Step state: Migratory (fall),Point state: Migratory (fall)
 20953998406,Step state: Stationary,Point state: Stationary
-20953998407,Step state: Stationary,Point state: Stationary
+20953998407,Step state: Migratory (fall),Point state: Migratory (fall)
 20953998408,Step state: Stationary,Point state: Stationary
 20962503564,Step state: Stationary,Point state: Stationary
-20962503565,Step state: Stationary,Point state: Stationary
-20962503566,Step state: Stationary,Point state: Stationary
+20962503565,Step state: Migratory (fall),Point state: Stationary
+20962503566,Step state: Migratory (fall),Point state: Migratory (fall)
 20962503567,Step state: Stationary,Point state: Stationary
 20962503568,Step state: Stationary,Point state: Stationary
 20962503569,Step state: Stationary,Point state: Stationary
 20962503570,Step state: Stationary,Point state: Stationary
-20962503571,Step state: Stationary,Point state: Stationary
+20962503571,Step state: Migratory (fall),Point state: Migratory (fall)
 20962503572,Step state: Stationary,Point state: Stationary
-20962503573,Step state: Stationary,Point state: Stationary
-20962503574,Step state: Stationary,Point state: Stationary
+20962503573,Step state: Migratory (fall),Point state: Migratory (fall)
+20962503574,Step state: Migratory (fall),Point state: Migratory (fall)
 20962503575,Step state: Stationary,Point state: Stationary
 20962503576,Step state: Stationary,Point state: Stationary
 20962503577,Step state: Stationary,Point state: Stationary
@@ -27102,10 +27102,10 @@ event_id,primary_step_state,primary_point_state
 20962503605,Step state: Migratory (fall),Point state: Migratory (fall)
 20962503606,Step state: Migratory (fall),Point state: Migratory (fall)
 20962503607,Step state: Migratory (fall),Point state: Migratory (fall)
-20962503608,Step state: Stationary,Point state: Stationary
+20962503608,Step state: Migratory (fall),Point state: Migratory (fall)
 20962503609,Step state: Stationary,Point state: Stationary
 20962503610,Step state: Stationary,Point state: Stationary
-20962503611,Step state: Stationary,Point state: Stationary
+20962503611,Step state: Migratory (fall),Point state: Migratory (fall)
 20967592448,Step state: Migratory (fall),Point state: Migratory (fall)
 20967592449,Step state: Stationary,Point state: Stationary
 20967592450,Step state: Stationary,Point state: Stationary
@@ -27241,11 +27241,11 @@ event_id,primary_step_state,primary_point_state
 20989179497,Step state: Stationary,Point state: Stationary
 20989179498,Step state: Stationary,Point state: Stationary
 20989179499,Step state: Stationary,Point state: Stationary
-20989179500,Step state: Stationary,Point state: Stationary
+20989179500,Step state: Migratory (fall),Point state: Migratory (fall)
 20989179501,Step state: Stationary,Point state: Stationary
 20989179502,Step state: Stationary,Point state: Stationary
 20989179503,Step state: Stationary,Point state: Stationary
-20989179504,Step state: Stationary,Point state: Stationary
+20989179504,Step state: Migratory (fall),Point state: Migratory (fall)
 20989179505,Step state: Stationary,Point state: Stationary
 20989179506,Step state: Stationary,Point state: Stationary
 20989179507,Step state: Stationary,Point state: Stationary
@@ -27253,7 +27253,7 @@ event_id,primary_step_state,primary_point_state
 20989179509,Step state: Stationary,Point state: Stationary
 20989179510,Step state: Migratory (fall),Point state: Migratory (fall)
 20989179511,Step state: Stationary,Point state: Stationary
-20989179512,Step state: Stationary,Point state: Stationary
+20989179512,Step state: Migratory (fall),Point state: Migratory (fall)
 20989179513,Step state: Stationary,Point state: Stationary
 20989179514,Step state: Migratory (fall),Point state: Migratory (fall)
 20989179515,Step state: Stationary,Point state: Stationary
@@ -27274,7 +27274,7 @@ event_id,primary_step_state,primary_point_state
 20989179530,Step state: Migratory (fall),Point state: Migratory (fall)
 20989179531,Step state: Stationary,Point state: Stationary
 20989179532,Step state: Stationary,Point state: Stationary
-20989179533,Step state: Stationary,Point state: Stationary
+20989179533,Step state: Migratory (fall),Point state: Migratory (fall)
 20994782592,Step state: Stationary,Point state: Stationary
 20994782593,Step state: Migratory (fall),Point state: Migratory (fall)
 20994782594,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -27282,10 +27282,10 @@ event_id,primary_step_state,primary_point_state
 20994782596,Step state: Stationary,Point state: Stationary
 20994782597,Step state: Stationary,Point state: Stationary
 20994782598,Step state: Stationary,Point state: Stationary
-20994782599,Step state: Stationary,Point state: Stationary
+20994782599,Step state: Foray loop,Point state: Stationary
 20994782600,Step state: Migratory (fall),Point state: Migratory (fall)
 20994782601,Step state: Migratory (fall),Point state: Migratory (fall)
-20994782602,Step state: Stationary,Point state: Stationary
+20994782602,Step state: Foray loop,Point state: Foray loop
 20994782603,Step state: Stationary,Point state: Stationary
 20994782604,Step state: Stationary,Point state: Stationary
 20994782605,Step state: Stationary,Point state: Stationary
@@ -27331,7 +27331,7 @@ event_id,primary_step_state,primary_point_state
 20999738929,Step state: Stationary,Point state: Stationary
 20999738930,Step state: Stationary,Point state: Stationary
 20999738931,Step state: Stationary,Point state: Stationary
-20999738932,Step state: Stationary,Point state: Stationary
+20999738932,Step state: Migratory (fall),Point state: Migratory (fall)
 20999738933,Step state: Migratory (fall),Point state: Migratory (fall)
 20999738934,Step state: Stationary,Point state: Stationary
 20999738935,Step state: Stationary,Point state: Stationary
@@ -27344,11 +27344,11 @@ event_id,primary_step_state,primary_point_state
 20999738942,Step state: Migratory (fall),Point state: Migratory (fall)
 20999738943,Step state: Stationary,Point state: Stationary
 20999738944,Step state: Stationary,Point state: Stationary
-20999738945,Step state: Stationary,Point state: Stationary
+20999738945,Step state: Migratory (fall),Point state: Migratory (fall)
 20999738946,Step state: Stationary,Point state: Stationary
 20999738947,Step state: Stationary,Point state: Stationary
 20999738948,Step state: Stationary,Point state: Stationary
-20999738949,Step state: Stationary,Point state: Stationary
+20999738949,Step state: Migratory (fall),Point state: Migratory (fall)
 20999738950,Step state: Stationary,Point state: Stationary
 20999738951,Step state: Migratory (fall),Point state: Migratory (fall)
 20999738952,Step state: Stationary,Point state: Stationary
@@ -27363,8 +27363,8 @@ event_id,primary_step_state,primary_point_state
 21004550112,Step state: Stationary,Point state: Stationary
 21004550113,Step state: Migratory (fall),Point state: Migratory (fall)
 21004550114,Step state: Migratory (fall),Point state: Migratory (fall)
-21004550115,Step state: Migratory (fall),Point state: Stationary
-21004550116,Step state: Stationary,Point state: Stationary
+21004550115,Step state: Migratory (fall),Point state: Migratory (fall)
+21004550116,Step state: Migratory (fall),Point state: Migratory (fall)
 21004550117,Step state: Migratory (fall),Point state: Stationary
 21004550118,Step state: Stationary,Point state: Stationary
 21004550119,Step state: Stationary,Point state: Stationary
@@ -27384,7 +27384,7 @@ event_id,primary_step_state,primary_point_state
 21004550133,Step state: Stationary,Point state: Stationary
 21004550134,Step state: Migratory (fall),Point state: Migratory (fall)
 21004550135,Step state: Migratory (fall),Point state: Migratory (fall)
-21004550136,Step state: Stationary,Point state: Stationary
+21004550136,Step state: Migratory (fall),Point state: Migratory (fall)
 21004550137,Step state: Stationary,Point state: Stationary
 21004550138,Step state: Stationary,Point state: Stationary
 21004550139,Step state: Migratory (fall),Point state: Stationary
@@ -27431,7 +27431,7 @@ event_id,primary_step_state,primary_point_state
 21014168795,Step state: Stationary,Point state: Stationary
 21014168796,Step state: Stationary,Point state: Stationary
 21014168797,Step state: Migratory (fall),Point state: Migratory (fall)
-21014168798,Step state: Stationary,Point state: Stationary
+21014168798,Step state: Migratory (fall),Point state: Migratory (fall)
 21014168799,Step state: Stationary,Point state: Stationary
 21014168800,Step state: Stationary,Point state: Stationary
 21014168801,Step state: Stationary,Point state: Stationary
@@ -27462,7 +27462,7 @@ event_id,primary_step_state,primary_point_state
 21014168826,Step state: Migratory (fall),Point state: Migratory (fall)
 21014168827,Step state: Stationary,Point state: Stationary
 21014168828,Step state: Stationary,Point state: Stationary
-21014168829,Step state: Stationary,Point state: Stationary
+21014168829,Step state: Migratory (fall),Point state: Migratory (fall)
 21014168830,Step state: Stationary,Point state: Stationary
 21014168831,Step state: Stationary,Point state: Stationary
 21014168832,Step state: Stationary,Point state: Stationary
@@ -27479,7 +27479,7 @@ event_id,primary_step_state,primary_point_state
 21014168843,Step state: Stationary,Point state: Stationary
 21014168844,Step state: Stationary,Point state: Stationary
 21014168845,Step state: Migratory (fall),Point state: Migratory (fall)
-21014168846,Step state: Stationary,Point state: Stationary
+21014168846,Step state: Migratory (fall),Point state: Migratory (fall)
 21014168847,Step state: Stationary,Point state: Stationary
 21014168848,Step state: Stationary,Point state: Stationary
 21014168849,Step state: Stationary,Point state: Stationary
@@ -27502,7 +27502,7 @@ event_id,primary_step_state,primary_point_state
 21014168867,Step state: Migratory (fall),Point state: Migratory (fall)
 21014168868,Step state: Stationary,Point state: Stationary
 21014168869,Step state: Stationary,Point state: Stationary
-21014168870,Step state: Stationary,Point state: Stationary
+21014168870,Step state: Migratory (fall),Point state: Migratory (fall)
 21014168871,Step state: Stationary,Point state: Stationary
 21014168872,Step state: Stationary,Point state: Stationary
 21022618473,Step state: Stationary,Point state: Stationary
@@ -27672,7 +27672,7 @@ event_id,primary_step_state,primary_point_state
 21038905074,Step state: Stationary,Point state: Stationary
 21038905075,Step state: Migratory (fall),Point state: Migratory (fall)
 21038905076,Step state: Stationary,Point state: Stationary
-21038905077,Step state: Stationary,Point state: Stationary
+21038905077,Step state: Migratory (fall),Point state: Migratory (fall)
 21038905078,Step state: Stationary,Point state: Stationary
 21038905079,Step state: Migratory (fall),Point state: Migratory (fall)
 21038905080,Step state: Stationary,Point state: Stationary
@@ -27691,7 +27691,7 @@ event_id,primary_step_state,primary_point_state
 21038905093,Step state: Stationary,Point state: Stationary
 21038905094,Step state: Stationary,Point state: Stationary
 21038905095,Step state: Stationary,Point state: Stationary
-21038905096,Step state: Stationary,Point state: Stationary
+21038905096,Step state: Migratory (fall),Point state: Migratory (fall)
 21038905097,Step state: Migratory (fall),Point state: Migratory (fall)
 21038905098,Step state: Migratory (fall),Point state: Migratory (fall)
 21038905099,Step state: Stationary,Point state: Stationary
@@ -27709,9 +27709,9 @@ event_id,primary_step_state,primary_point_state
 21038905111,Step state: Stationary,Point state: Stationary
 21038905112,Step state: Stationary,Point state: Stationary
 21038905113,Step state: Stationary,Point state: Stationary
-21038905114,Step state: Stationary,Point state: Stationary
+21038905114,Step state: Migratory (fall),Point state: Migratory (fall)
 21038905115,Step state: Migratory (fall),Point state: Migratory (fall)
-21078231213,Step state: Stationary,Point state: Stationary
+21078231213,Step state: Migratory (fall),Point state: Migratory (fall)
 21078231214,Step state: Stationary,Point state: Stationary
 21078231215,Step state: Stationary,Point state: Stationary
 21078231216,Step state: Stationary,Point state: Stationary
@@ -27739,13 +27739,13 @@ event_id,primary_step_state,primary_point_state
 21078231238,Step state: Stationary,Point state: Stationary
 21078231239,Step state: Stationary,Point state: Stationary
 21078231240,Step state: Stationary,Point state: Stationary
-21078231241,Step state: Stationary,Point state: Stationary
+21078231241,Step state: Migratory (fall),Point state: Migratory (fall)
 21078231242,Step state: Stationary,Point state: Stationary
 21078231243,Step state: Stationary,Point state: Stationary
 21078231244,Step state: Stationary,Point state: Stationary
 21078231245,Step state: Stationary,Point state: Stationary
 21078231246,Step state: Stationary,Point state: Stationary
-21078231247,Step state: Migratory (fall),Point state: Stationary
+21078231247,Step state: Migratory (fall),Point state: Migratory (fall)
 21078231248,Step state: Stationary,Point state: Stationary
 21078231249,Step state: Stationary,Point state: Stationary
 21078231250,Step state: Stationary,Point state: Stationary
@@ -29569,7 +29569,7 @@ event_id,primary_step_state,primary_point_state
 21619954775,Step state: Stationary,Point state: Stationary
 21619954776,Step state: Stationary,Point state: Stationary
 21619954777,Step state: Stationary,Point state: Stationary
-21619954778,Step state: Stationary,Point state: Stationary
+21619954778,Step state: Migratory (spring),Point state: Stationary
 21619954779,Step state: Stationary,Point state: Stationary
 21619954780,Step state: Stationary,Point state: Stationary
 21619954781,Step state: Stationary,Point state: Stationary
@@ -29605,8 +29605,8 @@ event_id,primary_step_state,primary_point_state
 21619954818,Step state: Stationary,Point state: Stationary
 21619954819,Step state: Stationary,Point state: Stationary
 21619954820,Step state: Stationary,Point state: Stationary
-21619954822,Step state: Stationary,Point state: Stationary
-21619954823,Step state: Stationary,Point state: Stationary
+21619954822,Step state: Migratory (spring),Point state: Migratory (spring)
+21619954823,Step state: Migratory (spring),Point state: Migratory (spring)
 21619954825,Step state: Stationary,Point state: Stationary
 21619954826,Step state: Stationary,Point state: Stationary
 21619954827,Step state: Stationary,Point state: Stationary
@@ -30395,7 +30395,7 @@ event_id,primary_step_state,primary_point_state
 22034920056,Step state: Stationary,Point state: Stationary
 22034920057,Step state: Stationary,Point state: Stationary
 22034920058,Step state: Migratory (spring),Point state: Migratory (spring)
-22034920059,Step state: Stationary,Point state: Stationary
+22034920059,Step state: Migratory (spring),Point state: Migratory (spring)
 22034920060,Step state: Stationary,Point state: Stationary
 22034920062,Step state: Stationary,Point state: Stationary
 22034920063,Step state: Stationary,Point state: Stationary
@@ -30413,9 +30413,9 @@ event_id,primary_step_state,primary_point_state
 22034920075,Step state: Stationary,Point state: Stationary
 22034920076,Step state: Stationary,Point state: Stationary
 22034920077,Step state: Stationary,Point state: Stationary
-22034920078,Step state: Stationary,Point state: Stationary
+22034920078,Step state: Migratory (spring),Point state: Migratory (spring)
 22034920079,Step state: Stationary,Point state: Stationary
-22034920080,Step state: Stationary,Point state: Stationary
+22034920080,Step state: Migratory (spring),Point state: Migratory (spring)
 22034920081,Step state: Stationary,Point state: Stationary
 22034920082,Step state: Stationary,Point state: Stationary
 22034920083,Step state: Stationary,Point state: Stationary
@@ -30434,9 +30434,9 @@ event_id,primary_step_state,primary_point_state
 22034920096,Step state: Stationary,Point state: Stationary
 22034920097,Step state: Stationary,Point state: Stationary
 22034920098,Step state: Migratory (spring),Point state: Migratory (spring)
-22034920099,Step state: Stationary,Point state: Stationary
+22034920099,Step state: Migratory (spring),Point state: Migratory (spring)
 22034920100,Step state: Stationary,Point state: Stationary
-22034920101,Step state: Stationary,Point state: Stationary
+22034920101,Step state: Migratory (spring),Point state: Migratory (spring)
 22034920102,Step state: Stationary,Point state: Stationary
 22034920103,Step state: Stationary,Point state: Stationary
 22034920104,Step state: Stationary,Point state: Stationary
@@ -30458,37 +30458,37 @@ event_id,primary_step_state,primary_point_state
 22335556343,Step state: Migratory (spring),Point state: Migratory (spring)
 22335556344,Step state: Migratory (spring),Point state: Migratory (spring)
 22335556345,Step state: Stationary,Point state: Stationary
-22341910567,Step state: Stationary,Point state: Stationary
+22341910567,Step state: Migratory (spring),Point state: Migratory (spring)
 22341910568,Step state: Stationary,Point state: Stationary
-22341910569,Step state: Stationary,Point state: Stationary
+22341910569,Step state: Migratory (spring),Point state: Migratory (spring)
 22341910570,Step state: Stationary,Point state: Stationary
-22341910571,Step state: Stationary,Point state: Stationary
+22341910571,Step state: Migratory (spring),Point state: Migratory (spring)
 22341910572,Step state: Stationary,Point state: Stationary
-22341910573,Step state: Stationary,Point state: Stationary
+22341910573,Step state: Migratory (spring),Point state: Migratory (spring)
 22341910574,Step state: Stationary,Point state: Stationary
 22341910575,Step state: Stationary,Point state: Stationary
-22341910576,Step state: Stationary,Point state: Stationary
+22341910576,Step state: Migratory (spring),Point state: Migratory (spring)
 22341910577,Step state: Stationary,Point state: Stationary
 22341910578,Step state: Stationary,Point state: Stationary
-22341910579,Step state: Stationary,Point state: Stationary
+22341910579,Step state: Migratory (spring),Point state: Migratory (spring)
 22341910580,Step state: Stationary,Point state: Stationary
 22341910581,Step state: Stationary,Point state: Stationary
 22341910582,Step state: Migratory (spring),Point state: Migratory (spring)
 22341910583,Step state: Migratory (spring),Point state: Migratory (spring)
 22341910584,Step state: Stationary,Point state: Stationary
 22341910585,Step state: Stationary,Point state: Stationary
-22341910586,Step state: Stationary,Point state: Stationary
+22341910586,Step state: Migratory (spring),Point state: Migratory (spring)
 22341910587,Step state: Stationary,Point state: Stationary
-22341910588,Step state: Stationary,Point state: Stationary
+22341910588,Step state: Migratory (spring),Point state: Migratory (spring)
 22341910589,Step state: Stationary,Point state: Stationary
-22341910590,Step state: Stationary,Point state: Stationary
+22341910590,Step state: Migratory (spring),Point state: Migratory (spring)
 22341910591,Step state: Stationary,Point state: Stationary
 22341910592,Step state: Stationary,Point state: Stationary
 22341910593,Step state: Stationary,Point state: Stationary
 22341910594,Step state: Migratory (spring),Point state: Migratory (spring)
 22341910595,Step state: Migratory (spring),Point state: Migratory (spring)
 22341910596,Step state: Stationary,Point state: Stationary
-22341910597,Step state: Stationary,Point state: Stationary
+22341910597,Step state: Migratory (spring),Point state: Migratory (spring)
 22341910598,Step state: Stationary,Point state: Stationary
 22367978816,Step state: Stationary,Point state: Stationary
 22367978817,Step state: Stationary,Point state: Stationary
@@ -30540,7 +30540,7 @@ event_id,primary_step_state,primary_point_state
 22367978867,Step state: Migratory (spring),Point state: Migratory (spring)
 22367978868,Step state: Stationary,Point state: Stationary
 22367978869,Step state: Stationary,Point state: Stationary
-22367978870,Step state: Stationary,Point state: Stationary
+22367978870,Step state: Migratory (spring),Point state: Migratory (spring)
 22367978871,Step state: Stationary,Point state: Stationary
 22367978872,Step state: Stationary,Point state: Stationary
 22367978873,Step state: Stationary,Point state: Stationary
@@ -30548,7 +30548,7 @@ event_id,primary_step_state,primary_point_state
 22367978875,Step state: Stationary,Point state: Stationary
 22367978876,Step state: Migratory (spring),Point state: Migratory (spring)
 22367978877,Step state: Stationary,Point state: Stationary
-22367978878,Step state: Stationary,Point state: Stationary
+22367978878,Step state: Migratory (spring),Point state: Migratory (spring)
 22367978879,Step state: Stationary,Point state: Stationary
 22367978880,Step state: Stationary,Point state: Stationary
 22503128718,Step state: Stationary,Point state: Stationary
@@ -30583,9 +30583,9 @@ event_id,primary_step_state,primary_point_state
 22542227895,Step state: Stationary,Point state: Stationary
 22542227896,Step state: Stationary,Point state: Stationary
 22542227897,Step state: Stationary,Point state: Stationary
-22542227898,Step state: Stationary,Point state: Stationary
+22542227898,Step state: Migratory (spring),Point state: Migratory (spring)
 22542227899,Step state: Stationary,Point state: Stationary
-22542227900,Step state: Stationary,Point state: Stationary
+22542227900,Step state: Migratory (spring),Point state: Migratory (spring)
 22542227901,Step state: Stationary,Point state: Stationary
 22542227902,Step state: Stationary,Point state: Stationary
 22542227903,Step state: Stationary,Point state: Stationary
@@ -30601,9 +30601,9 @@ event_id,primary_step_state,primary_point_state
 22542227913,Step state: Stationary,Point state: Stationary
 22542227914,Step state: Stationary,Point state: Stationary
 22542227915,Step state: Stationary,Point state: Stationary
-22542227916,Step state: Stationary,Point state: Stationary
+22542227916,Step state: Migratory (spring),Point state: Migratory (spring)
 22542227917,Step state: Stationary,Point state: Stationary
-22542227918,Step state: Stationary,Point state: Stationary
+22542227918,Step state: Migratory (spring),Point state: Migratory (spring)
 22542227919,Step state: Stationary,Point state: Stationary
 22542227920,Step state: Stationary,Point state: Stationary
 22542227921,Step state: Stationary,Point state: Stationary
@@ -30612,28 +30612,28 @@ event_id,primary_step_state,primary_point_state
 22542227924,Step state: Stationary,Point state: Stationary
 22542227925,Step state: Stationary,Point state: Stationary
 22542227926,Step state: Stationary,Point state: Stationary
-22542227927,Step state: Stationary,Point state: Stationary
+22542227927,Step state: Migratory (spring),Point state: Migratory (spring)
 22542227928,Step state: Stationary,Point state: Stationary
 22542227929,Step state: Stationary,Point state: Stationary
 22542227930,Step state: Stationary,Point state: Stationary
-22542227931,Step state: Stationary,Point state: Stationary
+22542227931,Step state: Migratory (spring),Point state: Migratory (spring)
 22542227932,Step state: Stationary,Point state: Stationary
 22542227933,Step state: Stationary,Point state: Stationary
 22542227934,Step state: Stationary,Point state: Stationary
 22542227935,Step state: Stationary,Point state: Stationary
-22542228801,Step state: Stationary,Point state: Stationary
+22542228801,Step state: Migratory (spring),Point state: Migratory (spring)
 22542228802,Step state: Stationary,Point state: Stationary
-22542228803,Step state: Stationary,Point state: Stationary
+22542228803,Step state: Migratory (spring),Point state: Migratory (spring)
 22542228804,Step state: Stationary,Point state: Stationary
-22542228805,Step state: Stationary,Point state: Stationary
+22542228805,Step state: Migratory (spring),Point state: Migratory (spring)
 22542228806,Step state: Stationary,Point state: Stationary
-22542228807,Step state: Stationary,Point state: Stationary
+22542228807,Step state: Migratory (spring),Point state: Migratory (spring)
 22542228808,Step state: Stationary,Point state: Stationary
 22542228809,Step state: Stationary,Point state: Stationary
-22542228810,Step state: Stationary,Point state: Stationary
+22542228810,Step state: Migratory (spring),Point state: Migratory (spring)
 22542228811,Step state: Stationary,Point state: Stationary
 22542228812,Step state: Stationary,Point state: Stationary
-22542228813,Step state: Stationary,Point state: Stationary
+22542228813,Step state: Migratory (spring),Point state: Migratory (spring)
 22542228814,Step state: Stationary,Point state: Stationary
 22574770757,Step state: Stationary,Point state: Stationary
 22574770758,Step state: Stationary,Point state: Stationary
@@ -30660,7 +30660,7 @@ event_id,primary_step_state,primary_point_state
 22574770779,Step state: Stationary,Point state: Stationary
 22574770780,Step state: Stationary,Point state: Stationary
 22574770781,Step state: Migratory (spring),Point state: Migratory (spring)
-22574770782,Step state: Stationary,Point state: Stationary
+22574770782,Step state: Migratory (spring),Point state: Migratory (spring)
 22574770783,Step state: Stationary,Point state: Stationary
 22574770784,Step state: Stationary,Point state: Stationary
 22574770785,Step state: Stationary,Point state: Stationary
@@ -30675,13 +30675,13 @@ event_id,primary_step_state,primary_point_state
 22574770794,Step state: Migratory (spring),Point state: Migratory (spring)
 22574770795,Step state: Stationary,Point state: Stationary
 22574770796,Step state: Stationary,Point state: Stationary
-22574770797,Step state: Stationary,Point state: Stationary
+22574770797,Step state: Migratory (spring),Point state: Migratory (spring)
 22574770798,Step state: Stationary,Point state: Stationary
 22574770799,Step state: Stationary,Point state: Stationary
 22574770800,Step state: Stationary,Point state: Stationary
 22574770801,Step state: Stationary,Point state: Stationary
 22574770802,Step state: Stationary,Point state: Stationary
-22574770803,Step state: Stationary,Point state: Stationary
+22574770803,Step state: Migratory (spring),Point state: Migratory (spring)
 22574770804,Step state: Stationary,Point state: Stationary
 22574770805,Step state: Stationary,Point state: Stationary
 22574770806,Step state: Stationary,Point state: Stationary
@@ -30698,12 +30698,12 @@ event_id,primary_step_state,primary_point_state
 22574770818,Step state: Stationary,Point state: Stationary
 22574770819,Step state: Stationary,Point state: Stationary
 22574770820,Step state: Stationary,Point state: Stationary
-22574770821,Step state: Stationary,Point state: Stationary
+22574770821,Step state: Migratory (spring),Point state: Migratory (spring)
 22574770822,Step state: Stationary,Point state: Stationary
 22574770823,Step state: Stationary,Point state: Stationary
 22574770824,Step state: Stationary,Point state: Stationary
 22574770825,Step state: Stationary,Point state: Stationary
-22574770827,Step state: Stationary,Point state: Stationary
+22574770827,Step state: Migratory (spring),Point state: Migratory (spring)
 22574770828,Step state: Stationary,Point state: Stationary
 22574770829,Step state: Stationary,Point state: Stationary
 22574770830,Step state: Stationary,Point state: Stationary
@@ -30712,7 +30712,7 @@ event_id,primary_step_state,primary_point_state
 22574770833,Step state: Stationary,Point state: Stationary
 22574770834,Step state: Stationary,Point state: Stationary
 22574770835,Step state: Stationary,Point state: Stationary
-22574770836,Step state: Stationary,Point state: Stationary
+22574770836,Step state: Migratory (spring),Point state: Migratory (spring)
 22574770837,Step state: Stationary,Point state: Stationary
 22574770838,Step state: Stationary,Point state: Stationary
 22574770839,Step state: Stationary,Point state: Stationary
@@ -30722,14 +30722,14 @@ event_id,primary_step_state,primary_point_state
 22597278311,Step state: Stationary,Point state: Stationary
 22597278312,Step state: Stationary,Point state: Stationary
 22597278313,Step state: Stationary,Point state: Stationary
-22597278314,Step state: Stationary,Point state: Stationary
+22597278314,Step state: Migratory (spring),Point state: Migratory (spring)
 22597278315,Step state: Stationary,Point state: Stationary
 22597278316,Step state: Stationary,Point state: Stationary
 22597278317,Step state: Stationary,Point state: Stationary
 22597278319,Step state: Stationary,Point state: Stationary
 22597278320,Step state: Stationary,Point state: Stationary
 22597278321,Step state: Stationary,Point state: Stationary
-22597278323,Step state: Stationary,Point state: Stationary
+22597278323,Step state: Migratory (spring),Point state: Migratory (spring)
 22597278324,Step state: Stationary,Point state: Stationary
 22608077364,Step state: Migratory (spring),Point state: Migratory (spring)
 22608077365,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -30738,13 +30738,13 @@ event_id,primary_step_state,primary_point_state
 22608077368,Step state: Migratory (spring),Point state: Migratory (spring)
 22608077369,Step state: Migratory (spring),Point state: Migratory (spring)
 22608077370,Step state: Migratory (spring),Point state: Migratory (spring)
-22608077371,Step state: Stationary,Point state: Stationary
+22608077371,Step state: Migratory (spring),Point state: Migratory (spring)
 22608077372,Step state: Stationary,Point state: Stationary
 22608077373,Step state: Stationary,Point state: Stationary
 22608077374,Step state: Stationary,Point state: Stationary
 22608077375,Step state: Stationary,Point state: Stationary
 22608077376,Step state: Stationary,Point state: Stationary
-22608077377,Step state: Stationary,Point state: Stationary
+22608077377,Step state: Migratory (spring),Point state: Migratory (spring)
 22608077378,Step state: Stationary,Point state: Stationary
 22608077379,Step state: Stationary,Point state: Stationary
 22608077380,Step state: Stationary,Point state: Stationary
@@ -30753,7 +30753,7 @@ event_id,primary_step_state,primary_point_state
 22608077383,Step state: Stationary,Point state: Stationary
 22608077384,Step state: Stationary,Point state: Stationary
 22608077385,Step state: Stationary,Point state: Stationary
-22608077386,Step state: Stationary,Point state: Stationary
+22608077386,Step state: Migratory (spring),Point state: Migratory (spring)
 22608077387,Step state: Stationary,Point state: Stationary
 22608077388,Step state: Stationary,Point state: Stationary
 22608077389,Step state: Stationary,Point state: Stationary
@@ -30787,7 +30787,7 @@ event_id,primary_step_state,primary_point_state
 22688507729,Step state: Stationary,Point state: Stationary
 22688507730,Step state: Stationary,Point state: Stationary
 22688507731,Step state: Stationary,Point state: Stationary
-22688507732,Step state: Stationary,Point state: Stationary
+22688507732,Step state: Migratory (spring),Point state: Migratory (spring)
 22688507733,Step state: Stationary,Point state: Stationary
 22688507734,Step state: Stationary,Point state: Stationary
 22688507735,Step state: Stationary,Point state: Stationary
@@ -30869,7 +30869,7 @@ event_id,primary_step_state,primary_point_state
 23054196916,Step state: Stationary,Point state: Stationary
 23054196917,Step state: Stationary,Point state: Stationary
 23054196918,Step state: Stationary,Point state: Stationary
-23054196919,Step state: Stationary,Point state: Stationary
+23054196919,Step state: Migratory (spring),Point state: Migratory (spring)
 23054196920,Step state: Stationary,Point state: Stationary
 23054196921,Step state: Stationary,Point state: Stationary
 23054196922,Step state: Stationary,Point state: Stationary
@@ -30898,7 +30898,7 @@ event_id,primary_step_state,primary_point_state
 23054196947,Step state: Stationary,Point state: Stationary
 23054196948,Step state: Stationary,Point state: Stationary
 23054196949,Step state: Stationary,Point state: Stationary
-23054196951,Step state: Stationary,Point state: Stationary
+23054196951,Step state: Migratory (spring),Point state: Migratory (spring)
 23054196952,Step state: Stationary,Point state: Stationary
 23054196953,Step state: Stationary,Point state: Stationary
 23054196954,Step state: Stationary,Point state: Stationary
@@ -30971,7 +30971,7 @@ event_id,primary_step_state,primary_point_state
 23168807771,Step state: Stationary,Point state: Stationary
 23168807772,Step state: Stationary,Point state: Stationary
 23168807773,Step state: Stationary,Point state: Stationary
-23168807774,Step state: Stationary,Point state: Stationary
+23168807774,Step state: Migratory (spring),Point state: Migratory (spring)
 23168807775,Step state: Stationary,Point state: Stationary
 23168807776,Step state: Stationary,Point state: Stationary
 23168807777,Step state: Stationary,Point state: Stationary
@@ -30994,7 +30994,7 @@ event_id,primary_step_state,primary_point_state
 23168807794,Step state: Stationary,Point state: Stationary
 23168807795,Step state: Stationary,Point state: Stationary
 23168807796,Step state: Stationary,Point state: Stationary
-23168807798,Step state: Stationary,Point state: Stationary
+23168807798,Step state: Migratory (spring),Point state: Migratory (spring)
 23168807799,Step state: Stationary,Point state: Stationary
 23168807800,Step state: Stationary,Point state: Stationary
 23168807801,Step state: Stationary,Point state: Stationary
@@ -31162,7 +31162,7 @@ event_id,primary_step_state,primary_point_state
 23570158504,Step state: Stationary,Point state: Stationary
 23570158505,Step state: Stationary,Point state: Stationary
 23570158506,Step state: Stationary,Point state: Stationary
-23657433889,Step state: Stationary,Point state: Stationary
+23657433889,Step state: Migratory (spring),Point state: Migratory (spring)
 24793389813,Step state: Stationary,Point state: Stationary
 24793389814,Step state: Stationary,Point state: Stationary
 24885888700,Step state: Stationary,Point state: Stationary
