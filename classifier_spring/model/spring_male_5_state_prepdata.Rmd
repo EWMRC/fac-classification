@@ -19,15 +19,15 @@ library(crawl)
 
 Extract all locations from 2019, 2020, and 2021 from Jan 5th through June 30th
 ```{r include=FALSE}
-amwo_2018 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS("movebank_credentials.rds"), timestamp_start = "20180105000000000", timestamp_end = "20180630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
+amwo_2018 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20180105000000000", timestamp_end = "20180630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
 
-amwo_2019 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS("movebank_credentials.rds"), timestamp_start = "20190105000000000", timestamp_end = "20190630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
+amwo_2019 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20190105000000000", timestamp_end = "20190630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
 
-amwo_2020 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS("movebank_credentials.rds"), timestamp_start = "20200105000000000", timestamp_end = "20200630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
+amwo_2020 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20200105000000000", timestamp_end = "20200630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
 
-amwo_2021 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS("movebank_credentials.rds"), timestamp_start = "20210105000000000", timestamp_end = "20210630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
+amwo_2021 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20210105000000000", timestamp_end = "20210630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
 
-amwo_2022 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS("movebank_credentials.rds"), timestamp_start = "20220105000000000", timestamp_end = "20220630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
+amwo_2022 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20220105000000000", timestamp_end = "20220630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
 ```
 
 Formatting and cleaning, including creating time columns and simplifying to one location per day
