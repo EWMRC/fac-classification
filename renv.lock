@@ -58,10 +58,10 @@
     },
     "DiagrammeR": {
       "Package": "DiagrammeR",
-      "Version": "1.0.9",
+      "Version": "1.0.10",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "cc43d8972a07f65e651c2861626003da",
+      "Hash": "f3de4a4878163a4629a528bbcc6e655d",
       "Requirements": [
         "RColorBrewer",
         "downloader",
@@ -70,7 +70,6 @@
         "htmltools",
         "htmlwidgets",
         "igraph",
-        "influenceR",
         "magrittr",
         "purrr",
         "readr",
@@ -1353,17 +1352,6 @@
         "rlang"
       ]
     },
-    "influenceR": {
-      "Package": "influenceR",
-      "Version": "0.1.0.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "04a569c515130c758eff1939499d7cc5",
-      "Requirements": [
-        "Matrix",
-        "igraph"
-      ]
-    },
     "isoband": {
       "Package": "isoband",
       "Version": "0.2.7",
@@ -2158,10 +2146,10 @@
     },
     "renv": {
       "Package": "renv",
-      "Version": "0.16.0",
-      "Source": "Repository",
+      "Version": "1.0.2",
+      "OS_type": NA,
       "Repository": "CRAN",
-      "Hash": "c9e8442ab69bc21c9697ecf856c1e6c7",
+      "Source": "Repository",
       "Requirements": []
     },
     "reprex": {
