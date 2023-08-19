@@ -143,7 +143,7 @@ migration_dates <- migration_dates %>%
 Download Movebank data, limit to times before Aug 1 2022 (more recent seasons haven't been delineated yet)
 ```{r}
 amwo_move <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", 
-                             login = readRDS("movebank_credentials.rds"), 
+                             login = readRDS(here::here("movebank_credentials.rds")), 
                              removeDuplicatedTimestamps=TRUE)
 
 amwo_data <- as.data.frame(amwo_move) %>%
