@@ -252,8 +252,7 @@ variable_iterations <- variable_iterations %>%
   mutate(rn = as.character(rn), variable_to_test = as.character(variable_to_test)) %>% 
   mutate(model_structure = map(.x = variable_to_test,
                               .f = function(i){
-                                append(c("step", "angle", "step_500"), i) %>% 
-                                  return()
+                                names(Par0_m1)[!names(Par0_m1) == i]
                               }))
 parameters_to_run <- parameters_to_run %>% 
   full_join(x = parameters_to_run, y = variable_iterations, by = c("rn"))
@@ -261,8 +260,9 @@ parameters_to_run <- parameters_to_run %>%
 ```
 
 ```{r}
-plan(multisession, workers = 6)
-tbl_list <- future_pmap(.l = parameters_to_run, 
+parameters_to_run_abv <- parameters_to_run[1:240,]
+plan(multisession, workers = 8)
+tbl_list <- future_pmap(.l = parameters_to_run_abv, 
                         .f = iterate_ids_male, 
                         .options = furrr_options(seed = 8),
                         .progress = TRUE)
@@ -274,8 +274,8 @@ accuracy_results_male <- tbl_list %>%
   do.call(rbind, .)
 
 # Append results to previous runs
-write.table(accuracy_results_male, "variable_importance_spring_male.csv",
-            append = TRUE,
+write.table(accuracy_results_male, "variable_importance_spring_male_1_240.csv",
+            append = FALSE,
             sep = ",",
             col.names = TRUE,
             row.names = FALSE,
