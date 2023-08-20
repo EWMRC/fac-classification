@@ -120,9 +120,8 @@ fit_and_predict <- function(.x, ks, vtt, ms){
 # and now for the accuracy assessment
 
 ```{r}
-iterate_ids_male <- function(id_iter, jul_day_cutoff, rn, variable_to_test, model_structure){
-  amwo_hmm_clipped <- amwo_hmm %>% #remove locations for the ID in question after the cutoff date
-    filter(!(ID == id_iter & julian_day > jul_day_cutoff))
+iterate_ids_male <- function(jul_day_cutoff, variable_to_test, model_structure, fold_name, fold_indicies, to_constrain, data_constrained, true_endings){#id_iter, jul_day_cutoff, rn, variable_to_test, model_structure
+  amwo_hmm_clipped <- data_constrained
   
   result <- tryCatch({
     # Assigning starting state
@@ -169,28 +168,50 @@ iterate_ids_male <- function(id_iter, jul_day_cutoff, rn, variable_to_test, mode
     results_modified <- fit_and_predict(amwo_hmm_clipped, ks = knownStates, vtt = variable_to_test, ms = model_structure)
     
     #retrieve the modified ending state
-    end_state_modified <- results_modified$results %>% 
-      filter(ID == id_iter & julian_day == jul_day_cutoff) %>% 
-      pull(point_state)
     
-    #retrieve the real ending state
-    end_state_true <- results %>% 
-      filter(ID == id_iter & julian_day == jul_day_cutoff) %>% 
-      pull(point_state)
+    end_state_modified <- numeric()
+    
+    for(i in 1:nrow(to_constrain)){
+      id_to_clip <- to_constrain$id_iter[i]
+      dummy_y <- jul_day_cutoff
+      
+      j <- results_modified$results %>% 
+        filter(ID == id_to_clip & julian_day == dummy_y) %>% 
+        head(n=1) %>% 
+        pull(point_state)
+      
+      end_state_modified <- append(end_state_modified, j)
+    }
+    
+    if(length(end_state_modified)!=nrow(to_constrain)){
+      stop("Mismatch between number of IDs and length of output")
+    }
+    
+    # end_state_modified <- results_modified$results %>% 
+    #   filter(ID == id_iter & julian_day == jul_day_cutoff) %>% 
+    #   pull(point_state)
     
     #report the cutoff date, ID, modified ending state, and real ending state in a tibble, which will be the output of the loop
-    tibble(cutoff_date = jul_day_cutoff,
-           ID = id_iter,
+    tibble(jul_day_cutoff = jul_day_cutoff,
            variable_to_test = variable_to_test,
-           end_modified = end_state_modified,
-           end_true = end_state_true)
+           model_structure = list(model_structure),
+           fold_name = fold_name,
+           fold_indicies = list(fold_indicies),
+           to_constrain = list(to_constrain),
+           data_constrained = list(data_constrained),
+           end_modified = list(end_state_modified),
+           end_true = list(true_endings))
   },
   error = function(e){
-    tibble(cutoff_date = jul_day_cutoff,
-           ID = id_iter,
+    tibble(jul_day_cutoff = jul_day_cutoff,
            variable_to_test = variable_to_test,
-           end_modified = NA,
-           end_true = NA)
+           model_structure = list(model_structure),
+           fold_name = fold_name,
+           fold_indicies = list(fold_indicies),
+           to_constrain = list(to_constrain),
+           data_constrained = list(data_constrained),
+           end_modified = list(NA),
+           end_true = list(true_endings))
   })
   return(result)
 }
@@ -251,21 +272,84 @@ colnames(variable_iterations) <- c("rn", "variable_to_test")
 variable_iterations <- variable_iterations %>% 
   mutate(rn = as.character(rn), variable_to_test = as.character(variable_to_test)) %>% 
   mutate(model_structure = map(.x = variable_to_test,
-                              .f = function(i){
-                                names(Par0_m1)[!names(Par0_m1) == i]
-                              }))
+                               .f = function(i){
+                                 names(Par0_m1)[!names(Par0_m1) == i]
+                               }))
 parameters_to_run <- parameters_to_run %>% 
   full_join(x = parameters_to_run, y = variable_iterations, by = c("rn"))
 
 ```
 
+Create a nested version of parameters_to_run that will measure multiple errors at once, in a testing/training fold framework
 ```{r}
-parameters_to_run_abv <- parameters_to_run[1:240,]
-plan(multisession, workers = 8)
-tbl_list <- future_pmap(.l = parameters_to_run_abv, 
-                        .f = iterate_ids_male, 
-                        .options = furrr_options(seed = 8),
-                        .progress = TRUE)
+parameters_nested <- parameters_to_run %>% 
+  group_by(variable_to_test, model_structure, jul_day_cutoff) %>% 
+  nest(.key = "ids")
+
+parameters_nested$folds <- map2(.x = parameters_nested$ids, .y = 1:nrow(parameters_nested), .f = function(x, y){
+  nestfs::create.folds(num.folds = 5, num.rows = nrow(x), seed = y)
+})
+
+parameters_nested <- unnest_wider(data = parameters_nested, col = folds, names_sep = "") %>% 
+  pivot_longer(cols = folds1:folds5, names_to = "fold_name", values_to = "fold_indicies")
+
+#the constraints used for each iteration of the model
+parameters_nested$to_constrain <- map2(.x = parameters_nested$ids, .y = parameters_nested$fold_indicies, .f = function(x, y){
+  x[y,] %>% 
+    mutate(rn = NULL) %>% 
+    return()
+})
+
+parameters_nested$ids <- NULL #this has been replaced by to_constrain
+
+#amwo locations filtered to the constraints set
+parameters_nested$data_constrained <- map2(.x = parameters_nested$to_constrain, .y = parameters_nested$jul_day_cutoff, .f = function(x, y){
+  
+  amwo_hmm_clipped <- amwo_hmm
+  
+  for(i in 1:nrow(x)){
+    id_to_clip <- x$id_iter[i]
+    dummy_y <- y
+    
+    amwo_hmm_clipped <- amwo_hmm_clipped %>% #remove locations for the ID in question after the cutoff date
+      filter(!(ID == id_to_clip & julian_day > dummy_y))
+  }
+  return(amwo_hmm_clipped)
+})
+
+parameters_nested$true_endings <- map2(.x = parameters_nested$to_constrain, .y = parameters_nested$jul_day_cutoff, .f = function(x, y){
+  
+  trgt <- numeric()
+  
+  for(i in 1:nrow(x)){
+    id_to_clip <- x$id_iter[i]
+    dummy_y <- y
+    
+    j <- results %>% 
+      filter(ID == id_to_clip & julian_day == dummy_y) %>%
+      head(n=1) %>% 
+      pull(point_state)
+    
+    trgt <- append(trgt, j)
+  }
+  
+  if(length(trgt)!=nrow(x)){
+    stop("Mismatch between number of IDs and length of output")
+  }
+  
+  return(trgt)
+})
+```
+
+```{r}
+plan(multisession, workers = 4)
+
+tbl_list <- parameters_nested %>% 
+  future_pmap(.l = ., 
+              .f = iterate_ids_male, 
+              .options = furrr_options(seed = 8),
+              .progress = TRUE)
+
 plan(sequential)
 ```
 
@@ -274,10 +358,14 @@ accuracy_results_male <- tbl_list %>%
   do.call(rbind, .)
 
 # Append results to previous runs
-write.table(accuracy_results_male, "variable_importance_spring_male_1_240.csv",
-            append = FALSE,
-            sep = ",",
-            col.names = TRUE,
-            row.names = FALSE,
-            quote = FALSE)
+# write.table(accuracy_results_male, "variable_importance_spring_male.csv",
+#             append = FALSE,
+#             sep = ",",
+#             col.names = TRUE,
+#             row.names = FALSE,
+#             quote = FALSE)
+
+accuracy_results_male %>% 
+  dplyr::select(-data_constrained) %>%
+  saveRDS("variable_importance_spring_male.rds")
 ```

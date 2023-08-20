@@ -40,7 +40,7 @@ Frontmatter: prepare the model
 Label states and create distributions for movements
 ```{r}
 stateNames <- c("pre", "migration", "stopover", "settling", "post")
-dist <- list(step="gamma", angle="wrpcauchy", step_500 = "bern")
+dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", log_mean_dist_7 = "norm", residence_time = "norm", dist_start = "bern", step_500 = "bern", breeding_abundance = "bern") #, lat_diff_abs = "gamma" , pts_10mi_log = "norm"
 ```
 
 fix step length parameters and state transitions
@@ -65,9 +65,12 @@ Par0_m1 <- list(step=c(0.293641627, 79.029506936, 0.157361645, 0.250739740, 0.08
 
 Create a function that fits the model, predicts states for each step (predicted and observed) and input in the dataset. Note: the listed x y is the starting location of the step. Then use this to determine what the bird's state was at any given point
 ```{r}
-fit_and_predict <- function(.x, ks){
+fit_and_predict <- function(.x, ks, vtt, ms){
+  dist_iter <- dist[ms]
+  Par0_m1_iter <- Par0_m1[ms]
+  
   set.seed(8)
-  m1 <- fitHMM(data=.x, nbStates=5, dist=dist, Par0 = Par0_m1,
+  m1 <- fitHMM(data=.x, nbStates=5, dist=dist_iter, Par0 = Par0_m1_iter,
                estAngleMean = list(angle=TRUE),
                fixPar=fixPar,
                #userBounds = userBounds,
@@ -97,14 +100,6 @@ fit_and_predict <- function(.x, ks){
     
   }) %>% unlist()
   
-  #Fix the RI problem birds
-  # .x <- .x %>% 
-  #   group_by(ID) %>%
-  #   mutate(ranks = row_number()) %>%
-  #   mutate(point_state = ifelse(ranks == "1" & ID %in% RI_problems, 1, point_state)) %>% 
-  #   ungroup() %>% 
-  #   dplyr::select(-ranks)
-  
   return(list(model = m1, results = .x))
 }
 ```
@@ -113,9 +108,8 @@ fit_and_predict <- function(.x, ks){
 # and now for the accuracy assessment
 
 ```{r}
-iterate_ids_male <- function(id_iter, jul_day_cutoff, rn){
-  amwo_hmm_clipped <- amwo_hmm %>% #remove locations for the ID in question after the cutoff date
-    filter(!(ID == id_iter & julian_day > jul_day_cutoff))
+iterate_ids_male <- function(jul_day_cutoff, variable_to_test, model_structure, fold_name, fold_indicies, to_constrain, data_constrained, true_endings){#id_iter, jul_day_cutoff, rn, variable_to_test, model_structure
+  amwo_hmm_clipped <- data_constrained
   
   result <- tryCatch({
     # Assigning starting state
@@ -159,29 +153,53 @@ iterate_ids_male <- function(id_iter, jul_day_cutoff, rn){
     knownStates <- amwo_hmm_clipped$known
     
     # Running the model
-    results_modified <- fit_and_predict(amwo_hmm_clipped, ks = knownStates)
+    results_modified <- fit_and_predict(amwo_hmm_clipped, ks = knownStates, vtt = variable_to_test, ms = model_structure)
     
     #retrieve the modified ending state
-    end_state_modified <- results_modified$results %>% 
-      filter(ID == id_iter & julian_day == jul_day_cutoff) %>% 
-      pull(point_state)
     
-    #retrieve the real ending state
-    end_state_true <- results %>% 
-      filter(ID == id_iter & julian_day == jul_day_cutoff) %>% 
-      pull(point_state)
+    end_state_modified <- numeric()
+    
+    for(i in 1:nrow(to_constrain)){
+      id_to_clip <- to_constrain$id_iter[i]
+      dummy_y <- jul_day_cutoff
+      
+      j <- results_modified$results %>% 
+        filter(ID == id_to_clip & julian_day == dummy_y) %>% 
+        head(n=1) %>% 
+        pull(point_state)
+      
+      end_state_modified <- append(end_state_modified, j)
+    }
+    
+    if(length(end_state_modified)!=nrow(to_constrain)){
+      stop("Mismatch between number of IDs and length of output")
+    }
+    
+    # end_state_modified <- results_modified$results %>% 
+    #   filter(ID == id_iter & julian_day == jul_day_cutoff) %>% 
+    #   pull(point_state)
     
     #report the cutoff date, ID, modified ending state, and real ending state in a tibble, which will be the output of the loop
-    tibble(cutoff_date = jul_day_cutoff,
-           ID = id_iter,
-           end_modified = end_state_modified,
-           end_true = end_state_true)
+    tibble(jul_day_cutoff = jul_day_cutoff,
+           variable_to_test = variable_to_test,
+           model_structure = list(model_structure),
+           fold_name = fold_name,
+           fold_indicies = list(fold_indicies),
+           to_constrain = list(to_constrain),
+           data_constrained = list(data_constrained),
+           end_modified = list(end_state_modified),
+           end_true = list(true_endings))
   },
   error = function(e){
-    tibble(cutoff_date = jul_day_cutoff,
-           ID = id_iter,
-           end_modified = NA,
-           end_true = NA)
+    tibble(jul_day_cutoff = jul_day_cutoff,
+           variable_to_test = variable_to_test,
+           model_structure = list(model_structure),
+           fold_name = fold_name,
+           fold_indicies = list(fold_indicies),
+           to_constrain = list(to_constrain),
+           data_constrained = list(data_constrained),
+           end_modified = list(NA),
+           end_true = list(true_endings))
   })
   return(result)
 }
@@ -228,30 +246,84 @@ parameters_to_run <- parameters_to_run %>%
   filter(valid == TRUE) %>% 
   dplyr::select(-valid)
 
-# prior_results <- read.csv("accuracy_results_male_null.csv") %>% #ensure that I'm not duplicating past labor
-#   transmute(combined = paste0(cutoff_date, "_",ID))
-# 
-# #How many more samples do I need?
-# read.csv("accuracy_results_male_null.csv") %>% 
-#   pull(ID) %>% 
-#   unique() %>% 
-#   length()
-# 
-# parameters_to_run <- parameters_to_run %>%
-#   mutate(combined = paste0(jul_day_cutoff, "_",id_iter)) %>%
-#   filter(!(combined %in% prior_results$combined)) %>%
-#   mutate(combined = NULL)
-
 #How many more samples will this give me?
 parameters_to_run %>% 
   pull(id_iter) %>% 
   unique() %>% 
   length()
+
+parameters_to_run$model_structure <- map(.x = NA, function(x){
+  c("step", "angle", "step_500")
+})
+
+parameters_to_run$variable_to_test <- "null"
+```
+
+Create a nested version of parameters_to_run that will measure multiple errors at once, in a testing/training fold framework
+```{r}
+parameters_nested <- parameters_to_run %>% 
+  group_by(variable_to_test, model_structure, jul_day_cutoff) %>% 
+  nest(.key = "ids")
+
+parameters_nested$folds <- map2(.x = parameters_nested$ids, .y = 1:nrow(parameters_nested), .f = function(x, y){
+  nestfs::create.folds(num.folds = 5, num.rows = nrow(x), seed = y)
+})
+
+parameters_nested <- unnest_wider(data = parameters_nested, col = folds, names_sep = "") %>% 
+  pivot_longer(cols = folds1:folds5, names_to = "fold_name", values_to = "fold_indicies")
+
+#the constraints used for each iteration of the model
+parameters_nested$to_constrain <- map2(.x = parameters_nested$ids, .y = parameters_nested$fold_indicies, .f = function(x, y){
+  x[y,] %>% 
+    mutate(rn = NULL) %>% 
+    return()
+})
+
+parameters_nested$ids <- NULL #this has been replaced by to_constrain
+
+#amwo locations filtered to the constraints set
+parameters_nested$data_constrained <- map2(.x = parameters_nested$to_constrain, .y = parameters_nested$jul_day_cutoff, .f = function(x, y){
+  
+  amwo_hmm_clipped <- amwo_hmm
+  
+  for(i in 1:nrow(x)){
+    id_to_clip <- x$id_iter[i]
+    dummy_y <- y
+    
+    amwo_hmm_clipped <- amwo_hmm_clipped %>% #remove locations for the ID in question after the cutoff date
+      filter(!(ID == id_to_clip & julian_day > dummy_y))
+  }
+  return(amwo_hmm_clipped)
+})
+
+parameters_nested$true_endings <- map2(.x = parameters_nested$to_constrain, .y = parameters_nested$jul_day_cutoff, .f = function(x, y){
+  
+  trgt <- numeric()
+  
+  for(i in 1:nrow(x)){
+    id_to_clip <- x$id_iter[i]
+    dummy_y <- y
+    
+    j <- results %>% 
+      filter(ID == id_to_clip & julian_day == dummy_y) %>%
+      head(n=1) %>% 
+      pull(point_state)
+    
+    trgt <- append(trgt, j)
+  }
+  
+  if(length(trgt)!=nrow(x)){
+    stop("Mismatch between number of IDs and length of output")
+  }
+  
+  return(trgt)
+})
 ```
 
 ```{r}
-plan(multisession)
-tbl_list <- future_pmap(.l = parameters_to_run, 
+plan(multisession, workers = 4)
+tbl_list <- parameters_nested %>% 
+  future_pmap(.l = ., 
                         .f = iterate_ids_male, 
                         .options = furrr_options(seed = 8),
                         .progress = TRUE)
@@ -262,40 +334,43 @@ plan(sequential)
 accuracy_results_male <- tbl_list %>% 
   do.call(rbind, .)
 
-# Append results to previous runs
-write.table(accuracy_results_male, "accuracy_results_male_null.csv",
-            append = TRUE,
-            sep = ",",
-            col.names = TRUE,
-            row.names = FALSE,
-            quote = FALSE)
+# # Append results to previous runs
+# write.table(accuracy_results_male, "accuracy_results_male_null.csv",
+#             append = TRUE,
+#             sep = ",",
+#             col.names = TRUE,
+#             row.names = FALSE,
+#             quote = FALSE)
+accuracy_results_male %>% 
+  dplyr::select(-data_constrained) %>% 
+  saveRDS("accuracy_results_male_null.rds")
 ```
 
 # Read the results back in and plot
 ```{r}
-accuracy_results_male <- read_csv("accuracy_results_male_null.csv")
+# accuracy_results_male <- read_csv("accuracy_results_male_null.csv")
 ```
 
 Coding the results in a ggplot-friendly format
 ```{r}
-accuracy_results_male <- accuracy_results_male %>% 
-  mutate(false_mig = if_else((end_modified == 2 | end_modified == 3) & (end_true == 4 | end_true == 5), 1, 0)) %>% 
-  mutate(false_postmig = if_else((end_true == 2 | end_true == 3) & (end_modified == 4 | end_modified == 5), 1, 0)) %>% 
-  pivot_longer(cols = c("false_mig", "false_postmig"), names_to = "test", values_to = "result") %>% 
-  group_by(cutoff_date, test) %>% 
-  summarise(percent_error = mean(result), std_err = plotrix::std.error(result)) %>% 
-  ungroup()
+# accuracy_results_male <- accuracy_results_male %>% 
+#   mutate(false_mig = if_else((end_modified == 2 | end_modified == 3) & (end_true == 4 | end_true == 5), 1, 0)) %>% 
+#   mutate(false_postmig = if_else((end_true == 2 | end_true == 3) & (end_modified == 4 | end_modified == 5), 1, 0)) %>% 
+#   pivot_longer(cols = c("false_mig", "false_postmig"), names_to = "test", values_to = "result") %>% 
+#   group_by(cutoff_date, test) %>% 
+#   summarise(percent_error = mean(result), std_err = plotrix::std.error(result)) %>% 
+#   ungroup()
 ```
 
 ```{r}
-ggplot(data = accuracy_results_male, mapping = aes(x = cutoff_date, y = percent_error, col = test)) +
-  geom_point(position=position_dodge(width=4)) +
-  geom_errorbar(aes(ymin = percent_error - std_err*1.96, ymax = percent_error + std_err*1.96), width = 2,
-                position=position_dodge(width=4),) +
-  theme_bw() +
-  scale_y_continuous(labels = scales::percent) +
-  labs(y = "Percent error", x = "Julian day", col = "Classification error")
-
-ggsave("spring_male_null_classification_error_DRAFT_5_22_23.png", width = 7, height = 5)
+# ggplot(data = accuracy_results_male, mapping = aes(x = cutoff_date, y = percent_error, col = test)) +
+#   geom_point(position=position_dodge(width=4)) +
+#   geom_errorbar(aes(ymin = percent_error - std_err*1.96, ymax = percent_error + std_err*1.96), width = 2,
+#                 position=position_dodge(width=4),) +
+#   theme_bw() +
+#   scale_y_continuous(labels = scales::percent) +
+#   labs(y = "Percent error", x = "Julian day", col = "Classification error")
+# 
+# ggsave("spring_male_null_classification_error_DRAFT_5_22_23.png", width = 7, height = 5)
 ```
 

@@ -46,27 +46,37 @@ standardize_date_fall <- function(.x){
 ```
 
 ```{r}
-var_imp <- read.csv("variable_importance_spring_male.csv") %>% 
-  distinct()
+var_imp <- readRDS("variable_importance_spring_male.rds")
 
-results_spring_male_null <- here("classifier_spring", "accuracy", "null_male", "accuracy_results_male_null.csv") %>% 
-  read_csv() %>% 
-  distinct() %>%
-  mutate(variable_to_test = "base")
+results_spring_male_null <- readRDS(here("classifier_spring", "accuracy", "full_male", "accuracy_results_male_full.rds"))
+
+var_imp <- bind_rows(var_imp, results_spring_male_null)
+
+var_imp$nested_data <- var_imp %>% 
+  dplyr::select(to_constrain, end_modified, end_true) %>% 
+  pmap(.f = function(to_constrain, end_modified, end_true){
+    target_df <- to_constrain %>% 
+      rename(ID = id_iter)
+    target_df$end_modified <- end_modified
+    target_df$end_true <- end_true
+    return(target_df)
+  })
 
 var_imp <- var_imp %>% 
-  bind_rows(results_spring_male_null) %>% 
+  transmute(cutoff_date = jul_day_cutoff, variable_to_test, nested_data) %>% 
+  unnest(cols = nested_data) %>% 
+  distinct() %>% 
   identify_errors_varimp() %>% 
   standardize_date_spring() %>% 
   mutate(season = "Spring Male")
 ```
 
 ```{r}
-ggplot(data = var_imp,
-       mapping = aes(x = standardized_date, y = percent_error, col = variable_to_test)) +
-  geom_point(position=position_dodge(width=4)) +
-  theme_bw() +
-  facet_grid(rows = vars(test))
+# ggplot(data = var_imp,
+#        mapping = aes(x = standardized_date, y = percent_error, col = variable_to_test)) +
+#   geom_point(position=position_dodge(width=4)) +
+#   theme_bw() +
+#   facet_grid(rows = vars(test))
 
 ```
 
@@ -91,5 +101,7 @@ var_imp_summary_combined <- var_imp %>%
 var_imp_summary_combined %>% 
   ggplot(mapping = aes(x = variable_to_test, y = total_error)) +
   geom_point() +
+  geom_hline(yintercept = as.numeric(var_imp_summary_combined[var_imp_summary_combined$variable_to_test=="full","total_error"]), #add a dashed line at the full model
+             linetype="dashed") +
   theme_bw()
 ```
