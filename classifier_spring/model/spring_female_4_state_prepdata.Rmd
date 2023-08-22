@@ -35,7 +35,9 @@ amwo_2020 <- getMovebankData(study = "American Woodcock Migration Ecology in Eas
 
 amwo_2021 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20210105000000000", timestamp_end = "20210630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
 
-amwo_2022 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20220105000000000", timestamp_end = "20220630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
+amwo_2022 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20220105000000000", timestamp_end = "20220730000000000", removeDuplicatedTimestamps=TRUE) %>% 
+  as.data.frame() %>% 
+  filter(timestamp < if_else(local_identifier == "VA-2022-100", ymd_hms("2022-7-30 00:00:00"), ymd_hms("2022-6-30 00:00:00"))) #include an additional month worth of locations, but only for one bird that settles late
 
 amwo_2023 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20230105000000000", timestamp_end = "20230630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
 ```

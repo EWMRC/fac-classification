@@ -1,0 +1,50 @@
+AL-2022-15 allow fall migration to begin as early as 2022-06-15
+	Fixed by allowing locations from as early as 2022-06-12 in the delineation for AL-2022-15
+	RERUN FALL AND CHECK ME
+
+
+NY-2019-11 never settles in fall- why?
+	Fall migration initiates on 2019-11-05 20:01:04 and never terminates
+	Fall model doesn't push this bird into stationary before locations end on Dec 31, although we know it is because locations pick up again in late Feb. Added a known settling state for the last location in fall.
+	RERUN FALL AND CHECK ME
+
+
+VA-2020-66 not settling in fall before foray loop on 2021-1-25 through 2021-1-29
+	Removed points in foray loop from fall mig designation
+	RERUN FALL AND CHECK ME
+
+
+VA-2022-100 fall migration doesn't initiate, spring migration never ends
+	Spring 2022 migration needs an enddate
+	Included an additional month worth of locations to help this bird settle
+	RERUN SPRING FEMALE AND CHECK ME
+
+-- Address w/ full group:
+
+SC-2022-25 variable initial state?
+
+SC-2023-26 variable initial state?
+
+VT-2022-30 shortest spring migration to date? or should this be a dispersal movement?
+
+WI-2023-01 first location on 4/16. Needs a variable initial state assignment (probably for all of WI)
+
+WV-2023-20 migrated after capture. set estimable initial state?
+
+WV-2023-23 migrated after capture. set estimable initial state?
+
+
+-- No edits necessary:
+NS-2022-08 actually has a beach location
+
+NS-2022-10 settled really early in spring- why?
+
+QUE-2022-27 doesn't settle in fall, but not the end of the world
+
+QUE-2022-28 doesn't settle in fall, but not the end of the world
+
+QUE-2022-29 doesn't settle in fall, but not the end of the world
+
+NY-2019-36 never settles in fall- understandable, but inconvenient
+
+
