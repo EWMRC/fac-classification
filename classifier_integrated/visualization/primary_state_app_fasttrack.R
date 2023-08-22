@@ -29,7 +29,7 @@ ui <- fluidPage(
 )
 
 # Define server logic required to draw a histogram
-server <- function(input, output) {
+server <- function(input, output, session) {
   
   #amwoData.sm <- read.csv('HMMmale.csv')
   amwoData.sm <- readRDS(here::here("classifier_integrated", "fac_primary_state_delineation.rds"))
@@ -223,6 +223,10 @@ server <- function(input, output) {
   
   output$compile_status <- renderText({
     individual_stepper$current_id
+  })
+  
+  session$onSessionEnded(function() { # when the window closes, stop the app so that we can run new code
+    stopApp()
   })
 }#end of server call
 

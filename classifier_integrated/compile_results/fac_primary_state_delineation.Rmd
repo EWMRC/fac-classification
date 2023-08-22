@@ -140,7 +140,7 @@ migration_dates <- migration_dates %>%
   mutate(time_termination = if_else(animal_name == "VA-2019-45" & season == "Spring", lubridate::ymd_hms("2020-07-28 19:01:20"), time_termination))
 ```
 
-Download Movebank data, limit to times before Aug 1 2022 (more recent seasons haven't been delineated yet)
+Download Movebank data, limit to times before Aug 1 2023 (more recent seasons haven't been delineated yet)
 ```{r}
 amwo_move <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", 
                              login = readRDS(here::here("movebank_credentials.rds")), 
@@ -153,7 +153,7 @@ amwo_data <- as.data.frame(amwo_move) %>%
             event_id = event_id,
             lat = location_lat,
             long = location_long) %>%
-  filter(time < lubridate::mdy("8/1/2022"))
+  filter(time < lubridate::mdy("8/1/2023"))
 ```
 
 1) Join in a way that creates a duplicate record for each location and potential mig bout
