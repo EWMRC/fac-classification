@@ -45,7 +45,8 @@ starting_state_key <- amwo_hmm %>% #How many days before the first location of t
   }))
 
 starting_state_key <- starting_state_key %>% 
-  mutate(estimate_starting_state = if_else((str_detect(ID, pattern = "VA") | str_detect(ID, pattern = "NJ") | str_detect(ID, pattern = "MD")) & days_from_capture_to_first_loc < 60, true = TRUE, false = FALSE)) %>% 
+  mutate(estimate_starting_state = if_else((str_detect(ID, pattern = "VA") | str_detect(ID, pattern = "NJ") | str_detect(ID, pattern = "MD")) & days_from_capture_to_first_loc < 60, true = TRUE, false = FALSE)) %>%
+  mutate(estimate_starting_state = if_else((str_detect(ID, pattern = "VA") | str_detect(ID, pattern = "NJ") | str_detect(ID, pattern = "MD")) & is.na(days_from_capture_to_first_loc), true = TRUE, false = estimate_starting_state)) %>% #if the first capture date is not available, assume it was within the last 60 days. Not perfect, but seems to be working with this assumption
   dplyr::select(ID, estimate_starting_state) %>% 
   ungroup()
 

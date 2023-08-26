@@ -46,12 +46,37 @@ starting_state_key <- amwo_hmm %>% #How many days before the first location of t
 
 starting_state_key <- starting_state_key %>% 
   mutate(estimate_starting_state = if_else((str_detect(ID, pattern = "VA") | str_detect(ID, pattern = "NJ")) & days_from_capture_to_first_loc < 60, true = TRUE, false = FALSE)) %>% 
+  mutate(estimate_starting_state = if_else((str_detect(ID, pattern = "VA") | str_detect(ID, pattern = "NJ")) & is.na(days_from_capture_to_first_loc), true = TRUE, false = estimate_starting_state)) %>% #if the first capture date is not available, assume it was within the last 60 days. Not perfect, but seems to be working with this assumption
   dplyr::select(ID, estimate_starting_state) %>% 
   ungroup()
 
 amwo_hmm <- amwo_hmm %>% 
   left_join(starting_state_key)
 ```
+
+Identify lazarus ids, so that we can put them into a known post-mig state for their final location (not enough data to converge on its own)
+```{r}
+lazarus_ids <- amwo_hmm %>% #identify lazarus schedules
+  group_by(ID) %>% 
+  group_map(.f = function(x, y){
+    early_flag <- any(x$julian_day < (yday(ymd("2020/9/1") - days_subtract)))
+    late_flag <- any(x$julian_day > (yday(ymd("2020/12/15") - days_subtract)))
+    between_flag <- any(x$julian_day > (yday(ymd("2020/9/1") - days_subtract)) & x$julian_day < (yday(ymd("2020/12/15") - days_subtract)))
+    
+    if(early_flag & late_flag & !between_flag){
+      y %>% #unique(x$ID)
+        pull(ID) %>% 
+        as.character() %>% 
+        return()
+    } else {
+      return(NA)
+    }
+  })
+
+lazarus_ids <- lazarus_ids[!is.na(lazarus_ids)] %>% 
+  unlist()
+```
+
 
 Assign a starting state for each individual
 This looks clunky, but it's necessary to maintain a momentuHMMData class
@@ -79,6 +104,16 @@ known_state_key <- amwo_hmm %>%
       pull(ranks) %>% 
       max()
     if(pull(y, ID) %in% spring_init_dates$ID){
+      x <- x %>% 
+        mutate(known = ifelse(ranks == max_rank, 4, known)) #set the state of the last row to settled
+    }
+    return(x)
+  }) %>% 
+  group_modify(.f = function(x, y){ #any lazarus id points end in a known final state
+    max_rank <- x %>% 
+      pull(ranks) %>% 
+      max()
+    if(pull(y, ID) %in% lazarus_ids){
       x <- x %>% 
         mutate(known = ifelse(ranks == max_rank, 4, known)) #set the state of the last row to settled
     }

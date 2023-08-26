@@ -39,7 +39,7 @@ amwo_2021 <- getMovebankData(study = "American Woodcock Migration Ecology in Eas
 
 amwo_2022 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20220612000000000", timestamp_end = "20230225000000000", removeDuplicatedTimestamps=TRUE) %>% 
   as.data.frame() %>% 
-  filter(timestamp < if_else(local_identifier == "AL-2022-15", ymd_hms("2022-06-12 00:00:00"), ymd_hms("2022-08-01 00:00:00")))
+  filter(timestamp > if_else(local_identifier == "AL-2022-15", ymd_hms("2022-06-12 00:00:00"), ymd_hms("2022-08-01 00:00:00")))
 ```
 
 Formatting and cleaning, including creating time columns and simplifying to one location per day (trying with multiple locations per day now)
@@ -483,6 +483,7 @@ plan(sequential)
 Determining the amount of time that the bird has spent/will spend within a 10km radius of the point
 ```{r}
 plan(multisession)
+
 amwo_hmm$residence_time <- amwo_hmm %>% 
   dplyr::select(ID, x, y) %>% 
   future_pmap(function(ID_iter, x_iter, y_iter){
