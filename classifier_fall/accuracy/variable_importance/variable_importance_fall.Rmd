@@ -200,6 +200,10 @@ iterate_ids_male <- function(jul_day_cutoff, variable_to_test, model_structure, 
       stop("Mismatch between number of IDs and length of output")
     }
     
+    # end_state_modified <- results_modified$results %>% 
+    #   filter(ID == id_iter & julian_day == jul_day_cutoff) %>% 
+    #   pull(point_state)
+    
     #report the cutoff date, ID, modified ending state, and real ending state in a tibble, which will be the output of the loop
     tibble(jul_day_cutoff = jul_day_cutoff,
            variable_to_test = variable_to_test,
@@ -275,11 +279,19 @@ parameters_to_run %>%
   unique() %>%
   length()
 
-parameters_to_run$model_structure <- map(.x = NA, function(x){
-  names(Par0_m1)
-})
+#build a sequence of models for variable selection
+variable_iterations <- expand.grid(parameters_to_run$rn, names(Par0_m1)[c(3:7, 9)])
 
-parameters_to_run$variable_to_test <- "full"
+colnames(variable_iterations) <- c("rn", "variable_to_test")
+
+variable_iterations <- variable_iterations %>% 
+  mutate(rn = as.character(rn), variable_to_test = as.character(variable_to_test)) %>% 
+  mutate(model_structure = map(.x = variable_to_test,
+                               .f = function(i){
+                                 names(Par0_m1)[!names(Par0_m1) == i]
+                               }))
+parameters_to_run <- parameters_to_run %>% 
+  full_join(x = parameters_to_run, y = variable_iterations, by = c("rn"))
 
 ```
 
@@ -360,7 +372,15 @@ plan(sequential)
 accuracy_results_male <- tbl_list %>% 
   do.call(rbind, .)
 
+# Append results to previous runs
+# write.table(accuracy_results_male, "variable_importance_spring_male.csv",
+#             append = FALSE,
+#             sep = ",",
+#             col.names = TRUE,
+#             row.names = FALSE,
+#             quote = FALSE)
+
 accuracy_results_male %>% 
   dplyr::select(-data_constrained) %>%
-  saveRDS("accuracy_results_fall_full.rds")
+  saveRDS("variable_importance_fall.rds")
 ```
