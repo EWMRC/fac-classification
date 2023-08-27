@@ -5060,7 +5060,7 @@ event_id,primary_step_state,primary_point_state
 9804257656,Step state: Migratory (spring),Point state: Migratory (spring)
 9804257657,Step state: Migratory (spring),Point state: Migratory (spring)
 9804257658,Step state: Migratory (spring),Point state: Migratory (spring)
-9804257659,Step state: Migratory (spring),Point state: Migratory (spring)
+9804257659,Step state: Stationary,Point state: Stationary
 9804257665,Step state: Migratory (spring),Point state: Migratory (spring)
 9804257666,Step state: Migratory (spring),Point state: Migratory (spring)
 9804257667,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -5160,9 +5160,9 @@ event_id,primary_step_state,primary_point_state
 9890381135,Step state: Stationary,Point state: Stationary
 9890381136,Step state: Stationary,Point state: Stationary
 9890381137,Step state: Stationary,Point state: Stationary
-9890381138,Step state: Migratory (spring),Point state: Migratory (spring)
-9890381139,Step state: Migratory (spring),Point state: Migratory (spring)
-9890381140,Step state: Migratory (spring),Point state: Migratory (spring)
+9890381138,Step state: Stationary,Point state: Stationary
+9890381139,Step state: Stationary,Point state: Stationary
+9890381140,Step state: Stationary,Point state: Stationary
 9890381144,Step state: Stationary,Point state: Stationary
 9890381145,Step state: Stationary,Point state: Stationary
 9890381146,Step state: Stationary,Point state: Stationary
@@ -5249,9 +5249,9 @@ event_id,primary_step_state,primary_point_state
 9980262209,Step state: Stationary,Point state: Stationary
 9980262210,Step state: Stationary,Point state: Stationary
 9980262211,Step state: Stationary,Point state: Stationary
-9980262215,Step state: Migratory (spring),Point state: Migratory (spring)
-9980262216,Step state: Migratory (spring),Point state: Migratory (spring)
-9980262217,Step state: Migratory (spring),Point state: Migratory (spring)
+9980262215,Step state: Stationary,Point state: Stationary
+9980262216,Step state: Stationary,Point state: Stationary
+9980262217,Step state: Stationary,Point state: Stationary
 9980262218,Step state: Stationary,Point state: Stationary
 9980262219,Step state: Stationary,Point state: Stationary
 9980262220,Step state: Stationary,Point state: Stationary
@@ -5360,9 +5360,9 @@ event_id,primary_step_state,primary_point_state
 10058480318,Step state: Stationary,Point state: Stationary
 10058480319,Step state: Stationary,Point state: Stationary
 10058480320,Step state: Stationary,Point state: Stationary
-10058480321,Step state: Migratory (spring),Point state: Migratory (spring)
-10058480322,Step state: Migratory (spring),Point state: Migratory (spring)
-10058480323,Step state: Migratory (spring),Point state: Migratory (spring)
+10058480321,Step state: Stationary,Point state: Stationary
+10058480322,Step state: Stationary,Point state: Stationary
+10058480323,Step state: Stationary,Point state: Stationary
 10058480324,Step state: Migratory (spring),Point state: Migratory (spring)
 10058480325,Step state: Migratory (spring),Point state: Migratory (spring)
 10058480326,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -5470,9 +5470,9 @@ event_id,primary_step_state,primary_point_state
 10124583298,Step state: Migratory (spring),Point state: Migratory (spring)
 10124583299,Step state: Migratory (spring),Point state: Migratory (spring)
 10124583300,Step state: Migratory (spring),Point state: Migratory (spring)
-10124583301,Step state: Migratory (spring),Point state: Migratory (spring)
-10124583302,Step state: Migratory (spring),Point state: Migratory (spring)
-10124583303,Step state: Migratory (spring),Point state: Migratory (spring)
+10124583301,Step state: Stationary,Point state: Stationary
+10124583302,Step state: Stationary,Point state: Stationary
+10124583303,Step state: Stationary,Point state: Stationary
 10124583304,Step state: Migratory (spring),Point state: Migratory (spring)
 10124583305,Step state: Migratory (spring),Point state: Migratory (spring)
 10124583306,Step state: Migratory (spring),Point state: Migratory (spring)
@@ -9376,8 +9376,8 @@ event_id,primary_step_state,primary_point_state
 13579628771,Step state: Migratory (fall),Point state: Migratory (fall)
 13579628772,Step state: Migratory (fall),Point state: Migratory (fall)
 13579628773,Step state: Migratory (fall),Point state: Migratory (fall)
-13579628774,Step state: Stationary,Point state: Stationary
-13579628775,Step state: Stationary,Point state: Stationary
+13579628774,Step state: Migratory (fall),Point state: Migratory (fall)
+13579628775,Step state: Migratory (fall),Point state: Migratory (fall)
 13579628776,Step state: Migratory (fall),Point state: Migratory (fall)
 13579628777,Step state: Migratory (fall),Point state: Migratory (fall)
 13579628778,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -9677,9 +9677,9 @@ event_id,primary_step_state,primary_point_state
 13586336285,Step state: Migratory (fall),Point state: Migratory (fall)
 13586336286,Step state: Migratory (fall),Point state: Migratory (fall)
 13586336287,Step state: Migratory (fall),Point state: Migratory (fall)
-13586336288,Step state: Stationary,Point state: Stationary
-13586336289,Step state: Stationary,Point state: Stationary
-13586336290,Step state: Stationary,Point state: Stationary
+13586336288,Step state: Migratory (fall),Point state: Migratory (fall)
+13586336289,Step state: Migratory (fall),Point state: Migratory (fall)
+13586336290,Step state: Migratory (fall),Point state: Migratory (fall)
 13586336291,Step state: Migratory (fall),Point state: Migratory (fall)
 13586336292,Step state: Migratory (fall),Point state: Migratory (fall)
 13586336293,Step state: Migratory (fall),Point state: Migratory (fall)
@@ -10075,9 +10075,9 @@ event_id,primary_step_state,primary_point_state
 13607659382,Step state: Stationary,Point state: Stationary
 13607659383,Step state: Stationary,Point state: Stationary
 13607659384,Step state: Stationary,Point state: Stationary
-13607659385,Step state: Stationary,Point state: Stationary
-13607659386,Step state: Stationary,Point state: Stationary
-13607659387,Step state: Stationary,Point state: Stationary
+13607659385,Step state: Migratory (fall),Point state: Migratory (fall)
+13607659386,Step state: Migratory (fall),Point state: Migratory (fall)
+13607659387,Step state: Migratory (fall),Point state: Migratory (fall)
 13607659388,Step state: Stationary,Point state: Stationary
 13607659389,Step state: Stationary,Point state: Stationary
 13607659390,Step state: Stationary,Point state: Stationary
@@ -10282,9 +10282,9 @@ event_id,primary_step_state,primary_point_state
 13621589748,Step state: Stationary,Point state: Stationary
 13621589749,Step state: Stationary,Point state: Stationary
 13621589750,Step state: Stationary,Point state: Stationary
-13621589751,Step state: Stationary,Point state: Stationary
-13621589752,Step state: Stationary,Point state: Stationary
-13621589753,Step state: Stationary,Point state: Stationary
+13621589751,Step state: Migratory (fall),Point state: Migratory (fall)
+13621589752,Step state: Migratory (fall),Point state: Migratory (fall)
+13621589753,Step state: Migratory (fall),Point state: Migratory (fall)
 13621589754,Step state: Stationary,Point state: Stationary
 13621589755,Step state: Stationary,Point state: Stationary
 13621589756,Step state: Stationary,Point state: Stationary
@@ -10611,15 +10611,15 @@ event_id,primary_step_state,primary_point_state
 13640880052,Step state: Stationary,Point state: Stationary
 13640880053,Step state: Stationary,Point state: Stationary
 13640880054,Step state: Stationary,Point state: Stationary
-13640880055,Step state: Stationary,Point state: Stationary
-13640880056,Step state: Stationary,Point state: Stationary
-13640880057,Step state: Stationary,Point state: Stationary
-13640880058,Step state: Stationary,Point state: Stationary
-13640880059,Step state: Stationary,Point state: Stationary
-13640880060,Step state: Stationary,Point state: Stationary
-13640880061,Step state: Stationary,Point state: Stationary
-13640880062,Step state: Stationary,Point state: Stationary
-13640880063,Step state: Stationary,Point state: Stationary
+13640880055,Step state: Migratory (fall),Point state: Migratory (fall)
+13640880056,Step state: Migratory (fall),Point state: Migratory (fall)
+13640880057,Step state: Migratory (fall),Point state: Migratory (fall)
+13640880058,Step state: Migratory (fall),Point state: Migratory (fall)
+13640880059,Step state: Migratory (fall),Point state: Migratory (fall)
+13640880060,Step state: Migratory (fall),Point state: Migratory (fall)
+13640880061,Step state: Migratory (fall),Point state: Migratory (fall)
+13640880062,Step state: Migratory (fall),Point state: Migratory (fall)
+13640880063,Step state: Migratory (fall),Point state: Migratory (fall)
 13640880064,Step state: Stationary,Point state: Stationary
 13640880065,Step state: Stationary,Point state: Stationary
 13640880066,Step state: Stationary,Point state: Stationary
@@ -11767,9 +11767,9 @@ event_id,primary_step_state,primary_point_state
 13661923058,Step state: Stationary,Point state: Stationary
 13661923059,Step state: Stationary,Point state: Stationary
 13661923060,Step state: Stationary,Point state: Stationary
-13661923061,Step state: Stationary,Point state: Stationary
-13661923062,Step state: Stationary,Point state: Stationary
-13661923063,Step state: Stationary,Point state: Stationary
+13661923061,Step state: Migratory (fall),Point state: Migratory (fall)
+13661923062,Step state: Migratory (fall),Point state: Migratory (fall)
+13661923063,Step state: Migratory (fall),Point state: Migratory (fall)
 13661923064,Step state: Stationary,Point state: Stationary
 13661923065,Step state: Stationary,Point state: Stationary
 13661923066,Step state: Stationary,Point state: Stationary
@@ -11829,9 +11829,9 @@ event_id,primary_step_state,primary_point_state
 13675156956,Step state: Stationary,Point state: Stationary
 13675156957,Step state: Stationary,Point state: Stationary
 13675156958,Step state: Stationary,Point state: Stationary
-13675156959,Step state: Stationary,Point state: Stationary
-13675156960,Step state: Stationary,Point state: Stationary
-13675156961,Step state: Stationary,Point state: Stationary
+13675156959,Step state: Migratory (fall),Point state: Migratory (fall)
+13675156960,Step state: Migratory (fall),Point state: Migratory (fall)
+13675156961,Step state: Migratory (fall),Point state: Migratory (fall)
 13675156962,Step state: Stationary,Point state: Stationary
 13675156963,Step state: Stationary,Point state: Stationary
 13675156964,Step state: Stationary,Point state: Stationary
@@ -11904,9 +11904,9 @@ event_id,primary_step_state,primary_point_state
 13675187854,Step state: Stationary,Point state: Stationary
 13675187855,Step state: Stationary,Point state: Stationary
 13675187856,Step state: Stationary,Point state: Stationary
-13675187857,Step state: Stationary,Point state: Stationary
-13675187858,Step state: Stationary,Point state: Stationary
-13675187859,Step state: Stationary,Point state: Stationary
+13675187857,Step state: Migratory (fall),Point state: Migratory (fall)
+13675187858,Step state: Migratory (fall),Point state: Migratory (fall)
+13675187859,Step state: Migratory (fall),Point state: Migratory (fall)
 13675187860,Step state: Stationary,Point state: Stationary
 13675187861,Step state: Stationary,Point state: Stationary
 13675187862,Step state: Stationary,Point state: Stationary
@@ -12045,9 +12045,9 @@ event_id,primary_step_state,primary_point_state
 13698438722,Step state: Stationary,Point state: Stationary
 13698438723,Step state: Stationary,Point state: Stationary
 13698438724,Step state: Stationary,Point state: Stationary
-13698438725,Step state: Stationary,Point state: Stationary
-13698438726,Step state: Stationary,Point state: Stationary
-13698438727,Step state: Stationary,Point state: Stationary
+13698438725,Step state: Migratory (fall),Point state: Migratory (fall)
+13698438726,Step state: Migratory (fall),Point state: Migratory (fall)
+13698438727,Step state: Migratory (fall),Point state: Migratory (fall)
 13724856850,Step state: Stationary,Point state: Stationary
 13724856851,Step state: Stationary,Point state: Stationary
 13724856852,Step state: Stationary,Point state: Stationary
@@ -30971,7 +30971,7 @@ event_id,primary_step_state,primary_point_state
 23168807771,Step state: Stationary,Point state: Stationary
 23168807772,Step state: Stationary,Point state: Stationary
 23168807773,Step state: Stationary,Point state: Stationary
-23168807774,Step state: Migratory (spring),Point state: Migratory (spring)
+23168807774,Step state: Stationary,Point state: Stationary
 23168807775,Step state: Stationary,Point state: Stationary
 23168807776,Step state: Stationary,Point state: Stationary
 23168807777,Step state: Stationary,Point state: Stationary
@@ -30994,7 +30994,7 @@ event_id,primary_step_state,primary_point_state
 23168807794,Step state: Stationary,Point state: Stationary
 23168807795,Step state: Stationary,Point state: Stationary
 23168807796,Step state: Stationary,Point state: Stationary
-23168807798,Step state: Migratory (spring),Point state: Migratory (spring)
+23168807798,Step state: Stationary,Point state: Stationary
 23168807799,Step state: Stationary,Point state: Stationary
 23168807800,Step state: Stationary,Point state: Stationary
 23168807801,Step state: Stationary,Point state: Stationary
@@ -31142,6 +31142,22 @@ event_id,primary_step_state,primary_point_state
 23383318049,Step state: Stationary,Point state: Stationary
 23383318050,Step state: Stationary,Point state: Stationary
 23383318051,Step state: Stationary,Point state: Stationary
+23383318052,Step state: Stationary,Point state: Stationary
+23383318053,Step state: Stationary,Point state: Stationary
+23383318054,Step state: Stationary,Point state: Stationary
+23383318055,Step state: Stationary,Point state: Stationary
+23383318056,Step state: Stationary,Point state: Stationary
+23383318057,Step state: Stationary,Point state: Stationary
+23383318058,Step state: Stationary,Point state: Stationary
+23383318059,Step state: Stationary,Point state: Stationary
+23383318060,Step state: Stationary,Point state: Stationary
+23383318061,Step state: Stationary,Point state: Stationary
+23383318062,Step state: Stationary,Point state: Stationary
+23383318063,Step state: Stationary,Point state: Stationary
+23383318064,Step state: Stationary,Point state: Stationary
+23383318065,Step state: Stationary,Point state: Stationary
+23383318066,Step state: Stationary,Point state: Stationary
+23383318067,Step state: Stationary,Point state: Stationary
 23503662694,Step state: Stationary,Point state: Stationary
 23503662695,Step state: Stationary,Point state: Stationary
 23503662696,Step state: Stationary,Point state: Stationary
@@ -31150,10 +31166,69 @@ event_id,primary_step_state,primary_point_state
 23503662699,Step state: Stationary,Point state: Stationary
 23503662700,Step state: Stationary,Point state: Stationary
 23503662701,Step state: Stationary,Point state: Stationary
+23503662702,Step state: Stationary,Point state: Stationary
+23503662703,Step state: Stationary,Point state: Stationary
+23503662704,Step state: Stationary,Point state: Stationary
+23503662705,Step state: Stationary,Point state: Stationary
+23503662706,Step state: Stationary,Point state: Stationary
+23503662707,Step state: Stationary,Point state: Stationary
+23503662708,Step state: Stationary,Point state: Stationary
+23503662709,Step state: Stationary,Point state: Stationary
+23503662710,Step state: Stationary,Point state: Stationary
+23503662711,Step state: Stationary,Point state: Stationary
+23503662712,Step state: Stationary,Point state: Stationary
+23503662713,Step state: Stationary,Point state: Stationary
+23503662714,Step state: Stationary,Point state: Stationary
+23503662715,Step state: Stationary,Point state: Stationary
+23503662716,Step state: Stationary,Point state: Stationary
+23503662717,Step state: Stationary,Point state: Stationary
+23503662718,Step state: Stationary,Point state: Stationary
+23503662719,Step state: Stationary,Point state: Stationary
+23503662720,Step state: Stationary,Point state: Stationary
+23503662721,Step state: Stationary,Point state: Stationary
+23503662722,Step state: Stationary,Point state: Stationary
+23503662723,Step state: Stationary,Point state: Stationary
+23503662724,Step state: Stationary,Point state: Stationary
+23503662725,Step state: Stationary,Point state: Stationary
+23503662726,Step state: Stationary,Point state: Stationary
+23503662727,Step state: Stationary,Point state: Stationary
+23503662728,Step state: Stationary,Point state: Stationary
+23503662729,Step state: Stationary,Point state: Stationary
+23503662730,Step state: Stationary,Point state: Stationary
+23503662731,Step state: Stationary,Point state: Stationary
+23503662732,Step state: Stationary,Point state: Stationary
+23503662733,Step state: Stationary,Point state: Stationary
+23503662734,Step state: Stationary,Point state: Stationary
+23503662735,Step state: Migratory (fall),Point state: Stationary
+23503662736,Step state: Stationary,Point state: Stationary
 23503663027,Step state: Stationary,Point state: Stationary
 23503663028,Step state: Stationary,Point state: Stationary
 23503663029,Step state: Stationary,Point state: Stationary
 23503663030,Step state: Stationary,Point state: Stationary
+23503663031,Step state: Stationary,Point state: Stationary
+23503663032,Step state: Stationary,Point state: Stationary
+23503663033,Step state: Stationary,Point state: Stationary
+23503663034,Step state: Stationary,Point state: Stationary
+23503663035,Step state: Stationary,Point state: Stationary
+23503663036,Step state: Stationary,Point state: Stationary
+23503663037,Step state: Stationary,Point state: Stationary
+23503663038,Step state: Stationary,Point state: Stationary
+23503663039,Step state: Stationary,Point state: Stationary
+23503663040,Step state: Stationary,Point state: Stationary
+23503663041,Step state: Stationary,Point state: Stationary
+23503663042,Step state: Stationary,Point state: Stationary
+23503663043,Step state: Stationary,Point state: Stationary
+23503663044,Step state: Stationary,Point state: Stationary
+23503663045,Step state: Stationary,Point state: Stationary
+23503663046,Step state: Stationary,Point state: Stationary
+23503663047,Step state: Stationary,Point state: Stationary
+23503663048,Step state: Stationary,Point state: Stationary
+23503663049,Step state: Stationary,Point state: Stationary
+23503663050,Step state: Stationary,Point state: Stationary
+23503663051,Step state: Stationary,Point state: Stationary
+23503663052,Step state: Stationary,Point state: Stationary
+23503663053,Step state: Stationary,Point state: Stationary
+23503663054,Step state: Stationary,Point state: Stationary
 23570158499,Step state: Stationary,Point state: Stationary
 23570158500,Step state: Stationary,Point state: Stationary
 23570158501,Step state: Stationary,Point state: Stationary
@@ -31162,9 +31237,2505 @@ event_id,primary_step_state,primary_point_state
 23570158504,Step state: Stationary,Point state: Stationary
 23570158505,Step state: Stationary,Point state: Stationary
 23570158506,Step state: Stationary,Point state: Stationary
-23657433889,Step state: Migratory (spring),Point state: Migratory (spring)
-24793389813,Step state: Stationary,Point state: Stationary
+23570158507,Step state: Stationary,Point state: Stationary
+23570158508,Step state: Stationary,Point state: Stationary
+23570158509,Step state: Stationary,Point state: Stationary
+23570158510,Step state: Stationary,Point state: Stationary
+23570158511,Step state: Stationary,Point state: Stationary
+23570158512,Step state: Stationary,Point state: Stationary
+23570158513,Step state: Stationary,Point state: Stationary
+23570158514,Step state: Stationary,Point state: Stationary
+23570158515,Step state: Stationary,Point state: Stationary
+23570158516,Step state: Stationary,Point state: Stationary
+23570158517,Step state: Stationary,Point state: Stationary
+23570158518,Step state: Stationary,Point state: Stationary
+23570158519,Step state: Stationary,Point state: Stationary
+23570158520,Step state: Stationary,Point state: Stationary
+23570158521,Step state: Stationary,Point state: Stationary
+23570158522,Step state: Stationary,Point state: Stationary
+23570158523,Step state: Stationary,Point state: Stationary
+23570158524,Step state: Stationary,Point state: Stationary
+23570158525,Step state: Stationary,Point state: Stationary
+23570158526,Step state: Stationary,Point state: Stationary
+23570158527,Step state: Stationary,Point state: Stationary
+23570158528,Step state: Stationary,Point state: Stationary
+23570158529,Step state: Stationary,Point state: Stationary
+23570158530,Step state: Stationary,Point state: Stationary
+23570158531,Step state: Stationary,Point state: Stationary
+23570158532,Step state: Stationary,Point state: Stationary
+23570158533,Step state: Stationary,Point state: Stationary
+23570158534,Step state: Stationary,Point state: Stationary
+23570158535,Step state: Stationary,Point state: Stationary
+23570158536,Step state: Stationary,Point state: Stationary
+23570158537,Step state: Stationary,Point state: Stationary
+23570158538,Step state: Stationary,Point state: Stationary
+23570158539,Step state: Migratory (fall),Point state: Stationary
+23570158540,Step state: Stationary,Point state: Stationary
+23570158541,Step state: Stationary,Point state: Stationary
+23570158542,Step state: Stationary,Point state: Stationary
+23570158543,Step state: Stationary,Point state: Stationary
+23570158544,Step state: Stationary,Point state: Stationary
+23570158545,Step state: Stationary,Point state: Stationary
+23570158546,Step state: Stationary,Point state: Stationary
+23570158547,Step state: Stationary,Point state: Stationary
+23570158548,Step state: Stationary,Point state: Stationary
+23570158549,Step state: Stationary,Point state: Stationary
+23570158550,Step state: Stationary,Point state: Stationary
+23570158551,Step state: Stationary,Point state: Stationary
+23570158552,Step state: Stationary,Point state: Stationary
+23582561413,Step state: Stationary,Point state: Stationary
+23582561414,Step state: Stationary,Point state: Stationary
+23582561415,Step state: Stationary,Point state: Stationary
+23582561416,Step state: Stationary,Point state: Stationary
+23582561417,Step state: Stationary,Point state: Stationary
+23582561418,Step state: Stationary,Point state: Stationary
+23582561419,Step state: Stationary,Point state: Stationary
+23582561420,Step state: Stationary,Point state: Stationary
+23582561421,Step state: Stationary,Point state: Stationary
+23582561422,Step state: Stationary,Point state: Stationary
+23582561423,Step state: Stationary,Point state: Stationary
+23582561424,Step state: Stationary,Point state: Stationary
+23582561425,Step state: Stationary,Point state: Stationary
+23582561426,Step state: Migratory (fall),Point state: Stationary
+23600764019,Step state: Stationary,Point state: Stationary
+23600764020,Step state: Stationary,Point state: Stationary
+23600764021,Step state: Stationary,Point state: Stationary
+23600764022,Step state: Stationary,Point state: Stationary
+23600764023,Step state: Stationary,Point state: Stationary
+23600764024,Step state: Stationary,Point state: Stationary
+23600764025,Step state: Stationary,Point state: Stationary
+23600764026,Step state: Stationary,Point state: Stationary
+23600764027,Step state: Stationary,Point state: Stationary
+23600764028,Step state: Stationary,Point state: Stationary
+23600764029,Step state: Stationary,Point state: Stationary
+23600764030,Step state: Stationary,Point state: Stationary
+23600764031,Step state: Stationary,Point state: Stationary
+23600764032,Step state: Stationary,Point state: Stationary
+23600764033,Step state: Stationary,Point state: Stationary
+23600764034,Step state: Stationary,Point state: Stationary
+23600764035,Step state: Stationary,Point state: Stationary
+23600764036,Step state: Stationary,Point state: Stationary
+23600764037,Step state: Stationary,Point state: Stationary
+23600764038,Step state: Stationary,Point state: Stationary
+23600764039,Step state: Stationary,Point state: Stationary
+23600764040,Step state: Stationary,Point state: Stationary
+23600764041,Step state: Stationary,Point state: Stationary
+23600764042,Step state: Stationary,Point state: Stationary
+23600764043,Step state: Stationary,Point state: Stationary
+23600764044,Step state: Stationary,Point state: Stationary
+23657433889,Step state: Stationary,Point state: Stationary
+23657433890,Step state: Stationary,Point state: Stationary
+23657433891,Step state: Stationary,Point state: Stationary
+23657433892,Step state: Stationary,Point state: Stationary
+23657433893,Step state: Stationary,Point state: Stationary
+23657433894,Step state: Stationary,Point state: Stationary
+23657433895,Step state: Stationary,Point state: Stationary
+23657433896,Step state: Stationary,Point state: Stationary
+23657433897,Step state: Stationary,Point state: Stationary
+23657433898,Step state: Stationary,Point state: Stationary
+23744541447,Step state: Stationary,Point state: Stationary
+23744541448,Step state: Stationary,Point state: Stationary
+23744541449,Step state: Stationary,Point state: Stationary
+23744541450,Step state: Stationary,Point state: Stationary
+23744541451,Step state: Stationary,Point state: Stationary
+23744541452,Step state: Stationary,Point state: Stationary
+23744541453,Step state: Stationary,Point state: Stationary
+23744541454,Step state: Stationary,Point state: Stationary
+23744541455,Step state: Stationary,Point state: Stationary
+23744541456,Step state: Stationary,Point state: Stationary
+23744541457,Step state: Stationary,Point state: Stationary
+23744541458,Step state: Stationary,Point state: Stationary
+23744541459,Step state: Stationary,Point state: Stationary
+23744541460,Step state: Stationary,Point state: Stationary
+23744541461,Step state: Stationary,Point state: Stationary
+23744541462,Step state: Stationary,Point state: Stationary
+23744541463,Step state: Stationary,Point state: Stationary
+23744541491,Step state: Stationary,Point state: Stationary
+23744541492,Step state: Stationary,Point state: Stationary
+23744541493,Step state: Stationary,Point state: Stationary
+23744541551,Step state: Stationary,Point state: Stationary
+23744541552,Step state: Stationary,Point state: Stationary
+23744541553,Step state: Stationary,Point state: Stationary
+23744541554,Step state: Stationary,Point state: Stationary
+23821681811,Step state: Stationary,Point state: Stationary
+23821681812,Step state: Stationary,Point state: Stationary
+23821681813,Step state: Stationary,Point state: Stationary
+23821681814,Step state: Stationary,Point state: Stationary
+23821681815,Step state: Stationary,Point state: Stationary
+23821681816,Step state: Stationary,Point state: Stationary
+23821681817,Step state: Stationary,Point state: Stationary
+23821681818,Step state: Stationary,Point state: Stationary
+23821681819,Step state: Stationary,Point state: Stationary
+23821681820,Step state: Stationary,Point state: Stationary
+23821681821,Step state: Stationary,Point state: Stationary
+23821681822,Step state: Stationary,Point state: Stationary
+23821681823,Step state: Stationary,Point state: Stationary
+23821681824,Step state: Migratory (fall),Point state: Stationary
+23821681825,Step state: Stationary,Point state: Stationary
+23821681826,Step state: Stationary,Point state: Stationary
+23821681827,Step state: Stationary,Point state: Stationary
+23844826402,Step state: Stationary,Point state: Stationary
+23844826403,Step state: Stationary,Point state: Stationary
+23844826404,Step state: Stationary,Point state: Stationary
+23844826405,Step state: Stationary,Point state: Stationary
+23844826406,Step state: Stationary,Point state: Stationary
+23844826407,Step state: Stationary,Point state: Stationary
+23844826408,Step state: Stationary,Point state: Stationary
+23844826409,Step state: Stationary,Point state: Stationary
+23844826410,Step state: Stationary,Point state: Stationary
+23844826411,Step state: Stationary,Point state: Stationary
+23844826412,Step state: Stationary,Point state: Stationary
+23844826413,Step state: Stationary,Point state: Stationary
+23844826414,Step state: Stationary,Point state: Stationary
+23844826415,Step state: Stationary,Point state: Stationary
+23844826416,Step state: Stationary,Point state: Stationary
+23844826417,Step state: Stationary,Point state: Stationary
+23992268472,Step state: Stationary,Point state: Stationary
+23992268473,Step state: Stationary,Point state: Stationary
+23992268474,Step state: Stationary,Point state: Stationary
+23992268475,Step state: Stationary,Point state: Stationary
+23992268476,Step state: Stationary,Point state: Stationary
+23992268477,Step state: Stationary,Point state: Stationary
+23992268478,Step state: Stationary,Point state: Stationary
+23992268479,Step state: Stationary,Point state: Stationary
+23992268480,Step state: Stationary,Point state: Stationary
+23992268481,Step state: Stationary,Point state: Stationary
+23992268482,Step state: Stationary,Point state: Stationary
+23992268483,Step state: Stationary,Point state: Stationary
+23992268484,Step state: Stationary,Point state: Stationary
+23992268485,Step state: Stationary,Point state: Stationary
+23992268486,Step state: Stationary,Point state: Stationary
+23992268487,Step state: Stationary,Point state: Stationary
+23992268488,Step state: Stationary,Point state: Stationary
+23992268489,Step state: Stationary,Point state: Stationary
+23992268490,Step state: Stationary,Point state: Stationary
+23992268491,Step state: Stationary,Point state: Stationary
+24002583565,Step state: Stationary,Point state: Stationary
+24002583566,Step state: Stationary,Point state: Stationary
+24002583567,Step state: Stationary,Point state: Stationary
+24002583568,Step state: Stationary,Point state: Stationary
+24002583569,Step state: Stationary,Point state: Stationary
+24002583570,Step state: Stationary,Point state: Stationary
+24048776210,Step state: Stationary,Point state: Stationary
+24048776211,Step state: Migratory (fall),Point state: Migratory (fall)
+24048776212,Step state: Stationary,Point state: Stationary
+24048776213,Step state: Stationary,Point state: Stationary
+24048776214,Step state: Stationary,Point state: Stationary
+24048776215,Step state: Stationary,Point state: Stationary
+24048776216,Step state: Stationary,Point state: Stationary
+24048776217,Step state: Stationary,Point state: Stationary
+24048776218,Step state: Migratory (fall),Point state: Stationary
+24048776219,Step state: Stationary,Point state: Stationary
+24048776220,Step state: Stationary,Point state: Stationary
+24048776221,Step state: Migratory (fall),Point state: Migratory (fall)
+24048776222,Step state: Stationary,Point state: Stationary
+24048776223,Step state: Stationary,Point state: Stationary
+24048776224,Step state: Stationary,Point state: Stationary
+24048776225,Step state: Stationary,Point state: Stationary
+24048776226,Step state: Stationary,Point state: Stationary
+24048776227,Step state: Migratory (fall),Point state: Migratory (fall)
+24072657994,Step state: Stationary,Point state: Stationary
+24072657995,Step state: Stationary,Point state: Stationary
+24072657996,Step state: Stationary,Point state: Stationary
+24072657997,Step state: Stationary,Point state: Stationary
+24072657998,Step state: Stationary,Point state: Stationary
+24072657999,Step state: Stationary,Point state: Stationary
+24072658000,Step state: Stationary,Point state: Stationary
+24072658001,Step state: Stationary,Point state: Stationary
+24072658002,Step state: Migratory (fall),Point state: Migratory (fall)
+24072658003,Step state: Stationary,Point state: Stationary
+24072658004,Step state: Stationary,Point state: Stationary
+24072658005,Step state: Stationary,Point state: Stationary
+24072658006,Step state: Stationary,Point state: Stationary
+24072658007,Step state: Migratory (fall),Point state: Migratory (fall)
+24088471180,Step state: Stationary,Point state: Stationary
+24088471181,Step state: Stationary,Point state: Stationary
+24088471182,Step state: Stationary,Point state: Stationary
+24088471183,Step state: Stationary,Point state: Stationary
+24088471184,Step state: Stationary,Point state: Stationary
+24088471185,Step state: Stationary,Point state: Stationary
+24088471186,Step state: Stationary,Point state: Stationary
+24088471187,Step state: Stationary,Point state: Stationary
+24088471188,Step state: Stationary,Point state: Stationary
+24088471189,Step state: Stationary,Point state: Stationary
+24088471190,Step state: Stationary,Point state: Stationary
+24088471191,Step state: Stationary,Point state: Stationary
+24105166293,Step state: Stationary,Point state: Stationary
+24105166294,Step state: Stationary,Point state: Stationary
+24105166295,Step state: Stationary,Point state: Stationary
+24105166296,Step state: Stationary,Point state: Stationary
+24105166297,Step state: Stationary,Point state: Stationary
+24105166298,Step state: Stationary,Point state: Stationary
+24105166299,Step state: Stationary,Point state: Stationary
+24105166300,Step state: Stationary,Point state: Stationary
+24105166301,Step state: Stationary,Point state: Stationary
+24105166302,Step state: Stationary,Point state: Stationary
+24105166303,Step state: Stationary,Point state: Stationary
+24105166304,Step state: Stationary,Point state: Stationary
+24105166305,Step state: Stationary,Point state: Stationary
+24105166306,Step state: Stationary,Point state: Stationary
+24105166307,Step state: Stationary,Point state: Stationary
+24105166308,Step state: Stationary,Point state: Stationary
+24105166309,Step state: Stationary,Point state: Stationary
+24105166310,Step state: Stationary,Point state: Stationary
+24105166311,Step state: Stationary,Point state: Stationary
+24105166312,Step state: Stationary,Point state: Stationary
+24105166313,Step state: Stationary,Point state: Stationary
+24105166314,Step state: Stationary,Point state: Stationary
+24105166315,Step state: Stationary,Point state: Stationary
+24105166316,Step state: Stationary,Point state: Stationary
+24116435450,Step state: Stationary,Point state: Stationary
+24116435451,Step state: Stationary,Point state: Stationary
+24116435452,Step state: Stationary,Point state: Stationary
+24116435453,Step state: Stationary,Point state: Stationary
+24116435454,Step state: Stationary,Point state: Stationary
+24116435455,Step state: Stationary,Point state: Stationary
+24116435456,Step state: Stationary,Point state: Stationary
+24116435457,Step state: Stationary,Point state: Stationary
+24116435458,Step state: Stationary,Point state: Stationary
+24116435459,Step state: Stationary,Point state: Stationary
+24116435460,Step state: Stationary,Point state: Stationary
+24116435461,Step state: Stationary,Point state: Stationary
+24116435462,Step state: Stationary,Point state: Stationary
+24116435463,Step state: Stationary,Point state: Stationary
+24128612772,Step state: Stationary,Point state: Stationary
+24128612773,Step state: Stationary,Point state: Stationary
+24128612774,Step state: Stationary,Point state: Stationary
+24128612775,Step state: Stationary,Point state: Stationary
+24128612776,Step state: Stationary,Point state: Stationary
+24128612777,Step state: Stationary,Point state: Stationary
+24128612778,Step state: Stationary,Point state: Stationary
+24128612779,Step state: Stationary,Point state: Stationary
+24128612780,Step state: Stationary,Point state: Stationary
+24128612781,Step state: Stationary,Point state: Stationary
+24128612782,Step state: Stationary,Point state: Stationary
+24128612783,Step state: Stationary,Point state: Stationary
+24128612785,Step state: Stationary,Point state: Stationary
+24128612786,Step state: Stationary,Point state: Stationary
+24128612787,Step state: Stationary,Point state: Stationary
+24128612788,Step state: Stationary,Point state: Stationary
+24128612789,Step state: Stationary,Point state: Stationary
+24128612790,Step state: Migratory (fall),Point state: Stationary
+24128612791,Step state: Stationary,Point state: Stationary
+24128612792,Step state: Stationary,Point state: Stationary
+24128612793,Step state: Stationary,Point state: Stationary
+24128612794,Step state: Stationary,Point state: Stationary
+24128612795,Step state: Stationary,Point state: Stationary
+24128612796,Step state: Stationary,Point state: Stationary
+24128612798,Step state: Stationary,Point state: Stationary
+24128612799,Step state: Stationary,Point state: Stationary
+24128612800,Step state: Stationary,Point state: Stationary
+24128612801,Step state: Stationary,Point state: Stationary
+24128612802,Step state: Stationary,Point state: Stationary
+24128612803,Step state: Stationary,Point state: Stationary
+24128612804,Step state: Stationary,Point state: Stationary
+24128612805,Step state: Stationary,Point state: Stationary
+24128612806,Step state: Stationary,Point state: Stationary
+24128612807,Step state: Stationary,Point state: Stationary
+24128612808,Step state: Migratory (fall),Point state: Migratory (fall)
+24128612809,Step state: Stationary,Point state: Stationary
+24128612810,Step state: Stationary,Point state: Stationary
+24128612811,Step state: Stationary,Point state: Stationary
+24128612812,Step state: Stationary,Point state: Stationary
+24128612813,Step state: Stationary,Point state: Stationary
+24128612814,Step state: Stationary,Point state: Stationary
+24128612815,Step state: Stationary,Point state: Stationary
+24143139929,Step state: Stationary,Point state: Stationary
+24143139930,Step state: Stationary,Point state: Stationary
+24143139932,Step state: Stationary,Point state: Stationary
+24143139933,Step state: Stationary,Point state: Stationary
+24143139934,Step state: Stationary,Point state: Stationary
+24143139935,Step state: Stationary,Point state: Stationary
+24143139936,Step state: Stationary,Point state: Stationary
+24143139937,Step state: Stationary,Point state: Stationary
+24143139938,Step state: Stationary,Point state: Stationary
+24143139939,Step state: Stationary,Point state: Stationary
+24143139940,Step state: Stationary,Point state: Stationary
+24143139941,Step state: Stationary,Point state: Stationary
+24143139942,Step state: Migratory (fall),Point state: Stationary
+24143139943,Step state: Stationary,Point state: Stationary
+24143139944,Step state: Stationary,Point state: Stationary
+24143139945,Step state: Stationary,Point state: Stationary
+24143139946,Step state: Stationary,Point state: Stationary
+24143139947,Step state: Stationary,Point state: Stationary
+24143139948,Step state: Stationary,Point state: Stationary
+24143139949,Step state: Stationary,Point state: Stationary
+24143139950,Step state: Stationary,Point state: Stationary
+24143139951,Step state: Stationary,Point state: Stationary
+24143139952,Step state: Stationary,Point state: Stationary
+24143139953,Step state: Stationary,Point state: Stationary
+24143139954,Step state: Stationary,Point state: Stationary
+24143139955,Step state: Stationary,Point state: Stationary
+24143139956,Step state: Stationary,Point state: Stationary
+24143139957,Step state: Stationary,Point state: Stationary
+24143139958,Step state: Stationary,Point state: Stationary
+24143139959,Step state: Stationary,Point state: Stationary
+24143139960,Step state: Stationary,Point state: Stationary
+24143139961,Step state: Stationary,Point state: Stationary
+24143139962,Step state: Stationary,Point state: Stationary
+24143139963,Step state: Stationary,Point state: Stationary
+24143139964,Step state: Stationary,Point state: Stationary
+24143139965,Step state: Stationary,Point state: Stationary
+24143139966,Step state: Stationary,Point state: Stationary
+24143139967,Step state: Stationary,Point state: Stationary
+24143139968,Step state: Stationary,Point state: Stationary
+24143139969,Step state: Stationary,Point state: Stationary
+24143139970,Step state: Migratory (fall),Point state: Migratory (fall)
+24143139971,Step state: Stationary,Point state: Stationary
+24143139972,Step state: Stationary,Point state: Stationary
+24143139973,Step state: Stationary,Point state: Stationary
+24143139974,Step state: Stationary,Point state: Stationary
+24143139975,Step state: Stationary,Point state: Stationary
+24143139976,Step state: Stationary,Point state: Stationary
+24143139977,Step state: Stationary,Point state: Stationary
+24143139978,Step state: Stationary,Point state: Stationary
+24143139979,Step state: Stationary,Point state: Stationary
+24143139980,Step state: Stationary,Point state: Stationary
+24143139981,Step state: Stationary,Point state: Stationary
+24143139982,Step state: Stationary,Point state: Stationary
+24143139983,Step state: Stationary,Point state: Stationary
+24143139984,Step state: Stationary,Point state: Stationary
+24143139985,Step state: Stationary,Point state: Stationary
+24143139986,Step state: Stationary,Point state: Stationary
+24153664026,Step state: Stationary,Point state: Stationary
+24153664027,Step state: Stationary,Point state: Stationary
+24153664028,Step state: Stationary,Point state: Stationary
+24153664029,Step state: Stationary,Point state: Stationary
+24153664030,Step state: Stationary,Point state: Stationary
+24153664031,Step state: Stationary,Point state: Stationary
+24153664032,Step state: Stationary,Point state: Stationary
+24153664033,Step state: Stationary,Point state: Stationary
+24153664034,Step state: Stationary,Point state: Stationary
+24153664035,Step state: Stationary,Point state: Stationary
+24153664036,Step state: Stationary,Point state: Stationary
+24153664037,Step state: Stationary,Point state: Stationary
+24153664038,Step state: Stationary,Point state: Stationary
+24153664039,Step state: Stationary,Point state: Stationary
+24153664040,Step state: Stationary,Point state: Stationary
+24153664041,Step state: Stationary,Point state: Stationary
+24153664042,Step state: Stationary,Point state: Stationary
+24153664043,Step state: Stationary,Point state: Stationary
+24153664044,Step state: Stationary,Point state: Stationary
+24153664045,Step state: Stationary,Point state: Stationary
+24153664046,Step state: Stationary,Point state: Stationary
+24153664047,Step state: Stationary,Point state: Stationary
+24153664048,Step state: Stationary,Point state: Stationary
+24153664049,Step state: Stationary,Point state: Stationary
+24153664050,Step state: Stationary,Point state: Stationary
+24153664051,Step state: Migratory (fall),Point state: Stationary
+24153664052,Step state: Stationary,Point state: Stationary
+24153664053,Step state: Stationary,Point state: Stationary
+24153664054,Step state: Migratory (fall),Point state: Stationary
+24153664055,Step state: Stationary,Point state: Stationary
+24153664056,Step state: Migratory (fall),Point state: Stationary
+24153664057,Step state: Stationary,Point state: Stationary
+24153664058,Step state: Stationary,Point state: Stationary
+24153664059,Step state: Stationary,Point state: Stationary
+24153664060,Step state: Stationary,Point state: Stationary
+24153664061,Step state: Stationary,Point state: Stationary
+24153664062,Step state: Stationary,Point state: Stationary
+24153664063,Step state: Stationary,Point state: Stationary
+24164982451,Step state: Migratory (fall),Point state: Migratory (fall)
+24164982452,Step state: Migratory (fall),Point state: Migratory (fall)
+24164982453,Step state: Migratory (fall),Point state: Migratory (fall)
+24164982454,Step state: Migratory (fall),Point state: Migratory (fall)
+24164982455,Step state: Stationary,Point state: Stationary
+24164982456,Step state: Stationary,Point state: Stationary
+24164982457,Step state: Stationary,Point state: Stationary
+24164982458,Step state: Stationary,Point state: Stationary
+24164982459,Step state: Migratory (fall),Point state: Migratory (fall)
+24164982460,Step state: Stationary,Point state: Stationary
+24164982461,Step state: Stationary,Point state: Stationary
+24164982462,Step state: Stationary,Point state: Stationary
+24164982463,Step state: Stationary,Point state: Stationary
+24164982464,Step state: Stationary,Point state: Stationary
+24164982465,Step state: Stationary,Point state: Stationary
+24164982466,Step state: Stationary,Point state: Stationary
+24164982467,Step state: Stationary,Point state: Stationary
+24164982468,Step state: Stationary,Point state: Stationary
+24164982469,Step state: Stationary,Point state: Stationary
+24164982470,Step state: Stationary,Point state: Stationary
+24164982471,Step state: Stationary,Point state: Stationary
+24164982472,Step state: Stationary,Point state: Stationary
+24164982473,Step state: Stationary,Point state: Stationary
+24164982474,Step state: Stationary,Point state: Stationary
+24164982475,Step state: Stationary,Point state: Stationary
+24164982476,Step state: Stationary,Point state: Stationary
+24164982477,Step state: Stationary,Point state: Stationary
+24164982478,Step state: Stationary,Point state: Stationary
+24164982479,Step state: Stationary,Point state: Stationary
+24164982480,Step state: Migratory (fall),Point state: Migratory (fall)
+24164982481,Step state: Stationary,Point state: Stationary
+24164982482,Step state: Stationary,Point state: Stationary
+24164982483,Step state: Stationary,Point state: Stationary
+24164982484,Step state: Stationary,Point state: Stationary
+24179012062,Step state: Migratory (fall),Point state: Migratory (fall)
+24179012063,Step state: Migratory (fall),Point state: Migratory (fall)
+24179012064,Step state: Stationary,Point state: Stationary
+24179012065,Step state: Stationary,Point state: Stationary
+24179012066,Step state: Stationary,Point state: Stationary
+24179012067,Step state: Migratory (fall),Point state: Migratory (fall)
+24179012068,Step state: Migratory (fall),Point state: Migratory (fall)
+24179012069,Step state: Stationary,Point state: Stationary
+24179012070,Step state: Stationary,Point state: Stationary
+24179012071,Step state: Stationary,Point state: Stationary
+24179012072,Step state: Stationary,Point state: Stationary
+24179012073,Step state: Stationary,Point state: Stationary
+24179012074,Step state: Stationary,Point state: Stationary
+24179012075,Step state: Stationary,Point state: Stationary
+24179012076,Step state: Stationary,Point state: Stationary
+24179012077,Step state: Migratory (fall),Point state: Migratory (fall)
+24179012078,Step state: Stationary,Point state: Stationary
+24179012079,Step state: Stationary,Point state: Stationary
+24179012080,Step state: Stationary,Point state: Stationary
+24179012081,Step state: Stationary,Point state: Stationary
+24179012082,Step state: Stationary,Point state: Stationary
+24179012083,Step state: Stationary,Point state: Stationary
+24179012084,Step state: Stationary,Point state: Stationary
+24179012085,Step state: Stationary,Point state: Stationary
+24179012086,Step state: Stationary,Point state: Stationary
+24179012087,Step state: Stationary,Point state: Stationary
+24179012088,Step state: Migratory (fall),Point state: Migratory (fall)
+24179012089,Step state: Stationary,Point state: Stationary
+24179012090,Step state: Stationary,Point state: Stationary
+24179012091,Step state: Stationary,Point state: Stationary
+24184523475,Step state: Stationary,Point state: Stationary
+24184523476,Step state: Stationary,Point state: Stationary
+24184523477,Step state: Stationary,Point state: Stationary
+24184523478,Step state: Stationary,Point state: Stationary
+24184523479,Step state: Migratory (fall),Point state: Migratory (fall)
+24184523480,Step state: Stationary,Point state: Stationary
+24184523481,Step state: Stationary,Point state: Stationary
+24184523482,Step state: Migratory (fall),Point state: Migratory (fall)
+24184523483,Step state: Stationary,Point state: Stationary
+24184523484,Step state: Stationary,Point state: Stationary
+24184523485,Step state: Stationary,Point state: Stationary
+24184523486,Step state: Stationary,Point state: Stationary
+24184523487,Step state: Stationary,Point state: Stationary
+24184523488,Step state: Stationary,Point state: Stationary
+24184523489,Step state: Stationary,Point state: Stationary
+24184523490,Step state: Stationary,Point state: Stationary
+24184523491,Step state: Stationary,Point state: Stationary
+24184523492,Step state: Stationary,Point state: Stationary
+24184523493,Step state: Stationary,Point state: Stationary
+24184523494,Step state: Stationary,Point state: Stationary
+24184523495,Step state: Stationary,Point state: Stationary
+24184523496,Step state: Migratory (fall),Point state: Migratory (fall)
+24184523497,Step state: Stationary,Point state: Stationary
+24184523498,Step state: Stationary,Point state: Stationary
+24184523499,Step state: Stationary,Point state: Stationary
+24184523500,Step state: Stationary,Point state: Stationary
+24184523501,Step state: Stationary,Point state: Stationary
+24184523502,Step state: Stationary,Point state: Stationary
+24184523503,Step state: Stationary,Point state: Stationary
+24184523504,Step state: Stationary,Point state: Stationary
+24184523505,Step state: Stationary,Point state: Stationary
+24184523506,Step state: Stationary,Point state: Stationary
+24184523507,Step state: Stationary,Point state: Stationary
+24184523508,Step state: Migratory (fall),Point state: Stationary
+24184523509,Step state: Stationary,Point state: Stationary
+24184523510,Step state: Migratory (fall),Point state: Migratory (fall)
+24184523511,Step state: Migratory (fall),Point state: Stationary
+24184523512,Step state: Stationary,Point state: Stationary
+24184523513,Step state: Stationary,Point state: Stationary
+24184523514,Step state: Migratory (fall),Point state: Stationary
+24184523515,Step state: Stationary,Point state: Stationary
+24184523516,Step state: Stationary,Point state: Stationary
+24184523517,Step state: Stationary,Point state: Stationary
+24184523518,Step state: Stationary,Point state: Stationary
+24184523519,Step state: Migratory (fall),Point state: Migratory (fall)
+24184523520,Step state: Stationary,Point state: Stationary
+24189017217,Step state: Stationary,Point state: Stationary
+24189017218,Step state: Stationary,Point state: Stationary
+24189017219,Step state: Stationary,Point state: Stationary
+24189017220,Step state: Stationary,Point state: Stationary
+24189017221,Step state: Stationary,Point state: Stationary
+24189017222,Step state: Stationary,Point state: Stationary
+24204680071,Step state: Stationary,Point state: Stationary
+24204680072,Step state: Stationary,Point state: Stationary
+24204680073,Step state: Stationary,Point state: Stationary
+24204680074,Step state: Migratory (fall),Point state: Migratory (fall)
+24204680075,Step state: Stationary,Point state: Stationary
+24204680076,Step state: Migratory (fall),Point state: Migratory (fall)
+24204680077,Step state: Stationary,Point state: Stationary
+24204680078,Step state: Stationary,Point state: Stationary
+24204680079,Step state: Stationary,Point state: Stationary
+24204680080,Step state: Migratory (fall),Point state: Migratory (fall)
+24204680081,Step state: Stationary,Point state: Stationary
+24204680082,Step state: Stationary,Point state: Stationary
+24204680083,Step state: Migratory (fall),Point state: Migratory (fall)
+24204680084,Step state: Stationary,Point state: Stationary
+24204680085,Step state: Stationary,Point state: Stationary
+24204680086,Step state: Stationary,Point state: Stationary
+24204680087,Step state: Stationary,Point state: Stationary
+24204680088,Step state: Stationary,Point state: Stationary
+24204680089,Step state: Stationary,Point state: Stationary
+24204680090,Step state: Stationary,Point state: Stationary
+24204680091,Step state: Stationary,Point state: Stationary
+24204680092,Step state: Stationary,Point state: Stationary
+24223102840,Step state: Stationary,Point state: Stationary
+24223102841,Step state: Stationary,Point state: Stationary
+24223102842,Step state: Migratory (fall),Point state: Migratory (fall)
+24223102843,Step state: Stationary,Point state: Stationary
+24223102844,Step state: Stationary,Point state: Stationary
+24223102845,Step state: Stationary,Point state: Stationary
+24223102847,Step state: Stationary,Point state: Stationary
+24223102848,Step state: Stationary,Point state: Stationary
+24223102849,Step state: Migratory (fall),Point state: Migratory (fall)
+24223102850,Step state: Migratory (fall),Point state: Migratory (fall)
+24223102851,Step state: Migratory (fall),Point state: Migratory (fall)
+24223102852,Step state: Migratory (fall),Point state: Migratory (fall)
+24223102853,Step state: Stationary,Point state: Stationary
+24223102855,Step state: Stationary,Point state: Stationary
+24223102856,Step state: Stationary,Point state: Stationary
+24223102857,Step state: Stationary,Point state: Stationary
+24223102858,Step state: Stationary,Point state: Stationary
+24223102859,Step state: Migratory (fall),Point state: Migratory (fall)
+24223102860,Step state: Stationary,Point state: Stationary
+24223102861,Step state: Migratory (fall),Point state: Migratory (fall)
+24223102862,Step state: Migratory (fall),Point state: Stationary
+24223102863,Step state: Migratory (fall),Point state: Migratory (fall)
+24223102864,Step state: Stationary,Point state: Stationary
+24223102866,Step state: Migratory (fall),Point state: Stationary
+24223102867,Step state: Stationary,Point state: Stationary
+24223102868,Step state: Stationary,Point state: Stationary
+24223102869,Step state: Migratory (fall),Point state: Migratory (fall)
+24223102870,Step state: Stationary,Point state: Stationary
+24223102871,Step state: Migratory (fall),Point state: Migratory (fall)
+24223102872,Step state: Migratory (fall),Point state: Migratory (fall)
+24237726129,Step state: Stationary,Point state: Stationary
+24237726130,Step state: Stationary,Point state: Stationary
+24237726131,Step state: Stationary,Point state: Stationary
+24237726132,Step state: Stationary,Point state: Stationary
+24237726133,Step state: Migratory (fall),Point state: Stationary
+24237726134,Step state: Migratory (fall),Point state: Stationary
+24237726135,Step state: Migratory (fall),Point state: Migratory (fall)
+24237726136,Step state: Migratory (fall),Point state: Migratory (fall)
+24237726137,Step state: Stationary,Point state: Stationary
+24237726138,Step state: Migratory (fall),Point state: Migratory (fall)
+24237726139,Step state: Stationary,Point state: Stationary
+24237726140,Step state: Stationary,Point state: Stationary
+24237726141,Step state: Stationary,Point state: Stationary
+24237726142,Step state: Stationary,Point state: Stationary
+24237726143,Step state: Migratory (fall),Point state: Stationary
+24237726144,Step state: Stationary,Point state: Stationary
+24237726145,Step state: Stationary,Point state: Stationary
+24237726146,Step state: Stationary,Point state: Stationary
+24237726147,Step state: Stationary,Point state: Stationary
+24237726148,Step state: Migratory (fall),Point state: Migratory (fall)
+24237726149,Step state: Migratory (fall),Point state: Migratory (fall)
+24237726150,Step state: Stationary,Point state: Stationary
+24237726151,Step state: Stationary,Point state: Stationary
+24237726152,Step state: Migratory (fall),Point state: Migratory (fall)
+24237726154,Step state: Stationary,Point state: Stationary
+24237726155,Step state: Stationary,Point state: Stationary
+24237726156,Step state: Stationary,Point state: Stationary
+24237726157,Step state: Migratory (fall),Point state: Migratory (fall)
+24237726158,Step state: Migratory (fall),Point state: Migratory (fall)
+24237726159,Step state: Migratory (fall),Point state: Migratory (fall)
+24237726160,Step state: Migratory (fall),Point state: Migratory (fall)
+24237726161,Step state: Stationary,Point state: Stationary
+24237726163,Step state: Migratory (fall),Point state: Stationary
+24237726164,Step state: Migratory (fall),Point state: Migratory (fall)
+24237726165,Step state: Migratory (fall),Point state: Stationary
+24237726166,Step state: Stationary,Point state: Stationary
+24237726167,Step state: Migratory (fall),Point state: Migratory (fall)
+24237726168,Step state: Migratory (fall),Point state: Migratory (fall)
+24237726169,Step state: Migratory (fall),Point state: Migratory (fall)
+24237726170,Step state: Migratory (fall),Point state: Migratory (fall)
+24237726171,Step state: Stationary,Point state: Stationary
+24237726172,Step state: Stationary,Point state: Stationary
+24237726173,Step state: Migratory (fall),Point state: Migratory (fall)
+24237726174,Step state: Stationary,Point state: Stationary
+24252430366,Step state: Migratory (fall),Point state: Migratory (fall)
+24252430367,Step state: Stationary,Point state: Stationary
+24252430368,Step state: Migratory (fall),Point state: Stationary
+24252430369,Step state: Migratory (fall),Point state: Migratory (fall)
+24252430370,Step state: Stationary,Point state: Stationary
+24252430371,Step state: Migratory (fall),Point state: Migratory (fall)
+24252430372,Step state: Migratory (fall),Point state: Migratory (fall)
+24252430373,Step state: Stationary,Point state: Stationary
+24252430374,Step state: Migratory (fall),Point state: Migratory (fall)
+24252430376,Step state: Migratory (fall),Point state: Migratory (fall)
+24252430377,Step state: Migratory (fall),Point state: Migratory (fall)
+24252430378,Step state: Migratory (fall),Point state: Migratory (fall)
+24252430379,Step state: Stationary,Point state: Stationary
+24252430380,Step state: Stationary,Point state: Stationary
+24252430381,Step state: Migratory (fall),Point state: Migratory (fall)
+24252430382,Step state: Stationary,Point state: Stationary
+24252430383,Step state: Stationary,Point state: Stationary
+24252430384,Step state: Migratory (fall),Point state: Migratory (fall)
+24252430386,Step state: Migratory (fall),Point state: Migratory (fall)
+24252430387,Step state: Migratory (fall),Point state: Migratory (fall)
+24252430388,Step state: Stationary,Point state: Stationary
+24252430389,Step state: Migratory (fall),Point state: Migratory (fall)
+24252430390,Step state: Stationary,Point state: Stationary
+24252430391,Step state: Stationary,Point state: Stationary
+24252430392,Step state: Migratory (fall),Point state: Migratory (fall)
+24252430393,Step state: Migratory (fall),Point state: Migratory (fall)
+24252430394,Step state: Stationary,Point state: Stationary
+24252430395,Step state: Migratory (fall),Point state: Migratory (fall)
+24252430396,Step state: Migratory (fall),Point state: Migratory (fall)
+24252430397,Step state: Stationary,Point state: Stationary
+24252430399,Step state: Migratory (fall),Point state: Migratory (fall)
+24252430400,Step state: Migratory (fall),Point state: Migratory (fall)
+24252430401,Step state: Stationary,Point state: Stationary
+24252430402,Step state: Migratory (fall),Point state: Migratory (fall)
+24252430403,Step state: Migratory (fall),Point state: Migratory (fall)
+24252430404,Step state: Stationary,Point state: Stationary
+24252430406,Step state: Migratory (fall),Point state: Migratory (fall)
+24254461744,Step state: Migratory (fall),Point state: Migratory (fall)
+24254461745,Step state: Stationary,Point state: Stationary
+24254461746,Step state: Migratory (fall),Point state: Migratory (fall)
+24254461747,Step state: Stationary,Point state: Stationary
+24254461748,Step state: Stationary,Point state: Stationary
+24254461749,Step state: Migratory (fall),Point state: Migratory (fall)
+24254461750,Step state: Stationary,Point state: Stationary
+24254461751,Step state: Stationary,Point state: Stationary
+24254461752,Step state: Migratory (fall),Point state: Migratory (fall)
+24254461753,Step state: Migratory (fall),Point state: Migratory (fall)
+24254461754,Step state: Stationary,Point state: Stationary
+24254461755,Step state: Migratory (fall),Point state: Migratory (fall)
+24254461756,Step state: Migratory (fall),Point state: Migratory (fall)
+24254461757,Step state: Stationary,Point state: Stationary
+24254461758,Step state: Migratory (fall),Point state: Migratory (fall)
+24254461759,Step state: Migratory (fall),Point state: Migratory (fall)
+24283328528,Step state: Migratory (fall),Point state: Migratory (fall)
+24283328529,Step state: Migratory (fall),Point state: Migratory (fall)
+24283328530,Step state: Stationary,Point state: Stationary
+24283328531,Step state: Stationary,Point state: Stationary
+24283328532,Step state: Stationary,Point state: Stationary
+24283328533,Step state: Migratory (fall),Point state: Migratory (fall)
+24283328534,Step state: Migratory (fall),Point state: Migratory (fall)
+24283328535,Step state: Stationary,Point state: Stationary
+24283328536,Step state: Migratory (fall),Point state: Migratory (fall)
+24283328538,Step state: Stationary,Point state: Stationary
+24283328539,Step state: Migratory (fall),Point state: Migratory (fall)
+24283328540,Step state: Stationary,Point state: Stationary
+24283328541,Step state: Stationary,Point state: Stationary
+24283328542,Step state: Migratory (fall),Point state: Migratory (fall)
+24283328543,Step state: Stationary,Point state: Stationary
+24283328544,Step state: Migratory (fall),Point state: Migratory (fall)
+24283328545,Step state: Migratory (fall),Point state: Migratory (fall)
+24283328546,Step state: Stationary,Point state: Stationary
+24283328548,Step state: Migratory (fall),Point state: Migratory (fall)
+24283328549,Step state: Migratory (fall),Point state: Migratory (fall)
+24283328550,Step state: Migratory (fall),Point state: Migratory (fall)
+24283328551,Step state: Stationary,Point state: Stationary
+24283328552,Step state: Stationary,Point state: Stationary
+24283328553,Step state: Migratory (fall),Point state: Migratory (fall)
+24283328554,Step state: Stationary,Point state: Stationary
+24283328555,Step state: Migratory (fall),Point state: Migratory (fall)
+24283328556,Step state: Migratory (fall),Point state: Migratory (fall)
+24292361843,Step state: Migratory (fall),Point state: Migratory (fall)
+24292361844,Step state: Stationary,Point state: Stationary
+24292361845,Step state: Stationary,Point state: Stationary
+24292361846,Step state: Migratory (fall),Point state: Migratory (fall)
+24292361847,Step state: Migratory (fall),Point state: Migratory (fall)
+24292361848,Step state: Migratory (fall),Point state: Migratory (fall)
+24292361849,Step state: Migratory (fall),Point state: Migratory (fall)
+24292361850,Step state: Migratory (fall),Point state: Migratory (fall)
+24292361851,Step state: Stationary,Point state: Stationary
+24292361852,Step state: Stationary,Point state: Stationary
+24292361853,Step state: Migratory (fall),Point state: Migratory (fall)
+24292361854,Step state: Migratory (fall),Point state: Migratory (fall)
+24292361855,Step state: Stationary,Point state: Stationary
+24292361856,Step state: Stationary,Point state: Stationary
+24292361857,Step state: Migratory (fall),Point state: Migratory (fall)
+24292361858,Step state: Stationary,Point state: Stationary
+24292361860,Step state: Migratory (fall),Point state: Migratory (fall)
+24292361861,Step state: Stationary,Point state: Stationary
+24292361862,Step state: Stationary,Point state: Stationary
+24292361863,Step state: Migratory (fall),Point state: Migratory (fall)
+24292361864,Step state: Migratory (fall),Point state: Migratory (fall)
+24292361865,Step state: Migratory (fall),Point state: Migratory (fall)
+24292361866,Step state: Migratory (fall),Point state: Stationary
+24292361868,Step state: Migratory (fall),Point state: Migratory (fall)
+24292361869,Step state: Migratory (fall),Point state: Migratory (fall)
+24292361870,Step state: Stationary,Point state: Stationary
+24292361871,Step state: Migratory (fall),Point state: Migratory (fall)
+24292361872,Step state: Stationary,Point state: Stationary
+24292361873,Step state: Migratory (fall),Point state: Migratory (fall)
+24292361874,Step state: Migratory (fall),Point state: Migratory (fall)
+24292361875,Step state: Stationary,Point state: Stationary
+24292361876,Step state: Migratory (fall),Point state: Migratory (fall)
+24292361877,Step state: Migratory (fall),Point state: Migratory (fall)
+24292361878,Step state: Migratory (fall),Point state: Migratory (fall)
+24292361879,Step state: Stationary,Point state: Stationary
+24297393582,Step state: Migratory (fall),Point state: Migratory (fall)
+24297393583,Step state: Migratory (fall),Point state: Migratory (fall)
+24297393584,Step state: Stationary,Point state: Stationary
+24297393585,Step state: Migratory (fall),Point state: Migratory (fall)
+24297393586,Step state: Stationary,Point state: Stationary
+24297393587,Step state: Stationary,Point state: Stationary
+24297393588,Step state: Stationary,Point state: Stationary
+24297393589,Step state: Migratory (fall),Point state: Migratory (fall)
+24297393590,Step state: Migratory (fall),Point state: Migratory (fall)
+24297393591,Step state: Migratory (fall),Point state: Migratory (fall)
+24297393592,Step state: Stationary,Point state: Stationary
+24297393594,Step state: Migratory (fall),Point state: Migratory (fall)
+24297393595,Step state: Stationary,Point state: Stationary
+24297393596,Step state: Stationary,Point state: Stationary
+24297393597,Step state: Migratory (fall),Point state: Migratory (fall)
+24297393598,Step state: Stationary,Point state: Stationary
+24297393599,Step state: Migratory (fall),Point state: Migratory (fall)
+24297393600,Step state: Migratory (fall),Point state: Migratory (fall)
+24297393601,Step state: Stationary,Point state: Stationary
+24297393602,Step state: Migratory (fall),Point state: Migratory (fall)
+24297393603,Step state: Migratory (fall),Point state: Migratory (fall)
+24297393605,Step state: Stationary,Point state: Stationary
+24297393606,Step state: Migratory (fall),Point state: Migratory (fall)
+24297393607,Step state: Stationary,Point state: Stationary
+24297393608,Step state: Stationary,Point state: Stationary
+24297393609,Step state: Migratory (fall),Point state: Migratory (fall)
+24297393610,Step state: Migratory (fall),Point state: Migratory (fall)
+24297393611,Step state: Stationary,Point state: Stationary
+24297393612,Step state: Migratory (fall),Point state: Migratory (fall)
+24297393613,Step state: Stationary,Point state: Stationary
+24300154533,Step state: Migratory (fall),Point state: Migratory (fall)
+24300154534,Step state: Migratory (fall),Point state: Migratory (fall)
+24300154535,Step state: Migratory (fall),Point state: Migratory (fall)
+24300154536,Step state: Stationary,Point state: Stationary
+24300154537,Step state: Stationary,Point state: Stationary
+24300154538,Step state: Stationary,Point state: Stationary
+24300154540,Step state: Migratory (fall),Point state: Migratory (fall)
+24300154541,Step state: Migratory (fall),Point state: Migratory (fall)
+24300154542,Step state: Stationary,Point state: Stationary
+24300154543,Step state: Stationary,Point state: Stationary
+24300154544,Step state: Stationary,Point state: Stationary
+24300154546,Step state: Migratory (fall),Point state: Migratory (fall)
+24305513743,Step state: Migratory (fall),Point state: Migratory (fall)
+24305513744,Step state: Migratory (fall),Point state: Migratory (fall)
+24305513745,Step state: Migratory (fall),Point state: Migratory (fall)
+24305513746,Step state: Migratory (fall),Point state: Migratory (fall)
+24305513747,Step state: Migratory (fall),Point state: Migratory (fall)
+24305513748,Step state: Migratory (fall),Point state: Migratory (fall)
+24305513749,Step state: Stationary,Point state: Stationary
+24305513750,Step state: Migratory (fall),Point state: Migratory (fall)
+24305513751,Step state: Stationary,Point state: Stationary
+24305513752,Step state: Migratory (fall),Point state: Migratory (fall)
+24305513753,Step state: Migratory (fall),Point state: Migratory (fall)
+24305513754,Step state: Stationary,Point state: Stationary
+24305513755,Step state: Migratory (fall),Point state: Migratory (fall)
+24305513756,Step state: Migratory (fall),Point state: Migratory (fall)
+24305513757,Step state: Migratory (fall),Point state: Migratory (fall)
+24305513758,Step state: Migratory (fall),Point state: Migratory (fall)
+24305513759,Step state: Stationary,Point state: Stationary
+24305513760,Step state: Migratory (fall),Point state: Migratory (fall)
+24305513761,Step state: Stationary,Point state: Stationary
+24305513762,Step state: Migratory (fall),Point state: Migratory (fall)
+24305513763,Step state: Migratory (fall),Point state: Migratory (fall)
+24305513764,Step state: Migratory (fall),Point state: Migratory (fall)
+24305513765,Step state: Migratory (fall),Point state: Migratory (fall)
+24305513766,Step state: Stationary,Point state: Stationary
+24305513767,Step state: Migratory (fall),Point state: Migratory (fall)
+24305513768,Step state: Migratory (fall),Point state: Migratory (fall)
+24317200437,Step state: Stationary,Point state: Stationary
+24317200438,Step state: Stationary,Point state: Stationary
+24317200440,Step state: Migratory (fall),Point state: Migratory (fall)
+24317200441,Step state: Stationary,Point state: Stationary
+24317200442,Step state: Stationary,Point state: Stationary
+24317200444,Step state: Stationary,Point state: Stationary
+24317200445,Step state: Migratory (fall),Point state: Migratory (fall)
+24317200446,Step state: Migratory (fall),Point state: Migratory (fall)
+24317200447,Step state: Migratory (fall),Point state: Stationary
+24317200448,Step state: Migratory (fall),Point state: Migratory (fall)
+24317200449,Step state: Migratory (fall),Point state: Migratory (fall)
+24317200450,Step state: Migratory (fall),Point state: Migratory (fall)
+24317200451,Step state: Stationary,Point state: Stationary
+24317200452,Step state: Migratory (fall),Point state: Migratory (fall)
+24317200453,Step state: Migratory (fall),Point state: Migratory (fall)
+24317200454,Step state: Migratory (fall),Point state: Migratory (fall)
+24317200455,Step state: Stationary,Point state: Stationary
+24317200457,Step state: Migratory (fall),Point state: Migratory (fall)
+24317200458,Step state: Migratory (fall),Point state: Migratory (fall)
+24317200459,Step state: Stationary,Point state: Stationary
+24317200460,Step state: Migratory (fall),Point state: Migratory (fall)
+24317200461,Step state: Migratory (fall),Point state: Migratory (fall)
+24317200462,Step state: Migratory (fall),Point state: Migratory (fall)
+24317200463,Step state: Migratory (fall),Point state: Migratory (fall)
+24317200464,Step state: Migratory (fall),Point state: Migratory (fall)
+24317200465,Step state: Migratory (fall),Point state: Migratory (fall)
+24317200466,Step state: Stationary,Point state: Stationary
+24317200468,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375444,Step state: Stationary,Point state: Stationary
+24363375445,Step state: Migratory (fall),Point state: Stationary
+24363375446,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375447,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375448,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375449,Step state: Stationary,Point state: Stationary
+24363375450,Step state: Stationary,Point state: Stationary
+24363375451,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375452,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375453,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375454,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375455,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375456,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375457,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375458,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375459,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375460,Step state: Stationary,Point state: Stationary
+24363375461,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375463,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375464,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375465,Step state: Stationary,Point state: Stationary
+24363375466,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375467,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375468,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375469,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375470,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375472,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375473,Step state: Stationary,Point state: Stationary
+24363375474,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375475,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375476,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375477,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375478,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375479,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375480,Step state: Migratory (fall),Point state: Migratory (fall)
+24363375481,Step state: Stationary,Point state: Stationary
+24376899883,Step state: Migratory (fall),Point state: Migratory (fall)
+24376899884,Step state: Stationary,Point state: Stationary
+24376899885,Step state: Migratory (fall),Point state: Migratory (fall)
+24376899886,Step state: Stationary,Point state: Stationary
+24376899887,Step state: Migratory (fall),Point state: Migratory (fall)
+24376899888,Step state: Migratory (fall),Point state: Migratory (fall)
+24376899889,Step state: Migratory (fall),Point state: Migratory (fall)
+24376899890,Step state: Migratory (fall),Point state: Migratory (fall)
+24376899891,Step state: Migratory (fall),Point state: Migratory (fall)
+24376899892,Step state: Migratory (fall),Point state: Migratory (fall)
+24376899893,Step state: Stationary,Point state: Stationary
+24376899894,Step state: Migratory (fall),Point state: Migratory (fall)
+24376899895,Step state: Migratory (fall),Point state: Migratory (fall)
+24376899896,Step state: Migratory (fall),Point state: Migratory (fall)
+24376899897,Step state: Stationary,Point state: Stationary
+24376899898,Step state: Migratory (fall),Point state: Migratory (fall)
+24376899899,Step state: Migratory (fall),Point state: Migratory (fall)
+24376899900,Step state: Stationary,Point state: Stationary
+24376899902,Step state: Migratory (fall),Point state: Migratory (fall)
+24376899903,Step state: Migratory (fall),Point state: Migratory (fall)
+24376899904,Step state: Stationary,Point state: Stationary
+24376899905,Step state: Migratory (fall),Point state: Migratory (fall)
+24376899906,Step state: Migratory (fall),Point state: Migratory (fall)
+24376899907,Step state: Migratory (fall),Point state: Migratory (fall)
+24376899908,Step state: Migratory (fall),Point state: Migratory (fall)
+24376899909,Step state: Stationary,Point state: Stationary
+24376899911,Step state: Migratory (fall),Point state: Migratory (fall)
+24376899912,Step state: Stationary,Point state: Stationary
+24438688134,Step state: Migratory (fall),Point state: Migratory (fall)
+24438688135,Step state: Migratory (fall),Point state: Migratory (fall)
+24438688136,Step state: Stationary,Point state: Stationary
+24438688137,Step state: Migratory (fall),Point state: Migratory (fall)
+24438688138,Step state: Stationary,Point state: Stationary
+24438688139,Step state: Migratory (fall),Point state: Migratory (fall)
+24438688140,Step state: Migratory (fall),Point state: Migratory (fall)
+24438688141,Step state: Migratory (fall),Point state: Migratory (fall)
+24438688142,Step state: Migratory (fall),Point state: Migratory (fall)
+24438688143,Step state: Migratory (fall),Point state: Migratory (fall)
+24438688144,Step state: Migratory (fall),Point state: Migratory (fall)
+24438688145,Step state: Stationary,Point state: Stationary
+24438688146,Step state: Stationary,Point state: Stationary
+24438688147,Step state: Migratory (fall),Point state: Migratory (fall)
+24438688148,Step state: Migratory (fall),Point state: Migratory (fall)
+24438688149,Step state: Stationary,Point state: Stationary
+24438688150,Step state: Migratory (fall),Point state: Migratory (fall)
+24438688151,Step state: Migratory (fall),Point state: Migratory (fall)
+24438688152,Step state: Migratory (fall),Point state: Migratory (fall)
+24438688153,Step state: Stationary,Point state: Stationary
+24438688154,Step state: Stationary,Point state: Stationary
+24438688155,Step state: Migratory (fall),Point state: Migratory (fall)
+24438688156,Step state: Migratory (fall),Point state: Migratory (fall)
+24438688157,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316768,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316769,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316770,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316771,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316772,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316773,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316774,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316775,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316776,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316777,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316778,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316779,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316780,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316781,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316782,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316783,Step state: Stationary,Point state: Stationary
+24556316784,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316785,Step state: Stationary,Point state: Stationary
+24556316786,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316787,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316788,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316789,Step state: Stationary,Point state: Stationary
+24556316790,Step state: Stationary,Point state: Stationary
+24556316791,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316792,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316793,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316794,Step state: Stationary,Point state: Stationary
+24556316795,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316796,Step state: Stationary,Point state: Stationary
+24556316797,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316798,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316799,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316800,Step state: Stationary,Point state: Stationary
+24556316801,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316802,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316803,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316804,Step state: Stationary,Point state: Stationary
+24556316805,Step state: Stationary,Point state: Stationary
+24556316806,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316807,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316808,Step state: Stationary,Point state: Stationary
+24556316809,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316810,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316811,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316812,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316813,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316814,Step state: Stationary,Point state: Stationary
+24556316815,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316816,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316817,Step state: Stationary,Point state: Stationary
+24556316818,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316819,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316820,Step state: Migratory (fall),Point state: Migratory (fall)
+24556316821,Step state: Migratory (fall),Point state: Migratory (fall)
+24637177506,Step state: Migratory (fall),Point state: Migratory (fall)
+24637177507,Step state: Migratory (fall),Point state: Migratory (fall)
+24637177508,Step state: Migratory (fall),Point state: Migratory (fall)
+24637177509,Step state: Migratory (fall),Point state: Migratory (fall)
+24637177510,Step state: Stationary,Point state: Stationary
+24637177511,Step state: Stationary,Point state: Stationary
+24637177512,Step state: Migratory (fall),Point state: Migratory (fall)
+24637177513,Step state: Stationary,Point state: Stationary
+24637177514,Step state: Migratory (fall),Point state: Migratory (fall)
+24637177515,Step state: Migratory (fall),Point state: Migratory (fall)
+24637177516,Step state: Stationary,Point state: Stationary
+24637177517,Step state: Stationary,Point state: Stationary
+24637177518,Step state: Migratory (fall),Point state: Migratory (fall)
+24637177519,Step state: Stationary,Point state: Stationary
+24637177520,Step state: Stationary,Point state: Stationary
+24637177521,Step state: Stationary,Point state: Stationary
+24699947516,Step state: Migratory (fall),Point state: Migratory (fall)
+24699947517,Step state: Migratory (fall),Point state: Migratory (fall)
+24699947518,Step state: Migratory (fall),Point state: Migratory (fall)
+24699947519,Step state: Migratory (fall),Point state: Migratory (fall)
+24699947520,Step state: Migratory (fall),Point state: Migratory (fall)
+24699947521,Step state: Migratory (fall),Point state: Migratory (fall)
+24699947522,Step state: Stationary,Point state: Stationary
+24699947523,Step state: Migratory (fall),Point state: Migratory (fall)
+24699947524,Step state: Migratory (fall),Point state: Migratory (fall)
+24699947525,Step state: Stationary,Point state: Stationary
+24699947526,Step state: Stationary,Point state: Stationary
+24699947527,Step state: Migratory (fall),Point state: Migratory (fall)
+24699947528,Step state: Migratory (fall),Point state: Migratory (fall)
+24699947529,Step state: Migratory (fall),Point state: Migratory (fall)
+24699947530,Step state: Migratory (fall),Point state: Migratory (fall)
+24699947531,Step state: Migratory (fall),Point state: Migratory (fall)
+24699947532,Step state: Migratory (fall),Point state: Migratory (fall)
+24699947533,Step state: Stationary,Point state: Stationary
+24699947534,Step state: Stationary,Point state: Stationary
+24699947535,Step state: Migratory (fall),Point state: Migratory (fall)
+24699947536,Step state: Migratory (fall),Point state: Migratory (fall)
+24699947537,Step state: Stationary,Point state: Stationary
+24699947538,Step state: Stationary,Point state: Stationary
+24699947539,Step state: Stationary,Point state: Stationary
+24699947540,Step state: Migratory (fall),Point state: Migratory (fall)
+24699947541,Step state: Migratory (fall),Point state: Migratory (fall)
+24699947542,Step state: Stationary,Point state: Stationary
+24699947543,Step state: Stationary,Point state: Stationary
+24699947544,Step state: Migratory (fall),Point state: Migratory (fall)
+24699947545,Step state: Migratory (fall),Point state: Migratory (fall)
+24726282590,Step state: Migratory (fall),Point state: Migratory (fall)
+24726282591,Step state: Migratory (fall),Point state: Migratory (fall)
+24726282592,Step state: Migratory (fall),Point state: Migratory (fall)
+24726282593,Step state: Migratory (fall),Point state: Migratory (fall)
+24726282594,Step state: Migratory (fall),Point state: Migratory (fall)
+24726282595,Step state: Migratory (fall),Point state: Migratory (fall)
+24726282596,Step state: Migratory (fall),Point state: Migratory (fall)
+24726282597,Step state: Migratory (fall),Point state: Migratory (fall)
+24726282598,Step state: Migratory (fall),Point state: Migratory (fall)
+24726282599,Step state: Migratory (fall),Point state: Migratory (fall)
+24726282600,Step state: Stationary,Point state: Stationary
+24726282601,Step state: Migratory (fall),Point state: Migratory (fall)
+24726282602,Step state: Stationary,Point state: Stationary
+24726282603,Step state: Migratory (fall),Point state: Migratory (fall)
+24726282604,Step state: Migratory (fall),Point state: Migratory (fall)
+24726282605,Step state: Migratory (fall),Point state: Migratory (fall)
+24726282606,Step state: Stationary,Point state: Stationary
+24726282607,Step state: Stationary,Point state: Stationary
+24726282608,Step state: Stationary,Point state: Stationary
+24726282609,Step state: Stationary,Point state: Stationary
+24726282610,Step state: Migratory (fall),Point state: Migratory (fall)
+24726282611,Step state: Migratory (fall),Point state: Migratory (fall)
+24726282612,Step state: Migratory (fall),Point state: Migratory (fall)
+24726282613,Step state: Stationary,Point state: Stationary
+24726282614,Step state: Stationary,Point state: Stationary
+24726282615,Step state: Stationary,Point state: Stationary
+24726282616,Step state: Stationary,Point state: Stationary
+24726282617,Step state: Stationary,Point state: Stationary
+24726282618,Step state: Stationary,Point state: Stationary
+24737864027,Step state: Stationary,Point state: Stationary
+24737864028,Step state: Stationary,Point state: Stationary
+24737864029,Step state: Stationary,Point state: Stationary
+24737864030,Step state: Stationary,Point state: Stationary
+24737864031,Step state: Stationary,Point state: Stationary
+24737864032,Step state: Stationary,Point state: Stationary
+24737864033,Step state: Stationary,Point state: Stationary
+24737864034,Step state: Stationary,Point state: Stationary
+24737864035,Step state: Stationary,Point state: Stationary
+24737864036,Step state: Stationary,Point state: Stationary
+24737864037,Step state: Stationary,Point state: Stationary
+24737864038,Step state: Stationary,Point state: Stationary
+24743997357,Step state: Migratory (fall),Point state: Migratory (fall)
+24743997358,Step state: Stationary,Point state: Stationary
+24743997359,Step state: Migratory (fall),Point state: Migratory (fall)
+24743997360,Step state: Migratory (fall),Point state: Migratory (fall)
+24743997361,Step state: Stationary,Point state: Stationary
+24743997362,Step state: Stationary,Point state: Stationary
+24743997363,Step state: Migratory (fall),Point state: Migratory (fall)
+24743997364,Step state: Migratory (fall),Point state: Migratory (fall)
+24743997365,Step state: Stationary,Point state: Stationary
+24743997366,Step state: Stationary,Point state: Stationary
+24743997367,Step state: Migratory (fall),Point state: Migratory (fall)
+24743997368,Step state: Migratory (fall),Point state: Migratory (fall)
+24743997369,Step state: Stationary,Point state: Stationary
+24743997370,Step state: Stationary,Point state: Stationary
+24743997371,Step state: Migratory (fall),Point state: Migratory (fall)
+24743997372,Step state: Stationary,Point state: Stationary
+24764786931,Step state: Migratory (fall),Point state: Migratory (fall)
+24764786932,Step state: Migratory (fall),Point state: Migratory (fall)
+24764786933,Step state: Stationary,Point state: Stationary
+24764786934,Step state: Stationary,Point state: Stationary
+24764786935,Step state: Stationary,Point state: Stationary
+24764786936,Step state: Stationary,Point state: Stationary
+24764786937,Step state: Migratory (fall),Point state: Migratory (fall)
+24764786938,Step state: Stationary,Point state: Stationary
+24764786939,Step state: Stationary,Point state: Stationary
+24764786940,Step state: Stationary,Point state: Stationary
+24764786941,Step state: Stationary,Point state: Stationary
+24764786942,Step state: Migratory (fall),Point state: Migratory (fall)
+24764786943,Step state: Stationary,Point state: Stationary
+24764786944,Step state: Stationary,Point state: Stationary
+24764786945,Step state: Stationary,Point state: Stationary
+24764786946,Step state: Stationary,Point state: Stationary
+24764786947,Step state: Stationary,Point state: Stationary
+24764786948,Step state: Stationary,Point state: Stationary
+24764786949,Step state: Stationary,Point state: Stationary
+24779691302,Step state: Stationary,Point state: Stationary
+24779691303,Step state: Stationary,Point state: Stationary
+24779691304,Step state: Migratory (fall),Point state: Stationary
+24779691305,Step state: Migratory (fall),Point state: Stationary
+24779691306,Step state: Stationary,Point state: Stationary
+24779691307,Step state: Stationary,Point state: Stationary
+24779691308,Step state: Stationary,Point state: Stationary
+24779691309,Step state: Stationary,Point state: Stationary
+24779691310,Step state: Stationary,Point state: Stationary
+24779691311,Step state: Migratory (fall),Point state: Migratory (fall)
+24779691312,Step state: Stationary,Point state: Stationary
+24779691313,Step state: Stationary,Point state: Stationary
+24779691314,Step state: Stationary,Point state: Stationary
+24779691315,Step state: Stationary,Point state: Stationary
+24779691316,Step state: Stationary,Point state: Stationary
+24779691317,Step state: Migratory (fall),Point state: Migratory (fall)
+24779691318,Step state: Stationary,Point state: Stationary
+24779691319,Step state: Stationary,Point state: Stationary
+24779691320,Step state: Stationary,Point state: Stationary
+24779691321,Step state: Stationary,Point state: Stationary
+24779691322,Step state: Stationary,Point state: Stationary
+24779691323,Step state: Stationary,Point state: Stationary
+24779691324,Step state: Migratory (fall),Point state: Migratory (fall)
+24779691325,Step state: Stationary,Point state: Stationary
+24779691326,Step state: Stationary,Point state: Stationary
+24779691327,Step state: Stationary,Point state: Stationary
+24779691328,Step state: Stationary,Point state: Stationary
+24779691329,Step state: Stationary,Point state: Stationary
+24779691330,Step state: Migratory (fall),Point state: Migratory (fall)
+24793389813,Step state: Migratory (fall),Point state: Stationary
 24793389814,Step state: Stationary,Point state: Stationary
+24793389815,Step state: Stationary,Point state: Stationary
+24793389816,Step state: Migratory (fall),Point state: Stationary
+24793389817,Step state: Migratory (fall),Point state: Stationary
+24793389818,Step state: Migratory (fall),Point state: Stationary
+24793389819,Step state: Migratory (fall),Point state: Stationary
+24793389820,Step state: Migratory (fall),Point state: Migratory (fall)
+24793389821,Step state: Stationary,Point state: Stationary
+24793389822,Step state: Migratory (fall),Point state: Migratory (fall)
+24793389823,Step state: Migratory (fall),Point state: Migratory (fall)
+24793389824,Step state: Stationary,Point state: Stationary
+24793389825,Step state: Migratory (fall),Point state: Migratory (fall)
+24793389826,Step state: Stationary,Point state: Stationary
+24793389827,Step state: Stationary,Point state: Stationary
+24793389828,Step state: Stationary,Point state: Stationary
+24793389829,Step state: Stationary,Point state: Stationary
+24793389830,Step state: Migratory (fall),Point state: Migratory (fall)
+24793389831,Step state: Stationary,Point state: Stationary
+24793389832,Step state: Stationary,Point state: Stationary
+24793389833,Step state: Migratory (fall),Point state: Migratory (fall)
+24793389834,Step state: Stationary,Point state: Stationary
+24793389835,Step state: Stationary,Point state: Stationary
+24793389836,Step state: Stationary,Point state: Stationary
+24793389837,Step state: Stationary,Point state: Stationary
+24793389838,Step state: Stationary,Point state: Stationary
+24793389839,Step state: Stationary,Point state: Stationary
+24793389840,Step state: Migratory (fall),Point state: Migratory (fall)
+24793389841,Step state: Migratory (fall),Point state: Migratory (fall)
+24793389842,Step state: Stationary,Point state: Stationary
+24793389843,Step state: Stationary,Point state: Stationary
+24793389844,Step state: Stationary,Point state: Stationary
+24793389845,Step state: Stationary,Point state: Stationary
+24793389846,Step state: Stationary,Point state: Stationary
+24793389847,Step state: Stationary,Point state: Stationary
+24793389848,Step state: Stationary,Point state: Stationary
+24793389849,Step state: Stationary,Point state: Stationary
+24793389850,Step state: Stationary,Point state: Stationary
+24793389851,Step state: Migratory (fall),Point state: Migratory (fall)
+24793389852,Step state: Stationary,Point state: Stationary
+24793389853,Step state: Stationary,Point state: Stationary
+24793389854,Step state: Stationary,Point state: Stationary
+24793389855,Step state: Migratory (fall),Point state: Migratory (fall)
+24793389856,Step state: Stationary,Point state: Stationary
+24793389857,Step state: Stationary,Point state: Stationary
+24793389858,Step state: Stationary,Point state: Stationary
+24793389859,Step state: Stationary,Point state: Stationary
+24793389860,Step state: Stationary,Point state: Stationary
+24793389861,Step state: Stationary,Point state: Stationary
+24793389862,Step state: Stationary,Point state: Stationary
+24793389863,Step state: Stationary,Point state: Stationary
+24793389864,Step state: Stationary,Point state: Stationary
+24793389865,Step state: Migratory (fall),Point state: Migratory (fall)
+24793389866,Step state: Migratory (fall),Point state: Migratory (fall)
+24793389867,Step state: Stationary,Point state: Stationary
+24793389868,Step state: Stationary,Point state: Stationary
+24793389869,Step state: Stationary,Point state: Stationary
+24793389870,Step state: Stationary,Point state: Stationary
+24793389871,Step state: Stationary,Point state: Stationary
+24793389872,Step state: Stationary,Point state: Stationary
+24793389873,Step state: Stationary,Point state: Stationary
+24793389874,Step state: Stationary,Point state: Stationary
+24793389875,Step state: Stationary,Point state: Stationary
+24793389876,Step state: Stationary,Point state: Stationary
+24793389877,Step state: Stationary,Point state: Stationary
+24793389878,Step state: Stationary,Point state: Stationary
+24793389879,Step state: Stationary,Point state: Stationary
+24793389880,Step state: Stationary,Point state: Stationary
+24793389881,Step state: Stationary,Point state: Stationary
+24793389882,Step state: Stationary,Point state: Stationary
+24793389883,Step state: Stationary,Point state: Stationary
+24793389884,Step state: Stationary,Point state: Stationary
+24848598826,Step state: Stationary,Point state: Stationary
+24848598827,Step state: Stationary,Point state: Stationary
+24848598828,Step state: Stationary,Point state: Stationary
+24848598829,Step state: Stationary,Point state: Stationary
+24848598830,Step state: Stationary,Point state: Stationary
+24848598831,Step state: Stationary,Point state: Stationary
+24848598832,Step state: Migratory (fall),Point state: Migratory (fall)
+24848598833,Step state: Stationary,Point state: Stationary
+24848598834,Step state: Stationary,Point state: Stationary
+24848598835,Step state: Migratory (fall),Point state: Migratory (fall)
+24848598836,Step state: Stationary,Point state: Stationary
+24848598837,Step state: Migratory (fall),Point state: Migratory (fall)
+24848598838,Step state: Stationary,Point state: Stationary
+24848598839,Step state: Stationary,Point state: Stationary
+24848598840,Step state: Migratory (fall),Point state: Migratory (fall)
+24848598841,Step state: Migratory (fall),Point state: Migratory (fall)
+24848598842,Step state: Stationary,Point state: Stationary
+24848598843,Step state: Stationary,Point state: Stationary
+24848598844,Step state: Stationary,Point state: Stationary
+24848598845,Step state: Stationary,Point state: Stationary
+24848598846,Step state: Stationary,Point state: Stationary
+24848598847,Step state: Migratory (fall),Point state: Migratory (fall)
+24848598848,Step state: Migratory (fall),Point state: Migratory (fall)
+24848598849,Step state: Stationary,Point state: Stationary
+24848598850,Step state: Migratory (fall),Point state: Migratory (fall)
+24848598851,Step state: Stationary,Point state: Stationary
+24848598852,Step state: Stationary,Point state: Stationary
+24848598853,Step state: Stationary,Point state: Stationary
+24848598854,Step state: Stationary,Point state: Stationary
+24848598855,Step state: Stationary,Point state: Stationary
+24848598856,Step state: Migratory (fall),Point state: Migratory (fall)
+24848598857,Step state: Migratory (fall),Point state: Migratory (fall)
+24848598858,Step state: Stationary,Point state: Stationary
+24848598859,Step state: Stationary,Point state: Stationary
+24848598860,Step state: Stationary,Point state: Stationary
+24848598861,Step state: Stationary,Point state: Stationary
+24848598862,Step state: Stationary,Point state: Stationary
+24848598863,Step state: Migratory (fall),Point state: Migratory (fall)
+24848598864,Step state: Stationary,Point state: Stationary
+24848598865,Step state: Stationary,Point state: Stationary
+24848598866,Step state: Stationary,Point state: Stationary
+24848598867,Step state: Stationary,Point state: Stationary
+24848598868,Step state: Stationary,Point state: Stationary
+24848598869,Step state: Migratory (fall),Point state: Migratory (fall)
+24848598870,Step state: Stationary,Point state: Stationary
+24848598871,Step state: Stationary,Point state: Stationary
+24848598872,Step state: Stationary,Point state: Stationary
+24848598873,Step state: Stationary,Point state: Stationary
+24848598874,Step state: Stationary,Point state: Stationary
+24848598875,Step state: Stationary,Point state: Stationary
+24848598876,Step state: Stationary,Point state: Stationary
+24848598877,Step state: Stationary,Point state: Stationary
+24848598878,Step state: Stationary,Point state: Stationary
+24848598879,Step state: Stationary,Point state: Stationary
+24848598880,Step state: Stationary,Point state: Stationary
+24848598881,Step state: Stationary,Point state: Stationary
 24885888700,Step state: Stationary,Point state: Stationary
 24885888701,Step state: Stationary,Point state: Stationary
 24885888702,Step state: Stationary,Point state: Stationary
+24885888703,Step state: Stationary,Point state: Stationary
+24885888704,Step state: Stationary,Point state: Stationary
+24885888705,Step state: Stationary,Point state: Stationary
+24885888706,Step state: Stationary,Point state: Stationary
+24885888707,Step state: Stationary,Point state: Stationary
+24885888708,Step state: Stationary,Point state: Stationary
+24885888709,Step state: Stationary,Point state: Stationary
+24885888710,Step state: Stationary,Point state: Stationary
+24885888711,Step state: Stationary,Point state: Stationary
+24885888712,Step state: Stationary,Point state: Stationary
+25191243330,Step state: Stationary,Point state: Stationary
+25191243331,Step state: Stationary,Point state: Stationary
+25191243332,Step state: Stationary,Point state: Stationary
+25191243333,Step state: Stationary,Point state: Stationary
+25191243334,Step state: Stationary,Point state: Stationary
+25191243335,Step state: Stationary,Point state: Stationary
+25191243336,Step state: Stationary,Point state: Stationary
+25191243337,Step state: Stationary,Point state: Stationary
+25191243338,Step state: Stationary,Point state: Stationary
+25191243339,Step state: Stationary,Point state: Stationary
+25210801388,Step state: Migratory (fall),Point state: Migratory (fall)
+25210801389,Step state: Migratory (fall),Point state: Migratory (fall)
+25210801390,Step state: Migratory (fall),Point state: Migratory (fall)
+25210801391,Step state: Migratory (fall),Point state: Migratory (fall)
+25253921235,Step state: Stationary,Point state: Stationary
+25253921236,Step state: Stationary,Point state: Stationary
+25253921237,Step state: Stationary,Point state: Stationary
+25253921238,Step state: Stationary,Point state: Stationary
+25253921239,Step state: Stationary,Point state: Stationary
+25253921240,Step state: Stationary,Point state: Stationary
+25253921242,Step state: Stationary,Point state: Stationary
+25253921244,Step state: Stationary,Point state: Stationary
+25253921245,Step state: Stationary,Point state: Stationary
+25253921246,Step state: Stationary,Point state: Stationary
+25253921247,Step state: Stationary,Point state: Stationary
+25253921248,Step state: Stationary,Point state: Stationary
+25253921249,Step state: Stationary,Point state: Stationary
+25253921251,Step state: Stationary,Point state: Stationary
+25253921252,Step state: Stationary,Point state: Stationary
+25253921253,Step state: Stationary,Point state: Stationary
+25253921254,Step state: Stationary,Point state: Stationary
+25253921255,Step state: Stationary,Point state: Stationary
+25253921256,Step state: Stationary,Point state: Stationary
+25253921257,Step state: Stationary,Point state: Stationary
+25253921258,Step state: Stationary,Point state: Stationary
+25253921259,Step state: Stationary,Point state: Stationary
+25253921261,Step state: Stationary,Point state: Stationary
+25253921262,Step state: Stationary,Point state: Stationary
+25253921263,Step state: Stationary,Point state: Stationary
+25253921265,Step state: Stationary,Point state: Stationary
+25253921266,Step state: Stationary,Point state: Stationary
+25253921267,Step state: Stationary,Point state: Stationary
+25253921268,Step state: Stationary,Point state: Stationary
+25253921269,Step state: Stationary,Point state: Stationary
+25253921270,Step state: Stationary,Point state: Stationary
+25253921271,Step state: Stationary,Point state: Stationary
+25253921272,Step state: Stationary,Point state: Stationary
+25253921273,Step state: Stationary,Point state: Stationary
+25253921274,Step state: Stationary,Point state: Stationary
+25253921275,Step state: Stationary,Point state: Stationary
+25253921276,Step state: Stationary,Point state: Stationary
+25253921277,Step state: Stationary,Point state: Stationary
+25253921278,Step state: Stationary,Point state: Stationary
+25253921279,Step state: Stationary,Point state: Stationary
+25253921280,Step state: Stationary,Point state: Stationary
+25358411540,Step state: Stationary,Point state: Stationary
+25358411545,Step state: Stationary,Point state: Stationary
+25358411546,Step state: Stationary,Point state: Stationary
+25358411548,Step state: Stationary,Point state: Stationary
+25358411549,Step state: Stationary,Point state: Stationary
+25358411550,Step state: Stationary,Point state: Stationary
+25358411552,Step state: Stationary,Point state: Stationary
+25358411553,Step state: Stationary,Point state: Stationary
+25358411554,Step state: Stationary,Point state: Stationary
+25358411555,Step state: Stationary,Point state: Stationary
+25358411556,Step state: Stationary,Point state: Stationary
+25358411557,Step state: Stationary,Point state: Stationary
+25358411558,Step state: Stationary,Point state: Stationary
+25358411559,Step state: Stationary,Point state: Stationary
+25358411560,Step state: Stationary,Point state: Stationary
+25358411561,Step state: Migratory (spring),Point state: Stationary
+25358411562,Step state: Stationary,Point state: Stationary
+25358411563,Step state: Stationary,Point state: Stationary
+25358411564,Step state: Stationary,Point state: Stationary
+25358411565,Step state: Stationary,Point state: Stationary
+25358411566,Step state: Stationary,Point state: Stationary
+25358411567,Step state: Stationary,Point state: Stationary
+25358411568,Step state: Stationary,Point state: Stationary
+25358411569,Step state: Stationary,Point state: Stationary
+25358411570,Step state: Stationary,Point state: Stationary
+25358411571,Step state: Stationary,Point state: Stationary
+25386445300,Step state: Stationary,Point state: Stationary
+25386445301,Step state: Stationary,Point state: Stationary
+25386445302,Step state: Stationary,Point state: Stationary
+25386445303,Step state: Stationary,Point state: Stationary
+25386445304,Step state: Stationary,Point state: Stationary
+25386445305,Step state: Stationary,Point state: Stationary
+25386445307,Step state: Stationary,Point state: Stationary
+25386445308,Step state: Stationary,Point state: Stationary
+25386445309,Step state: Stationary,Point state: Stationary
+25386445312,Step state: Stationary,Point state: Stationary
+25386445315,Step state: Stationary,Point state: Stationary
+25386445316,Step state: Stationary,Point state: Stationary
+25386445320,Step state: Stationary,Point state: Stationary
+25386445322,Step state: Stationary,Point state: Stationary
+25386445325,Step state: Stationary,Point state: Stationary
+25386445326,Step state: Stationary,Point state: Stationary
+25434268860,Step state: Stationary,Point state: Stationary
+25434268861,Step state: Stationary,Point state: Stationary
+25434268862,Step state: Stationary,Point state: Stationary
+25434268863,Step state: Stationary,Point state: Stationary
+25434268864,Step state: Stationary,Point state: Stationary
+25434268865,Step state: Stationary,Point state: Stationary
+25434268866,Step state: Stationary,Point state: Stationary
+25434268867,Step state: Stationary,Point state: Stationary
+25434268868,Step state: Stationary,Point state: Stationary
+25434268869,Step state: Stationary,Point state: Stationary
+25434268873,Step state: Stationary,Point state: Stationary
+25434268874,Step state: Stationary,Point state: Stationary
+25434268876,Step state: Stationary,Point state: Stationary
+25434268877,Step state: Stationary,Point state: Stationary
+25434268878,Step state: Stationary,Point state: Stationary
+25434268879,Step state: Migratory (spring),Point state: Stationary
+25434268880,Step state: Stationary,Point state: Stationary
+25434268881,Step state: Stationary,Point state: Stationary
+25434268882,Step state: Stationary,Point state: Stationary
+25434268883,Step state: Migratory (spring),Point state: Stationary
+25434268884,Step state: Stationary,Point state: Stationary
+25434268885,Step state: Stationary,Point state: Stationary
+25434268886,Step state: Stationary,Point state: Stationary
+25434268887,Step state: Stationary,Point state: Stationary
+25434268891,Step state: Stationary,Point state: Stationary
+25434268892,Step state: Stationary,Point state: Stationary
+25434268893,Step state: Migratory (spring),Point state: Stationary
+25434268894,Step state: Stationary,Point state: Stationary
+25434268899,Step state: Stationary,Point state: Stationary
+25434268900,Step state: Stationary,Point state: Stationary
+25434268903,Step state: Stationary,Point state: Stationary
+25434268906,Step state: Stationary,Point state: Stationary
+25434268908,Step state: Stationary,Point state: Stationary
+25434268910,Step state: Stationary,Point state: Stationary
+25434268913,Step state: Stationary,Point state: Stationary
+25434268915,Step state: Stationary,Point state: Stationary
+25434268918,Step state: Stationary,Point state: Stationary
+25434268921,Step state: Stationary,Point state: Stationary
+25434268923,Step state: Stationary,Point state: Stationary
+25434268925,Step state: Stationary,Point state: Stationary
+25434268928,Step state: Stationary,Point state: Stationary
+25434268930,Step state: Stationary,Point state: Stationary
+25434268933,Step state: Stationary,Point state: Stationary
+25434268934,Step state: Stationary,Point state: Stationary
+25434268937,Step state: Stationary,Point state: Stationary
+25434268941,Step state: Stationary,Point state: Stationary
+25434268945,Step state: Stationary,Point state: Stationary
+25434268948,Step state: Stationary,Point state: Stationary
+25434268952,Step state: Stationary,Point state: Stationary
+25434268953,Step state: Migratory (spring),Point state: Stationary
+25434268954,Step state: Stationary,Point state: Stationary
+25434268955,Step state: Stationary,Point state: Stationary
+25434268956,Step state: Migratory (spring),Point state: Migratory (spring)
+25434268957,Step state: Migratory (spring),Point state: Migratory (spring)
+25434268958,Step state: Stationary,Point state: Stationary
+25434268959,Step state: Stationary,Point state: Stationary
+25434268960,Step state: Migratory (spring),Point state: Migratory (spring)
+25434268962,Step state: Stationary,Point state: Stationary
+25434268963,Step state: Migratory (spring),Point state: Migratory (spring)
+25501552310,Step state: Stationary,Point state: Stationary
+25501552313,Step state: Stationary,Point state: Stationary
+25501552315,Step state: Stationary,Point state: Stationary
+25501552316,Step state: Stationary,Point state: Stationary
+25649052111,Step state: Stationary,Point state: Stationary
+25649052112,Step state: Stationary,Point state: Stationary
+25649052114,Step state: Stationary,Point state: Stationary
+25649052115,Step state: Stationary,Point state: Stationary
+25649052116,Step state: Stationary,Point state: Stationary
+25649052117,Step state: Migratory (spring),Point state: Migratory (spring)
+25649052118,Step state: Stationary,Point state: Stationary
+25649052120,Step state: Migratory (spring),Point state: Migratory (spring)
+25649052121,Step state: Migratory (spring),Point state: Stationary
+25649052122,Step state: Migratory (spring),Point state: Migratory (spring)
+25649052123,Step state: Migratory (spring),Point state: Migratory (spring)
+25649052124,Step state: Stationary,Point state: Stationary
+25649052126,Step state: Stationary,Point state: Stationary
+25649052127,Step state: Stationary,Point state: Stationary
+25649052129,Step state: Migratory (spring),Point state: Migratory (spring)
+25649052130,Step state: Stationary,Point state: Stationary
+25649052131,Step state: Migratory (spring),Point state: Migratory (spring)
+25649052133,Step state: Stationary,Point state: Stationary
+25649052134,Step state: Migratory (spring),Point state: Migratory (spring)
+25649052135,Step state: Stationary,Point state: Stationary
+25649052136,Step state: Migratory (spring),Point state: Migratory (spring)
+25649052137,Step state: Migratory (spring),Point state: Migratory (spring)
+25649052138,Step state: Migratory (spring),Point state: Migratory (spring)
+25649052139,Step state: Stationary,Point state: Stationary
+25649052140,Step state: Migratory (spring),Point state: Migratory (spring)
+25649052141,Step state: Migratory (spring),Point state: Migratory (spring)
+25649052142,Step state: Stationary,Point state: Stationary
+25700295753,Step state: Migratory (spring),Point state: Migratory (spring)
+25700295755,Step state: Migratory (spring),Point state: Migratory (spring)
+25700295757,Step state: Stationary,Point state: Stationary
+25700295758,Step state: Migratory (spring),Point state: Migratory (spring)
+25700295759,Step state: Migratory (spring),Point state: Migratory (spring)
+25700295760,Step state: Migratory (spring),Point state: Stationary
+25700295763,Step state: Stationary,Point state: Stationary
+25700295764,Step state: Stationary,Point state: Stationary
+25700295765,Step state: Stationary,Point state: Stationary
+25700295766,Step state: Migratory (spring),Point state: Migratory (spring)
+25700295767,Step state: Stationary,Point state: Stationary
+25700295768,Step state: Migratory (spring),Point state: Migratory (spring)
+25700295771,Step state: Stationary,Point state: Stationary
+25700295772,Step state: Migratory (spring),Point state: Migratory (spring)
+25700295773,Step state: Stationary,Point state: Stationary
+25700295775,Step state: Migratory (spring),Point state: Migratory (spring)
+25700295776,Step state: Migratory (spring),Point state: Stationary
+25700295777,Step state: Migratory (spring),Point state: Migratory (spring)
+25700295778,Step state: Stationary,Point state: Stationary
+25700295779,Step state: Stationary,Point state: Stationary
+25700295782,Step state: Stationary,Point state: Stationary
+25700295783,Step state: Migratory (spring),Point state: Migratory (spring)
+25700295784,Step state: Stationary,Point state: Stationary
+25700295786,Step state: Migratory (spring),Point state: Migratory (spring)
+25700295787,Step state: Migratory (spring),Point state: Migratory (spring)
+25700295789,Step state: Migratory (spring),Point state: Migratory (spring)
+25700295790,Step state: Migratory (spring),Point state: Migratory (spring)
+25700295791,Step state: Migratory (spring),Point state: Migratory (spring)
+25882162667,Step state: Stationary,Point state: Stationary
+25882162668,Step state: Stationary,Point state: Stationary
+25882162669,Step state: Stationary,Point state: Stationary
+25882162670,Step state: Stationary,Point state: Stationary
+25882162671,Step state: Stationary,Point state: Stationary
+25882162672,Step state: Migratory (spring),Point state: Stationary
+25882162673,Step state: Stationary,Point state: Stationary
+25882162675,Step state: Migratory (spring),Point state: Migratory (spring)
+25882162676,Step state: Stationary,Point state: Stationary
+25882162678,Step state: Stationary,Point state: Stationary
+25882162679,Step state: Migratory (spring),Point state: Migratory (spring)
+25882162680,Step state: Migratory (spring),Point state: Migratory (spring)
+25882162681,Step state: Migratory (spring),Point state: Migratory (spring)
+25882162682,Step state: Stationary,Point state: Stationary
+25882162683,Step state: Migratory (spring),Point state: Migratory (spring)
+25882162684,Step state: Migratory (spring),Point state: Stationary
+25882162687,Step state: Migratory (spring),Point state: Migratory (spring)
+25882162688,Step state: Migratory (spring),Point state: Stationary
+25882162689,Step state: Migratory (spring),Point state: Migratory (spring)
+25882162690,Step state: Migratory (spring),Point state: Migratory (spring)
+25882162691,Step state: Migratory (spring),Point state: Migratory (spring)
+25882162695,Step state: Migratory (spring),Point state: Migratory (spring)
+25882162696,Step state: Migratory (spring),Point state: Migratory (spring)
+25882162697,Step state: Migratory (spring),Point state: Migratory (spring)
+25882162698,Step state: Migratory (spring),Point state: Migratory (spring)
+25882162699,Step state: Stationary,Point state: Stationary
+25882162700,Step state: Migratory (spring),Point state: Stationary
+25882162701,Step state: Migratory (spring),Point state: Migratory (spring)
+25882162705,Step state: Migratory (spring),Point state: Migratory (spring)
+25882162706,Step state: Migratory (spring),Point state: Migratory (spring)
+25882162707,Step state: Migratory (spring),Point state: Migratory (spring)
+25882162708,Step state: Stationary,Point state: Stationary
+25882162709,Step state: Migratory (spring),Point state: Migratory (spring)
+25882162712,Step state: Migratory (spring),Point state: Migratory (spring)
+25882162713,Step state: Migratory (spring),Point state: Migratory (spring)
+25882162714,Step state: Stationary,Point state: Stationary
+25882162715,Step state: Migratory (spring),Point state: Stationary
+25882162716,Step state: Migratory (spring),Point state: Migratory (spring)
+25882162717,Step state: Migratory (spring),Point state: Migratory (spring)
+25882162718,Step state: Migratory (spring),Point state: Migratory (spring)
+25930755452,Step state: Migratory (spring),Point state: Stationary
+25930755453,Step state: Migratory (spring),Point state: Migratory (spring)
+25930755454,Step state: Migratory (spring),Point state: Migratory (spring)
+25930755455,Step state: Migratory (spring),Point state: Migratory (spring)
+25930755456,Step state: Migratory (spring),Point state: Migratory (spring)
+25930755458,Step state: Migratory (spring),Point state: Migratory (spring)
+25930755459,Step state: Migratory (spring),Point state: Migratory (spring)
+25930755460,Step state: Stationary,Point state: Stationary
+25930755462,Step state: Migratory (spring),Point state: Migratory (spring)
+25930755463,Step state: Migratory (spring),Point state: Migratory (spring)
+25930755464,Step state: Stationary,Point state: Stationary
+25930755465,Step state: Migratory (spring),Point state: Migratory (spring)
+25930755467,Step state: Migratory (spring),Point state: Migratory (spring)
+25930755468,Step state: Migratory (spring),Point state: Migratory (spring)
+25930755469,Step state: Migratory (spring),Point state: Migratory (spring)
+25930755470,Step state: Stationary,Point state: Stationary
+25930755471,Step state: Migratory (spring),Point state: Migratory (spring)
+25930755472,Step state: Migratory (spring),Point state: Migratory (spring)
+25930755474,Step state: Migratory (spring),Point state: Migratory (spring)
+25930755475,Step state: Stationary,Point state: Stationary
+25942650600,Step state: Migratory (spring),Point state: Migratory (spring)
+25942650601,Step state: Migratory (spring),Point state: Migratory (spring)
+25942650602,Step state: Migratory (spring),Point state: Migratory (spring)
+25942650603,Step state: Migratory (spring),Point state: Migratory (spring)
+25942650604,Step state: Migratory (spring),Point state: Migratory (spring)
+25942650605,Step state: Migratory (spring),Point state: Migratory (spring)
+25942650606,Step state: Migratory (spring),Point state: Migratory (spring)
+25942650607,Step state: Migratory (spring),Point state: Migratory (spring)
+25942650608,Step state: Migratory (spring),Point state: Migratory (spring)
+25942650609,Step state: Migratory (spring),Point state: Migratory (spring)
+25942650610,Step state: Migratory (spring),Point state: Migratory (spring)
+25942650611,Step state: Migratory (spring),Point state: Migratory (spring)
+25942650612,Step state: Migratory (spring),Point state: Migratory (spring)
+25942650613,Step state: Migratory (spring),Point state: Migratory (spring)
+25942650614,Step state: Migratory (spring),Point state: Migratory (spring)
+25942650615,Step state: Migratory (spring),Point state: Migratory (spring)
+25989686376,Step state: Stationary,Point state: Stationary
+25989686377,Step state: Stationary,Point state: Stationary
+25989686378,Step state: Stationary,Point state: Stationary
+25989686379,Step state: Stationary,Point state: Stationary
+25989686380,Step state: Stationary,Point state: Stationary
+25989686382,Step state: Migratory (spring),Point state: Stationary
+25989686383,Step state: Stationary,Point state: Stationary
+25989686384,Step state: Stationary,Point state: Stationary
+25989686385,Step state: Stationary,Point state: Stationary
+25989686386,Step state: Stationary,Point state: Stationary
+25989686387,Step state: Migratory (spring),Point state: Migratory (spring)
+25989686388,Step state: Migratory (spring),Point state: Migratory (spring)
+25989686391,Step state: Migratory (spring),Point state: Migratory (spring)
+25989686394,Step state: Migratory (spring),Point state: Migratory (spring)
+25989686395,Step state: Migratory (spring),Point state: Migratory (spring)
+25989686396,Step state: Stationary,Point state: Stationary
+25989686399,Step state: Migratory (spring),Point state: Migratory (spring)
+25989686400,Step state: Migratory (spring),Point state: Migratory (spring)
+25989686401,Step state: Migratory (spring),Point state: Migratory (spring)
+25989686404,Step state: Migratory (spring),Point state: Migratory (spring)
+25989686408,Step state: Migratory (spring),Point state: Migratory (spring)
+25989686409,Step state: Migratory (spring),Point state: Migratory (spring)
+25989686410,Step state: Migratory (spring),Point state: Migratory (spring)
+25989686411,Step state: Stationary,Point state: Stationary
+25989686415,Step state: Migratory (spring),Point state: Migratory (spring)
+25989686416,Step state: Migratory (spring),Point state: Migratory (spring)
+25989686417,Step state: Migratory (spring),Point state: Migratory (spring)
+25989686418,Step state: Migratory (spring),Point state: Migratory (spring)
+25989686419,Step state: Stationary,Point state: Stationary
+25989686420,Step state: Migratory (spring),Point state: Migratory (spring)
+25989686421,Step state: Migratory (spring),Point state: Stationary
+25989686422,Step state: Migratory (spring),Point state: Migratory (spring)
+25989686425,Step state: Migratory (spring),Point state: Migratory (spring)
+25989686426,Step state: Migratory (spring),Point state: Migratory (spring)
+25989686427,Step state: Migratory (spring),Point state: Migratory (spring)
+25989686428,Step state: Migratory (spring),Point state: Migratory (spring)
+25989686431,Step state: Migratory (spring),Point state: Migratory (spring)
+26089801678,Step state: Migratory (spring),Point state: Migratory (spring)
+26089801679,Step state: Migratory (spring),Point state: Migratory (spring)
+26089801680,Step state: Migratory (spring),Point state: Migratory (spring)
+26089801681,Step state: Migratory (spring),Point state: Migratory (spring)
+26089801682,Step state: Migratory (spring),Point state: Migratory (spring)
+26089801683,Step state: Migratory (spring),Point state: Migratory (spring)
+26089801684,Step state: Migratory (spring),Point state: Migratory (spring)
+26089801685,Step state: Migratory (spring),Point state: Migratory (spring)
+26089801686,Step state: Migratory (spring),Point state: Migratory (spring)
+26089801687,Step state: Migratory (spring),Point state: Migratory (spring)
+26089801688,Step state: Migratory (spring),Point state: Migratory (spring)
+26089801689,Step state: Migratory (spring),Point state: Migratory (spring)
+26167829738,Step state: Stationary,Point state: Stationary
+26167829741,Step state: Stationary,Point state: Stationary
+26167829744,Step state: Migratory (spring),Point state: Migratory (spring)
+26167829745,Step state: Migratory (spring),Point state: Migratory (spring)
+26352675850,Step state: Migratory (spring),Point state: Migratory (spring)
+26352675851,Step state: Migratory (spring),Point state: Migratory (spring)
+26352675852,Step state: Migratory (spring),Point state: Migratory (spring)
+26352675853,Step state: Stationary,Point state: Stationary
+26352675854,Step state: Migratory (spring),Point state: Migratory (spring)
+26352675855,Step state: Migratory (spring),Point state: Migratory (spring)
+26352675856,Step state: Migratory (spring),Point state: Migratory (spring)
+26352675857,Step state: Migratory (spring),Point state: Migratory (spring)
+26352675858,Step state: Stationary,Point state: Stationary
+26352675859,Step state: Migratory (spring),Point state: Migratory (spring)
+26352675860,Step state: Migratory (spring),Point state: Migratory (spring)
+26352675861,Step state: Migratory (spring),Point state: Migratory (spring)
+26352675862,Step state: Migratory (spring),Point state: Migratory (spring)
+26352675863,Step state: Migratory (spring),Point state: Migratory (spring)
+26384270465,Step state: Stationary,Point state: Stationary
+26384270470,Step state: Migratory (spring),Point state: Migratory (spring)
+26384270471,Step state: Stationary,Point state: Stationary
+26384270473,Step state: Migratory (spring),Point state: Migratory (spring)
+26384270474,Step state: Migratory (spring),Point state: Migratory (spring)
+26384270475,Step state: Migratory (spring),Point state: Migratory (spring)
+26384270476,Step state: Migratory (spring),Point state: Migratory (spring)
+26417071487,Step state: Migratory (spring),Point state: Migratory (spring)
+26417071488,Step state: Stationary,Point state: Stationary
+26417071489,Step state: Migratory (spring),Point state: Stationary
+26463814770,Step state: Migratory (spring),Point state: Migratory (spring)
+26463814773,Step state: Migratory (spring),Point state: Migratory (spring)
+26463814774,Step state: Migratory (spring),Point state: Migratory (spring)
+26463814777,Step state: Migratory (spring),Point state: Migratory (spring)
+26463814779,Step state: Migratory (spring),Point state: Migratory (spring)
+26463814783,Step state: Migratory (spring),Point state: Migratory (spring)
+26463814784,Step state: Migratory (spring),Point state: Migratory (spring)
+26463814785,Step state: Migratory (spring),Point state: Migratory (spring)
+26463814786,Step state: Migratory (spring),Point state: Migratory (spring)
+26463814787,Step state: Migratory (spring),Point state: Migratory (spring)
+26463814788,Step state: Stationary,Point state: Stationary
+26489408408,Step state: Migratory (spring),Point state: Migratory (spring)
+26489408409,Step state: Migratory (spring),Point state: Migratory (spring)
+26489408410,Step state: Migratory (spring),Point state: Migratory (spring)
+26489408413,Step state: Migratory (spring),Point state: Migratory (spring)
+26489408414,Step state: Migratory (spring),Point state: Migratory (spring)
+26489408415,Step state: Migratory (spring),Point state: Migratory (spring)
+26489408417,Step state: Migratory (spring),Point state: Migratory (spring)
+26489408419,Step state: Migratory (spring),Point state: Migratory (spring)
+26489408420,Step state: Migratory (spring),Point state: Migratory (spring)
+26489408421,Step state: Stationary,Point state: Stationary
+26489408422,Step state: Migratory (spring),Point state: Migratory (spring)
+26489408423,Step state: Stationary,Point state: Stationary
+26533471749,Step state: Migratory (spring),Point state: Migratory (spring)
+26533471750,Step state: Migratory (spring),Point state: Migratory (spring)
+26533471751,Step state: Stationary,Point state: Stationary
+26533471752,Step state: Migratory (spring),Point state: Migratory (spring)
+26533471753,Step state: Stationary,Point state: Stationary
+26533471754,Step state: Migratory (spring),Point state: Migratory (spring)
+26533471755,Step state: Stationary,Point state: Stationary
+26533471756,Step state: Migratory (spring),Point state: Migratory (spring)
+26533471757,Step state: Stationary,Point state: Stationary
+26533471758,Step state: Migratory (spring),Point state: Migratory (spring)
+26533471759,Step state: Migratory (spring),Point state: Migratory (spring)
+26533471760,Step state: Stationary,Point state: Stationary
+26533471761,Step state: Stationary,Point state: Stationary
+26533471762,Step state: Migratory (spring),Point state: Migratory (spring)
+26533471763,Step state: Stationary,Point state: Stationary
+26533471764,Step state: Migratory (spring),Point state: Migratory (spring)
+26533471765,Step state: Migratory (spring),Point state: Migratory (spring)
+26533471766,Step state: Migratory (spring),Point state: Migratory (spring)
+26533471767,Step state: Stationary,Point state: Stationary
+26601063475,Step state: Migratory (spring),Point state: Migratory (spring)
+26601063477,Step state: Migratory (spring),Point state: Migratory (spring)
+26601063478,Step state: Stationary,Point state: Stationary
+26601063479,Step state: Migratory (spring),Point state: Migratory (spring)
+26601063480,Step state: Stationary,Point state: Stationary
+26601063483,Step state: Migratory (spring),Point state: Migratory (spring)
+26601063485,Step state: Stationary,Point state: Stationary
+26601063486,Step state: Stationary,Point state: Stationary
+26601063493,Step state: Migratory (spring),Point state: Migratory (spring)
+26601063494,Step state: Stationary,Point state: Stationary
+26602609924,Step state: Migratory (spring),Point state: Migratory (spring)
+26602609925,Step state: Stationary,Point state: Stationary
+26602609926,Step state: Migratory (spring),Point state: Migratory (spring)
+26602609927,Step state: Stationary,Point state: Stationary
+26602609928,Step state: Stationary,Point state: Stationary
+26602609929,Step state: Migratory (spring),Point state: Migratory (spring)
+26602609930,Step state: Stationary,Point state: Stationary
+26602609931,Step state: Migratory (spring),Point state: Migratory (spring)
+26602609945,Step state: Stationary,Point state: Stationary
+26662217255,Step state: Migratory (spring),Point state: Migratory (spring)
+26662217256,Step state: Migratory (spring),Point state: Migratory (spring)
+26662217257,Step state: Stationary,Point state: Stationary
+26662217259,Step state: Stationary,Point state: Stationary
+26662217264,Step state: Stationary,Point state: Stationary
+26662217265,Step state: Migratory (spring),Point state: Migratory (spring)
+26662217267,Step state: Stationary,Point state: Stationary
+26662217269,Step state: Stationary,Point state: Stationary
+26662217270,Step state: Migratory (spring),Point state: Migratory (spring)
+26662217271,Step state: Stationary,Point state: Stationary
+26662217273,Step state: Stationary,Point state: Stationary
+26662217274,Step state: Migratory (spring),Point state: Migratory (spring)
+26662217275,Step state: Stationary,Point state: Stationary
+26662217276,Step state: Migratory (spring),Point state: Migratory (spring)
+26662217277,Step state: Migratory (spring),Point state: Migratory (spring)
+26662217280,Step state: Stationary,Point state: Stationary
+26662217281,Step state: Stationary,Point state: Stationary
+26662217282,Step state: Migratory (spring),Point state: Migratory (spring)
+26662217283,Step state: Stationary,Point state: Stationary
+26662217284,Step state: Stationary,Point state: Stationary
+26662217285,Step state: Stationary,Point state: Stationary
+26662217286,Step state: Stationary,Point state: Stationary
+26662217287,Step state: Migratory (spring),Point state: Migratory (spring)
+26662217288,Step state: Stationary,Point state: Stationary
+26662217289,Step state: Migratory (spring),Point state: Migratory (spring)
+26696776110,Step state: Stationary,Point state: Stationary
+26696776111,Step state: Stationary,Point state: Stationary
+26696776118,Step state: Stationary,Point state: Stationary
+26696776123,Step state: Stationary,Point state: Stationary
+26696776124,Step state: Stationary,Point state: Stationary
+26696776125,Step state: Stationary,Point state: Stationary
+26696776129,Step state: Stationary,Point state: Stationary
+26696776130,Step state: Stationary,Point state: Stationary
+26696776131,Step state: Stationary,Point state: Stationary
+26696776132,Step state: Stationary,Point state: Stationary
+26696776133,Step state: Stationary,Point state: Stationary
+26696776143,Step state: Stationary,Point state: Stationary
+26696776146,Step state: Stationary,Point state: Stationary
+26696776148,Step state: Migratory (spring),Point state: Migratory (spring)
+26696776149,Step state: Stationary,Point state: Stationary
+26696776153,Step state: Migratory (spring),Point state: Migratory (spring)
+26696776154,Step state: Stationary,Point state: Stationary
+26725039668,Step state: Stationary,Point state: Stationary
+26725039670,Step state: Stationary,Point state: Stationary
+26725039671,Step state: Stationary,Point state: Stationary
+26725039672,Step state: Migratory (spring),Point state: Migratory (spring)
+26725039673,Step state: Stationary,Point state: Stationary
+26725039674,Step state: Stationary,Point state: Stationary
+26725039675,Step state: Stationary,Point state: Stationary
+26725039678,Step state: Stationary,Point state: Stationary
+26725039679,Step state: Stationary,Point state: Stationary
+26725039680,Step state: Stationary,Point state: Stationary
+26725039681,Step state: Stationary,Point state: Stationary
+26725039684,Step state: Stationary,Point state: Stationary
+26725039685,Step state: Stationary,Point state: Stationary
+26725039686,Step state: Migratory (spring),Point state: Migratory (spring)
+26725039687,Step state: Stationary,Point state: Stationary
+26725039688,Step state: Stationary,Point state: Stationary
+26725039693,Step state: Stationary,Point state: Stationary
+26725039694,Step state: Stationary,Point state: Stationary
+26725039695,Step state: Migratory (spring),Point state: Migratory (spring)
+26725039696,Step state: Stationary,Point state: Stationary
+26725039697,Step state: Stationary,Point state: Stationary
+26725039701,Step state: Migratory (spring),Point state: Migratory (spring)
+26725039702,Step state: Stationary,Point state: Stationary
+26782877210,Step state: Stationary,Point state: Stationary
+26782877211,Step state: Stationary,Point state: Stationary
+26782877212,Step state: Stationary,Point state: Stationary
+26782877213,Step state: Stationary,Point state: Stationary
+26782877214,Step state: Stationary,Point state: Stationary
+26782877215,Step state: Stationary,Point state: Stationary
+26782877216,Step state: Stationary,Point state: Stationary
+26782877218,Step state: Stationary,Point state: Stationary
+26782877219,Step state: Stationary,Point state: Stationary
+26782877221,Step state: Stationary,Point state: Stationary
+26782877222,Step state: Stationary,Point state: Stationary
+26782877225,Step state: Stationary,Point state: Stationary
+26782877227,Step state: Stationary,Point state: Stationary
+26782877229,Step state: Stationary,Point state: Stationary
+26972452407,Step state: Stationary,Point state: Stationary
+26972452414,Step state: Stationary,Point state: Stationary
+26972452416,Step state: Stationary,Point state: Stationary
+26972452418,Step state: Stationary,Point state: Stationary
+26972452419,Step state: Stationary,Point state: Stationary
+26972452420,Step state: Stationary,Point state: Stationary
+26972452422,Step state: Stationary,Point state: Stationary
+26972452423,Step state: Migratory (spring),Point state: Migratory (spring)
+26972452424,Step state: Stationary,Point state: Stationary
+26972452425,Step state: Stationary,Point state: Stationary
+26972452426,Step state: Migratory (spring),Point state: Migratory (spring)
+26972452427,Step state: Stationary,Point state: Stationary
+27152054658,Step state: Stationary,Point state: Stationary
+27152054659,Step state: Stationary,Point state: Stationary
+27159712329,Step state: Stationary,Point state: Stationary
+27159712330,Step state: Stationary,Point state: Stationary
+27159712331,Step state: Stationary,Point state: Stationary
+27159712332,Step state: Stationary,Point state: Stationary
+27163306526,Step state: Stationary,Point state: Stationary
+27163306527,Step state: Stationary,Point state: Stationary
+27166273055,Step state: Stationary,Point state: Stationary
+27166273056,Step state: Stationary,Point state: Stationary
+27166273057,Step state: Stationary,Point state: Stationary
+27166273058,Step state: Stationary,Point state: Stationary
+27166273059,Step state: Stationary,Point state: Stationary
+27166273060,Step state: Stationary,Point state: Stationary
+27166273061,Step state: Stationary,Point state: Stationary
+27166273062,Step state: Stationary,Point state: Stationary
+27166273063,Step state: Stationary,Point state: Stationary
+27166273064,Step state: Stationary,Point state: Stationary
+27166273065,Step state: Stationary,Point state: Stationary
+27166273066,Step state: Stationary,Point state: Stationary
+27166273067,Step state: Stationary,Point state: Stationary
+27166273068,Step state: Stationary,Point state: Stationary
+27166273070,Step state: Migratory (spring),Point state: Migratory (spring)
+27166273071,Step state: Stationary,Point state: Stationary
+27166273073,Step state: Stationary,Point state: Stationary
+27166273074,Step state: Migratory (spring),Point state: Migratory (spring)
+27166273075,Step state: Stationary,Point state: Stationary
+27166273076,Step state: Stationary,Point state: Stationary
+27166273077,Step state: Stationary,Point state: Stationary
+27166273080,Step state: Stationary,Point state: Stationary
+27166273081,Step state: Stationary,Point state: Stationary
+27166273082,Step state: Migratory (spring),Point state: Migratory (spring)
+27166273083,Step state: Stationary,Point state: Stationary
+27166273086,Step state: Migratory (spring),Point state: Migratory (spring)
+27166273087,Step state: Stationary,Point state: Stationary
+27166273089,Step state: Stationary,Point state: Stationary
+27166273090,Step state: Stationary,Point state: Stationary
+27166273092,Step state: Migratory (spring),Point state: Migratory (spring)
+27166273093,Step state: Stationary,Point state: Stationary
+27166273096,Step state: Stationary,Point state: Stationary
+27166273097,Step state: Migratory (spring),Point state: Migratory (spring)
+27166273098,Step state: Stationary,Point state: Stationary
+27166273099,Step state: Stationary,Point state: Stationary
+27166273100,Step state: Stationary,Point state: Stationary
+27166273101,Step state: Stationary,Point state: Stationary
+27166273104,Step state: Stationary,Point state: Stationary
+27166273105,Step state: Stationary,Point state: Stationary
+27166273109,Step state: Stationary,Point state: Stationary
+27166273110,Step state: Stationary,Point state: Stationary
+27166273111,Step state: Stationary,Point state: Stationary
+27166273112,Step state: Stationary,Point state: Stationary
+27166273113,Step state: Stationary,Point state: Stationary
+27166273119,Step state: Stationary,Point state: Stationary
+27166273121,Step state: Stationary,Point state: Stationary
+27166273122,Step state: Stationary,Point state: Stationary
+27166273123,Step state: Stationary,Point state: Stationary
+27166273124,Step state: Stationary,Point state: Stationary
+27166810920,Step state: Stationary,Point state: Stationary
+27166810921,Step state: Stationary,Point state: Stationary
+27170643561,Step state: Stationary,Point state: Stationary
+27170643562,Step state: Stationary,Point state: Stationary
+27188144030,Step state: Stationary,Point state: Stationary
+27188144031,Step state: Stationary,Point state: Stationary
+27188748915,Step state: Stationary,Point state: Stationary
+27188748917,Step state: Stationary,Point state: Stationary
+27188748919,Step state: Stationary,Point state: Stationary
+27188748923,Step state: Stationary,Point state: Stationary
+27188748925,Step state: Migratory (spring),Point state: Migratory (spring)
+27188748926,Step state: Stationary,Point state: Stationary
+27188748930,Step state: Stationary,Point state: Stationary
+27188748931,Step state: Migratory (spring),Point state: Migratory (spring)
+27212764990,Step state: Stationary,Point state: Stationary
+27212764991,Step state: Stationary,Point state: Stationary
+27219985206,Step state: Stationary,Point state: Stationary
+27219985207,Step state: Stationary,Point state: Stationary
+27219985208,Step state: Stationary,Point state: Stationary
+27219985209,Step state: Stationary,Point state: Stationary
+27219985210,Step state: Stationary,Point state: Stationary
+27219985211,Step state: Stationary,Point state: Stationary
+27219985212,Step state: Stationary,Point state: Stationary
+27219985213,Step state: Stationary,Point state: Stationary
+27219985214,Step state: Stationary,Point state: Stationary
+27219985215,Step state: Stationary,Point state: Stationary
+27219985217,Step state: Stationary,Point state: Stationary
+27219985218,Step state: Stationary,Point state: Stationary
+27219985220,Step state: Stationary,Point state: Stationary
+27219985221,Step state: Stationary,Point state: Stationary
+27219985222,Step state: Stationary,Point state: Stationary
+27219985223,Step state: Stationary,Point state: Stationary
+27219985224,Step state: Stationary,Point state: Stationary
+27219985225,Step state: Stationary,Point state: Stationary
+27219985226,Step state: Stationary,Point state: Stationary
+27219985227,Step state: Stationary,Point state: Stationary
+27219985228,Step state: Stationary,Point state: Stationary
+27219985229,Step state: Stationary,Point state: Stationary
+27219985231,Step state: Stationary,Point state: Stationary
+27219985232,Step state: Stationary,Point state: Stationary
+27219985233,Step state: Stationary,Point state: Stationary
+27219985234,Step state: Stationary,Point state: Stationary
+27219985235,Step state: Migratory (spring),Point state: Migratory (spring)
+27219985236,Step state: Stationary,Point state: Stationary
+27219985237,Step state: Stationary,Point state: Stationary
+27219985238,Step state: Stationary,Point state: Stationary
+27219985239,Step state: Stationary,Point state: Stationary
+27219985241,Step state: Stationary,Point state: Stationary
+27219985242,Step state: Stationary,Point state: Stationary
+27219985243,Step state: Stationary,Point state: Stationary
+27219985244,Step state: Migratory (spring),Point state: Migratory (spring)
+27219985245,Step state: Stationary,Point state: Stationary
+27219985246,Step state: Stationary,Point state: Stationary
+27219985248,Step state: Stationary,Point state: Stationary
+27299055431,Step state: Stationary,Point state: Stationary
+27299055432,Step state: Stationary,Point state: Stationary
+27299055433,Step state: Stationary,Point state: Stationary
+27299055434,Step state: Stationary,Point state: Stationary
+27299055435,Step state: Stationary,Point state: Stationary
+27299055436,Step state: Stationary,Point state: Stationary
+27299055437,Step state: Stationary,Point state: Stationary
+27299055438,Step state: Stationary,Point state: Stationary
+27299055439,Step state: Stationary,Point state: Stationary
+27299055440,Step state: Migratory (spring),Point state: Migratory (spring)
+27299055441,Step state: Stationary,Point state: Stationary
+27299055442,Step state: Stationary,Point state: Stationary
+27299055443,Step state: Stationary,Point state: Stationary
+27299055444,Step state: Migratory (spring),Point state: Migratory (spring)
+27299055445,Step state: Stationary,Point state: Stationary
+27299055446,Step state: Stationary,Point state: Stationary
+27299055447,Step state: Stationary,Point state: Stationary
+27299055448,Step state: Stationary,Point state: Stationary
+27299055449,Step state: Migratory (spring),Point state: Migratory (spring)
+27299055450,Step state: Stationary,Point state: Stationary
+27299055451,Step state: Stationary,Point state: Stationary
+27299055452,Step state: Migratory (spring),Point state: Migratory (spring)
+27299055453,Step state: Stationary,Point state: Stationary
+27299055454,Step state: Stationary,Point state: Stationary
+27299055455,Step state: Stationary,Point state: Stationary
+27299055456,Step state: Migratory (spring),Point state: Migratory (spring)
+27299055457,Step state: Stationary,Point state: Stationary
+27299055458,Step state: Stationary,Point state: Stationary
+27299055459,Step state: Stationary,Point state: Stationary
+27299055460,Step state: Stationary,Point state: Stationary
+27299055461,Step state: Stationary,Point state: Stationary
+27299055488,Step state: Stationary,Point state: Stationary
+27299055489,Step state: Stationary,Point state: Stationary
+27299055512,Step state: Stationary,Point state: Stationary
+27299055513,Step state: Stationary,Point state: Stationary
+27299055514,Step state: Stationary,Point state: Stationary
+27299055515,Step state: Stationary,Point state: Stationary
+27299055516,Step state: Stationary,Point state: Stationary
+27299055517,Step state: Stationary,Point state: Stationary
+27318526826,Step state: Stationary,Point state: Stationary
+27318526827,Step state: Migratory (spring),Point state: Migratory (spring)
+27318526830,Step state: Stationary,Point state: Stationary
+27318526831,Step state: Migratory (spring),Point state: Migratory (spring)
+27318526832,Step state: Stationary,Point state: Stationary
+27318526833,Step state: Migratory (spring),Point state: Migratory (spring)
+27318526834,Step state: Stationary,Point state: Stationary
+27318526835,Step state: Stationary,Point state: Stationary
+27318526837,Step state: Stationary,Point state: Stationary
+27318526838,Step state: Stationary,Point state: Stationary
+27318526839,Step state: Stationary,Point state: Stationary
+27318526841,Step state: Stationary,Point state: Stationary
+27318526842,Step state: Stationary,Point state: Stationary
+27318526843,Step state: Stationary,Point state: Stationary
+27318526844,Step state: Stationary,Point state: Stationary
+27318526846,Step state: Stationary,Point state: Stationary
+27318526847,Step state: Migratory (spring),Point state: Migratory (spring)
+27318526848,Step state: Stationary,Point state: Stationary
+27318526850,Step state: Stationary,Point state: Stationary
+27318526852,Step state: Migratory (spring),Point state: Migratory (spring)
+27318526853,Step state: Stationary,Point state: Stationary
+27318526854,Step state: Stationary,Point state: Stationary
+27318526855,Step state: Stationary,Point state: Stationary
+27318526856,Step state: Stationary,Point state: Stationary
+27318526857,Step state: Stationary,Point state: Stationary
+27318526858,Step state: Stationary,Point state: Stationary
+27318526860,Step state: Stationary,Point state: Stationary
+27318526861,Step state: Stationary,Point state: Stationary
+27318526862,Step state: Stationary,Point state: Stationary
+27318526863,Step state: Stationary,Point state: Stationary
+27318526864,Step state: Stationary,Point state: Stationary
+27318526865,Step state: Stationary,Point state: Stationary
+27318526867,Step state: Stationary,Point state: Stationary
+27318526868,Step state: Stationary,Point state: Stationary
+27318526869,Step state: Stationary,Point state: Stationary
+27318526871,Step state: Stationary,Point state: Stationary
+27318526872,Step state: Migratory (spring),Point state: Migratory (spring)
+27318526873,Step state: Stationary,Point state: Stationary
+27318526874,Step state: Stationary,Point state: Stationary
+27318526876,Step state: Stationary,Point state: Stationary
+27318526877,Step state: Stationary,Point state: Stationary
+27318526878,Step state: Stationary,Point state: Stationary
+27318526880,Step state: Stationary,Point state: Stationary
+27318526881,Step state: Stationary,Point state: Stationary
+27318526882,Step state: Stationary,Point state: Stationary
+27318526884,Step state: Stationary,Point state: Stationary
+27318526885,Step state: Stationary,Point state: Stationary
+27326545642,Step state: Stationary,Point state: Stationary
+27332951905,Step state: Stationary,Point state: Stationary
+27332951906,Step state: Stationary,Point state: Stationary
+27507217584,Step state: Stationary,Point state: Stationary
+27507217586,Step state: Stationary,Point state: Stationary
+27507217587,Step state: Stationary,Point state: Stationary
+27507217588,Step state: Stationary,Point state: Stationary
+27507217589,Step state: Stationary,Point state: Stationary
+27507217590,Step state: Stationary,Point state: Stationary
+27507217591,Step state: Stationary,Point state: Stationary
+27507217592,Step state: Stationary,Point state: Stationary
+27507217593,Step state: Stationary,Point state: Stationary
+27507217595,Step state: Stationary,Point state: Stationary
+27507217596,Step state: Stationary,Point state: Stationary
+27507217597,Step state: Stationary,Point state: Stationary
+27507217598,Step state: Stationary,Point state: Stationary
+27507217600,Step state: Stationary,Point state: Stationary
+27507217601,Step state: Stationary,Point state: Stationary
+27507217602,Step state: Stationary,Point state: Stationary
+27507217603,Step state: Stationary,Point state: Stationary
+27507217604,Step state: Stationary,Point state: Stationary
+27507217605,Step state: Stationary,Point state: Stationary
+27507217606,Step state: Stationary,Point state: Stationary
+27507217607,Step state: Stationary,Point state: Stationary
+27507217608,Step state: Stationary,Point state: Stationary
+27507217609,Step state: Stationary,Point state: Stationary
+27507217610,Step state: Stationary,Point state: Stationary
+27507217611,Step state: Stationary,Point state: Stationary
+27507217612,Step state: Stationary,Point state: Stationary
+27507217613,Step state: Stationary,Point state: Stationary
+27507217614,Step state: Stationary,Point state: Stationary
+27507217615,Step state: Stationary,Point state: Stationary
+27507217616,Step state: Stationary,Point state: Stationary
+27507217617,Step state: Stationary,Point state: Stationary
+27507217618,Step state: Stationary,Point state: Stationary
+27507217619,Step state: Stationary,Point state: Stationary
+27507217620,Step state: Stationary,Point state: Stationary
+27507217621,Step state: Stationary,Point state: Stationary
+27507217622,Step state: Stationary,Point state: Stationary
+27507217623,Step state: Stationary,Point state: Stationary
+27507217624,Step state: Stationary,Point state: Stationary
+27507217625,Step state: Stationary,Point state: Stationary
+27507217626,Step state: Stationary,Point state: Stationary
+27507217627,Step state: Stationary,Point state: Stationary
+27507217628,Step state: Stationary,Point state: Stationary
+27507217629,Step state: Stationary,Point state: Stationary
+27507217630,Step state: Stationary,Point state: Stationary
+27507217631,Step state: Stationary,Point state: Stationary
+27507217632,Step state: Stationary,Point state: Stationary
+27507217633,Step state: Stationary,Point state: Stationary
+27507217634,Step state: Stationary,Point state: Stationary
+27507217635,Step state: Stationary,Point state: Stationary
+27507217636,Step state: Stationary,Point state: Stationary
+27507217637,Step state: Stationary,Point state: Stationary
+27507217638,Step state: Stationary,Point state: Stationary
+27507217639,Step state: Stationary,Point state: Stationary
+27507217640,Step state: Stationary,Point state: Stationary
+27507217641,Step state: Stationary,Point state: Stationary
+27507217642,Step state: Stationary,Point state: Stationary
+27507217643,Step state: Stationary,Point state: Stationary
+27507217644,Step state: Stationary,Point state: Stationary
+27507217645,Step state: Stationary,Point state: Stationary
+27507217646,Step state: Stationary,Point state: Stationary
+27507217647,Step state: Stationary,Point state: Stationary
+27507217648,Step state: Stationary,Point state: Stationary
+27507217649,Step state: Stationary,Point state: Stationary
+27507217650,Step state: Stationary,Point state: Stationary
+27507217651,Step state: Stationary,Point state: Stationary
+27507217652,Step state: Stationary,Point state: Stationary
+27507217653,Step state: Stationary,Point state: Stationary
+27507217654,Step state: Stationary,Point state: Stationary
+27507217655,Step state: Stationary,Point state: Stationary
+27507217656,Step state: Stationary,Point state: Stationary
+27638070596,Step state: Stationary,Point state: Stationary
+27638070597,Step state: Stationary,Point state: Stationary
+28072055583,Step state: Stationary,Point state: Stationary
+28072055584,Step state: Stationary,Point state: Stationary
+28072055585,Step state: Stationary,Point state: Stationary
+28072055586,Step state: Stationary,Point state: Stationary
+28072055587,Step state: Stationary,Point state: Stationary
+28105034863,Step state: Stationary,Point state: Stationary
+28105034864,Step state: Stationary,Point state: Stationary
+28105034865,Step state: Stationary,Point state: Stationary
+28105034866,Step state: Stationary,Point state: Stationary
+28105034867,Step state: Stationary,Point state: Stationary
+28105034868,Step state: Stationary,Point state: Stationary
+28105034869,Step state: Stationary,Point state: Stationary
+28105034870,Step state: Stationary,Point state: Stationary
+28105034873,Step state: Stationary,Point state: Stationary
+28105034874,Step state: Stationary,Point state: Stationary
+28105034875,Step state: Stationary,Point state: Stationary
+28105034876,Step state: Stationary,Point state: Stationary
+28105034877,Step state: Stationary,Point state: Stationary
+28105034878,Step state: Stationary,Point state: Stationary
+28105034879,Step state: Stationary,Point state: Stationary
+28105034880,Step state: Stationary,Point state: Stationary
+28105034881,Step state: Stationary,Point state: Stationary
+28105034882,Step state: Stationary,Point state: Stationary
+28105034884,Step state: Stationary,Point state: Stationary
+28105034885,Step state: Stationary,Point state: Stationary
+28105034886,Step state: Stationary,Point state: Stationary
+28105034889,Step state: Stationary,Point state: Stationary
+28105034891,Step state: Stationary,Point state: Stationary
+28105034892,Step state: Stationary,Point state: Stationary
+28105034893,Step state: Stationary,Point state: Stationary
+28105034894,Step state: Stationary,Point state: Stationary
+28105034895,Step state: Stationary,Point state: Stationary
+28105034896,Step state: Stationary,Point state: Stationary
+28105034898,Step state: Stationary,Point state: Stationary
+28105034899,Step state: Stationary,Point state: Stationary
+28105034900,Step state: Stationary,Point state: Stationary
+28105034901,Step state: Stationary,Point state: Stationary
+28105034902,Step state: Stationary,Point state: Stationary
+28105034903,Step state: Stationary,Point state: Stationary
+28105034904,Step state: Stationary,Point state: Stationary
+28105034906,Step state: Stationary,Point state: Stationary
+28105034907,Step state: Stationary,Point state: Stationary
+28105034908,Step state: Stationary,Point state: Stationary
+28105034909,Step state: Stationary,Point state: Stationary
+28105034910,Step state: Stationary,Point state: Stationary
+28105034911,Step state: Stationary,Point state: Stationary
+28105034912,Step state: Stationary,Point state: Stationary
+28105034913,Step state: Stationary,Point state: Stationary
+28105034914,Step state: Stationary,Point state: Stationary
+28105034915,Step state: Stationary,Point state: Stationary
+28105034916,Step state: Stationary,Point state: Stationary
+28105034917,Step state: Stationary,Point state: Stationary
+28105034918,Step state: Stationary,Point state: Stationary
+28105034919,Step state: Stationary,Point state: Stationary
+28105034920,Step state: Stationary,Point state: Stationary
+28105034922,Step state: Stationary,Point state: Stationary
+28105034924,Step state: Stationary,Point state: Stationary
+28105034925,Step state: Stationary,Point state: Stationary
+28105034926,Step state: Stationary,Point state: Stationary
+28105034927,Step state: Stationary,Point state: Stationary
+28105034928,Step state: Stationary,Point state: Stationary
+28105034929,Step state: Stationary,Point state: Stationary
+28105034930,Step state: Stationary,Point state: Stationary
+28105034931,Step state: Stationary,Point state: Stationary
+28105034932,Step state: Stationary,Point state: Stationary
+28105034933,Step state: Stationary,Point state: Stationary
+28105034934,Step state: Stationary,Point state: Stationary
+28105034935,Step state: Stationary,Point state: Stationary
+28105034936,Step state: Stationary,Point state: Stationary
+28105034937,Step state: Stationary,Point state: Stationary
+28105034938,Step state: Stationary,Point state: Stationary
+28105034939,Step state: Stationary,Point state: Stationary
+28105034940,Step state: Stationary,Point state: Stationary
+28105034941,Step state: Stationary,Point state: Stationary
+28105034942,Step state: Stationary,Point state: Stationary
+28105034943,Step state: Stationary,Point state: Stationary
+28105034944,Step state: Stationary,Point state: Stationary
+28105034945,Step state: Stationary,Point state: Stationary
+28105034946,Step state: Stationary,Point state: Stationary
+28105034947,Step state: Stationary,Point state: Stationary
+28105034948,Step state: Stationary,Point state: Stationary
+28105034950,Step state: Stationary,Point state: Stationary
+28105034951,Step state: Stationary,Point state: Stationary
+28105034952,Step state: Stationary,Point state: Stationary
+28105034953,Step state: Stationary,Point state: Stationary
+28105034954,Step state: Stationary,Point state: Stationary
+28105034955,Step state: Stationary,Point state: Stationary
+28105034956,Step state: Stationary,Point state: Stationary
+28105034957,Step state: Stationary,Point state: Stationary
+28105034958,Step state: Stationary,Point state: Stationary
+28105034959,Step state: Stationary,Point state: Stationary
+28105034960,Step state: Stationary,Point state: Stationary
+28105034961,Step state: Stationary,Point state: Stationary
+28105034962,Step state: Stationary,Point state: Stationary
+28105034963,Step state: Stationary,Point state: Stationary
+28105034964,Step state: Stationary,Point state: Stationary
+28105034965,Step state: Stationary,Point state: Stationary
+28105034966,Step state: Stationary,Point state: Stationary
+28105034967,Step state: Stationary,Point state: Stationary
+28105034969,Step state: Stationary,Point state: Stationary
+28105034970,Step state: Stationary,Point state: Stationary
+28105034971,Step state: Stationary,Point state: Stationary
+28105034972,Step state: Stationary,Point state: Stationary
+28105034973,Step state: Stationary,Point state: Stationary
+28105034974,Step state: Stationary,Point state: Stationary
+28105034975,Step state: Stationary,Point state: Stationary
+28105034976,Step state: Stationary,Point state: Stationary
+28105034977,Step state: Stationary,Point state: Stationary
+28105034978,Step state: Stationary,Point state: Stationary
+28105034979,Step state: Stationary,Point state: Stationary
+28105034980,Step state: Stationary,Point state: Stationary
+28105034982,Step state: Stationary,Point state: Stationary
+28105034983,Step state: Stationary,Point state: Stationary
+28105034984,Step state: Stationary,Point state: Stationary
+28105034985,Step state: Stationary,Point state: Stationary
+28105034986,Step state: Stationary,Point state: Stationary
+28105034987,Step state: Stationary,Point state: Stationary
+28105034989,Step state: Stationary,Point state: Stationary
+28105034990,Step state: Stationary,Point state: Stationary
+28105034991,Step state: Stationary,Point state: Stationary
+28105034993,Step state: Stationary,Point state: Stationary
+28105034995,Step state: Stationary,Point state: Stationary
+28105034996,Step state: Stationary,Point state: Stationary
+28105034997,Step state: Stationary,Point state: Stationary
+28105034998,Step state: Stationary,Point state: Stationary
+28105034999,Step state: Stationary,Point state: Stationary
+28105035000,Step state: Stationary,Point state: Stationary
+28105035001,Step state: Stationary,Point state: Stationary
+28105035002,Step state: Stationary,Point state: Stationary
+28105035003,Step state: Stationary,Point state: Stationary
+28105035004,Step state: Stationary,Point state: Stationary
+28105035005,Step state: Stationary,Point state: Stationary
+28105035006,Step state: Stationary,Point state: Stationary
+28105035007,Step state: Stationary,Point state: Stationary
+28105035008,Step state: Stationary,Point state: Stationary
+28105035009,Step state: Stationary,Point state: Stationary
+28105035010,Step state: Stationary,Point state: Stationary
+28105035011,Step state: Stationary,Point state: Stationary
+28105035012,Step state: Stationary,Point state: Stationary
+28105035013,Step state: Stationary,Point state: Stationary
+28105035014,Step state: Stationary,Point state: Stationary
+28105035016,Step state: Stationary,Point state: Stationary
+28105035017,Step state: Stationary,Point state: Stationary
+28105035018,Step state: Stationary,Point state: Stationary
+28105035020,Step state: Stationary,Point state: Stationary
+28105035021,Step state: Stationary,Point state: Stationary
+28105035023,Step state: Stationary,Point state: Stationary
+28105035024,Step state: Stationary,Point state: Stationary
+28105035025,Step state: Stationary,Point state: Stationary
+28105035026,Step state: Stationary,Point state: Stationary
+28105035027,Step state: Stationary,Point state: Stationary
+28128767586,Step state: Stationary,Point state: Stationary
+28128767587,Step state: Stationary,Point state: Stationary
+28713532799,Step state: Stationary,Point state: Stationary
+28713532800,Step state: Stationary,Point state: Stationary
+28713532801,Step state: Stationary,Point state: Stationary
+28713532802,Step state: Stationary,Point state: Stationary
+28738981485,Step state: Stationary,Point state: Stationary
+28738981486,Step state: Stationary,Point state: Stationary
+28738981487,Step state: Stationary,Point state: Stationary
+28738981488,Step state: Stationary,Point state: Stationary
+28738981489,Step state: Stationary,Point state: Stationary
+28738981490,Step state: Stationary,Point state: Stationary
+28738981491,Step state: Stationary,Point state: Stationary
+28738981493,Step state: Stationary,Point state: Stationary
+28738981494,Step state: Stationary,Point state: Stationary
+28738981495,Step state: Stationary,Point state: Stationary
+28738981496,Step state: Stationary,Point state: Stationary
+28738981497,Step state: Stationary,Point state: Stationary
+28738981499,Step state: Stationary,Point state: Stationary
+28738981500,Step state: Stationary,Point state: Stationary
+28738981501,Step state: Stationary,Point state: Stationary
+28738981502,Step state: Stationary,Point state: Stationary
+28738981503,Step state: Stationary,Point state: Stationary
+28738981504,Step state: Stationary,Point state: Stationary
+28738981505,Step state: Stationary,Point state: Stationary
+28738981506,Step state: Stationary,Point state: Stationary
+28738981507,Step state: Stationary,Point state: Stationary
+28738981508,Step state: Stationary,Point state: Stationary
+28738981509,Step state: Stationary,Point state: Stationary
+28738981510,Step state: Stationary,Point state: Stationary
+28738981512,Step state: Stationary,Point state: Stationary
+28738981513,Step state: Stationary,Point state: Stationary
+28738981514,Step state: Stationary,Point state: Stationary
+28738981515,Step state: Stationary,Point state: Stationary
+28738981516,Step state: Stationary,Point state: Stationary
+28738981517,Step state: Stationary,Point state: Stationary
+28738981518,Step state: Stationary,Point state: Stationary
+28738981519,Step state: Stationary,Point state: Stationary
+28738981520,Step state: Stationary,Point state: Stationary
+28738981522,Step state: Stationary,Point state: Stationary
+28738981523,Step state: Stationary,Point state: Stationary
+28738981524,Step state: Stationary,Point state: Stationary
+28738981526,Step state: Stationary,Point state: Stationary
+28738981527,Step state: Stationary,Point state: Stationary
+28738981528,Step state: Stationary,Point state: Stationary
+28738981529,Step state: Stationary,Point state: Stationary
+28738981530,Step state: Stationary,Point state: Stationary
+28738981531,Step state: Stationary,Point state: Stationary
+28738981532,Step state: Stationary,Point state: Stationary
+28738981533,Step state: Stationary,Point state: Stationary
+28738981534,Step state: Stationary,Point state: Stationary
+28738981535,Step state: Stationary,Point state: Stationary
+28738981536,Step state: Stationary,Point state: Stationary
+28738981538,Step state: Stationary,Point state: Stationary
+28738981539,Step state: Stationary,Point state: Stationary
+28738981540,Step state: Stationary,Point state: Stationary
+28738981542,Step state: Stationary,Point state: Stationary
+28738981543,Step state: Stationary,Point state: Stationary
+28738981544,Step state: Stationary,Point state: Stationary
+28738981545,Step state: Stationary,Point state: Stationary
+28738981546,Step state: Stationary,Point state: Stationary
+28738981547,Step state: Stationary,Point state: Stationary
+28738981548,Step state: Stationary,Point state: Stationary
+28738981549,Step state: Stationary,Point state: Stationary
+28738981550,Step state: Stationary,Point state: Stationary
+28738981551,Step state: Stationary,Point state: Stationary
+28738981552,Step state: Stationary,Point state: Stationary
+28738981553,Step state: Stationary,Point state: Stationary
+28738981554,Step state: Stationary,Point state: Stationary
+28738981555,Step state: Stationary,Point state: Stationary
+28738981556,Step state: Stationary,Point state: Stationary
+28738981557,Step state: Stationary,Point state: Stationary
+28738981558,Step state: Stationary,Point state: Stationary
+28738981559,Step state: Stationary,Point state: Stationary
+28738981561,Step state: Stationary,Point state: Stationary
+28738981562,Step state: Stationary,Point state: Stationary
+28738981563,Step state: Stationary,Point state: Stationary
+28738981564,Step state: Stationary,Point state: Stationary
+28738981565,Step state: Stationary,Point state: Stationary
+28738981566,Step state: Stationary,Point state: Stationary
+28738981568,Step state: Stationary,Point state: Stationary
+28738981569,Step state: Stationary,Point state: Stationary
+28738981570,Step state: Stationary,Point state: Stationary
+28738981572,Step state: Stationary,Point state: Stationary
+28738981573,Step state: Stationary,Point state: Stationary
+28738981574,Step state: Stationary,Point state: Stationary
+28738981575,Step state: Stationary,Point state: Stationary
+28738981576,Step state: Stationary,Point state: Stationary
+28738981577,Step state: Stationary,Point state: Stationary
+28738981578,Step state: Stationary,Point state: Stationary
+28738981579,Step state: Stationary,Point state: Stationary
+28738981581,Step state: Stationary,Point state: Stationary
+28738981582,Step state: Stationary,Point state: Stationary
+28738981583,Step state: Stationary,Point state: Stationary
+28738981584,Step state: Stationary,Point state: Stationary
+28738981586,Step state: Stationary,Point state: Stationary
+28738981587,Step state: Stationary,Point state: Stationary
+28738981588,Step state: Stationary,Point state: Stationary
+28738981589,Step state: Stationary,Point state: Stationary
+28738981590,Step state: Stationary,Point state: Stationary
+28738981591,Step state: Stationary,Point state: Stationary
+28738981592,Step state: Stationary,Point state: Stationary
+28738981593,Step state: Stationary,Point state: Stationary
+28738981594,Step state: Stationary,Point state: Stationary
+28738981596,Step state: Stationary,Point state: Stationary
+28738981597,Step state: Stationary,Point state: Stationary
+28738981598,Step state: Stationary,Point state: Stationary
+28738981599,Step state: Stationary,Point state: Stationary
+28738981600,Step state: Stationary,Point state: Stationary
+28738981601,Step state: Stationary,Point state: Stationary
+28738981602,Step state: Stationary,Point state: Stationary
+28738981603,Step state: Stationary,Point state: Stationary
+28738981604,Step state: Stationary,Point state: Stationary
+28738981605,Step state: Stationary,Point state: Stationary
+28738981606,Step state: Stationary,Point state: Stationary
+28738981607,Step state: Stationary,Point state: Stationary
+28738981608,Step state: Stationary,Point state: Stationary
+28738981609,Step state: Stationary,Point state: Stationary
+28738981610,Step state: Stationary,Point state: Stationary
+28738981611,Step state: Stationary,Point state: Stationary
+28738981613,Step state: Stationary,Point state: Stationary
+28738981614,Step state: Stationary,Point state: Stationary
+28738981615,Step state: Stationary,Point state: Stationary
+28738981616,Step state: Stationary,Point state: Stationary
+28738981617,Step state: Stationary,Point state: Stationary
+28738981618,Step state: Stationary,Point state: Stationary
+28738981619,Step state: Stationary,Point state: Stationary
+28738981620,Step state: Stationary,Point state: Stationary
+28738981621,Step state: Stationary,Point state: Stationary
+28738981622,Step state: Stationary,Point state: Stationary
+28738981623,Step state: Stationary,Point state: Stationary
+28738981624,Step state: Stationary,Point state: Stationary
+28738981625,Step state: Stationary,Point state: Stationary
+28738981626,Step state: Stationary,Point state: Stationary
+28738981627,Step state: Stationary,Point state: Stationary
+28738981628,Step state: Stationary,Point state: Stationary
+28738981629,Step state: Stationary,Point state: Stationary
+28738981630,Step state: Stationary,Point state: Stationary
+28738981631,Step state: Stationary,Point state: Stationary
+28738981632,Step state: Stationary,Point state: Stationary
+28738981633,Step state: Stationary,Point state: Stationary
+28738981634,Step state: Stationary,Point state: Stationary
+28738981635,Step state: Stationary,Point state: Stationary
+28738981636,Step state: Stationary,Point state: Stationary
+28738981637,Step state: Stationary,Point state: Stationary
+28738981638,Step state: Stationary,Point state: Stationary
+28738981639,Step state: Stationary,Point state: Stationary
+28738981640,Step state: Stationary,Point state: Stationary
+28738981641,Step state: Stationary,Point state: Stationary
+28738981642,Step state: Stationary,Point state: Stationary
+28738981643,Step state: Stationary,Point state: Stationary
+28738981644,Step state: Stationary,Point state: Stationary
+28738981645,Step state: Stationary,Point state: Stationary
+28738981647,Step state: Stationary,Point state: Stationary
+28738981648,Step state: Stationary,Point state: Stationary
+28738981649,Step state: Stationary,Point state: Stationary
+28738981650,Step state: Stationary,Point state: Stationary
+28738981651,Step state: Stationary,Point state: Stationary
+28738981652,Step state: Stationary,Point state: Stationary
+28738981653,Step state: Stationary,Point state: Stationary
+28738981655,Step state: Stationary,Point state: Stationary
+28738981656,Step state: Stationary,Point state: Stationary
+28738981657,Step state: Stationary,Point state: Stationary
+28738981658,Step state: Stationary,Point state: Stationary
+28738981659,Step state: Stationary,Point state: Stationary
+28738981660,Step state: Stationary,Point state: Stationary
+28738981661,Step state: Stationary,Point state: Stationary
+28738981662,Step state: Stationary,Point state: Stationary
+28738981663,Step state: Stationary,Point state: Stationary
+28738981664,Step state: Stationary,Point state: Stationary
+28738981665,Step state: Stationary,Point state: Stationary
+28738981666,Step state: Stationary,Point state: Stationary
+28738981667,Step state: Stationary,Point state: Stationary
+28738981668,Step state: Stationary,Point state: Stationary
+28738981669,Step state: Stationary,Point state: Stationary
+28738981670,Step state: Stationary,Point state: Stationary
+28752102628,Step state: Stationary,Point state: Stationary
+28752102629,Step state: Stationary,Point state: Stationary
+28966903503,Step state: Stationary,Point state: Stationary
+28966903504,Step state: Stationary,Point state: Stationary
+28967402128,Step state: Stationary,Point state: Stationary
+28967402129,Step state: Stationary,Point state: Stationary
+28967402130,Step state: Stationary,Point state: Stationary
+28967402131,Step state: Stationary,Point state: Stationary
+28967402132,Step state: Stationary,Point state: Stationary
+28967402133,Step state: Stationary,Point state: Stationary
+28967402134,Step state: Stationary,Point state: Stationary
+28967402135,Step state: Stationary,Point state: Stationary
+28967402136,Step state: Stationary,Point state: Stationary
+28967402137,Step state: Stationary,Point state: Stationary
+28967402138,Step state: Stationary,Point state: Stationary
+28967402139,Step state: Stationary,Point state: Stationary
+28967402140,Step state: Stationary,Point state: Stationary
+28967402141,Step state: Stationary,Point state: Stationary
+28967402142,Step state: Stationary,Point state: Stationary
+28967402143,Step state: Stationary,Point state: Stationary
+28967402145,Step state: Stationary,Point state: Stationary
+28967402146,Step state: Stationary,Point state: Stationary
+28967402147,Step state: Stationary,Point state: Stationary
+28967402149,Step state: Stationary,Point state: Stationary
+28967402150,Step state: Stationary,Point state: Stationary
+28967402151,Step state: Stationary,Point state: Stationary
+28967402152,Step state: Stationary,Point state: Stationary
+28967402153,Step state: Stationary,Point state: Stationary
+28967402154,Step state: Stationary,Point state: Stationary
+28967402155,Step state: Stationary,Point state: Stationary
+28967402156,Step state: Stationary,Point state: Stationary
+28967402157,Step state: Stationary,Point state: Stationary
+28967402158,Step state: Stationary,Point state: Stationary
+28967402159,Step state: Stationary,Point state: Stationary
+28967402160,Step state: Stationary,Point state: Stationary
+28967402161,Step state: Stationary,Point state: Stationary
+28967402162,Step state: Stationary,Point state: Stationary
+28967402163,Step state: Stationary,Point state: Stationary
+28980110067,Step state: Stationary,Point state: Stationary
+28980110068,Step state: Stationary,Point state: Stationary
+28982818364,Step state: Stationary,Point state: Stationary
+28982818365,Step state: Stationary,Point state: Stationary
+29019092732,Step state: Stationary,Point state: Stationary
+29019092733,Step state: Stationary,Point state: Stationary
+29275834781,Step state: Stationary,Point state: Stationary
+29275834782,Step state: Stationary,Point state: Stationary
+29275834783,Step state: Stationary,Point state: Stationary
+29275834784,Step state: Stationary,Point state: Stationary
+29275834785,Step state: Stationary,Point state: Stationary
+29275834787,Step state: Stationary,Point state: Stationary
+29275834790,Step state: Stationary,Point state: Stationary
+29275834792,Step state: Stationary,Point state: Stationary
+29275834794,Step state: Stationary,Point state: Stationary
+29275834795,Step state: Stationary,Point state: Stationary
+29275834798,Step state: Stationary,Point state: Stationary
+29275834799,Step state: Stationary,Point state: Stationary
+29275834800,Step state: Stationary,Point state: Stationary
+29275834801,Step state: Stationary,Point state: Stationary
+29275834802,Step state: Stationary,Point state: Stationary
+29275834803,Step state: Stationary,Point state: Stationary
+29275834804,Step state: Stationary,Point state: Stationary
+29275834805,Step state: Stationary,Point state: Stationary
+29275834807,Step state: Stationary,Point state: Stationary
+29275834808,Step state: Stationary,Point state: Stationary
+29275834811,Step state: Stationary,Point state: Stationary
+29275834812,Step state: Stationary,Point state: Stationary
+29275834814,Step state: Stationary,Point state: Stationary
+29275834815,Step state: Stationary,Point state: Stationary
+29275834816,Step state: Stationary,Point state: Stationary
+29275834817,Step state: Stationary,Point state: Stationary
+29275834820,Step state: Stationary,Point state: Stationary
+29275834821,Step state: Stationary,Point state: Stationary
+29275834822,Step state: Stationary,Point state: Stationary
+29275834823,Step state: Stationary,Point state: Stationary
+29275834824,Step state: Stationary,Point state: Stationary
+29275834825,Step state: Stationary,Point state: Stationary
+29275834826,Step state: Stationary,Point state: Stationary
+29275834827,Step state: Stationary,Point state: Stationary
+29275834828,Step state: Stationary,Point state: Stationary
+29275834829,Step state: Stationary,Point state: Stationary
+29275834830,Step state: Stationary,Point state: Stationary
+29275834831,Step state: Stationary,Point state: Stationary
+29275834834,Step state: Stationary,Point state: Stationary
+29275834835,Step state: Stationary,Point state: Stationary
+29275834836,Step state: Stationary,Point state: Stationary
+29275834837,Step state: Stationary,Point state: Stationary
+29275834838,Step state: Stationary,Point state: Stationary
+29275834840,Step state: Stationary,Point state: Stationary
+29275834841,Step state: Stationary,Point state: Stationary
+29275834842,Step state: Stationary,Point state: Stationary
+29275834843,Step state: Stationary,Point state: Stationary
+29275834846,Step state: Stationary,Point state: Stationary
+29275834847,Step state: Stationary,Point state: Stationary
+29275834848,Step state: Stationary,Point state: Stationary
+29275834849,Step state: Stationary,Point state: Stationary
+29275834850,Step state: Stationary,Point state: Stationary
+29275834851,Step state: Stationary,Point state: Stationary
+29275834852,Step state: Stationary,Point state: Stationary
+29275834853,Step state: Stationary,Point state: Stationary
+29275834855,Step state: Stationary,Point state: Stationary
+29275834856,Step state: Stationary,Point state: Stationary
+29275834857,Step state: Stationary,Point state: Stationary
+29275834858,Step state: Stationary,Point state: Stationary
+29275834859,Step state: Stationary,Point state: Stationary
+29275834860,Step state: Stationary,Point state: Stationary
+29275834861,Step state: Stationary,Point state: Stationary
+29275834862,Step state: Stationary,Point state: Stationary
+29275834863,Step state: Stationary,Point state: Stationary
+29275834864,Step state: Stationary,Point state: Stationary
+29275834865,Step state: Stationary,Point state: Stationary
+29275834866,Step state: Stationary,Point state: Stationary
+29275834867,Step state: Stationary,Point state: Stationary
+29275834868,Step state: Stationary,Point state: Stationary
+29275834869,Step state: Stationary,Point state: Stationary
+29275834870,Step state: Stationary,Point state: Stationary
+29275834871,Step state: Stationary,Point state: Stationary
+29275834872,Step state: Stationary,Point state: Stationary
+29275834873,Step state: Stationary,Point state: Stationary
+29275834874,Step state: Stationary,Point state: Stationary
+29275834875,Step state: Stationary,Point state: Stationary
+29275834876,Step state: Stationary,Point state: Stationary
+29465046199,Step state: Stationary,Point state: Stationary
+29465046200,Step state: Stationary,Point state: Stationary
+29465046201,Step state: Stationary,Point state: Stationary
+29465046204,Step state: Stationary,Point state: Stationary
+29465046205,Step state: Stationary,Point state: Stationary
+29465046206,Step state: Stationary,Point state: Stationary
+29465046207,Step state: Stationary,Point state: Stationary

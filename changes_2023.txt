@@ -1,10 +1,3 @@
-WV-2023-23 migrated after capture. set estimable initial state?
-	Set state to estimable
-	RERUN SPRING F AND CHECK ME
-	ESTIMATES AS INITIAL STATIONARY- SET TO FIXED MIG
-	CHECK- STILL NOT GOING MIG UNTIL 5/20, INSTEAD OF 5/18
-
-
 -- Lazarus ids to check:
 "AL-2022-16-2022" "AL-2022-17-2022" "AL-2022-20-2022" "FL-2022-07-2022" "NC-2022-31-2022" "NC-2022-37-2022" "NC-2022-40-2022" "NC-2022-45-2022" "SC-2022-25-2022"
 
@@ -79,3 +72,15 @@ All lazarus schedules (fall)
 	Won't converge into a final state due to not enough data at migration endpoint, so forcing a post-mig state to all locations after Dec. 15
 	RERUN FALL AND CHECK ME
 	FIXED
+
+WV-2023-23 migrated after capture. set estimable initial state?
+	Set state to estimable
+	RERUN SPRING F AND CHECK ME
+	ESTIMATES AS INITIAL STATIONARY- SET TO FIXED MIG
+	Additionally needed to exempt from r1p1s2 designation
+	FIXED
+
+PA-2021-37 goes straight from fall mig to foray loop
+  Points in foray loop need to be excluded from the fall HMM designation
+  FIXED
+

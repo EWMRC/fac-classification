@@ -78,6 +78,7 @@ known_state_key <- amwo_hmm %>%
   mutate(known = ifelse(ID == "WI-2023-01-2023" & ranks == 1, 3, known)) %>%  # caught during mig
   mutate(known = ifelse(ID == "WV-2023-20-2023" & ranks == 1, 3, known)) %>%  # caught during mig
   mutate(known = ifelse(ID == "WV-2023-23-2023" & ranks == 1, 2, known)) %>%  # caught during mig
+  mutate(r1p1s2 = ifelse(ID == "WV-2023-23-2023" & ranks == 1, FALSE, r1p1s2)) %>%  # exempt from r1s1p1 designation, as it was caught during migration
   mutate(known = ifelse(ID == "RI-2018-11-2019" & ranks == 94, 4, known)) #bird is recaptured and re-transmittered at the last mig location the following Oct, so we know that it is settled here
 
 amwo_hmm$known <- known_state_key$known
