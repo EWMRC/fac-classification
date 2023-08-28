@@ -1,0 +1,159 @@
+```{r}
+library(tidyverse)
+library(here)
+library(lubridate)
+```
+
+Define a function to process results to identify the % of type 1 or type 2 errors
+```{r}
+identify_errors_varimp <- function(.x) {
+  .x %>% 
+    mutate(false_mig = if_else((end_modified == 2 | end_modified == 3) & (end_true == 4 | end_true == 5), 1, 0)) %>% 
+    mutate(false_postmig = if_else((end_true == 2 | end_true == 3) & (end_modified == 4 | end_modified == 5), 1, 0)) %>% 
+    pivot_longer(cols = c("false_mig", "false_postmig"), names_to = "test", values_to = "result") %>% 
+    group_by(cutoff_date, variable_to_test, test) %>% 
+    summarise(percent_error = mean(result, na.rm = TRUE), std_err = plotrix::std.error(result)) %>% 
+    ungroup() %>% 
+    mutate(test = recode(test, false_mig = "Type II", false_postmig = "Type I"),
+           ymin = if_else((percent_error - std_err*1.96) < 0, 0, percent_error - std_err*1.96),
+           ymax = percent_error + std_err*1.96) %>% 
+    return()
+}
+
+standardize_date_spring <- function(.x){
+  .x$standardized_date <- map(.x$cutoff_date, function(.y){
+    sample_date <- as.Date("2020-01-01")
+    yday(sample_date) <- .y
+    return(sample_date)
+  }) %>% 
+    unlist() %>% 
+    as_date()
+  return(.x)
+}
+
+standardize_date_fall <- function(.x){ 
+  .x$standardized_date <- map(.x$cutoff_date, function(.y){
+    sample_date <- as.Date("2020-01-01")
+    yday(sample_date) <- .y
+    sample_date <- sample_date + 56 # add 56 to deal with standardization in prep_data (days_subtract)
+    return(sample_date)
+  }) %>% 
+    unlist() %>% 
+    as_date()
+  return(.x)
+}
+```
+
+Read in datasets
+```{r}
+var_imp_springmale <- readRDS(here("classifier_spring", "accuracy", "variable_importance", "variable_importance_spring_male.rds"))
+  
+var_imp_springfemale <- readRDS(here("classifier_spring", "accuracy", "variable_importance", "variable_importance_spring_female.rds"))
+
+var_imp_fall <- readRDS(here("classifier_fall", "accuracy", "variable_importance", "variable_importance_fall.rds"))
+
+results_spring_male_full <- readRDS(here("classifier_spring", "accuracy", "full_male", "accuracy_results_male_full.rds"))
+
+results_spring_female_full <- readRDS(here("classifier_spring", "accuracy", "full_female", "accuracy_results_female_full.rds"))
+
+results_fall_full <- readRDS(here("classifier_fall", "accuracy", "full_acc_assessment", "accuracy_results_fall_full.rds"))
+```
+
+Manipulate the dataframes so there's one row per changed endstate
+```{r}
+var_imp_springmale <- bind_rows(var_imp_springmale, results_spring_male_full)
+
+var_imp_springfemale <- bind_rows(var_imp_springfemale, results_spring_female_full)
+
+var_imp_fall <- bind_rows(var_imp_fall, results_fall_full)
+
+var_imp_springmale$nested_data <- var_imp_springmale %>% 
+  dplyr::select(to_constrain, end_modified, end_true) %>% 
+  pmap(.f = function(to_constrain, end_modified, end_true){
+    target_df <- to_constrain %>% 
+      rename(ID = id_iter)
+    target_df$end_modified <- end_modified
+    target_df$end_true <- end_true
+    return(target_df)
+  })
+
+var_imp_springfemale$nested_data <- var_imp_springfemale %>% 
+  dplyr::select(to_constrain, end_modified, end_true) %>% 
+  pmap(.f = function(to_constrain, end_modified, end_true){
+    target_df <- to_constrain %>% 
+      rename(ID = id_iter)
+    target_df$end_modified <- end_modified
+    target_df$end_true <- end_true
+    return(target_df)
+  })
+
+var_imp_fall$nested_data <- var_imp_fall %>% 
+  dplyr::select(to_constrain, end_modified, end_true) %>% 
+  pmap(.f = function(to_constrain, end_modified, end_true){
+    target_df <- to_constrain %>% 
+      rename(ID = id_iter)
+    target_df$end_modified <- end_modified
+    target_df$end_true <- end_true
+    return(target_df)
+  })
+
+var_imp_springmale <- var_imp_springmale %>% 
+  transmute(cutoff_date = jul_day_cutoff, variable_to_test, nested_data) %>% 
+  unnest(cols = nested_data) %>% 
+  distinct() %>% 
+  identify_errors_varimp() %>% 
+  standardize_date_spring() %>% 
+  mutate(season = "Spring (male)")
+
+var_imp_springfemale <- var_imp_springfemale %>% 
+  transmute(cutoff_date = jul_day_cutoff, variable_to_test, nested_data) %>% 
+  unnest(cols = nested_data) %>% 
+  distinct() %>% 
+  identify_errors_varimp() %>% 
+  standardize_date_spring() %>% 
+  mutate(season = "Spring (female)")
+
+var_imp_fall <- var_imp_fall %>% 
+  transmute(cutoff_date = jul_day_cutoff, variable_to_test, nested_data) %>% 
+  unnest(cols = nested_data) %>% 
+  distinct() %>% 
+  identify_errors_varimp() %>% 
+  standardize_date_fall() %>% 
+  mutate(season = "Fall")
+
+var_imp <- bind_rows(var_imp_springmale, var_imp_springfemale, var_imp_fall)
+```
+
+
+```{r}
+var_imp_summary <- var_imp %>% 
+  group_by(season, variable_to_test, test) %>% 
+  summarize(total_error = sum(percent_error)) %>% 
+  ungroup()
+
+var_imp_full_model <- var_imp_summary %>% 
+  filter(variable_to_test == "full") %>% 
+  dplyr::select(-variable_to_test) %>% 
+  rename(full_model_error = total_error)
+
+var_imp_summary <- var_imp_summary %>% 
+  left_join(var_imp_full_model) %>% 
+  mutate(adjusted_error = full_model_error - total_error) %>% 
+  mutate(variable_to_test = factor(variable_to_test, levels = c("dist_start", "breeding_abundance", "log_mean_dist_7", "julian_day", "y", "residence_time"), ordered = TRUE))
+```
+
+```{r}
+var_imp_summary %>% 
+  filter(variable_to_test != "full") %>% 
+  ggplot(mapping = aes(x = variable_to_test, y = adjusted_error, fill = test)) +
+  #geom_point() +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  geom_col(position = "dodge2", width = 0.5, col = "black") +
+  theme_bw() +
+  facet_wrap(vars(season), nrow = 3, ncol = 1) +
+  xlab("Excluded variable") +
+  ylab("Reduction in accuracy from the full model (% error)") +
+  labs(fill = "Error type")
+  
+```
+

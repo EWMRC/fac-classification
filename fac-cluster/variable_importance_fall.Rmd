@@ -1,0 +1,386 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+editor_options:
+  chunk_output_type: inline
+---
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(move)
+library(momentuHMM)
+library(leaflet)
+library(RColorBrewer)
+library(sf)
+library(furrr)
+library(here)
+library(crawl)
+```
+
+Load data for use in the assessment
+```{r}
+load(file=here("classifier_fall", "fall_all_data.RData"))
+```
+
+Determine which individuals *didn't* die too early (here defined as 1/15)
+```{r}
+id_list <- unique(amwo_hmm$ID)
+id_list <- id_list[!(id_list %in% individuals_died_too_early)]
+```
+
+Load the results object
+```{r}
+results <- readRDS(here("classifier_fall", "fall_all_4_state_model.rds"))
+```
+
+Frontmatter: prepare the model
+
+Label states and create distributions for movements
+```{r}
+stateNames <- c("pre","migration", "stopover", "post")
+dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", dist_start = "bern", step_500 = "bern", breeding_abundance = "bern", log_mean_dist_7 = "norm", residence_time = "norm")
+```
+
+fix step length parameters and state transitions
+```{r}
+fixPar <- list(beta=matrix(c(NA, -1000, -1000, # pre-migration to transitions, can't go pre- to post
+                             -1000, NA, NA,  #once entered migration can't go back to pre
+                             -1000, NA, -1000, #Once entered stopover, can only go back to migration
+                             -1000, -1000, -1000), nrow = 1, byrow = TRUE), #once entered post-migration, can't leave
+               step_500 = c(0.000000001, 0.999999999, 0.000000001, 0.000000001)) 
+```
+
+These serve as the starting parameters for the HMM to optimize.
+```{r}
+Par0_m1 <- list(step=c(0.243451270, 3.008102e+02, 0.952588671, 0.322758191, #mean in km
+                       0.371507995, 2.812091e+02, 1.722086734, 0.527213629, # SD in km
+                       0.004520002, 3.196105e-67, 0.002780489, 0.002684457), #zeromass ie how many zeroes expected in the distribution
+                angle=c(-0.0002303861, -0.0930466, 0.01802796, 0.0004041137, #mean
+                        0.9251369010, 0.3917246, 0.18833891, 0.7549546329), #concentration
+                y = c(42.884507, 39.36790, 38.00028, 34.017005,
+                      3.040108, 4.34563, 3.50664, 2.284158),
+                julian_day = c(231.84411, 265.48489, 274.78395, 313.45334, 
+                               25.58401, 22.76178, 23.85347, 25.20996),
+                log_mean_dist_7 = c(4.040101, 8.923715, 5.262133, 3.674777, #mean
+                                    1.602257, 3.801304, 2.970491, 1.579163),
+                residence_time = c(56.23223, 14.07617, 24.49112, 69.79715, #mean
+                                   27.77319, 22.22218, 17.32382, 20.98726),
+                dist_start = c(0.01099133, 0.7496683, 0.9329266, 0.9972672), #prob
+                step_500 = c(0.00001, 0.99999, 0.00001, 0.00001), #prob
+                breeding_abundance = c(0.0002102369, 0.2283682, 0.3897024, 0.681121)) #sd
+```
+
+
+Create a function that fits the model, predicts states for each step (predicted and observed) and input in the dataset. Note: the listed x y is the starting location of the step. Then use this to determine what the bird's state was at any given point
+```{r}
+fit_and_predict <- function(.x, ks, vtt, ms){
+  dist_iter <- dist[ms]
+  Par0_m1_iter <- Par0_m1[ms]
+  
+  set.seed(8)
+  m1 <- fitHMM(data=.x, nbStates=4, dist=dist_iter, Par0 = Par0_m1_iter,
+               estAngleMean = list(angle=TRUE),
+               fixPar=fixPar,
+               #userBounds = userBounds,
+               #workBounds = workBounds,
+               #DM = DM,
+               knownStates = ks,
+               #formula = ~step_cov, #state 2 to 3. page 47 of vignette shows how to create the beta matrix
+               stateNames = stateNames)
+  
+  .x$step_state <- viterbi(m1)
+  
+  #step state shows the bird's behavior between points, point state shows the birds behavior at points
+  .x$point_state <- map(1:nrow(.x),  function(i){
+    if(i == 1){
+      return(1) #for the first row, return 1
+    } else if(.x[i,"ID"] != .x[i-1,"ID"]){ #is this the first point for this ID? Return the starting state
+      return(1)
+    } else if(.x[i,"step_state"] == .x[i-1,"step_state"]){ #is the current step state the same as the last step state? Return the current step state
+      return(.x[i,"step_state"])
+    } else if(.x[i,"step_state"] == 2 & .x[i-1,"step_state"] == 1){ #is the current step state mig and the previous step pre-mig? Return pre-mig
+      return(1)
+    } else if(.x[i,"step_state"] == 2 & .x[i-1,"step_state"] == 3){#is the current step state mig and the previous step stopover? Return stopover
+      return(3)
+    } else{ #in all other circumstances, return the current step state
+      return(.x[i,"step_state"])
+    }
+    
+  }) %>% unlist()
+  
+  return(list(model = m1, results = .x))
+}
+```
+
+
+# and now for the accuracy assessment
+
+```{r}
+iterate_ids_male <- function(jul_day_cutoff, variable_to_test, model_structure, fold_name, fold_indicies, to_constrain, data_constrained, true_endings){#id_iter, jul_day_cutoff, rn, variable_to_test, model_structure
+  amwo_hmm_clipped <- data_constrained
+  
+  result <- tryCatch({
+    # Assigning starting state
+    starting_state_key <- amwo_hmm_clipped %>% #How many days before the first location of the season was this bird captured?
+      left_join(capture_dates) %>% 
+      group_by(ID) %>% 
+      nest() %>%
+      mutate(days_from_capture_to_first_loc = map(.x = data, .f = function(iter_df){
+        first_time <- iter_df %>% 
+          head(n = 1) %>% 
+          pull(time)
+        
+        cap_date <- iter_df %>% 
+          head(n = 1) %>% 
+          pull(capture_date)
+        
+        as.numeric(first_time - cap_date)/24 %>% #diff time is in hours, convert to days
+          return()
+      }))
+    
+    starting_state_key <- starting_state_key %>% 
+      mutate(estimate_starting_state = if_else((str_detect(ID, pattern = "VA") | str_detect(ID, pattern = "NJ")) & days_from_capture_to_first_loc < 60, true = TRUE, false = FALSE)) %>% 
+      dplyr::select(ID, estimate_starting_state) %>% 
+      ungroup()
+    
+    amwo_hmm_clipped <- amwo_hmm_clipped %>% 
+      left_join(starting_state_key)
+    
+    known_state_key <- amwo_hmm_clipped %>%
+      group_by(ID) %>%
+      mutate(ranks = row_number()) %>% 
+      mutate(known = ifelse(estimate_starting_state == FALSE & ranks == 1, yes = 1, no = NA)) %>% #if this is the first row of an ID for which I don't want to estimate starting state, the initial step is 1
+      mutate(r1p1s2 = if_else(known == 1 & step >= 16.1 & animal_name != "RI-2021-59", true = TRUE, false = FALSE)) %>% #if known == 1 and step >30.2, mark as a "rank 1 point 1 step 2" event to be reclassified in post-processing
+      mutate(r1p1s2 = replace_na(r1p1s2, replace = FALSE)) %>% #deals with NA issues 
+      mutate(known = ifelse(step >= 16.1, 2, known)) %>% #if step length is >30.2, then it must be mig (even if known is already 1) 
+      mutate(known = ifelse(ID == "RI-2020-42-2020" & julian_day == 331, 2, known)) %>% #fix a bird which goes into 4 too early
+      mutate(known = ifelse(ID == "VA-2019-48-2019" & julian_day == 300, 4, known)) %>% #fix a bird which settles after 2/25
+      mutate(known = ifelse(ID == "RI-2021-59-2021" & ranks == 1, 3, known)) %>% 
+      # mutate(known = ifelse(known == 1 & ID %in% RI_problems, 2, known)) %>%
+      group_modify(.f = function(x, y){ #if we know that the bird has a spring migration after this, it must settle
+        max_rank <- x %>% 
+          pull(ranks) %>% 
+          max()
+        if(pull(y, ID) %in% spring_init_dates$ID){
+          x <- x %>% 
+            mutate(known = ifelse(ranks == max_rank, 4, known)) #set the state of the last row to settled
+        }
+        return(x)
+      }) %>% 
+      ungroup()
+    
+    amwo_hmm_clipped$known <- known_state_key$known
+    amwo_hmm_clipped$r1p1s2 <- known_state_key$r1p1s2
+    
+    knownStates <- amwo_hmm_clipped$known
+    
+    # Running the model
+    results_modified <- fit_and_predict(amwo_hmm_clipped, ks = knownStates, vtt = variable_to_test, ms = model_structure)
+    
+    #retrieve the modified ending state
+    
+    end_state_modified <- numeric()
+    
+    for(i in 1:nrow(to_constrain)){
+      id_to_clip <- to_constrain$id_iter[i]
+      dummy_y <- jul_day_cutoff
+      
+      j <- results_modified$results %>% 
+        filter(ID == id_to_clip & julian_day == dummy_y) %>% 
+        head(n=1) %>% 
+        pull(point_state)
+      
+      end_state_modified <- append(end_state_modified, j)
+    }
+    
+    if(length(end_state_modified)!=nrow(to_constrain)){
+      stop("Mismatch between number of IDs and length of output")
+    }
+    
+    # end_state_modified <- results_modified$results %>% 
+    #   filter(ID == id_iter & julian_day == jul_day_cutoff) %>% 
+    #   pull(point_state)
+    
+    #report the cutoff date, ID, modified ending state, and real ending state in a tibble, which will be the output of the loop
+    tibble(jul_day_cutoff = jul_day_cutoff,
+           variable_to_test = variable_to_test,
+           model_structure = list(model_structure),
+           fold_name = fold_name,
+           fold_indicies = list(fold_indicies),
+           to_constrain = list(to_constrain),
+           data_constrained = list(data_constrained),
+           end_modified = list(end_state_modified),
+           end_true = list(true_endings))
+  },
+  error = function(e){
+    tibble(jul_day_cutoff = jul_day_cutoff,
+           variable_to_test = variable_to_test,
+           model_structure = list(model_structure),
+           fold_name = fold_name,
+           fold_indicies = list(fold_indicies),
+           to_constrain = list(to_constrain),
+           data_constrained = list(data_constrained),
+           end_modified = list(NA),
+           end_true = list(true_endings))
+  })
+  return(result)
+}
+```
+
+
+```{r}
+cutoffs <- c("10/1/2020", "10/15/2020", "11/1/2020", "11/15/2020", "12/1/2020", "12/15/2020", "1/1/2021", "1/15/2021", "2/1/2021", "2/15/2021") %>% 
+  mdy(.) - days_subtract
+
+cutoffs <- yday(cutoffs)
+
+#now iterating through individuals
+set.seed(8)
+id_subsample <- id_list %>% sample(size = 52)
+
+parameters_to_run <- expand.grid(id_subsample, cutoffs) %>%
+  mutate(rn = as.character(row_number()))
+colnames(parameters_to_run) <- c("id_iter", "jul_day_cutoff", "rn")
+
+parameters_to_run <- parameters_to_run %>% #if I omit the bird from the model, omit it from the accuracy evaluation
+  filter(!(id_iter %in% c("PA-2019-13-2019", "RI-2019-18-2019", "RI-2019-29-2019", "VT-2020-04-2020", "FL-2021-01-2021", "NJ-2018-11-2018", "SC-2020-13-2020", "GA-2021-18-2021"))) %>% 
+  filter(!(id_iter %in% c("RI-2020-42-2020", "VA-2019-48-2019", "RI-2021-58-2021", "NY-2019-11-2019"))) #also omit birds with manually-set known termination states
+```
+
+```{r}
+parameters_to_run$valid <- parameters_to_run %>% 
+  dplyr::select(id_iter, jul_day_cutoff) %>% 
+  pmap(.f = function(id_iter, jul_day_cutoff){
+    amwo_hmm_clipped <- amwo_hmm %>% #remove locations for the ID in question after the cutoff date
+      filter(ID == id_iter & julian_day < jul_day_cutoff)
+    
+    observed_on_cutff <- amwo_hmm %>% #ensure that there's a sighting on the cutoff date
+      filter(ID == id_iter & julian_day == jul_day_cutoff) %>% 
+      nrow()
+    
+    logic_flag_1 <- nrow(amwo_hmm_clipped) > 1
+    
+    logic_flag_2 <- observed_on_cutff != 0
+    
+    if_else(logic_flag_1 & logic_flag_2, TRUE, FALSE) %>% 
+      return()
+  })
+
+parameters_to_run <- parameters_to_run %>% 
+  filter(valid == TRUE) %>% 
+  dplyr::select(-valid)
+
+#How many samples will this give me?
+parameters_to_run %>%
+  pull(id_iter) %>%
+  unique() %>%
+  length()
+
+#build a sequence of models for variable selection
+variable_iterations <- expand.grid(parameters_to_run$rn, names(Par0_m1)[c(3:7, 9)])
+
+colnames(variable_iterations) <- c("rn", "variable_to_test")
+
+variable_iterations <- variable_iterations %>% 
+  mutate(rn = as.character(rn), variable_to_test = as.character(variable_to_test)) %>% 
+  mutate(model_structure = map(.x = variable_to_test,
+                               .f = function(i){
+                                 names(Par0_m1)[!names(Par0_m1) == i]
+                               }))
+parameters_to_run <- parameters_to_run %>% 
+  full_join(x = parameters_to_run, y = variable_iterations, by = c("rn"))
+
+```
+
+Create a nested version of parameters_to_run that will measure multiple errors at once, in a testing/training fold framework
+```{r}
+parameters_nested <- parameters_to_run %>% 
+  group_by(variable_to_test, model_structure, jul_day_cutoff) %>% 
+  nest(.key = "ids")
+
+parameters_nested$folds <- map2(.x = parameters_nested$ids, .y = 1:nrow(parameters_nested), .f = function(x, y){
+  nestfs::create.folds(num.folds = 5, num.rows = nrow(x), seed = y)
+})
+
+parameters_nested <- unnest_wider(data = parameters_nested, col = folds, names_sep = "") %>% 
+  pivot_longer(cols = folds1:folds5, names_to = "fold_name", values_to = "fold_indicies")
+
+#the constraints used for each iteration of the model
+parameters_nested$to_constrain <- map2(.x = parameters_nested$ids, .y = parameters_nested$fold_indicies, .f = function(x, y){
+  x[y,] %>% 
+    mutate(rn = NULL) %>% 
+    return()
+})
+
+parameters_nested$ids <- NULL #this has been replaced by to_constrain
+
+#amwo locations filtered to the constraints set
+parameters_nested$data_constrained <- map2(.x = parameters_nested$to_constrain, .y = parameters_nested$jul_day_cutoff, .f = function(x, y){
+  
+  amwo_hmm_clipped <- amwo_hmm
+  
+  for(i in 1:nrow(x)){
+    id_to_clip <- x$id_iter[i]
+    dummy_y <- y
+    
+    amwo_hmm_clipped <- amwo_hmm_clipped %>% #remove locations for the ID in question after the cutoff date
+      filter(!(ID == id_to_clip & julian_day > dummy_y))
+  }
+  return(amwo_hmm_clipped)
+})
+
+parameters_nested$true_endings <- map2(.x = parameters_nested$to_constrain, .y = parameters_nested$jul_day_cutoff, .f = function(x, y){
+  
+  trgt <- numeric()
+  
+  for(i in 1:nrow(x)){
+    id_to_clip <- x$id_iter[i]
+    dummy_y <- y
+    
+    j <- results %>% 
+      filter(ID == id_to_clip & julian_day == dummy_y) %>%
+      head(n=1) %>% 
+      pull(point_state)
+    
+    trgt <- append(trgt, j)
+  }
+  
+  if(length(trgt)!=nrow(x)){
+    stop("Mismatch between number of IDs and length of output")
+  }
+  
+  return(trgt)
+})
+```
+
+```{r}
+plan(multisession, workers = 4)
+
+tbl_list <- parameters_nested %>% 
+  future_pmap(.l = ., 
+              .f = iterate_ids_male, 
+              .options = furrr_options(seed = 8),
+              .progress = TRUE)
+
+plan(sequential)
+```
+
+```{r}
+accuracy_results_male <- tbl_list %>% 
+  do.call(rbind, .)
+
+# Append results to previous runs
+# write.table(accuracy_results_male, "variable_importance_spring_male.csv",
+#             append = FALSE,
+#             sep = ",",
+#             col.names = TRUE,
+#             row.names = FALSE,
+#             quote = FALSE)
+
+accuracy_results_male %>% 
+  dplyr::select(-data_constrained) %>%
+  saveRDS("variable_importance_fall.rds")
+```
