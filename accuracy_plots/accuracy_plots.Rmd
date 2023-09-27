@@ -11,12 +11,12 @@ library(here)
 
 Define a function to process results to identify the % of type 1 or type 2 errors
 ```{r}
-identify_errors <- function(.x) {
+identify_errors_varimp <- function(.x) {
   .x %>% 
     mutate(false_mig = if_else((end_modified == 2 | end_modified == 3) & (end_true == 4 | end_true == 5), 1, 0)) %>% 
     mutate(false_postmig = if_else((end_true == 2 | end_true == 3) & (end_modified == 4 | end_modified == 5), 1, 0)) %>% 
     pivot_longer(cols = c("false_mig", "false_postmig"), names_to = "test", values_to = "result") %>% 
-    group_by(cutoff_date, test) %>% 
+    group_by(cutoff_date, variable_to_test, test) %>% 
     summarise(percent_error = mean(result, na.rm = TRUE), std_err = plotrix::std.error(result)) %>% 
     ungroup() %>% 
     mutate(test = recode(test, false_mig = "Type II", false_postmig = "Type I"),
@@ -51,56 +51,88 @@ standardize_date_fall <- function(.x){
 
 Read in results from the classification tests
 ```{r include = FALSE}
-results_spring_female_full <- here("classifier_spring", "accuracy", "full_female", "accuracy_results_female_full.csv") %>% 
-  read_csv() %>% 
-  distinct() %>% 
-  identify_errors() %>% 
-  standardize_date_spring() %>% 
-  mutate(season = "Spring Female",
-         model_type = "Full")
+results_spring_female_full <- readRDS(here("classifier_spring", "accuracy", "full_female", "accuracy_results_female_full.rds"))
 
-results_spring_female_null <- here("classifier_spring", "accuracy", "null_female", "accuracy_results_female_null.csv") %>% 
-  read_csv() %>% 
-  distinct() %>% 
-  identify_errors() %>% 
-  standardize_date_spring() %>% 
-  mutate(season = "Spring Female",
-         model_type = "Base")
+results_spring_female_null <- readRDS(here("classifier_spring", "accuracy", "null_female", "accuracy_results_female_null.rds"))
 
-results_spring_male_full <- here("classifier_spring", "accuracy", "full_male", "accuracy_results_male_full.csv") %>% 
-  read_csv() %>% 
-  distinct() %>% 
-  identify_errors() %>% 
-  standardize_date_spring() %>% 
-  mutate(season = "Spring Male",
-         model_type = "Full")
+results_spring_male_full <- readRDS(here("classifier_spring", "accuracy", "full_male", "accuracy_results_male_full.rds"))
 
-results_spring_male_null <- here("classifier_spring", "accuracy", "null_male", "accuracy_results_male_null.csv") %>% 
-  read_csv() %>% 
-  distinct() %>% 
-  identify_errors() %>% 
-  standardize_date_spring() %>% 
-  mutate(season = "Spring Male",
-         model_type = "Base")
+results_spring_male_null <- readRDS(here("classifier_spring", "accuracy", "null_male", "accuracy_results_male_null.rds"))
 
-results_fall_full <- here("classifier_fall", "accuracy", "full_acc_assessment", "accuracy_results_fall_full.csv") %>% 
-  read_csv() %>% 
-  distinct() %>% 
-  identify_errors() %>% 
-  standardize_date_fall() %>% 
-  mutate(season = "Fall",
-         model_type = "Full") %>% 
-  filter(standardized_date < ymd("2021-1-31"))
+results_fall_full <- readRDS(here("classifier_fall", "accuracy", "full_acc_assessment", "accuracy_results_fall_full.rds"))
 
-results_fall_null <- here("classifier_fall", "accuracy", "null_acc_assessment", "accuracy_results_fall_null.csv") %>% 
-  read_csv() %>% 
-  distinct() %>% 
-  identify_errors() %>% 
-  standardize_date_fall() %>% 
-  mutate(season = "Fall",
-         model_type = "Base") %>% 
-  filter(standardized_date < ymd("2021-1-31"))
+results_fall_null <- readRDS(here("classifier_fall", "accuracy", "null_acc_assessment", "accuracy_results_fall_null.rds"))
 ```
+
+Manipulate the dataframes so there's one row per changed endstate
+```{r}
+acc_springmale <- bind_rows(results_spring_male_full, results_spring_male_null)
+
+acc_springfemale <- bind_rows(results_spring_female_full, results_spring_female_null)
+
+acc_fall <- bind_rows(results_fall_full, results_fall_null)
+
+acc_springmale$nested_data <- acc_springmale %>% 
+  dplyr::select(to_constrain, end_modified, end_true) %>% 
+  pmap(.f = function(to_constrain, end_modified, end_true){
+    target_df <- to_constrain %>% 
+      rename(ID = id_iter)
+    target_df$end_modified <- end_modified
+    target_df$end_true <- end_true
+    return(target_df)
+  })
+
+acc_springfemale$nested_data <- acc_springfemale %>% 
+  dplyr::select(to_constrain, end_modified, end_true) %>% 
+  pmap(.f = function(to_constrain, end_modified, end_true){
+    target_df <- to_constrain %>% 
+      rename(ID = id_iter)
+    target_df$end_modified <- end_modified
+    target_df$end_true <- end_true
+    return(target_df)
+  })
+
+acc_fall$nested_data <- acc_fall %>% 
+  dplyr::select(to_constrain, end_modified, end_true) %>% 
+  pmap(.f = function(to_constrain, end_modified, end_true){
+    target_df <- to_constrain %>% 
+      rename(ID = id_iter)
+    target_df$end_modified <- end_modified
+    target_df$end_true <- end_true
+    return(target_df)
+  })
+
+acc_springmale <- acc_springmale %>% 
+  transmute(cutoff_date = jul_day_cutoff, variable_to_test, nested_data) %>% 
+  unnest(cols = nested_data) %>% 
+  distinct() %>% 
+  identify_errors_varimp() %>% 
+  standardize_date_spring() %>% 
+  mutate(season = "Spring (male)")
+
+acc_springfemale <- acc_springfemale %>% 
+  transmute(cutoff_date = jul_day_cutoff, variable_to_test, nested_data) %>% 
+  unnest(cols = nested_data) %>% 
+  distinct() %>% 
+  identify_errors_varimp() %>% 
+  standardize_date_spring() %>% 
+  mutate(season = "Spring (female)")
+
+acc_fall <- acc_fall %>% 
+  transmute(cutoff_date = jul_day_cutoff, variable_to_test, nested_data) %>% 
+  unnest(cols = nested_data) %>% 
+  distinct() %>% 
+  identify_errors_varimp() %>% 
+  standardize_date_fall() %>% 
+  mutate(season = "Fall")
+
+acc_combined <- bind_rows(acc_springmale, acc_springfemale, acc_fall) %>% 
+  mutate(season = factor(season, levels = c("Fall", "Spring (male)", "Spring (female)"), ordered = TRUE)) %>% 
+  rename(model_type = variable_to_test) %>% 
+  mutate(model_type = recode(model_type, "null" = "Base", "full" = "Full")) %>% 
+  mutate(model_type = factor(model_type, levels = c("Full", "Base"), ordered = TRUE))
+```
+
 
 Defining errors here:
 - Type 1 Error: Falsely classified as post-migratory while it's still migratory
@@ -108,31 +140,18 @@ Defining errors here:
 
 Creating dfs for graphing
 ```{r}
-combined_df <- bind_rows(results_fall_full, 
-                         results_fall_null, 
-                         results_spring_female_full, 
-                         results_spring_female_null, 
-                         results_spring_male_full, 
-                         results_spring_male_null) %>% 
-  mutate(season = factor(season, levels = c("Fall", "Spring Male", "Spring Female"), ordered = TRUE))
-
 # This allows for custom limits for each plot
 dummy <- tibble(standardized_date = ymd(c("2020-10-01", "2020-10-01", "2020-03-01", "2020-03-01", "2020-03-01", "2020-03-01", "2021-02-05", "2021-02-05", "2020-07-01", "2020-07-01", "2020-07-01", "2020-07-01")), percent_error = 0, season = c("Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female", "Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female"), model_type = c("Full", "Base", "Full", "Base", "Full", "Base", "Full", "Base", "Full", "Base", "Full", "Base"), test = "Type I") %>% 
   bind_rows(tibble(standardized_date = ymd(c("2020-10-01", "2020-10-01", "2020-03-01", "2020-03-01", "2020-03-01", "2020-03-01", "2021-02-05", "2021-02-05", "2020-07-01", "2020-07-01", "2020-07-01", "2020-07-01")), percent_error = 0, season = c("Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female", "Fall", "Fall", "Spring Male", "Spring Male", "Spring Female", "Spring Female"), model_type = c("Full", "Base", "Full", "Base", "Full", "Base", "Full", "Base", "Full", "Base", "Full", "Base"), test = "Type II")) %>% 
   mutate(season = recode(season, 
                          "Spring Male" = "Spring (male)",
                          "Spring Female" = "Spring (female)")) %>% 
-  mutate(season = factor(season, levels = c("Fall", "Spring (male)", "Spring (female)"), ordered = TRUE))
-
-combined_df <- combined_df %>% 
-  mutate(season = recode(season, 
-                         "Spring Male" = "Spring (male)",
-                         "Spring Female" = "Spring (female)")) %>% 
-  mutate(season = factor(season, levels = c("Fall", "Spring (male)", "Spring (female)"), ordered = TRUE))
+  mutate(season = factor(season, levels = c("Fall", "Spring (male)", "Spring (female)"), ordered = TRUE)) %>% 
+  mutate(model_type = factor(model_type, levels = c("Full", "Base"), ordered = TRUE))
 ```
 
 ```{r}
-ggplot(data = combined_df, mapping = aes(x = standardized_date, y = percent_error, col = test)) +
+ggplot(data = acc_combined, mapping = aes(x = standardized_date, y = percent_error, col = test)) +
   geom_point(position=position_dodge(width=4)) +
   geom_errorbar(aes(ymin = ymin, ymax = ymax), width = 4, #2
                 position=position_dodge(width=4),) +
@@ -150,6 +169,6 @@ ggplot(data = combined_df, mapping = aes(x = standardized_date, y = percent_erro
              scales = "free_x") +
   geom_blank(data=dummy)
 
-ggsave("accuracy_plot_7_28_23.png", width = 7, height = 5)
+ggsave("accuracy_plot_9_7_23.png", width = 7, height = 5)
 ```
 

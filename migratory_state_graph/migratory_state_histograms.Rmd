@@ -104,10 +104,10 @@ mig_plot_fall <- weekly_pt2 %>%
   geom_col(fill = "#FA6900FF", col = "black") +
   theme_bw() + 
   scale_x_date(name = NULL,
-               date_labels = "%b %d",
+               date_labels = "%b", #"%b %d"
                breaks = ymd(c("2021-01-1", "2021-02-1", "2021-03-1", "2021-04-1", "2021-05-1", "2021-06-1", "2021-07-1", "2020-08-1", "2020-09-1", "2020-10-1", "2020-11-1", "2020-12-1")),
                minor_breaks = ymd(c("2021-01-15", "2021-02-15", "2021-03-15", "2021-04-15", "2021-05-15", "2021-06-15", "2020-07-15", "2020-08-15", "2020-09-15", "2020-10-15", "2020-11-15", "2020-12-15")),
-               limits = c(ymd("2020-10-1"), ymd("2021-3-1"))) +
+               limits = c(ymd("2020-8-1"), ymd("2021-3-1"))) + #"2020-10-1"
   scale_y_continuous(name = NULL,
                      labels = scales::percent,
                      breaks = seq(from = 0, to = 1, by = 0.2),
@@ -132,7 +132,7 @@ mig_plot_spring <- weekly_pt2 %>%
   geom_col(fill = "#69D2E7FF", col = "black") +
   theme_bw() + 
   scale_x_date(name = NULL,
-               date_labels = "%b %d",
+               date_labels = "%b", #"%b %d"
                breaks = ymd(c("2020-01-1", "2020-02-1", "2020-03-1", "2020-04-1", "2020-05-1", "2020-06-1", "2020-07-1", "2020-08-1", "2020-09-1", "2020-10-1", "2020-11-1", "2020-12-1")),
                minor_breaks = ymd(c("2020-01-15", "2020-02-15", "2020-03-15", "2020-04-15", "2020-05-15", "2020-06-15", "2020-07-15", "2020-08-15", "2020-09-15", "2020-10-15", "2020-11-15", "2020-12-15")),
                limits = ymd(c("2020-01-1", "2020-07-01"))) +
@@ -159,5 +159,5 @@ ggarrange(mig_plot_fall, mig_plot_spring,
   annotate_figure(bottom = "Date", left = "Percent migratory") +
   bgcolor("#FFFFFF")
 
-ggsave(filename = "migratory_state_histograms_6_2_23.png", width = 10.5/1.5, height = 6/1.5)
+ggsave(filename = "migratory_state_histograms_9_7_23.png", width = 10.5/1.5, height = 6/1.5)
 ```

@@ -1754,43 +1754,11 @@ display: none;
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGAifQ== -->
-<pre class="r"><code>library(tidyverse)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KGx1YnJpZGF0ZSlcbmxpYnJhcnkoaGVyZSlcbmBgYCJ9 -->
+<pre class="r"><code>library(tidyverse)
+library(lubridate)
+library(here)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJlZCBTMyBtZXRob2RzIG92ZXJ3cml0dGVuIGJ5ICdkYnBseXInOlxuICBtZXRob2QgICAgICAgICBmcm9tXG4gIHByaW50LnRibF9sYXp5ICAgICBcbiAgcHJpbnQudGJsX3NxbCAgICAgIFxu4pSA4pSAIEF0dGFjaGluZyBwYWNrYWdlcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlIDEuMy4yIOKUgOKUgOKclCBnZ3Bsb3QyIDMuNC4wICAgICAg4pyUIHB1cnJyICAgMS4wLjEgXG7inJQgdGliYmxlICAzLjEuOCAgICAgIOKclCBkcGx5ciAgIDEuMC4xMFxu4pyUIHRpZHlyICAgMS4zLjAgICAgICDinJQgc3RyaW5nciAxLjUuMCBcbuKclCByZWFkciAgIDIuMS4zICAgICAg4pyUIGZvcmNhdHMgMC41LjIg4pSA4pSAIENvbmZsaWN0cyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlX2NvbmZsaWN0cygpIOKUgOKUgFxu4pyWIGRwbHlyOjpmaWx0ZXIoKSBtYXNrcyBzdGF0czo6ZmlsdGVyKClcbuKcliBkcGx5cjo6bGFnKCkgICAgbWFza3Mgc3RhdHM6OmxhZygpV2FybmluZyBtZXNzYWdlOlxuSW4gcmVhZExpbmVzKGZpbGUsIHNraXBOdWwgPSBUUlVFKSA6XG4gIGNhbm5vdCBvcGVuIGNvbXByZXNzZWQgZmlsZSAnQzovVXNlcnMvbGlhbWEvT25lRHJpdmUgLSBVbml2ZXJzaXR5IG9mIE1haW5lIFN5c3RlbS9NYWluZUFuYWx5c2lzL1Byb2plY3RzL2ZhYy1jbGFzc2lmaWNhdGlvbi9yZW52L2xpYnJhcnkvUi00LjIveDg2XzY0LXc2NC1taW5ndzMyL3ZjdHJzLURFU0tUT1AtVTdNTVY0Ui9ERVNDUklQVElPTicsIHByb2JhYmxlIHJlYXNvbiAnTm8gc3VjaCBmaWxlIG9yIGRpcmVjdG9yeSdcbldhcm5pbmcgaW4gcmVhZExpbmVzKGZpbGUsIHNraXBOdWwgPSBUUlVFKSA6XG4gIGNhbm5vdCBvcGVuIGNvbXByZXNzZWQgZmlsZSAnQzovVXNlcnMvbGlhbWEvT25lRHJpdmUgLSBVbml2ZXJzaXR5IG9mIE1haW5lIFN5c3RlbS9NYWluZUFuYWx5c2lzL1Byb2plY3RzL2ZhYy1jbGFzc2lmaWNhdGlvbi9yZW52L2xpYnJhcnkvUi00LjIveDg2XzY0LXc2NC1taW5ndzMyL3ZjdHJzLURFU0tUT1AtVTdNTVY0Ui9ERVNDUklQVElPTicsIHByb2JhYmxlIHJlYXNvbiAnTm8gc3VjaCBmaWxlIG9yIGRpcmVjdG9yeSdcbiJ9 -->
-<pre><code>Registered S3 methods overwritten by &#39;dbplyr&#39;:
-  method         from
-  print.tbl_lazy     
-  print.tbl_sql      
-── Attaching packages ────────────────── tidyverse 1.3.2 ──✔ ggplot2 3.4.0      ✔ purrr   1.0.1 
-✔ tibble  3.1.8      ✔ dplyr   1.0.10
-✔ tidyr   1.3.0      ✔ stringr 1.5.0 
-✔ readr   2.1.3      ✔ forcats 0.5.2 ── Conflicts ───────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()Warning message:
-In readLines(file, skipNul = TRUE) :
-  cannot open compressed file &#39;C:/Users/liama/OneDrive - University of Maine System/MaineAnalysis/Projects/fac-classification/renv/library/R-4.2/x86_64-w64-mingw32/vctrs-DESKTOP-U7MMV4R/DESCRIPTION&#39;, probable reason &#39;No such file or directory&#39;
-Warning in readLines(file, skipNul = TRUE) :
-  cannot open compressed file &#39;C:/Users/liama/OneDrive - University of Maine System/MaineAnalysis/Projects/fac-classification/renv/library/R-4.2/x86_64-w64-mingw32/vctrs-DESKTOP-U7MMV4R/DESCRIPTION&#39;, probable reason &#39;No such file or directory&#39;</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShsdWJyaWRhdGUpXG5gYGAifQ== -->
-<pre class="r"><code>library(lubridate)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiB0aW1lY2hhbmdlXG5cbkF0dGFjaGluZyBwYWNrYWdlOiDigJhsdWJyaWRhdGXigJlcblxuVGhlIGZvbGxvd2luZyBvYmplY3RzIGFyZSBtYXNrZWQgZnJvbSDigJhwYWNrYWdlOmJhc2XigJk6XG5cbiAgICBkYXRlLCBpbnRlcnNlY3QsIHNldGRpZmYsIHVuaW9uXG4ifQ== -->
-<pre><code>Loading required package: timechange
-
-Attaching package: ‘lubridate’
-
-The following objects are masked from ‘package:base’:
-
-    date, intersect, setdiff, union</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShoZXJlKVxuYGBgIn0= -->
-<pre class="r"><code>library(here)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiaGVyZSgpIHN0YXJ0cyBhdCBDOi9Vc2Vycy9saWFtYS9PbmVEcml2ZSAtIFVuaXZlcnNpdHkgb2YgTWFpbmUgU3lzdGVtL01haW5lQW5hbHlzaXMvUHJvamVjdHMvZmFjLWNsYXNzaWZpY2F0aW9uXG4ifQ== -->
-<pre><code>here() starts at C:/Users/liama/OneDrive - University of Maine System/MaineAnalysis/Projects/fac-classification</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Read in data</p>
@@ -1799,48 +1767,189 @@ The following objects are masked from ‘package:base’:
 <p>Fall migration departure dates</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIzk1dGggcXVhbnRpbGUgb2YgYWxsIGRlcGFydHVyZSBkYXRlc1xuYyhmYWxsX21hbGVfZGVwYXJ0dXJlX2RhdGVzLCBmYWxsX2ZlbWFsZV9kZXBhcnR1cmVfZGF0ZXMpICU+JSBcbiAgcXVhbnRpbGUoYygwLjA1LCAwLjk1KSwgdHlwZSA9IDEpXG5cbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmFsbF9tYWxlX2RlcGFydHVyZV9kYXRlcyA8LSBhbXdvX2RhdGFfZmFsbCAlPiUgXG4gIGZpbHRlcihwcmltYXJ5X3BvaW50X3N0YXRlID09IFwiU3RhdGlvbmFyeVwiLFxuICAgICAgICAgcHJpbWFyeV9zdGVwX3N0YXRlID09IFwiTWlncmF0b3J5IChmYWxsKVwiLFxuICAgICAgICAgc2V4ID09IFwiTWFsZVwiKSAlPiUgXG4gIHB1bGwoZGF0ZV9zdGFuZGFyZGl6ZWQpXG5cbm1lZGlhbihmYWxsX21hbGVfZGVwYXJ0dXJlX2RhdGVzKVxuYGBgIn0= -->
+<pre class="r"><code>fall_male_departure_dates &lt;- amwo_data_fall %&gt;% 
+  filter(primary_point_state == &quot;Stationary&quot;,
+         primary_step_state == &quot;Migratory (fall)&quot;,
+         sex == &quot;Male&quot;) %&gt;% 
+  pull(date_standardized)
+
+median(fall_male_departure_dates)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMjAyMC0xMS0wOFwiXG4ifQ== -->
+<pre><code>[1] &quot;2020-11-08&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmFuZ2UoZmFsbF9tYWxlX2RlcGFydHVyZV9kYXRlcylcbmBgYCJ9 -->
+<pre class="r"><code>range(fall_male_departure_dates)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMjAyMC0wOS0yNFwiIFwiMjAyMC0xMi0xMVwiXG4ifQ== -->
+<pre><code>[1] &quot;2020-09-24&quot; &quot;2020-12-11&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmFsbF9mZW1hbGVfZGVwYXJ0dXJlX2RhdGVzIDwtIGFtd29fZGF0YV9mYWxsICU+JSBcbiAgZmlsdGVyKHByaW1hcnlfcG9pbnRfc3RhdGUgPT0gXCJTdGF0aW9uYXJ5XCIsXG4gICAgICAgICBwcmltYXJ5X3N0ZXBfc3RhdGUgPT0gXCJNaWdyYXRvcnkgKGZhbGwpXCIsXG4gICAgICAgICBzZXggPT0gXCJGZW1hbGVcIikgJT4lIFxuICBwdWxsKGRhdGVfc3RhbmRhcmRpemVkKVxuXG5tZWRpYW4oZmFsbF9mZW1hbGVfZGVwYXJ0dXJlX2RhdGVzKVxuYGBgIn0= -->
+<pre class="r"><code>fall_female_departure_dates &lt;- amwo_data_fall %&gt;% 
+  filter(primary_point_state == &quot;Stationary&quot;,
+         primary_step_state == &quot;Migratory (fall)&quot;,
+         sex == &quot;Female&quot;) %&gt;% 
+  pull(date_standardized)
+
+median(fall_female_departure_dates)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMjAyMC0xMS0wN1wiXG4ifQ== -->
+<pre><code>[1] &quot;2020-11-07&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmFuZ2UoZmFsbF9mZW1hbGVfZGVwYXJ0dXJlX2RhdGVzKVxuYGBgIn0= -->
+<pre class="r"><code>range(fall_female_departure_dates)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMjAyMC0wOC0yOVwiIFwiMjAyMS0wMS0xMVwiXG4ifQ== -->
+<pre><code>[1] &quot;2020-08-29&quot; &quot;2021-01-11&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIzk1dGggcXVhbnRpbGUgb2YgYWxsIGRlcGFydHVyZSBkYXRlc1xuYyhmYWxsX21hbGVfZGVwYXJ0dXJlX2RhdGVzLCBmYWxsX2ZlbWFsZV9kZXBhcnR1cmVfZGF0ZXMpICU+JSBcbiAgcXVhbnRpbGUoYygwLjA1LCAwLjk1KSwgdHlwZSA9IDEpXG5gYGAifQ== -->
 <pre class="r"><code>#95th quantile of all departure dates
 c(fall_male_departure_dates, fall_female_departure_dates) %&gt;% 
-  quantile(c(0.05, 0.95), type = 1)
-</code></pre>
+  quantile(c(0.05, 0.95), type = 1)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICAgIDUlICAgICAgICAgIDk1JSBcblwiMjAyMC0xMC0wNlwiIFwiMjAyMC0xMi0wOFwiIFxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICAgIDUlICAgICAgICAgIDk1JSBcblwiMjAyMC0wOS0yOVwiIFwiMjAyMC0xMi0wNVwiIFxuIn0= -->
 <pre><code>          5%          95% 
-&quot;2020-10-06&quot; &quot;2020-12-08&quot; </code></pre>
+&quot;2020-09-29&quot; &quot;2020-12-05&quot; </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Fall migration termination dates</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmFuZ2UoZmFsbF9mZW1hbGVfdGVybWluYXRpb25fZGF0ZXMpXG5cbmBgYCJ9 -->
-<pre class="r"><code>range(fall_female_termination_dates)
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmFsbF9tYWxlX3Rlcm1pbmF0aW9uX2RhdGVzIDwtIGFtd29fZGF0YV9mYWxsICU+JSBcbiAgZmlsdGVyKHByaW1hcnlfcG9pbnRfc3RhdGUgPT0gXCJTdGF0aW9uYXJ5XCIsXG4gICAgICAgICBwcmlvcl9zdGVwID09IFwiTWlncmF0b3J5IChmYWxsKVwiLFxuICAgICAgICAgc2V4ID09IFwiTWFsZVwiKSAlPiUgXG4gIHB1bGwoZGF0ZV9zdGFuZGFyZGl6ZWQpXG5cbm1lZGlhbihmYWxsX21hbGVfdGVybWluYXRpb25fZGF0ZXMpXG5gYGAifQ== -->
+<pre class="r"><code>fall_male_termination_dates &lt;- amwo_data_fall %&gt;% 
+  filter(primary_point_state == &quot;Stationary&quot;,
+         prior_step == &quot;Migratory (fall)&quot;,
+         sex == &quot;Male&quot;) %&gt;% 
+  pull(date_standardized)
+
+median(fall_male_termination_dates)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMjAyMC0xMi0wMVwiXG4ifQ== -->
+<pre><code>[1] &quot;2020-12-01&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmFuZ2UoZmFsbF9tYWxlX3Rlcm1pbmF0aW9uX2RhdGVzKVxuYGBgIn0= -->
+<pre class="r"><code>range(fall_male_termination_dates)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMjAyMC0xMS0wMVwiIFwiMjAyMS0wMS0yOFwiXG4ifQ== -->
+<pre><code>[1] &quot;2020-11-01&quot; &quot;2021-01-28&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmFsbF9mZW1hbGVfdGVybWluYXRpb25fZGF0ZXMgPC0gYW13b19kYXRhX2ZhbGwgJT4lIFxuICBmaWx0ZXIocHJpbWFyeV9wb2ludF9zdGF0ZSA9PSBcIlN0YXRpb25hcnlcIixcbiAgICAgICAgIHByaW9yX3N0ZXAgPT0gXCJNaWdyYXRvcnkgKGZhbGwpXCIsXG4gICAgICAgICBzZXggPT0gXCJGZW1hbGVcIikgJT4lIFxuICBwdWxsKGRhdGVfc3RhbmRhcmRpemVkKVxuXG5tZWRpYW4oZmFsbF9mZW1hbGVfdGVybWluYXRpb25fZGF0ZXMpXG5gYGAifQ== -->
+<pre class="r"><code>fall_female_termination_dates &lt;- amwo_data_fall %&gt;% 
+  filter(primary_point_state == &quot;Stationary&quot;,
+         prior_step == &quot;Migratory (fall)&quot;,
+         sex == &quot;Female&quot;) %&gt;% 
+  pull(date_standardized)
+
+median(fall_female_termination_dates)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMjAyMC0xMi0wNlwiXG4ifQ== -->
+<pre><code>[1] &quot;2020-12-06&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmFuZ2UoZmFsbF9mZW1hbGVfdGVybWluYXRpb25fZGF0ZXMpXG5gYGAifQ== -->
+<pre class="r"><code>range(fall_female_termination_dates)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMjAyMC0xMC0yNVwiIFwiMjAyMS0wMi0wNFwiXG4ifQ== -->
 <pre><code>[1] &quot;2020-10-25&quot; &quot;2021-02-04&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIzk1dGggcXVhbnRpbGUgb2YgYWxsIHRlcm1pbmF0aW9uIGRhdGVzXG5jKGZhbGxfbWFsZV90ZXJtaW5hdGlvbl9kYXRlcywgZmFsbF9mZW1hbGVfdGVybWluYXRpb25fZGF0ZXMpICU+JVxuICBxdWFudGlsZShjKDAuMDUsIDAuOTUpLCB0eXBlID0gMSlcbmBgYCJ9 -->
+<pre class="r"><code>#95th quantile of all termination dates
+c(fall_male_termination_dates, fall_female_termination_dates) %&gt;%
+  quantile(c(0.05, 0.95), type = 1)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICAgIDUlICAgICAgICAgIDk1JSBcblwiMjAyMC0xMS0wNlwiIFwiMjAyMS0wMS0xMlwiIFxuIn0= -->
+<pre><code>          5%          95% 
+&quot;2020-11-06&quot; &quot;2021-01-12&quot; </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Spring migration departure dates</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmFuZ2Uoc3ByaW5nX2ZlbWFsZV9kZXBhcnR1cmVfZGF0ZXMpXG5cbmBgYCJ9 -->
-<pre class="r"><code>range(spring_female_departure_dates)
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3ByaW5nX21hbGVfZGVwYXJ0dXJlX2RhdGVzIDwtIGFtd29fZGF0YV9zcHJpbmcgJT4lIFxuICBmaWx0ZXIocHJpbWFyeV9wb2ludF9zdGF0ZSA9PSBcIlN0YXRpb25hcnlcIixcbiAgICAgICAgIHByaW1hcnlfc3RlcF9zdGF0ZSA9PSBcIk1pZ3JhdG9yeSAoc3ByaW5nKVwiLFxuICAgICAgICAgc2V4ID09IFwiTWFsZVwiKSAlPiUgXG4gIHB1bGwoZGF0ZV9zdGFuZGFyZGl6ZWQpXG5cbnByaW50KFwiTWFsZVwiKVxuYGBgIn0= -->
+<pre class="r"><code>spring_male_departure_dates &lt;- amwo_data_spring %&gt;% 
+  filter(primary_point_state == &quot;Stationary&quot;,
+         primary_step_state == &quot;Migratory (spring)&quot;,
+         sex == &quot;Male&quot;) %&gt;% 
+  pull(date_standardized)
+
+print(&quot;Male&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiTWFsZVwiXG4ifQ== -->
+<pre><code>[1] &quot;Male&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWVkaWFuKHNwcmluZ19tYWxlX2RlcGFydHVyZV9kYXRlcylcbmBgYCJ9 -->
+<pre class="r"><code>median(spring_male_departure_dates)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMjAyMC0wMy0wMVwiXG4ifQ== -->
+<pre><code>[1] &quot;2020-03-01&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmFuZ2Uoc3ByaW5nX21hbGVfZGVwYXJ0dXJlX2RhdGVzKVxuYGBgIn0= -->
+<pre class="r"><code>range(spring_male_departure_dates)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMjAyMC0wMS0wNlwiIFwiMjAyMC0wNC0xNFwiXG4ifQ== -->
+<pre><code>[1] &quot;2020-01-06&quot; &quot;2020-04-14&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3ByaW5nX2ZlbWFsZV9kZXBhcnR1cmVfZGF0ZXMgPC0gYW13b19kYXRhX3NwcmluZyAlPiUgXG4gIGZpbHRlcihwcmltYXJ5X3BvaW50X3N0YXRlID09IFwiU3RhdGlvbmFyeVwiLFxuICAgICAgICAgcHJpbWFyeV9zdGVwX3N0YXRlID09IFwiTWlncmF0b3J5IChzcHJpbmcpXCIsXG4gICAgICAgICBzZXggPT0gXCJGZW1hbGVcIikgJT4lIFxuICBwdWxsKGRhdGVfc3RhbmRhcmRpemVkKVxuXG5wcmludChcIkZlbWFsZVwiKVxuYGBgIn0= -->
+<pre class="r"><code>spring_female_departure_dates &lt;- amwo_data_spring %&gt;% 
+  filter(primary_point_state == &quot;Stationary&quot;,
+         primary_step_state == &quot;Migratory (spring)&quot;,
+         sex == &quot;Female&quot;) %&gt;% 
+  pull(date_standardized)
+
+print(&quot;Female&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiRmVtYWxlXCJcbiJ9 -->
+<pre><code>[1] &quot;Female&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWVkaWFuKHNwcmluZ19mZW1hbGVfZGVwYXJ0dXJlX2RhdGVzKVxuYGBgIn0= -->
+<pre class="r"><code>median(spring_female_departure_dates)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMjAyMC0wMy0wNVwiXG4ifQ== -->
+<pre><code>[1] &quot;2020-03-05&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmFuZ2Uoc3ByaW5nX2ZlbWFsZV9kZXBhcnR1cmVfZGF0ZXMpXG5gYGAifQ== -->
+<pre class="r"><code>range(spring_female_departure_dates)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMjAyMC0wMS0xOVwiIFwiMjAyMC0wNC0yNlwiXG4ifQ== -->
 <pre><code>[1] &quot;2020-01-19&quot; &quot;2020-04-26&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIzk1dGggcXVhbnRpbGUgb2YgYWxsIGRlcGFydHVyZSBkYXRlc1xuYyhzcHJpbmdfbWFsZV9kZXBhcnR1cmVfZGF0ZXMsIHNwcmluZ19mZW1hbGVfZGVwYXJ0dXJlX2RhdGVzKSAlPiUgXG4gIHF1YW50aWxlKGMoMC4wNSwgMC45NSksIHR5cGUgPSAxKVxuYGBgIn0= -->
+<pre class="r"><code>#95th quantile of all departure dates
+c(spring_male_departure_dates, spring_female_departure_dates) %&gt;% 
+  quantile(c(0.05, 0.95), type = 1)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICAgIDUlICAgICAgICAgIDk1JSBcblwiMjAyMC0wMS0yMlwiIFwiMjAyMC0wMy0yOVwiIFxuIn0= -->
+<pre><code>          5%          95% 
+&quot;2020-01-22&quot; &quot;2020-03-29&quot; </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Spring migration termination dates</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmFuZ2Uoc3ByaW5nX2ZlbWFsZV90ZXJtaW5hdGlvbl9kYXRlcylcblxuYGBgIn0= -->
-<pre class="r"><code>range(spring_female_termination_dates)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3ByaW5nX2ZlbWFsZV90ZXJtaW5hdGlvbl9kYXRlcyA8LSBhbXdvX2RhdGFfc3ByaW5nICU+JSBcbiAgZmlsdGVyKHByaW1hcnlfcG9pbnRfc3RhdGUgPT0gXCJTdGF0aW9uYXJ5XCIsXG4gICAgICAgICBwcmlvcl9zdGVwID09IFwiTWlncmF0b3J5IChzcHJpbmcpXCIsXG4gICAgICAgICBzZXggPT0gXCJGZW1hbGVcIikgJT4lIFxuICBwdWxsKGRhdGVfc3RhbmRhcmRpemVkKVxuXG5wcmludChcIkZlbWFsZVwiKVxuXG5gYGAifQ== -->
+<pre class="r"><code>spring_female_termination_dates &lt;- amwo_data_spring %&gt;% 
+  filter(primary_point_state == &quot;Stationary&quot;,
+         prior_step == &quot;Migratory (spring)&quot;,
+         sex == &quot;Female&quot;) %&gt;% 
+  pull(date_standardized)
+
+print(&quot;Female&quot;)
 </code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiRmVtYWxlXCJcbiJ9 -->
+<pre><code>[1] &quot;Female&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWVkaWFuKHNwcmluZ19mZW1hbGVfdGVybWluYXRpb25fZGF0ZXMpXG5gYGAifQ== -->
+<pre class="r"><code>median(spring_female_termination_dates)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMjAyMC0wNC0yNlwiXG4ifQ== -->
+<pre><code>[1] &quot;2020-04-26&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmFuZ2Uoc3ByaW5nX2ZlbWFsZV90ZXJtaW5hdGlvbl9kYXRlcylcbmBgYCJ9 -->
+<pre class="r"><code>range(spring_female_termination_dates)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMjAyMC0wMi0yMFwiIFwiMjAyMC0wNy0yOFwiXG4ifQ== -->
 <pre><code>[1] &quot;2020-02-20&quot; &quot;2020-07-28&quot;</code></pre>

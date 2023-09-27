@@ -124,7 +124,7 @@ var_imp_fall <- var_imp_fall %>%
 var_imp <- bind_rows(var_imp_springmale, var_imp_springfemale, var_imp_fall)
 ```
 
-
+Summarise error by summming over weeks, and adjusting error by subtracting from the full model error
 ```{r}
 var_imp_summary <- var_imp %>% 
   group_by(season, variable_to_test, test) %>% 

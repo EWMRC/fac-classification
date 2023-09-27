@@ -129,6 +129,9 @@ fall_female_results %>%
   pull(total_dist) %>% 
   range(na.rm = T)
 
+```
+
+```{r}
 #Fall male time- mean
 fall_male_results %>% 
   pull(days_mig) %>% 
@@ -159,6 +162,7 @@ fall_female_results %>%
   pull(days_mig) %>% 
   range(na.rm = T)
 ```
+
 
 Spring
 ```{r}
@@ -264,6 +268,9 @@ spring_female_results %>%
   pull(total_dist) %>% 
   range(na.rm = T)
 
+```
+
+```{r}
 #Spring male time- mean
 spring_male_results %>% 
   pull(days_mig) %>% 
@@ -294,3 +301,4 @@ spring_female_results %>%
   pull(days_mig) %>% 
   range(na.rm = T)
 ```
+

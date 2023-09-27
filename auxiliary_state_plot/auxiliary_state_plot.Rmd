@@ -158,7 +158,7 @@ dispersal_map <- template_map +
   theme(legend.position = "bottom",
         legend.margin=margin(t = 10),
         plot.margin = margin(b = 10)) +
-  ggtitle("Dispersal movement") +
+  ggtitle("Dispersal") +
   scale_color_manual(values = colors_dispersal) +
   scale_fill_manual(values = colors_dispersal) +
   theme(legend.position = "none")
@@ -179,7 +179,7 @@ dispersal_timeline <- ggplot(data = dispersal_summary, mapping = aes(x = value, 
         axis.ticks.y=element_blank(),
         legend.position = "none") +
   scale_color_manual(values = colors_dispersal) +
-  ggtitle("Dispersal movement")
+  ggtitle("Dispersal")
 
 # Combining them together
 # blank <- ggplot() + theme_void()
@@ -221,7 +221,9 @@ foray_line <- foray_movements %>%
   st_cast("LINESTRING") %>% 
   mutate(animal_name = factor(animal_name, levels = foray_sorted))
 
-colors_foray <- c("black", "#0075DC", "#993F00","#4A6990FF", "#4C005C", "#C20088", "#005C31", "#2BCE48", "#FFCC99", "#808080","#94FFB5", "#8F7C00", "#9DCC00")
+# colors_foray <- c("black", "#0075DC", "#993F00","#4A6990FF", "#4C005C", "#C20088", "#005C31", "#2BCE48", "#FFCC99", "#808080","#94FFB5", "#8F7C00", "#9DCC00")
+colors_foray <- paletteer::paletteer_d("awtools::bpalette") %>% as.character()
+
 names(colors_foray) <- foray_sorted
 
 # Revised map
@@ -341,6 +343,6 @@ timelines_combined <- ggarrange(summer_timeline, dispersal_timeline, foray_timel
 
 plots_arranged <- ggarrange(summer_map, dispersal_map, foray_map, timelines_combined, ncol = 2, nrow = 2, common.legend = TRUE, legend = "bottom", legend.grob = legend_desc)
 
-ggsave(filename = here::here("auxiliary_state_plot", "auxiliary_state_plot_6_15_2023.png"), plot = plots_arranged, dpi = 300, bg = "white", height = 7.5, width = 7)
+ggsave(filename = here::here("auxiliary_state_plot", "auxiliary_state_plot_9_7_2023.png"), plot = plots_arranged, dpi = 300, bg = "white", height = 7.5, width = 7)
 ```
 

@@ -1789,44 +1789,9 @@ integrated_results &lt;- integrated_results %&gt;%
 a dispersal movement?</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGlzcGVyc2FsX2ZyZXF1ZW5jeSA8LSBpbnRlZ3JhdGVkX3Jlc3VsdHMgJT4lIFxuICBncm91cF9ieShhbmltYWxfbmFtZSkgJT4lXG4gIGdyb3VwX21hcCguZiA9IGZ1bmN0aW9uKHgsIHkpe1xuICAgIG1sIDwtIG1heCh4JHRpbWUpIC0gbWluKHgkdGltZSlcbiAgICBtbCA8LSBtbCAlPiUgXG4gICAgICBhcy5udW1lcmljXG4gICAgaWYgKG1sID49IDMwKXtcbiAgICAgIGRpc3BlcnNlZCA8LSBcIkRpc3BlcnNhbFwiICVpbiUgeCRwcmltYXJ5X3N0ZXBfc3RhdGVcbiAgICAgIFxuICAgICAgdGliYmxlKGFuaW1hbF9uYW1lID0geSRhbmltYWxfbmFtZSxcbiAgICAgICAgICAgICBvdmVyXzMwID0gVFJVRSxcbiAgICAgICAgICAgICBkaXNwZXJzZWQgPSBkaXNwZXJzZWQpICU+JSBcbiAgICAgICAgcmV0dXJuKClcbiAgICAgIFxuICAgIH0gZWxzZSB7XG4gICAgICB0aWJibGUoYW5pbWFsX25hbWUgPSB5JGFuaW1hbF9uYW1lLFxuICAgICAgICAgICAgIG92ZXJfMzAgPSBGQUxTRSxcbiAgICAgICAgICAgICBkaXNwZXJzZWQgPSBOQSkgJT4lIFxuICAgICAgICByZXR1cm4oKVxuICAgIH1cbiAgfSkgJT4lIFxuICBiaW5kX3Jvd3MoKSAlPiUgXG4gIGZpbHRlcihvdmVyXzMwKVxuXG5zdW0oZGlzcGVyc2FsX2ZyZXF1ZW5jeSRkaXNwZXJzZWQpICMzXG5gYGAifQ== -->
-<pre class="r"><code>dispersal_frequency &lt;- integrated_results %&gt;% 
-  group_by(animal_name) %&gt;%
-  group_map(.f = function(x, y){
-    ml &lt;- max(x$time) - min(x$time)
-    ml &lt;- ml %&gt;% 
-      as.numeric
-    if (ml &gt;= 30){
-      dispersed &lt;- &quot;Dispersal&quot; %in% x$primary_step_state
-      
-      tibble(animal_name = y$animal_name,
-             over_30 = TRUE,
-             dispersed = dispersed) %&gt;% 
-        return()
-      
-    } else {
-      tibble(animal_name = y$animal_name,
-             over_30 = FALSE,
-             dispersed = NA) %&gt;% 
-        return()
-    }
-  }) %&gt;% 
-  bind_rows() %&gt;% 
-  filter(over_30)
-
-sum(dispersal_frequency$dispersed) #3</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDNcbiJ9 -->
-<pre><code>[1] 3</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubnJvdyhkaXNwZXJzYWxfZnJlcXVlbmN5KSAjNDU2XG5gYGAifQ== -->
-<pre class="r"><code>nrow(dispersal_frequency) #456</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDQ1NlxuIn0= -->
-<pre><code>[1] 456</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtKGRpc3BlcnNhbF9mcmVxdWVuY3kkZGlzcGVyc2VkKS9ucm93KGRpc3BlcnNhbF9mcmVxdWVuY3kpICMwLjclXG5gYGAifQ== -->
-<pre class="r"><code>sum(dispersal_frequency$dispersed)/nrow(dispersal_frequency) #0.7%</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtKGRpc3BlcnNhbF9mcmVxdWVuY3kkZGlzcGVyc2VkKS9ucm93KGRpc3BlcnNhbF9mcmVxdWVuY3kpICMwLjclXG5cbmBgYCJ9 -->
+<pre class="r"><code>sum(dispersal_frequency$dispersed)/nrow(dispersal_frequency) #0.7%
+</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIDAuMDA2NTc4OTQ3XG4ifQ== -->
 <pre><code>[1] 0.006578947</code></pre>
