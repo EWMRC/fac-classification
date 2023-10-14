@@ -139,10 +139,18 @@ var_imp_full_model <- var_imp_summary %>%
 var_imp_summary <- var_imp_summary %>% 
   left_join(var_imp_full_model) %>% 
   mutate(adjusted_error = full_model_error - total_error) %>% 
-  mutate(variable_to_test = factor(variable_to_test, levels = c("dist_start", "breeding_abundance", "log_mean_dist_7", "julian_day", "y", "residence_time"), ordered = TRUE))
+  mutate(variable_to_test = recode(variable_to_test,
+                                   "dist_start" = "Distance from \nstart",
+                                   "breeding_abundance" = "Breeding \nrange",
+                                   "log_mean_dist_7" = "Log(distance to \nnearest points)",
+                                   "julian_day" = "Ordinal day",
+                                   "y" = "Latitude",
+                                   "residence_time" = "Residence time")) %>% 
+  mutate(variable_to_test = factor(variable_to_test, levels = c("Distance from \nstart", "Breeding \nrange", "Log(distance to \nnearest points)", "Ordinal day", "Latitude", "Residence time"), ordered = TRUE))
+  # mutate(variable_to_test = factor(variable_to_test, levels = c("dist_start", "breeding_abundance", "log_mean_dist_7", "julian_day", "y", "residence_time"), ordered = TRUE))
 ```
 
-```{r}
+```{r fig.height=4, fig.width=7}
 var_imp_summary %>% 
   filter(variable_to_test != "full") %>% 
   ggplot(mapping = aes(x = variable_to_test, y = adjusted_error, fill = test)) +
@@ -154,6 +162,7 @@ var_imp_summary %>%
   xlab("Excluded variable") +
   ylab("Reduction in accuracy from the full model (% error)") +
   labs(fill = "Error type")
-  
+
+ggsave("variable_importance_9_27_23.png", width = 7, height = 4)
 ```
 
