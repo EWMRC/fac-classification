@@ -28,7 +28,10 @@ flight_ground -> data decoding software
 amwo_data_reconstructed <- readRDS(here("classifier_integrated", "fac_primary_state_delineation.rds"))
 
 t <- amwo_data_reconstructed %>%
-  transmute(event_id = as.character(event_id), primary_step_state = paste("Step state:", primary_step_state), primary_point_state = paste("Point state:", primary_point_state))
+  transmute(event_id = as.character(event_id), 
+            primary_step_state = paste("Step state:", primary_step_state), 
+            primary_point_state = paste("Point state:", primary_point_state),
+            nesting_attempt = nesting_attempt)
 
 t %>%
   write.csv(file = "fac_primary_state_delineation.csv", row.names = FALSE, quote = FALSE)
