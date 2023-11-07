@@ -1,0 +1,12 @@
+Run time results:
+Spring male base- 59.61375 secs
+Spring male full- 470.4032 secs
+Runtime delay: 7.89
+
+Spring female base- 169.9453 secs
+Spring female full- 2292.522 secs
+Runtime delay: 13.49
+
+Fall base- 183.896 secs
+Fall full- 4061.491 secs
+Runtime delay: 22.09

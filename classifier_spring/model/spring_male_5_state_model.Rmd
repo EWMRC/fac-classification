@@ -145,6 +145,47 @@ fit_and_predict <- function(.x){
   
   return(list(model = m1, results = .x))
 }
+
+fit_and_predict_base <- function(.x){
+  set.seed(8)
+  m1 <- fitHMM(data=.x, nbStates=5, dist=list(step="gamma", angle="wrpcauchy", step_500 = "bern"), 
+               Par0 = list(step=c(0.293641627, 79.029506936, 0.157361645, 0.250739740, 0.086056474, #mean in km
+                                  0.455493251, 95.302307236, 0.211421668, 0.384581337, 0.128558113, # SD in km
+                                  0.005159307, 0.006024863, 0.006664064, 0.005636388, 0.006973284), #zeromass ie how many zeroes expected in the distribution
+                           angle=c(0.001353412, 0.0006979447, 0.01168102, 0.0005445842, 0, #mean
+                                   0.917280917, 0.9754146876, 0.59501513, 0.7614896594, 0.99999), #concentration
+                           step_500 = c(0.1336989, 0.99999, 0.06175472, 0.1351401, 0.04079765)), #prob
+               estAngleMean = list(angle=TRUE),
+               fixPar=fixPar,
+               #userBounds = userBounds,
+               #workBounds = workBounds,
+               #DM = DM,
+               knownStates = knownStates,
+               #formula = ~step_cov, #state 2 to 3. page 47 of vignette shows how to create the beta matrix
+               stateNames = stateNames)
+  
+  .x$step_state <- viterbi(m1)
+  
+  #step state shows the bird's behavior between points, point state shows the birds behavior at points
+  .x$point_state <- map(1:nrow(.x),  function(i){
+    if(i == 1){
+      return(.x[i,"step_state"]) #for the first row, return step state
+    } else if(.x[i,"ID"] != .x[i-1,"ID"]){ #is this the first point for this ID? Return the starting state
+      return(.x[i,"step_state"])
+    } else if(.x[i,"step_state"] == .x[i-1,"step_state"]){ #is the current step state the same as the last step state? Return the current step state
+      return(.x[i,"step_state"])
+    } else if(.x[i,"step_state"] == 2 & .x[i-1,"step_state"] == 1){ #is the current step state mig and the previous step pre-mig? Return pre-mig
+      return(1)
+    } else if(.x[i,"step_state"] == 2 & .x[i-1,"step_state"] == 3){#is the current step state mig and the previous step stopover? Return stopover
+      return(3)
+    } else{ #in all other circumstances, return the current step state
+      return(.x[i,"step_state"])
+    }
+    
+  }) %>% unlist()
+  
+  return(list(model = m1, results = .x))
+}
 ```
 
 
@@ -153,8 +194,15 @@ I'll run this once initially, and this can be rerun after ruleset changes if nec
 start_time <- Sys.time()
 results_initial <- fit_and_predict(amwo_hmm) #results_initial includes both the created model and the df with predicted states 
 end_time <- Sys.time()
-#plot(results_initial$model, plotCI = TRUE) #inspect estimated parameters for each state and state classifications for each individual
-#plotPR(results_initial$model) # lot observation index, theoretical quantiles, and lag
+
+difftime(end_time, start_time, units="secs")
+
+# Measure start and end time for the base model
+
+# start_time <- Sys.time()
+# results_initial <- fit_and_predict_base(amwo_hmm) #results_initial includes both the created model and the df with predicted states
+# end_time <- Sys.time()
+# difftime(end_time, start_time, units="secs")
 
 amwo_hmm_final <- results_initial$results
 
@@ -193,6 +241,11 @@ Add back in the movement from the summer transient bird (VA-2020-52-2020), manua
 # amwo_hmm_final %>%
 #   rbind(summer_transient_movement) ->
 #   amwo_hmm_final
+```
+
+Save the results so I can later determine how much the results changed after the ruleset
+```{r}
+results_for_comparison <- amwo_hmm_final
 ```
 
 Ruleset: If the total step distance between the end of 1 and the 1st 3 is less than 30.2 km, then everything until the last 3 in that sequence is 1
@@ -247,6 +300,23 @@ amwo_hmm_final <- amwo_hmm_final %>%
   }) %>%
   ungroup() %>%
   mutate(row_num = NULL)
+```
+
+Check to see how many individuals changed after the ruleset
+```{r}
+ruleset_changes <- tibble(ID = amwo_hmm_final$ID,
+                          init_point = results_for_comparison$point_state,
+                          init_step = results_for_comparison$step_state,
+                          final_point = amwo_hmm_final$point_state,
+                          final_step = amwo_hmm_final$step_state)
+
+ruleset_changes <- ruleset_changes %>% 
+  filter(init_point != final_point,
+         init_step != final_step)
+
+ruleset_changes <- ruleset_changes %>% 
+  distinct(ID, final_step)
+# 10 individuals had post-mig, none pre-mig
 ```
 
 Last bit: remove all of the false migrations
