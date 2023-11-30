@@ -1,0 +1,2 @@
+Categorize normally outside of the noted dates. Within the noted dates, override categorization as "non-migratory"
+Note that the before date is the first stationary point, the after date is the last stationary point

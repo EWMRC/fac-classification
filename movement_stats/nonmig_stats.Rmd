@@ -65,8 +65,8 @@ did_you_skip <- function(season_start_date, season_end_date){
 ```
 
 Seasons to delineate:
-Fall- 2017, 2018, 2019, 2020, and 2021
-Spring- 2018, 2019, 2020, 2021, and 2022
+Fall- 2017, 2018, 2019, 2020, 2021, 2022
+Spring- 2018, 2019, 2020, 2021, 2022, and 2023
 ```{r}
 fall_nonmigs_2017 <- did_you_skip(season_start_date = ymd("2017-10-15"), season_end_date = ymd("2017-12-06")) %>% 
   mutate(season = "Fall", year = 2017)
@@ -83,6 +83,9 @@ fall_nonmigs_2020 <- did_you_skip(season_start_date = ymd("2020-10-15"), season_
 fall_nonmigs_2021 <- did_you_skip(season_start_date = ymd("2021-10-15"), season_end_date = ymd("2021-12-06")) %>% 
   mutate(season = "Fall", year = 2021)
 
+fall_nonmigs_2022 <- did_you_skip(season_start_date = ymd("2022-10-15"), season_end_date = ymd("2022-12-06")) %>% 
+  mutate(season = "Fall", year = 2022)
+
 spring_nonmigs_2018 <- did_you_skip(season_start_date = ymd("2018-2-15"), season_end_date = ymd("2018-3-29")) %>% 
   mutate(season = "Spring", year = 2018)
 
@@ -97,13 +100,16 @@ spring_nonmigs_2021 <- did_you_skip(season_start_date = ymd("2021-2-15"), season
 
 spring_nonmigs_2022 <- did_you_skip(season_start_date = ymd("2022-2-15"), season_end_date = ymd("2022-3-29")) %>% 
   mutate(season = "Spring", year = 2022)
+
+spring_nonmigs_2023 <- did_you_skip(season_start_date = ymd("2023-2-15"), season_end_date = ymd("2023-3-29")) %>% 
+  mutate(season = "Spring", year = 2023)
 ```
 
 Combine all fall and spring birds together
 ```{r}
-fall_nonmigs <- bind_rows(fall_nonmigs_2017, fall_nonmigs_2018, fall_nonmigs_2019, fall_nonmigs_2020, fall_nonmigs_2021)
+fall_nonmigs <- bind_rows(fall_nonmigs_2017, fall_nonmigs_2018, fall_nonmigs_2019, fall_nonmigs_2020, fall_nonmigs_2021, fall_nonmigs_2022)
 
-spring_nonmigs <- bind_rows(spring_nonmigs_2018, spring_nonmigs_2019, spring_nonmigs_2020, spring_nonmigs_2021, spring_nonmigs_2022)
+spring_nonmigs <- bind_rows(spring_nonmigs_2018, spring_nonmigs_2019, spring_nonmigs_2020, spring_nonmigs_2021, spring_nonmigs_2022, spring_nonmigs_2023)
 ```
 
 Individually examine each non-migratory bird, verify that it didn't migrate, and determine where.
@@ -116,8 +122,6 @@ all_nonmigs <- fall_nonmigs %>%
 n: no data available on other seasons
 a1: data available, and migrated in that other season
 
-n RI-2018-02 Fall non-migratory RI
-n PA-2019-13 Fall non-migratory PA
 n PA-2019-18 Fall non-migratory PA
 a1 RI-2019-18 Fall non-migratory RI, migrated the next spring
 n RI-2019-29 Fall non-migratory RI (w/ dispersal movement)
@@ -130,22 +134,11 @@ a1 RI-2020-37 Spring non-migratory MD
 a1 RI-2020-40 Spring non-migratory VA
 n VA-2020-73 Spring non-migratory VA
 a1 QUE-2021-25 Spring non-migratory Alabama after migrating from QUE
+n LA-2023-19 Spring non-migratory Louisiana
 
 #had a slight data gap which excludes it from delineation, so excluding
 a1 ME-2020-18 Spring non-migratory North Carolina after migrating from ME 
 
-Fall tally: 8 of 174 (5%)
-Locations:
-RI 5
-PA 2
-VA 1
-
-Spring tally: 7 of 194 (4%)
-Locations:
-VA 2
-GA 1
-FL 1
-MD 1
-AL 1
-NC 1
-6 of 6 migrated in another season
+# used to be in here, but excluded in 2023
+n RI-2018-02 Fall non-migratory RI (actually dead)
+n PA-2019-13 Fall non-migratory PA (not migratory in this version)
