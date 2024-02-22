@@ -1,0 +1,289 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+editor_options:
+  chunk_output_type: inline
+---
+```{r include=FALSE}
+library(tidyverse)
+library(lubridate)
+library(move)
+library(momentuHMM)
+library(leaflet)
+library(RColorBrewer)
+library(sf)
+library(furrr)
+library(here)
+library(crawl)
+```
+
+Load data
+```{r}
+load(file=here("classifier_spring", "spring_male_data_base.RData"))
+```
+
+Define those birds for which I should estimate starting states (birds tagged in VA, NJ, or MD in this season)
+Defining "tagged this season" as "tagged less than 2 months (~60 days) before the first location of this seasonal delineation"
+```{r}
+starting_state_key <- amwo_hmm %>% #How many days before the first location of the season was this bird captured?
+  left_join(capture_dates) %>% 
+  group_by(ID) %>% 
+  nest() %>%
+  mutate(days_from_capture_to_first_loc = map(.x = data, .f = function(iter_df){
+    first_time <- iter_df %>% 
+      head(n = 1) %>% 
+      pull(time)
+    
+    cap_date <- iter_df %>% 
+      head(n = 1) %>% 
+      pull(capture_date)
+    
+    as.numeric(first_time - cap_date)/24 %>% #diff time is in hours, convert to days
+      return()
+  }))
+
+starting_state_key <- starting_state_key %>% 
+  mutate(estimate_starting_state = if_else((str_detect(ID, pattern = "VA") | str_detect(ID, pattern = "NJ") | str_detect(ID, pattern = "MD")) & days_from_capture_to_first_loc < 60, true = TRUE, false = FALSE)) %>% 
+  mutate(estimate_starting_state = if_else(ID %in% c("NJ-2019-22-2020"), true = FALSE, false = estimate_starting_state)) %>% #Two birds were tagged in Dec, but didn't start taking points until much later, which causes the estimator to push them into mig as an initial states
+  dplyr::select(ID, estimate_starting_state) %>% 
+  ungroup()
+
+amwo_hmm <- amwo_hmm %>% 
+  left_join(starting_state_key)
+```
+
+Assign a starting state for each individual
+This looks clunky, but it's necessary to maintain a momentuHMMData class
+```{r}
+known_state_key <- amwo_hmm %>% 
+  group_by(ID) %>% 
+  mutate(ranks = row_number()) %>% # rank observations (requires correct sorting), ifelse to convert first observations to state 1 and all others NA
+  ungroup() %>%
+  mutate(known = ifelse(estimate_starting_state == FALSE & ranks == 1, yes = 1, no = NA)) %>% #if this is the first row of an ID for which I don't want to estimate starting state, the initial step is 1
+  mutate(r1p1s2 = if_else(known == 1 & step >= 16.1, true = TRUE, false = FALSE)) %>% #if known == 1 and step >30.2, mark as a "rank 1 point 1 step 2" event to be reclassified in post-processing
+  mutate(r1p1s2 = replace_na(r1p1s2, replace = FALSE)) %>% #deals with NA issues 
+  mutate(known = ifelse(step >= 16.1, 2, known)) #if step length is >30.2, then it must be mig (even if known is already 1) 
+
+amwo_hmm$known <- known_state_key$known
+amwo_hmm$r1p1s2 <- known_state_key$r1p1s2
+
+knownStates <- amwo_hmm$known
+```
+
+##### trying 5-state model
+
+Label states and create distributions for movements
+```{r}
+stateNames <- c("pre", "migration", "stopover", "settling", "post")
+# dist <- list(step="gamma", angle="wrpcauchy", y = "norm", julian_day = "norm", log_mean_dist_7 = "norm", residence_time = "norm", dist_start = "bern", step_500 = "bern", breeding_abundance = "bern") #, lat_diff_abs = "gamma" , pts_10mi_log = "norm"
+```
+
+fix step length parameters and state transitions
+```{r}
+fixPar <- list(beta=matrix(c(NA,	-10000,	-10000,	-10000,	
+                             -10000,	NA,	NA,	NA,	
+                             -10000,	NA,	-10000, -10000, 
+                             -10000, -10000, -10000, NA, 
+                             -10000,	-10000,	-10000,	NA), nrow = 1, byrow = TRUE),
+               step_500 = c(0.000000001, 0.999999999, 0.000000001, 0.000000001, 0.000000001)) 
+```
+
+Create a function that fits the model, predicts states for each step (predicted and observed) and input in the dataset. Note: the listed x y is the starting location of the step. Then use this to determine what the bird's state was at any given point
+```{r}
+fit_and_predict <- function(.x){
+  set.seed(8)
+  m1 <- fitHMM(data=.x, nbStates=5, dist=list(step="gamma", angle="wrpcauchy", step_500 = "bern"), 
+               Par0 = list(step=c(0.293641627, 79.029506936, 0.157361645, 0.250739740, 0.086056474, #mean in km
+                                  0.455493251, 95.302307236, 0.211421668, 0.384581337, 0.128558113, # SD in km
+                                  0.005159307, 0.006024863, 0.006664064, 0.005636388, 0.006973284), #zeromass ie how many zeroes expected in the distribution
+                           angle=c(0.001353412, 0.0006979447, 0.01168102, 0.0005445842, 0, #mean
+                                   0.917280917, 0.9754146876, 0.59501513, 0.7614896594, 0.99999), #concentration
+                           step_500 = c(0.1336989, 0.99999, 0.06175472, 0.1351401, 0.04079765)), #prob
+               estAngleMean = list(angle=TRUE),
+               fixPar=fixPar,
+               #userBounds = userBounds,
+               #workBounds = workBounds,
+               #DM = DM,
+               knownStates = knownStates,
+               #formula = ~step_cov, #state 2 to 3. page 47 of vignette shows how to create the beta matrix
+               stateNames = stateNames)
+  
+  .x$step_state <- viterbi(m1)
+  
+  #step state shows the bird's behavior between points, point state shows the birds behavior at points
+  .x$point_state <- map(1:nrow(.x),  function(i){
+    if(i == 1){
+      return(.x[i,"step_state"]) #for the first row, return step state
+    } else if(.x[i,"ID"] != .x[i-1,"ID"]){ #is this the first point for this ID? Return the starting state
+      return(.x[i,"step_state"])
+    } else if(.x[i,"step_state"] == .x[i-1,"step_state"]){ #is the current step state the same as the last step state? Return the current step state
+      return(.x[i,"step_state"])
+    } else if(.x[i,"step_state"] == 2 & .x[i-1,"step_state"] == 1){ #is the current step state mig and the previous step pre-mig? Return pre-mig
+      return(1)
+    } else if(.x[i,"step_state"] == 2 & .x[i-1,"step_state"] == 3){#is the current step state mig and the previous step stopover? Return stopover
+      return(3)
+    } else{ #in all other circumstances, return the current step state
+      return(.x[i,"step_state"])
+    }
+    
+  }) %>% unlist()
+  
+  return(list(model = m1, results = .x))
+}
+```
+
+
+I'll run this once initially, and this can be rerun after ruleset changes if necessary
+```{r}
+start_time <- Sys.time()
+results_initial <- fit_and_predict(amwo_hmm) #results_initial includes both the created model and the df with predicted states 
+end_time <- Sys.time()
+
+difftime(end_time, start_time, units="secs")
+
+# Measure start and end time for the base model
+
+# start_time <- Sys.time()
+# results_initial <- fit_and_predict_base(amwo_hmm) #results_initial includes both the created model and the df with predicted states
+# end_time <- Sys.time()
+# difftime(end_time, start_time, units="secs")
+
+amwo_hmm_final <- results_initial$results
+
+results_initial$model #probabilities of transition
+
+print(start_time)
+print(end_time)
+```
+
+Fix the r1p1s2 issue
+```{r}
+amwo_hmm_final <- amwo_hmm_final %>% 
+  mutate(point_state = if_else(r1p1s2 == TRUE, 1, point_state))
+```
+
+What is the starting state for any given classification?
+```{r}
+amwo_hmm_final <- amwo_hmm_final %>%
+  group_by(ID) %>%
+  group_modify(function(iter_df, y){
+    iter_df$starting_state <- iter_df %>% 
+      head(n = 1) %>% 
+      pull(step_state)
+    
+    return(iter_df)
+  }) %>% 
+  ungroup()
+```
+
+Add back in the movement from the summer transient bird (VA-2020-52-2020), manually classified as post-mig
+```{r}
+# summer_transient_movement %>%
+#   mutate(step_state = c(rep(5,10), NA), point_state = 5) ->
+#   summer_transient_movement
+# 
+# amwo_hmm_final %>%
+#   rbind(summer_transient_movement) ->
+#   amwo_hmm_final
+```
+
+Save the results so I can later determine how much the results changed after the ruleset
+```{r}
+results_for_comparison <- amwo_hmm_final
+```
+
+Ruleset: If the total step distance between the end of 1 and the 1st 3 is less than 30.2 km, then everything until the last 3 in that sequence is 1
+```{r}
+amwo_hmm_final <- amwo_hmm_final %>%
+  group_by(ID) %>%
+  group_modify(function(iter_df, y){
+    iter_df <- iter_df %>%
+      mutate(., row_num = 1:nrow(.))
+    
+    first_30km_step <- iter_df %>%
+      filter(step >= 16.1) %>%
+      pull(row_num) %>%
+      min(na.rm = TRUE)
+    
+    if(any(iter_df$starting_state == 1)){
+      iter_df %>%
+        mutate(point_state = if_else(row_num <= first_30km_step, 1, point_state),
+               step_state = if_else(row_num < first_30km_step, 1, as.numeric(step_state))) %>%
+        return()
+    } else if (any(iter_df$starting_state == 2 | iter_df$starting_state == 3)){
+      iter_df %>%
+        return()
+    } else {
+      stop("Starting state is not 1, 2, or 3")
+    }
+  }) %>%
+  ungroup() %>%
+  mutate(row_num = NULL)
+```
+
+Ruleset: If the total step distance between the start of 4 and the most recent 3 is less than 30.2 km, then everything from the top of the most recent 3 down is 4
+```{r}
+amwo_hmm_final <- amwo_hmm_final %>%
+  group_by(ID) %>%
+  group_modify(function(iter_df, y){
+    final_state <- pull(tail(iter_df, 1), point_state)
+    if(final_state == 4 | final_state == 5){ #if the last point is in a final state, all locations after the last 30.2 km movement are also in a final state
+      iter_df <- iter_df %>%
+        mutate(., row_num = 1:nrow(.))
+      
+      last_30km_step <- iter_df %>%
+        filter(step >= 16.1) %>%
+        pull(row_num) %>%
+        max(na.rm = TRUE)
+      
+      iter_df <- iter_df %>%
+        mutate(point_state = if_else(row_num > last_30km_step & (point_state %in% c(1,2,3)), 4, point_state),
+               step_state = if_else(row_num > last_30km_step & (step_state %in% c(1,2,3)), 4, step_state))
+    }
+    return(iter_df)
+  }) %>%
+  ungroup() %>%
+  mutate(row_num = NULL)
+```
+
+Check to see how many individuals changed after the ruleset
+```{r}
+ruleset_changes <- tibble(ID = amwo_hmm_final$ID,
+                          init_point = results_for_comparison$point_state,
+                          init_step = results_for_comparison$step_state,
+                          final_point = amwo_hmm_final$point_state,
+                          final_step = amwo_hmm_final$step_state)
+
+ruleset_changes <- ruleset_changes %>% 
+  filter(init_point != final_point,
+         init_step != final_step)
+
+ruleset_changes <- ruleset_changes %>% 
+  distinct(ID, final_step)
+# 1 individual had post-mig, 7 had pre-mig
+```
+
+Last bit: remove all of the false migrations
+```{r}
+amwo_hmm_final <- amwo_hmm_final %>%
+  filter(ID != "RI-2019-21-2020", # Clip out the end of the previous fall migration
+         ID != "RI-2019-29-2020", #Dispersal movement caused an apparent migration
+         ID != "VA-2018-03-2018", #Foray loop caused an apparent migration
+         ID != "FL-2021-01-2021") #Foray loop caused an apparent migration
+
+```
+
+```{r}
+amwo_hmm_final <- amwo_hmm_final %>%
+  mutate(unk_init_flag = if_else(ID %in% individuals_tagged_too_late$ID, TRUE, FALSE)) %>%
+  mutate(unk_term_flag = if_else(ID %in% individuals_died_too_early, TRUE, FALSE))
+```
+
+Save
+```{r}
+#Save amwo_hmm_final to a file that can be reviewed via the Shiny app
+saveRDS(amwo_hmm_final, file = here("classifier_spring", "spring_male_5_state_model_base.rds"))
+saveRDS(results_initial$model, file = here("classifier_spring", "spring_male_5_state_parameters_base.rds"))
+```
