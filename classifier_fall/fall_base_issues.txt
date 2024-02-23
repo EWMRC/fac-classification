@@ -1,0 +1,33 @@
+Issues spotted:
+
+New changes:
+VA-2018-03-2018 start in premig
+VA-2019-47-2020 start in premig
+VA-2020-58-2020 start in premig
+VA-2021-92-2021 start in premig
+VA-2020-66-2020 foray loop (unclear why this isn't presant in the full model)
+
+Maintaining the following changes from the original:
+SC-2020-13-2020 Summer migration erroneously classified as a fall migration
+RI-2020-31-2020 take out a foray loop
+NY-2018-04-2018 foray loop
+NJ-2018-03-2018 foray loop
+PA-2018-01-2018 foray loop
+PA-2019-15-2019 foray loop
+VA-2021-92-2021 took out a foraging loop
+RI-2021-46-2021 foray loop
+NY-2018-03-2018 foray loop
+NY-2018-06-2018 several foray loops
+PA-2021-37-2021 foray loop
+RI-2021-59-2021 start in mig?
+RI-2021-58-2021 fix a bird which settles after 2/25
+RI-2021-59-2021 start in mig
+PA-2021-34-2021 regular >16.1km movements between sections of the homerange
+RI-2019-29-2019 foray loop, not a mig
+VT-2020-04-2020 erroneously programmed transmitter, can't delineate migration
+NJ-2018-11-2018 excluded
+GA-2021-18-2021 foray loop caused apparent mig
+
+Old changes that didn't make the new cut:
+ME-2018-08-2018 no foray loop
+VA-2019-48-2019 doesn't need a fixed post-mig state
