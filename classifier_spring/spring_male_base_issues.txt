@@ -8,7 +8,7 @@ RI-2019-21-2020 Clip out the end of the previous fall migration
 FL-2021-01-2021 Foray loop caused an apparent migration
 RI-2019-29-2020 Dispersal movement caused an apparent migration
 VA-2018-03-2018 Foray loop caused an apparent migration
-NJ-2018-03-2019 foray loop 2019-01-17 (encapsulated in a foray loop designation)
+NJ-2018-03-2019 foray loop 2019-01-17
 
 Old changes that didn't make the new cut:
 None

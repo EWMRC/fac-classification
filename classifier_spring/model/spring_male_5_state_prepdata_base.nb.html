@@ -1812,9 +1812,6 @@ amwo_spring &lt;- amwo_spring %&gt;%
   separate(ID2, c(&quot;m.state&quot;, &quot;m.year&quot;, &quot;third&quot;), sep = &quot;-&quot;) %&gt;% 
   dplyr::select(-third)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogRXhwZWN0ZWQgMyBwaWVjZXMuIEFkZGl0aW9uYWwgcGllY2VzIGRpc2NhcmRlZCBpbiA3MyByb3dzIFsxNDkxNSwgMTQ5MTYsIDE0OTE3LCAxNDkxOCwgMTQ5MTksIDE0OTIwLCAxNDkyMSwgMTQ5MjIsIDE0OTIzLCAxNDkyNCwgMTQ5MjUsIDE0OTI2LCAxNDkyNywgMTQ5MjgsIDE0OTI5LCAxNDkzMCwgMTQ5MzEsIDE0OTMyLCAxNDkzMywgMTQ5MzQsIC4uLl0uV2FybmluZzogRXhwZWN0ZWQgMyBwaWVjZXMuIE1pc3NpbmcgcGllY2VzIGZpbGxlZCB3aXRoIGBOQWAgaW4gNDM4NCByb3dzIFs5NTU4LCA5NTU5LCA5NTYwLCA5NTYxLCA5NTYyLCA5NTYzLCA5NTY0LCA5NTY1LCA5NTY2LCA5NTY3LCA5NTY4LCA5NTY5LCA5NTcwLCA5NTcxLCA5NTcyLCA5NTczLCA5NTc0LCA5NTc1LCA5NTc2LCA5NTc3LCAuLi5dLlxuIn0= -->
-<pre><code>Warning: Expected 3 pieces. Additional pieces discarded in 73 rows [14915, 14916, 14917, 14918, 14919, 14920, 14921, 14922, 14923, 14924, 14925, 14926, 14927, 14928, 14929, 14930, 14931, 14932, 14933, 14934, ...].Warning: Expected 3 pieces. Missing pieces filled with `NA` in 4384 rows [9558, 9559, 9560, 9561, 9562, 9563, 9564, 9565, 9566, 9567, 9568, 9569, 9570, 9571, 9572, 9573, 9574, 9575, 9576, 9577, ...].</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Filtering to just males</p>
@@ -2091,15 +2088,10 @@ amwo_hmm &lt;- amwo_hmm %&gt;% #simplify from abundance to breeding range
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubG9hZChmaWxlPWhlcmUoXCJjbGFzc2lmaWVyX3NwcmluZ1wiLCBcInNwcmluZ19tYWxlX2RhdGFfdGVtcC5SRGF0YVwiKSlcblxuYGBgIn0= -->
-<pre class="r"><code>load(file=here(&quot;classifier_spring&quot;, &quot;spring_male_data_temp.RData&quot;))
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2F2ZS5pbWFnZShmaWxlPWhlcmUoXCJjbGFzc2lmaWVyX3NwcmluZ1wiLCBcInNwcmluZ19tYWxlX2RhdGFfdGVtcC5SRGF0YVwiKSlcbiNsb2FkKGZpbGU9aGVyZShcImNsYXNzaWZpZXJfc3ByaW5nXCIsIFwic3ByaW5nX21hbGVfZGF0YV90ZW1wLlJEYXRhXCIpKVxuYGBgIn0= -->
+<pre class="r"><code>save.image(file=here(&quot;classifier_spring&quot;, &quot;spring_male_data_temp.RData&quot;))
+#load(file=here(&quot;classifier_spring&quot;, &quot;spring_male_data_temp.RData&quot;))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJlZCBTMyBtZXRob2Qgb3ZlcndyaXR0ZW4gYnkgJ2RhdGEudGFibGUnOlxuICBtZXRob2QgICAgICAgICAgIGZyb21cbiAgcHJpbnQuZGF0YS50YWJsZSAgICAgXG4ifQ== -->
-<pre><code>Registered S3 method overwritten by &#39;data.table&#39;:
-  method           from
-  print.data.table     </code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
