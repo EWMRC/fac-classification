@@ -1,0 +1,283 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r include = FALSE}
+library(tidyverse)
+library(move)
+library(sf)
+```
+
+```{r}
+fall_classified <- readRDS(here::here("classifier_fall", "fall_all_4_state_model_base.rds"))
+spring_male_classified <- readRDS(here::here("classifier_spring", "spring_male_5_state_model_base.rds"))
+spring_female_classified <- readRDS(here::here("classifier_spring", "spring_female_4_state_model_base.rds"))
+```
+
+Pulling the migratory initiation and termination date-times
+If the starting state != 1, then the initiation date is the date of the first location
+```{r}
+fall_initiation_dates <- fall_classified %>%
+  group_by(ID) %>%
+  group_modify(function(x, ...){
+    starting_point_state <- x %>% 
+      head(n = 1) %>% 
+      pull(point_state)
+    
+    if(starting_point_state == 1){
+      x %>% 
+        filter(step_state == 2) %>%
+        head(x, n = 1) %>%
+        mutate(init_state = "Stationary") %>%
+        return()
+    } else if(starting_point_state == 2 | starting_point_state == 3){
+      x %>% 
+        head(x, n = 1) %>%
+        mutate(init_state = "Migratory") %>%
+        return()
+    } else{
+      stop("Starting point state is not 1, 2, or 3")
+    }
+  }) %>%
+  dplyr::select(ID, animal_name, year, time, init_state) %>%
+  rename(time_initiation = time)
+
+fall_termination_dates <- fall_classified %>%
+  filter(step_state == 4) %>%
+  group_by(ID) %>%
+  group_modify(function(x, ...){head(x, n = 1)}) %>%
+  dplyr::select(ID, animal_name, year, time) %>%
+  rename(time_termination = time)
+
+spring_male_initiation_dates <- spring_male_classified %>%
+  group_by(ID) %>%
+  group_modify(function(x, ...){
+    starting_point_state <- x %>% 
+      head(n = 1) %>% 
+      pull(point_state)
+    
+    if(starting_point_state == 1){
+      x %>% 
+        filter(step_state == 2) %>%
+        head(x, n = 1) %>%
+        mutate(init_state = "Stationary") %>% 
+        return()
+    } else if(starting_point_state == 2 | starting_point_state == 3){
+      x %>% 
+        head(x, n = 1) %>%
+        mutate(init_state = "Migratory") %>%
+        return()
+    } else{
+      stop("Starting point state is not 1, 2, or 3")
+    }
+  }) %>%
+  dplyr::select(ID, animal_name, year, time, init_state) %>%
+  rename(time_initiation = time)
+
+spring_male_termination_dates <- spring_male_classified %>%
+  filter(step_state == 4 | step_state == 5) %>%
+  group_by(ID) %>%
+  group_modify(function(x, ...){head(x, n = 1)}) %>%
+  dplyr::select(ID, animal_name, year, time) %>%
+  rename(time_termination = time)
+
+spring_female_initiation_dates <- spring_female_classified %>%
+  group_by(ID) %>%
+  group_modify(function(x, ...){
+    starting_point_state <- x %>% 
+      head(n = 1) %>% 
+      pull(point_state)
+    
+    if(starting_point_state == 1){
+      x %>% 
+        filter(step_state == 2) %>%
+        head(x, n = 1) %>%
+        mutate(init_state = "Stationary") %>%
+        return()
+    } else if(starting_point_state == 2 | starting_point_state == 3){
+      x %>% 
+        head(x, n = 1) %>%
+        mutate(init_state = "Migratory") %>%
+        return()
+    } else{
+      stop("Starting point state is not 1, 2, or 3")
+    }
+  }) %>%
+  dplyr::select(ID, animal_name, year, time, init_state) %>%
+  rename(time_initiation = time) 
+
+spring_female_termination_dates <- spring_female_classified %>%
+  filter(step_state == 4) %>%
+  group_by(ID) %>%
+  group_modify(function(x, ...){head(x, n = 1)}) %>%
+  dplyr::select(ID, animal_name, year, time) %>%
+  rename(time_termination = time)
+
+spring_initiation_dates <- bind_rows(spring_male_initiation_dates, spring_female_initiation_dates)
+spring_termination_dates <- bind_rows(spring_male_termination_dates, spring_female_termination_dates)
+
+fall_migration_dates <- full_join(fall_initiation_dates, fall_termination_dates) %>%
+  ungroup()
+
+spring_migration_dates <- full_join(spring_initiation_dates, spring_termination_dates) %>%
+  ungroup()
+
+fall_migration_dates <- fall_migration_dates %>%
+  dplyr::select(animal_name, time_initiation, time_termination, init_state) %>%
+  mutate(season = "Fall")
+
+spring_migration_dates <- spring_migration_dates %>%
+  dplyr::select(animal_name, time_initiation, time_termination, init_state) %>%
+  mutate(season = "Spring")
+
+migration_dates <- bind_rows(fall_migration_dates, spring_migration_dates)
+```
+
+Manually set a late settlement (after 6-30)
+```{r}
+migration_dates <- migration_dates %>% 
+  mutate(time_termination = if_else(animal_name == "VA-2019-45" & season == "Spring", lubridate::ymd_hms("2020-07-28 19:01:20"), time_termination))
+```
+
+Download Movebank data, limit to times before Aug 1 2022 (more recent seasons haven't been delineated yet)
+```{r}
+amwo_move <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", 
+                             login = readRDS(here::here("movebank_credentials.rds")), 
+                             removeDuplicatedTimestamps=TRUE)
+
+amwo_data <- as.data.frame(amwo_move) %>%
+  filter(mortality_status == 0) %>% 
+  transmute(animal_name = local_identifier,
+            time = timestamp,
+            event_id = event_id,
+            lat = location_lat,
+            long = location_long) %>%
+  filter(time < lubridate::mdy("8/1/2022"))
+```
+
+1) Join in a way that creates a duplicate record for each location and potential mig bout
+2) Classify each record using the potential mig info
+3) Arrange the states using an ordered factor, with "stationary" on the bottom
+```{r}
+amwo_data_w_duplicates <- amwo_data %>%
+  left_join(migration_dates) 
+
+birds_w_no_mig_movements <- amwo_data_w_duplicates %>%
+  filter(is.na(time_initiation)) %>% 
+  pull(animal_name)
+
+amwo_data_w_duplicates <- amwo_data_w_duplicates %>% #Fill in dummy dates for the migration so that birds with no migratory movements are always registered as stationary
+  mutate(init_state = if_else(is.na(time_initiation), "Stationary", init_state),
+         time_initiation = if_else(is.na(time_initiation), lubridate::ymd("2035-01-01", tz = "UTC"), time_initiation),
+         time_termination = if_else(is.na(time_initiation), lubridate::ymd("2035-01-01", tz = "UTC"), time_termination),
+         season = if_else(is.na(time_initiation), "None", season))
+
+#step state
+amwo_data_w_duplicates$primary_step_state <- amwo_data_w_duplicates %>%
+  dplyr::select(time, time_initiation, time_termination, season) %>%
+  pmap(.f = function(time, time_initiation, time_termination, season){
+    step_state <- "Stationary"
+    #Silently implied; if both time_initiation and time_termination are NA, remains Stationary
+    
+    if(is.na(time_initiation)){ #error handling: there should always be an initiation date
+      stop("No inititation date")
+    }
+    
+    if(is.na(time_termination)){ #If there is no termination date
+      if(time >= time_initiation){ 
+        step_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
+      }
+    }
+    
+    if(!is.na(time_termination)){ #If there is a termination date
+      if(time >= time_initiation & time < time_termination){ 
+        step_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
+      }
+    }
+    return(step_state)
+  }) %>%
+  unlist() %>%
+  factor(levels = c("Migratory (spring)", "Migratory (fall)", "Stationary"), ordered = TRUE)
+
+#point state
+amwo_data_w_duplicates$primary_point_state <- amwo_data_w_duplicates %>%
+  dplyr::select(time, time_initiation, time_termination, season, init_state) %>%
+  pmap(.f = function(time, time_initiation, time_termination, season, init_state){
+    point_state <- "Stationary"
+    #Silently implied; if both time_initiation and time_termination are NA, remains Stationary
+    
+    if(is.na(time_initiation)){ #error handling: there should always be an initiation date
+      stop("No inititation date")
+    }
+    
+    if(is.na(time_termination)){ #If there is no termination date
+      if(init_state == "Stationary"){
+        if(time > time_initiation){ 
+          point_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
+        }
+      } else { #if the bird starts in a mig state, then the first point is migratory
+        if(time >= time_initiation){ 
+          point_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
+        }
+      }
+    }
+    
+    if(!is.na(time_termination)){ #If there is a termination date
+      if(init_state == "Stationary"){
+        if(time > time_initiation & time < time_termination){
+          point_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
+        }
+      } else { #if the bird starts in a mig state, then the first point is migratory
+        if(time >= time_initiation & time < time_termination){
+          point_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
+        }
+      }
+    }
+    
+    return(point_state)
+  }) %>%
+  unlist() %>%
+  factor(levels = c("Migratory (spring)", "Migratory (fall)", "Stationary"), ordered = TRUE)
+```
+
+4) Use head on records, grouped by event_id, to keep only the "top" record from each group. If there was any migratory movement during that time period, the top record will be a migratory state. If not, the top record will be a stationary state
+```{r}
+amwo_data_reconstructed <- amwo_data_w_duplicates %>%
+  group_by(event_id) %>%
+  arrange(primary_step_state, .by_group = TRUE) %>%
+  group_modify(.f = function(x, ...){head(x, n = 1)}) %>% 
+  dplyr::select(-season, -time_initiation, -time_termination) %>%
+  ungroup()
+```
+
+Arrange by animal_id and time to ensure that the tracks graph correctly
+```{r}
+amwo_data_reconstructed <- amwo_data_reconstructed %>%
+  group_by(animal_name) %>%
+  arrange(time, .by_group = TRUE) %>%
+  ungroup() %>% 
+  dplyr::select(-init_state)
+```
+
+Set any bugged tracks to "Unknown- bugged frequent schedule"
+```{r}
+amwo_data_reconstructed <- amwo_data_reconstructed %>%
+  mutate(primary_step_state = if_else(animal_name == "VT-2020-01" | animal_name == "VT-2020-02" | animal_name == "VT-2020-03" | animal_name == "VT-2020-04" | animal_name == "VT-2020-12", "Unknown- bugged frequent schedule", as.character(primary_step_state)),
+         primary_point_state = if_else(animal_name == "VT-2020-01" | animal_name == "VT-2020-02" | animal_name == "VT-2020-03" | animal_name == "VT-2020-04" | animal_name == "VT-2020-12", "Unknown- bugged frequent schedule", as.character(primary_point_state)))
+```
+
+```{r}
+saveRDS(amwo_data_reconstructed, file = here::here("classifier_integrated", "fac_primary_state_delineation_base.rds"))
+```
+
+Run auxiliary state designations
+```{r}
+source(here::here("classifier_integrated", "compile_results", "summer_dispersal_movements_base.R"))
+source(here::here("classifier_integrated", "compile_results", "summer_migrations_base.R"))
+source(here::here("classifier_integrated", "compile_results", "summer_foray_loops_base.R"))
+source(here::here("classifier_integrated", "compile_results", "winter_foray_loops_base.R"))
+source(here::here("classifier_integrated", "compile_results", "winter_dispersal_movements_base.R"))
+source(here::here("classifier_integrated", "compile_results", "spring_foray_loops_base.R"))
+source(here::here("classifier_integrated", "compile_results", "fall_foray_loops_base.R"))
+```

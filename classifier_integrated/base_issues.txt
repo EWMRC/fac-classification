@@ -1,0 +1,43 @@
+GA-2021-18 orphaned foray loop
+MD-2020-15 orphaned foray loop
+NC-2020-15 mig spring overwrites the following fall
+NC-2020-16 may overwrite the following fall?
+
+Stopping at NC-2020-16. 
+Pretty clear that using this technique won't generate mig peaks and phenology
+designations that would pass the smell test, and I should probably just use the full model for those graphs
+
+Instead, I'll go through and check LDM designations using the new model
+
+Anticipated results structure:
+- Comparative error rates
+- Distance/duration/phenology/LDM results using both models
+- Migratory peaks using the full model
+
+Checking foray loops to see if they're still valid:
+Fall foray loops:
+All good
+
+Spring foray loops:
+All good
+
+Summer dispersals:
+Remove VA-2019-23
+
+Summer foray loops:
+Remove MD-2020-15
+Remove GA-2021-18
+
+Summer migrations:
+All good
+
+Winter dispersals:
+All good
+
+Winter foray loops:
+Remove ME-2018-08
+
+New foray loops to add:
+NY-2018-07-2019 (also added to base model)
+RI-2020-44-2021 (also added to base model)
+VA-2020-66-2020 (check why it isn't in full model)
