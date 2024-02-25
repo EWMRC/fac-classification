@@ -367,7 +367,7 @@ amwo_hmm_final <- amwo_hmm_final %>%
     ID != "SC-2020-13-2020", #Summer migration erroneously classified as a fall migration
     ID != "GA-2021-18-2021") #Foray loop caused an apparent migration
 ```
-SC-2020-13
+
 ```{r}
 amwo_hmm_final <- amwo_hmm_final %>%
   mutate(unk_init_flag = if_else(ID %in% individuals_tagged_too_late$ID, TRUE, FALSE)) %>%

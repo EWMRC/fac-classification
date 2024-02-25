@@ -1,0 +1,35 @@
+Still need to add:
+NY-2018-07-2019 spring female (removed from initial classifier- need to add as loop)
+Added to fall model, need to rerun and then add the designation 
+Added the designation and checked
+
+RI-2020-44-2021 spring female (removed from initial classifier- need to add as loop)
+start before 2021-01-31, end after 2021-02-12 (fall)
+Added the designation and checked
+
+VA-2020-66-2020 (check why it isn't in full model)
+In the full model, just not clipped out in fall
+Added to fall model, need to rerun (designation done)
+Checked the designation
+
+filter(!(ID == "NY-2018-07-2018" & julian_day %in% c(337:344)))
+filter(!(ID == "RI-2020-44-2020" & julian_day %in% c(339:353)))
+filter(!(ID == "VA-2020-66-2020" & julian_day %in% c(334:339)))
+
+#NY-2018-07
+#starts on 2019-01-29, ends on 2019-02-13
+# foray loop steps: 9064971965, 9126872530
+# foray loop points: 9126872530
+
+amwo_data_reconstructed <- amwo_data_reconstructed %>% 
+  mutate(primary_step_state = if_else(event_id %in% c(9064971965, 9126872530), "Foray loop", primary_step_state),
+         primary_point_state = if_else(event_id %in% c(9126872530), "Foray loop", primary_point_state))
+
+#RI-2020-44
+#starts on 2021-01-29, ends on 2021-02-12
+# foray loop steps: 17786229916, 17786229926, 17786229933, 17786229963, 17786229979, 17786230000, 17833286376, 17833286393
+# foray loop points: 17786229926, 17786229933, 17786229963, 17786229979, 17786230000, 17833286376, 17833286393
+
+amwo_data_reconstructed <- amwo_data_reconstructed %>% 
+  mutate(primary_step_state = if_else(event_id %in% c(17786229916, 17786229926, 17786229933, 17786229963, 17786229979, 17786230000, 17833286376, 17833286393), "Foray loop", primary_step_state),
+         primary_point_state = if_else(event_id %in% c(17786229926, 17786229933, 17786229963, 17786229979, 17786230000, 17833286376, 17833286393), "Foray loop", primary_point_state))
