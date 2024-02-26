@@ -513,7 +513,7 @@ amwo_hmm <- amwo_hmm %>% #simplify from abundance to breeding range
 
 ```{r}
 save.image(file=here("classifier_spring", "spring_female_data_temp.RData"))
-#load(file=here("classifier_spring", "spring_female_data_temp.RData"))
+# load(file=here("classifier_spring", "spring_female_data_temp.RData"))
 ```
 
 ```{r}
@@ -548,7 +548,9 @@ amwo_hmm <- amwo_hmm %>% #removing ranging movements
   #filter(!(ID == "AL-2021-12-2021" & time == ymd_hms("2021-02-26 05:02:56"))) %>% #This shouldn't throw off the designation in the new model. Exclude from paper, maybe remove later.
   filter(!(ID == "ME-2018-13-2019" & julian_day == 7)) %>% #late fall migration
   filter(!(ID == "RI-2021-46-2022" & julian_day %in% c(41, 43, 45))) %>% 
-  filter(!(ID == "VA-2020-66-2021" & julian_day %in% c(24, 29))) #foray loop
+  filter(!(ID == "VA-2020-66-2021" & julian_day %in% c(24, 29))) %>%  #foray loop
+  filter(!(ID == "NY-2018-07-2019" & julian_day %in% c(28:35))) %>% #foray loop
+  filter(!(ID == "RI-2020-44-2021" & julian_day %in% c(29:43)))
 ```
 
 remove birds with no individual step lengths >30.2km (20 miles). In practice this pulls birds that never initiate a substantial migratory movement but doesn't penalize birds that DO migrate, as they always make at least one substantial movement.
