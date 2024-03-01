@@ -58,9 +58,9 @@ foray_frequency <- integrated_results %>%
   bind_rows() %>% 
   filter(over_30)
 
-sum(foray_frequency$forayed) #16
+sum(foray_frequency$forayed) #18
 nrow(foray_frequency) #456
-sum(foray_frequency$forayed)/nrow(foray_frequency) #3%
+sum(foray_frequency$forayed)/nrow(foray_frequency) #4%
 ```
 
 Measure dispersal length

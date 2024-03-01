@@ -118,19 +118,19 @@ a1: data available, and migrated in that other season
 
 New:
 Selecting from 35 potentially non-mig birds (most of these just migrated late)
-n PA-2019-18 Fall non-migratory PA
-n RI-2019-29 Fall non-migratory RI (w/ dispersal movement)
-a1 VA-2020-52 Fall non-migratory CT (w/ dispersal movement)
-n VA-2020-61 Fall non-migratory VA
-n RI-2021-55 Fall non-migratory RI
-n RI-2021-56 Fall non-migratory RI
+F n PA-2019-18 Fall non-migratory PA
+M n RI-2019-29 Fall non-migratory RI (w/ dispersal movement)
+M a1 VA-2020-52 Fall non-migratory CT (w/ dispersal movement)
+M n VA-2020-61 Fall non-migratory VA
+F n RI-2021-55 Fall non-migratory RI
+F n RI-2021-56 Fall non-migratory RI
 
-a1 NY-2019-11 Spring non-migratory GA after migrating from NY
-n FL-2021-01 Spring non-migratory FL (w/ foray loop)
-a1 RI-2020-37 Spring non-migratory MD
-a1 RI-2020-40 Spring non-migratory VA
-n VA-2020-73 Spring non-migratory VA
-a1 QUE-2021-25 Spring non-migratory AL after migrating from QUE
+F a1 NY-2019-11 Spring non-migratory GA after migrating from NY
+M n FL-2021-01 Spring non-migratory FL (w/ foray loop)
+F a1 RI-2020-37 Spring non-migratory MD
+F a1 RI-2020-40 Spring non-migratory VA
+F n VA-2020-73 Spring non-migratory VA
+F a1 QUE-2021-25 Spring non-migratory AL after migrating from QUE
 
 
 Fall tally: 6 of 176 (3.4%)

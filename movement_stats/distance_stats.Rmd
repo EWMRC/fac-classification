@@ -24,44 +24,8 @@ spring_female_classified <- readRDS(here::here("classifier_spring", "spring_fema
 
 Fall
 ```{r}
-fall_male_results <- fall_classified %>%
-  filter(sex == "Male") %>% 
-  group_by(ID) %>%
-  group_modify(function(x, ...){
-    starting_point_state <- x %>% 
-      head(n = 1) %>% 
-      pull(point_state)
-    
-    ending_point_state <- x %>% 
-      tail(n = 1) %>% 
-      pull(point_state)
-    
-    if(starting_point_state == 1 & ending_point_state == 4) {
-      total_dist <- x %>% 
-        filter(step_state == 2) %>% #excluding movements during stopover
-        pull(step) %>% 
-        sum() #units: km
-      
-      starting_date <- x %>% 
-        filter(step_state == 2) %>% 
-        head(n = 1) %>% 
-        pull(julian_day)
-      
-      ending_date <- x %>% 
-        filter(step_state == 4) %>% 
-        head(n = 1) %>% 
-        pull(julian_day)
-        
-      tibble(total_dist = total_dist, days_mig = ending_date - starting_date) %>% 
-        return()
-    } else {
-      tibble(total_dist = NA, days_mig = NA) %>% 
-        return()
-    }
-  })
-
-fall_female_results <- fall_classified %>%
-  filter(sex == "Female") %>% 
+fall_results <- fall_classified %>%
+  # filter(sex == "Male") %>% 
   group_by(ID) %>%
   group_modify(function(x, ...){
     starting_point_state <- x %>% 
@@ -99,66 +63,35 @@ fall_female_results <- fall_classified %>%
 
 
 ```{r}
-#Fall male dist- mean
-fall_male_results %>% 
+#Fall dist- mean
+fall_results %>% 
   pull(total_dist) %>% 
   mean(na.rm = T)
 
-#Fall male dist- sd
-fall_male_results %>% 
+#Fall dist- sd
+fall_results %>% 
   pull(total_dist) %>% 
   sd(na.rm = T)
 
-#Fall male dist- range
-fall_male_results %>% 
+#Fall dist- range
+fall_results %>% 
   pull(total_dist) %>% 
   range(na.rm = T)
-
-#Fall female dist- mean
-fall_female_results %>% 
-  pull(total_dist) %>% 
-  mean(na.rm = T)
-
-#Fall female dist- sd
-fall_female_results %>% 
-  pull(total_dist) %>% 
-  sd(na.rm = T)
-
-#Fall female dist- range
-fall_female_results %>% 
-  pull(total_dist) %>% 
-  range(na.rm = T)
-
 ```
 
 ```{r}
-#Fall male time- mean
-fall_male_results %>% 
+#Fall time- mean
+fall_results %>% 
   pull(days_mig) %>% 
   mean(na.rm = T)
 
-#Fall male time- sd
-fall_male_results %>% 
+#Fall time- sd
+fall_results %>% 
   pull(days_mig) %>% 
   sd(na.rm = T)
 
-#Fall male time- range
-fall_male_results %>% 
-  pull(days_mig) %>% 
-  range(na.rm = T)
-
-#Fall female time- mean
-fall_female_results %>% 
-  pull(days_mig) %>% 
-  mean(na.rm = T)
-
-#Fall female time- sd
-fall_female_results %>% 
-  pull(days_mig) %>% 
-  sd(na.rm = T)
-
-#Fall female time- range
-fall_female_results %>% 
+#Fall time- range
+fall_results %>% 
   pull(days_mig) %>% 
   range(na.rm = T)
 ```

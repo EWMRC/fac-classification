@@ -504,7 +504,7 @@ amwo_hmm <- amwo_hmm %>% #simplify from abundance to breeding range
 
 ```{r}
 save.image(file=here("classifier_spring", "spring_male_data_temp.RData"))
-#load(file=here("classifier_fall", "fall_all_data_temp.RData"))
+load(file=here("classifier_fall", "fall_all_data_temp.RData"))
 ```
 
 ```{r}

@@ -1754,26 +1754,13 @@ display: none;
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KGx1YnJpZGF0ZSlcbmxpYnJhcnkoaGVyZSlcbmxpYnJhcnkoYW10KVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KGx1YnJpZGF0ZSlcbmxpYnJhcnkoaGVyZSlcbmxpYnJhcnkoYW10KVxubGlicmFyeShzZilcbmBgYCJ9 -->
 <pre class="r"><code>library(tidyverse)
 library(lubridate)
 library(here)
-library(amt)</code></pre>
+library(amt)
+library(sf)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogcGFja2FnZSDigJhhbXTigJkgd2FzIGJ1aWx0IHVuZGVyIFIgdmVyc2lvbiA0LjIuM1xuQXR0YWNoaW5nIHBhY2thZ2U6IOKAmGFtdOKAmVxuXG5UaGUgZm9sbG93aW5nIG9iamVjdCBpcyBtYXNrZWQgZnJvbSDigJhwYWNrYWdlOnN0YXRz4oCZOlxuXG4gICAgZmlsdGVyXG4ifQ== -->
-<pre><code>Warning: package ‘amt’ was built under R version 4.2.3
-Attaching package: ‘amt’
-
-The following object is masked from ‘package:stats’:
-
-    filter</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShzZilcbmBgYCJ9 -->
-<pre class="r"><code>library(sf)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTGlua2luZyB0byBHRU9TIDMuOS4zLCBHREFMIDMuNS4yLCBQUk9KIDguMi4xOyBzZl91c2VfczIoKSBpcyBUUlVFXG4ifQ== -->
-<pre><code>Linking to GEOS 3.9.3, GDAL 3.5.2, PROJ 8.2.1; sf_use_s2() is TRUE</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
@@ -1862,23 +1849,83 @@ summer_migs &lt;- summer_birds %&gt;%
 <p>Initiation and termination dates</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmFuZ2Uoc3VtbWVyX3Rlcm1pbmF0aW9uX2RhdGVzKVxuXG5gYGAifQ== -->
-<pre class="r"><code>range(summer_termination_dates)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWVyX3Rlcm1pbmF0aW9uX2RhdGVzXG5cbmBgYCJ9 -->
+<pre class="r"><code>summer_termination_dates
 </code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMjAyMC0wNy0wOFwiIFwiMjAyMC0wOC0yMlwiXG4ifQ== -->
-<pre><code>[1] &quot;2020-07-08&quot; &quot;2020-08-22&quot;</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMjAyMC0wNy0yNVwiIFwiMjAyMC0wOC0yMlwiIFwiMjAyMC0wNy0wOFwiXG4ifQ== -->
+<pre><code>[1] &quot;2020-07-25&quot; &quot;2020-08-22&quot; &quot;2020-07-08&quot;</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p>Delineate the length and distance of summer migrations</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWVyX21pZ190cmFja3MkbWlnX2xlbmd0aCAlPiUgXG4gIGFzLm51bWVyaWMoKSAlPiUgXG4gIHJhbmdlKClcblxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWVyX21pZ190cmFja3MgPC0gaW50ZWdyYXRlZF9yZXN1bHRzICU+JSBcbiAgZmlsdGVyKHByaW1hcnlfc3RlcF9zdGF0ZSA9PSBcIk1pZ3JhdG9yeSAoc3VtbWVyKVwiIHwgKHByaW1hcnlfcG9pbnRfc3RhdGUgPT0gXCJTdGF0aW9uYXJ5XCIgJiBwcmlvcl9zdGVwID09IFwiTWlncmF0b3J5IChzdW1tZXIpXCIpKSAlPiUgXG4gIGdyb3VwX2J5KGFuaW1hbF9uYW1lKSAlPiUgXG4gIG5lc3QoKSAlPiUgXG4gIG11dGF0ZSh0cmFjayA9IG1hcChkYXRhLCAuZiA9IGZ1bmN0aW9uKGkpe1xuICAgIGkgPC0gaSAlPiUgXG4gICAgICBzdF9hc19zZihjcnMgPSA0MzI2LCBjb29yZHMgPSBjKFwibG9uZ1wiLCBcImxhdFwiKSkgJT4lIFxuICAgICAgc3RfdHJhbnNmb3JtKDUwNzApXG4gICAgXG4gICAgY2JpbmQoc3RfZHJvcF9nZW9tZXRyeShpKSwgc3RfY29vcmRpbmF0ZXMoaSkpICU+JVxuICAgICAgbWFrZV90cmFjaygueCA9IFgsIC55ID0gWSwgLnQgPSB0aW1lLCBjcnMgPSA1MDcwKVxuICAgIFxuICB9KSkgJT4lIFxuICBtdXRhdGUoc3RlcF9sZW5ndGhzID0gbWFwKHRyYWNrLCAuZiA9IGZ1bmN0aW9uKHgpe1xuICAgIHggJT4lXG4gICAgICBzdGVwX2xlbmd0aHMoKVxuICB9KSkgJT4lIFxuICBtdXRhdGUobWlnX2Rpc3QgPSBtYXAoc3RlcF9sZW5ndGhzLCAuZiA9IGZ1bmN0aW9uKHgpe1xuICAgIHggJT4lIFxuICAgICAgc3VtKC4sIG5hLnJtID0gVFJVRSkvMTAwMFxuICB9KVxuICApICU+JSBcbiAgbXV0YXRlKG1pZ19sZW5ndGggPSBtYXAoZGF0YSwgZnVuY3Rpb24oeCl7XG4gICAgbWwgPC0gbWF4KHgkdGltZSkgLSBtaW4oeCR0aW1lKVxuICAgIG1sICU+JSBcbiAgICAgIHJvdW5kKCkgJT4lIFxuICAgICAgcmV0dXJuKClcbiAgfSkpXG5gYGAifQ== -->
+<pre class="r"><code>summer_mig_tracks &lt;- integrated_results %&gt;% 
+  filter(primary_step_state == &quot;Migratory (summer)&quot; | (primary_point_state == &quot;Stationary&quot; &amp; prior_step == &quot;Migratory (summer)&quot;)) %&gt;% 
+  group_by(animal_name) %&gt;% 
+  nest() %&gt;% 
+  mutate(track = map(data, .f = function(i){
+    i &lt;- i %&gt;% 
+      st_as_sf(crs = 4326, coords = c(&quot;long&quot;, &quot;lat&quot;)) %&gt;% 
+      st_transform(5070)
+    
+    cbind(st_drop_geometry(i), st_coordinates(i)) %&gt;%
+      make_track(.x = X, .y = Y, .t = time, crs = 5070)
+    
+  })) %&gt;% 
+  mutate(step_lengths = map(track, .f = function(x){
+    x %&gt;%
+      step_lengths()
+  })) %&gt;% 
+  mutate(mig_dist = map(step_lengths, .f = function(x){
+    x %&gt;% 
+      sum(., na.rm = TRUE)/1000
+  })
+  ) %&gt;% 
+  mutate(mig_length = map(data, function(x){
+    ml &lt;- max(x$time) - min(x$time)
+    ml %&gt;% 
+      round() %&gt;% 
+      return()
+  }))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJlZCBTMyBtZXRob2Qgb3ZlcndyaXR0ZW4gYnkgJ2RhdGEudGFibGUnOlxuICBtZXRob2QgICAgICAgICAgIGZyb21cbiAgcHJpbnQuZGF0YS50YWJsZSAgICAgXG4ifQ== -->
+<pre><code>Registered S3 method overwritten by &#39;data.table&#39;:
+  method           from
+  print.data.table     </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI2Rpc3RhbmNlIG9mIHN1bW1lciBtaWdyYXRpb25zIChrbSlcbnN1bW1lcl9taWdfdHJhY2tzJG1pZ19kaXN0ICU+JSBcbiAgYXMubnVtZXJpYygpICU+JSBcbiAgbWVhbigpXG5gYGAifQ== -->
+<pre class="r"><code>#distance of summer migrations (km)
+summer_mig_tracks$mig_dist %&gt;% 
+  as.numeric() %&gt;% 
+  mean()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDc1NS45OTgxXG4ifQ== -->
+<pre><code>[1] 755.9981</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWVyX21pZ190cmFja3MkbWlnX2Rpc3QgJT4lIFxuICBhcy5udW1lcmljKCkgJT4lIFxuICByYW5nZSgpXG5gYGAifQ== -->
+<pre class="r"><code>summer_mig_tracks$mig_dist %&gt;% 
+  as.numeric() %&gt;% 
+  range()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdICA1MjIuNTY2NiAxMTA1Ljk5NzNcbiJ9 -->
+<pre><code>[1]  522.5666 1105.9973</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI2xlbmd0aCBvZiBzdW1tZXIgbWlncmF0aW9ucyAoZGF5cylcbnN1bW1lcl9taWdfdHJhY2tzJG1pZ19sZW5ndGggJT4lIFxuICBhcy5udW1lcmljKCkgJT4lIFxuICBtZWFuKClcbmBgYCJ9 -->
+<pre class="r"><code>#length of summer migrations (days)
+summer_mig_tracks$mig_length %&gt;% 
+  as.numeric() %&gt;% 
+  mean()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDM5XG4ifQ== -->
+<pre><code>[1] 39</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWVyX21pZ190cmFja3MkbWlnX2xlbmd0aCAlPiUgXG4gIGFzLm51bWVyaWMoKSAlPiUgXG4gIHJhbmdlKClcbmBgYCJ9 -->
 <pre class="r"><code>summer_mig_tracks$mig_length %&gt;% 
   as.numeric() %&gt;% 
-  range()
-</code></pre>
+  range()</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIDM1IDQyXG4ifQ== -->
 <pre><code>[1] 35 42</code></pre>
