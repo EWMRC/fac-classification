@@ -1,0 +1,14 @@
+New changes:
+NJ-2019-22-2020 shouldn't start in mig state; forcing it to start in premig
+
+Maintaining the following changes from the original:
+VA-2020-52-2020 remove midsummer movement
+NJ-2018-03-2019 throw out a winter ranging movement
+RI-2019-21-2020 Clip out the end of the previous fall migration
+FL-2021-01-2021 Foray loop caused an apparent migration
+RI-2019-29-2020 Dispersal movement caused an apparent migration
+VA-2018-03-2018 Foray loop caused an apparent migration
+NJ-2018-03-2019 foray loop 2019-01-17
+
+Old changes that didn't make the new cut:
+None

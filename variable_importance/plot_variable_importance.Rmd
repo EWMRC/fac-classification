@@ -57,15 +57,21 @@ results_spring_male_full <- readRDS(here("classifier_spring", "accuracy", "full_
 results_spring_female_full <- readRDS(here("classifier_spring", "accuracy", "full_female", "accuracy_results_female_full.rds"))
 
 results_fall_full <- readRDS(here("classifier_fall", "accuracy", "full_acc_assessment", "accuracy_results_fall_full.rds"))
+
+results_spring_male_null <- readRDS(here("classifier_spring", "accuracy", "null_male", "accuracy_results_male_null.rds"))
+
+results_spring_female_null <- readRDS(here("classifier_spring", "accuracy", "null_female", "accuracy_results_female_null.rds"))
+
+results_fall_null <- readRDS(here("classifier_fall", "accuracy", "null_acc_assessment", "accuracy_results_fall_null.rds"))
 ```
 
 Manipulate the dataframes so there's one row per changed endstate
 ```{r}
-var_imp_springmale <- bind_rows(var_imp_springmale, results_spring_male_full)
+var_imp_springmale <- bind_rows(var_imp_springmale, results_spring_male_full, results_spring_male_null)
 
-var_imp_springfemale <- bind_rows(var_imp_springfemale, results_spring_female_full)
+var_imp_springfemale <- bind_rows(var_imp_springfemale, results_spring_female_full, results_spring_female_null)
 
-var_imp_fall <- bind_rows(var_imp_fall, results_fall_full)
+var_imp_fall <- bind_rows(var_imp_fall, results_fall_full, results_fall_null)
 
 var_imp_springmale$nested_data <- var_imp_springmale %>% 
   dplyr::select(to_constrain, end_modified, end_true) %>% 
@@ -136,23 +142,32 @@ var_imp_full_model <- var_imp_summary %>%
   dplyr::select(-variable_to_test) %>% 
   rename(full_model_error = total_error)
 
+var_imp_null_model <- var_imp_summary %>% 
+  filter(variable_to_test == "null") %>% 
+  dplyr::select(-variable_to_test) %>% 
+  rename(null_model_error = total_error)
+
 var_imp_summary <- var_imp_summary %>% 
   left_join(var_imp_full_model) %>% 
+  left_join(var_imp_null_model) %>% 
   mutate(adjusted_error = full_model_error - total_error) %>% 
+  mutate(full_null_error = full_model_error - null_model_error) %>% 
+  mutate(proportion_error = adjusted_error*100/full_null_error) %>% 
   mutate(variable_to_test = recode(variable_to_test,
                                    "dist_start" = "Distance from \nstart",
                                    "breeding_abundance" = "Breeding \nrange",
                                    "log_mean_dist_7" = "Log(distance to \nnearest points)",
                                    "julian_day" = "Ordinal day",
                                    "y" = "Latitude",
-                                   "residence_time" = "Residence time")) %>% 
-  mutate(variable_to_test = factor(variable_to_test, levels = c("Distance from \nstart", "Breeding \nrange", "Log(distance to \nnearest points)", "Ordinal day", "Latitude", "Residence time"), ordered = TRUE))
+                                   "residence_time" = "Residence time",
+                                   "null" = "Base")) %>% 
+  mutate(variable_to_test = factor(variable_to_test, levels = c("Distance from \nstart", "Breeding \nrange", "Log(distance to \nnearest points)", "Ordinal day", "Latitude", "Residence time", "Base"), ordered = TRUE))
   # mutate(variable_to_test = factor(variable_to_test, levels = c("dist_start", "breeding_abundance", "log_mean_dist_7", "julian_day", "y", "residence_time"), ordered = TRUE))
 ```
 
 ```{r fig.height=4, fig.width=7}
 var_imp_summary %>% 
-  filter(variable_to_test != "full") %>% 
+  filter(!is.na(variable_to_test)) %>% 
   ggplot(mapping = aes(x = variable_to_test, y = adjusted_error, fill = test)) +
   #geom_point() +
   geom_hline(yintercept = 0, linetype = "dashed") +
@@ -163,6 +178,11 @@ var_imp_summary %>%
   ylab("Reduction in accuracy from the full model (% error)") +
   labs(fill = "Error type")
 
-ggsave("variable_importance_9_27_23.png", width = 7, height = 4)
+ggsave("variable_importance_3_1_24.png", width = 7, height = 4)
+```
+
+Calculating stats
+```{r}
+median(var_imp_summary$adjusted_error)*100 #-0.1
 ```
 

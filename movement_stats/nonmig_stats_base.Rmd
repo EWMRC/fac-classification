@@ -1,0 +1,178 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(here)
+```
+
+```{r}
+integrated_results <- readRDS(here("classifier_integrated", "fac_primary_state_delineation.rds")) #note that this doesn't use the base delineations, but shouldn't matter (as both models treat the start of migration the same way, as a >16.1km step)
+# the difference comes in the dates used to evaluate whether a bird had the opportunity to migrate
+# any differences in the mig initiation dates used here should be due to differential initial state assignment for VA, MD, and NJ birds, rather than actual differences in initial migration dates
+```
+
+How many birds skipped their fall migrations?
+Question to ask- for every year/season in consideration, did the bird have locations before, after, and during that season?
+And if so, did it have at least one migratory step during that season?
+```{r}
+did_you_skip <- function(season_start_date, season_end_date){
+  integrated_results %>% 
+    group_by(animal_name) %>% 
+    group_map(.f = function(x, y){
+      locations_before_start <- x %>% 
+        filter(time < season_start_date) %>% 
+        nrow()
+      
+      locations_before_start <- locations_before_start > 0
+      
+      locations_after_end <- x %>% 
+        filter(time > season_end_date) %>% 
+        nrow()
+      
+      locations_after_end <- locations_after_end > 0
+      
+      locations_during_period <- x %>% 
+        filter(time > season_start_date & time < season_end_date) %>% 
+        nrow()
+      
+      locations_during_period <- locations_during_period > 0
+      
+      #Combined logical flag
+      active_during_period <- locations_before_start & locations_after_end & locations_during_period
+      
+      #If active during period, then return whether there was a mig step. Else, return NA
+      if(active_during_period){
+        all_step_states <- x %>% 
+          filter(time > season_start_date & time < season_end_date) %>%
+          pull(primary_step_state)
+        
+        migrated_flag <- ("Migratory (fall)" %in% all_step_states) | ("Migratory (spring)" %in% all_step_states)
+        
+        tibble(animal_name = y[1,1], active = active_during_period, migrated = migrated_flag) %>% 
+          return()
+        
+      } else {
+        tibble(animal_name = y[1,1], active = active_during_period, migrated = NA) %>% 
+          return()
+      }
+    }) %>%
+    bind_rows() %>%
+    filter(!is.na(migrated)) %>% 
+    return()
+}
+```
+
+Seasons to delineate:
+Fall- 2017, 2018, 2019, 2020, and 2021
+Spring- 2018, 2019, 2020, 2021, and 2022
+```{r}
+fall_nonmigs_2017 <- did_you_skip(season_start_date = ymd("2017-10-15"), season_end_date = ymd("2017-12-08")) %>% 
+  mutate(season = "Fall", year = 2017)
+
+fall_nonmigs_2018 <- did_you_skip(season_start_date = ymd("2018-10-15"), season_end_date = ymd("2018-12-08")) %>% 
+  mutate(season = "Fall", year = 2018)
+
+fall_nonmigs_2019 <- did_you_skip(season_start_date = ymd("2019-10-15"), season_end_date = ymd("2019-12-08")) %>% 
+  mutate(season = "Fall", year = 2019)
+
+fall_nonmigs_2020 <- did_you_skip(season_start_date = ymd("2020-10-15"), season_end_date = ymd("2020-12-08")) %>% 
+  mutate(season = "Fall", year = 2020)
+
+fall_nonmigs_2021 <- did_you_skip(season_start_date = ymd("2021-10-15"), season_end_date = ymd("2021-12-08")) %>% 
+  mutate(season = "Fall", year = 2021)
+
+spring_nonmigs_2018 <- did_you_skip(season_start_date = ymd("2018-2-15"), season_end_date = ymd("2018-3-28")) %>% 
+  mutate(season = "Spring", year = 2018)
+
+spring_nonmigs_2019 <- did_you_skip(season_start_date = ymd("2019-2-15"), season_end_date = ymd("2019-3-28")) %>% 
+  mutate(season = "Spring", year = 2019)
+
+spring_nonmigs_2020 <- did_you_skip(season_start_date = ymd("2020-2-15"), season_end_date = ymd("2020-3-28")) %>% 
+  mutate(season = "Spring", year = 2020)
+
+spring_nonmigs_2021 <- did_you_skip(season_start_date = ymd("2021-2-15"), season_end_date = ymd("2021-3-28")) %>% 
+  mutate(season = "Spring", year = 2021)
+
+spring_nonmigs_2022 <- did_you_skip(season_start_date = ymd("2022-2-15"), season_end_date = ymd("2022-3-28")) %>% 
+  mutate(season = "Spring", year = 2022)
+```
+
+Combine all fall and spring birds together
+```{r}
+fall_nonmigs <- bind_rows(fall_nonmigs_2017, fall_nonmigs_2018, fall_nonmigs_2019, fall_nonmigs_2020, fall_nonmigs_2021)
+
+spring_nonmigs <- bind_rows(spring_nonmigs_2018, spring_nonmigs_2019, spring_nonmigs_2020, spring_nonmigs_2021, spring_nonmigs_2022)
+```
+
+Individually examine each non-migratory bird, verify that it didn't migrate, and determine where.
+```{r}
+all_nonmigs <- fall_nonmigs %>% 
+  bind_rows(spring_nonmigs) %>% 
+  filter(migrated == FALSE)
+```
+
+Number of fall candidates: 173
+Number of spring candidates: 195
+
+n: no data available on other seasons
+a1: data available, and migrated in that other season
+
+Base model:
+Selecting from 31 potentially non-mig birds (most of these just migrated late)
+PA-2019-18
+RI-2019-29
+VA-2020-61
+RI-2021-55
+RI-2021-56
+NY-2019-11
+FL-2021-01
+RI-2020-37
+RI-2020-40
+VA-2020-73
+QUE-2021-25
+
+Only difference is that VA-2020-52 is missing, due to a change in dates
+
+Issues fixed:
+NY-2019-11 combined classifier broke
+RI-2020-37 combined classifier broke
+RI-2020-40 combined classifier broke
+QUE-2021-25 combined classifier broke
+
+Full model:
+Selecting from 35 potentially non-mig birds (most of these just migrated late)
+F n PA-2019-18 Fall non-migratory PA
+M n RI-2019-29 Fall non-migratory RI (w/ dispersal movement)
+M a1 VA-2020-52 Fall non-migratory CT (w/ dispersal movement)
+M n VA-2020-61 Fall non-migratory VA
+F n RI-2021-55 Fall non-migratory RI
+F n RI-2021-56 Fall non-migratory RI
+
+F a1 NY-2019-11 Spring non-migratory GA after migrating from NY
+M n FL-2021-01 Spring non-migratory FL (w/ foray loop)
+F a1 RI-2020-37 Spring non-migratory MD
+F a1 RI-2020-40 Spring non-migratory VA
+F n VA-2020-73 Spring non-migratory VA
+F a1 QUE-2021-25 Spring non-migratory AL after migrating from QUE
+
+
+Fall tally: 6 of 176 (3.4%)
+Locations:
+1 PA
+3 RI
+1 CT
+1 VA
+
+Spring tally: 6 of 193 (3.1%)
+Locations:
+1 GA
+1 FL
+1 MD
+2 VA
+1 AL
+
+5 of 5 migrated in another season

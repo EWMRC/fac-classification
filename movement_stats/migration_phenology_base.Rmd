@@ -1,0 +1,285 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(lubridate)
+library(here)
+```
+
+Read in data
+```{r}
+fall_classified <- readRDS(here::here("classifier_fall", "fall_all_4_state_model_base.rds"))
+spring_male_classified <- readRDS(here::here("classifier_spring", "spring_male_5_state_model_base.rds"))
+spring_female_classified <- readRDS(here::here("classifier_spring", "spring_female_4_state_model_base.rds"))
+```
+
+Pulling the migratory initiation and termination date-times
+If the starting state != 1, then the initiation date is the date of the first location
+```{r}
+fall_initiation_dates <- fall_classified %>%
+  group_by(ID) %>%
+  group_modify(function(x, ...){
+    starting_point_state <- x %>% 
+      head(n = 1) %>% 
+      pull(point_state)
+    
+    if(starting_point_state == 1){
+      x %>% 
+        filter(step_state == 2) %>%
+        head(x, n = 1) %>%
+        mutate(init_state = "Stationary") %>%
+        return()
+    } else if(starting_point_state == 2 | starting_point_state == 3){
+      x %>% 
+        head(x, n = 1) %>%
+        mutate(init_state = "Migratory") %>%
+        return()
+    } else{
+      stop("Starting point state is not 1, 2, or 3")
+    }
+  }) %>%
+  dplyr::select(ID, animal_name, year, time, init_state) %>%
+  rename(time_initiation = time)
+
+fall_termination_dates <- fall_classified %>%
+  filter(step_state == 4) %>%
+  group_by(ID) %>%
+  group_modify(function(x, ...){head(x, n = 1)}) %>%
+  dplyr::select(ID, animal_name, year, time) %>%
+  rename(time_termination = time)
+
+spring_male_initiation_dates <- spring_male_classified %>%
+  group_by(ID) %>%
+  group_modify(function(x, ...){
+    starting_point_state <- x %>% 
+      head(n = 1) %>% 
+      pull(point_state)
+    
+    if(starting_point_state == 1){
+      x %>% 
+        filter(step_state == 2) %>%
+        head(x, n = 1) %>%
+        mutate(init_state = "Stationary") %>% 
+        return()
+    } else if(starting_point_state == 2 | starting_point_state == 3){
+      x %>% 
+        head(x, n = 1) %>%
+        mutate(init_state = "Migratory") %>%
+        return()
+    } else{
+      stop("Starting point state is not 1, 2, or 3")
+    }
+  }) %>%
+  dplyr::select(ID, animal_name, year, time, init_state) %>%
+  rename(time_initiation = time) %>% 
+  mutate(season = "Spring (male)")
+
+spring_male_termination_dates <- spring_male_classified %>%
+  filter(step_state == 4 | step_state == 5) %>%
+  group_by(ID) %>%
+  group_modify(function(x, ...){head(x, n = 1)}) %>%
+  dplyr::select(ID, animal_name, year, time) %>%
+  rename(time_termination = time) %>% 
+  mutate(season = "Spring (male)")
+
+spring_female_initiation_dates <- spring_female_classified %>%
+  group_by(ID) %>%
+  group_modify(function(x, ...){
+    starting_point_state <- x %>% 
+      head(n = 1) %>% 
+      pull(point_state)
+    
+    if(starting_point_state == 1){
+      x %>% 
+        filter(step_state == 2) %>%
+        head(x, n = 1) %>%
+        mutate(init_state = "Stationary") %>%
+        return()
+    } else if(starting_point_state == 2 | starting_point_state == 3){
+      x %>% 
+        head(x, n = 1) %>%
+        mutate(init_state = "Migratory") %>%
+        return()
+    } else{
+      stop("Starting point state is not 1, 2, or 3")
+    }
+  }) %>%
+  dplyr::select(ID, animal_name, year, time, init_state) %>%
+  rename(time_initiation = time)  %>% 
+  mutate(season = "Spring (female)")
+
+spring_female_termination_dates <- spring_female_classified %>%
+  filter(step_state == 4) %>%
+  group_by(ID) %>%
+  group_modify(function(x, ...){head(x, n = 1)}) %>%
+  dplyr::select(ID, animal_name, year, time) %>%
+  rename(time_termination = time) %>% 
+  mutate(season = "Spring (female)") %>% 
+  mutate(time_termination = if_else(animal_name == "VA-2019-45", lubridate::ymd_hms("2020-07-28 19:01:20"), time_termination)) # Manually set a late settlement (after 6-30)
+
+spring_initiation_dates <- bind_rows(spring_male_initiation_dates, spring_female_initiation_dates)
+spring_termination_dates <- bind_rows(spring_male_termination_dates, spring_female_termination_dates)
+
+fall_migration_dates <- full_join(fall_initiation_dates, fall_termination_dates) %>%
+  ungroup()
+
+spring_migration_dates <- full_join(spring_initiation_dates, spring_termination_dates) %>%
+  ungroup()
+
+fall_migration_dates <- fall_migration_dates %>%
+  dplyr::select(animal_name, time_initiation, time_termination, init_state) %>%
+  mutate(season = "Fall") %>% 
+  mutate(time_initiation = as_date(time_initiation),
+         time_termination = as_date(time_termination)) %>% 
+  mutate(time_initiation = time_initiation - 56,
+         time_termination = time_termination - 56) %>% 
+  mutate(initiation_standard = mdy(paste0(month(time_initiation), "/", day(time_initiation), "/2020")),
+         termination_standard = mdy(paste0(month(time_termination), "/", day(time_termination), "/2020"))) %>% 
+  mutate(initiation_standard = initiation_standard + 56,
+         termination_standard = termination_standard + 56,
+         time_initiation = time_initiation + 56, # undoing the adjustment to put all initiation dates in the same year
+         time_termination = time_termination + 56)
+
+spring_migration_dates <- spring_migration_dates %>%
+  dplyr::select(animal_name, time_initiation, time_termination, init_state, season) %>%
+  mutate(time_initiation = as_date(time_initiation),
+         time_termination = as_date(time_termination)) %>% 
+  mutate(initiation_standard = mdy(paste0(month(time_initiation), "/", day(time_initiation), "/2020")),
+         termination_standard = mdy(paste0(month(time_termination), "/", day(time_termination), "/2020")))
+
+migration_dates <- bind_rows(fall_migration_dates, spring_migration_dates)
+```
+
+Fall migration initiation dates
+```{r}
+fall_initiation_dates <- migration_dates %>% 
+  filter(init_state == "Stationary",
+         season == "Fall") %>% 
+  pull(initiation_standard)
+
+median(fall_initiation_dates)
+range(fall_initiation_dates)
+
+#95th quantile of all departure dates
+fall_initiation_dates %>% 
+  quantile(c(0.05, 0.95), type = 1)
+```
+
+Fall migration termination dates
+```{r}
+fall_termination_dates <- migration_dates %>% 
+  filter(season == "Fall") %>% 
+  pull(termination_standard)
+
+median(fall_termination_dates, na.rm = TRUE)
+range(fall_termination_dates, na.rm = TRUE)
+
+#95th quantile of termination dates
+fall_termination_dates %>% 
+  quantile(c(0.05, 0.95), type = 1, na.rm = TRUE)
+```
+
+Percent completion of fall migration
+```{r}
+num_completed_fall <- migration_dates %>% 
+  filter(season == "Fall") %>% 
+  filter(!is.na(time_termination)) %>% 
+  nrow()
+
+num_total_fall <- migration_dates %>% 
+  filter(season == "Fall") %>% 
+  nrow()
+
+num_completed_fall/num_total_fall
+```
+
+
+Spring migration departure dates
+```{r}
+# Male
+spring_male_initiation_dates <- migration_dates %>% 
+  filter(init_state == "Stationary",
+         season == "Spring (male)") %>% 
+  pull(initiation_standard)
+
+print("Male")
+median(spring_male_initiation_dates)
+range(spring_male_initiation_dates)
+
+#95th quantile of departure dates
+spring_male_initiation_dates %>% 
+  quantile(c(0.05, 0.95), type = 1)
+
+# Female
+spring_female_initiation_dates <- migration_dates %>% 
+  filter(init_state == "Stationary",
+         season == "Spring (female)") %>% 
+  pull(initiation_standard)
+
+print("Female")
+median(spring_female_initiation_dates)
+range(spring_female_initiation_dates)
+
+#95th quantile of departure dates
+spring_female_initiation_dates %>% 
+  quantile(c(0.05, 0.95), type = 1)
+```
+
+Spring migration termination dates
+```{r}
+#Male
+spring_male_termination_dates <- migration_dates %>% 
+  filter(season == "Spring (male)") %>% 
+  pull(termination_standard)
+
+print("Male")
+median(spring_male_termination_dates, na.rm = TRUE)
+range(spring_male_termination_dates, na.rm = TRUE)
+
+#95th quantile of termination dates
+spring_male_termination_dates %>% 
+  quantile(c(0.05, 0.95), type = 1, na.rm = TRUE)
+
+#Female
+spring_female_termination_dates <- migration_dates %>% 
+  filter(season == "Spring (female)") %>% 
+  pull(termination_standard)
+
+print("Female")
+median(spring_female_termination_dates, na.rm = TRUE)
+range(spring_female_termination_dates, na.rm = TRUE)
+
+#95th quantile of termination dates
+spring_female_termination_dates %>% 
+  quantile(c(0.05, 0.95), type = 1, na.rm = TRUE)
+```
+
+Percent completion of spring migration
+```{r}
+#Male 
+num_completed_spring_m <- migration_dates %>% 
+  filter(season == "Spring (male)") %>% 
+  filter(!is.na(time_termination)) %>% 
+  nrow()
+
+num_total_spring_m <- migration_dates %>% 
+  filter(season == "Spring (male)") %>% 
+  nrow()
+
+num_completed_spring_m/num_total_spring_m
+
+#Female
+num_completed_spring_f <- migration_dates %>% 
+  filter(season == "Spring (female)") %>% 
+  filter(!is.na(time_termination)) %>% 
+  nrow()
+
+num_total_spring_f <- migration_dates %>% 
+  filter(season == "Spring (female)") %>% 
+  nrow()
+
+num_completed_spring_f/num_total_spring_f
+```

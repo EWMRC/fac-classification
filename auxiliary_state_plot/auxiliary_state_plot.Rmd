@@ -224,6 +224,8 @@ foray_line <- foray_movements %>%
 # colors_foray <- c("black", "#0075DC", "#993F00","#4A6990FF", "#4C005C", "#C20088", "#005C31", "#2BCE48", "#FFCC99", "#808080","#94FFB5", "#8F7C00", "#9DCC00")
 colors_foray <- paletteer::paletteer_d("awtools::bpalette") %>% as.character()
 
+colors_foray <- c(colors_foray, "#C62828FF", "#F44336FF") #repeats colors to bring the palette up to the required number of categories
+
 names(colors_foray) <- foray_sorted
 
 # Revised map
@@ -343,6 +345,6 @@ timelines_combined <- ggarrange(summer_timeline, dispersal_timeline, foray_timel
 
 plots_arranged <- ggarrange(summer_map, dispersal_map, foray_map, timelines_combined, ncol = 2, nrow = 2, common.legend = TRUE, legend = "bottom", legend.grob = legend_desc)
 
-ggsave(filename = here::here("auxiliary_state_plot", "auxiliary_state_plot_9_7_2023.png"), plot = plots_arranged, dpi = 300, bg = "white", height = 7.5, width = 7)
+ggsave(filename = here::here("auxiliary_state_plot", "auxiliary_state_plot_2_28_2024.png"), plot = plots_arranged, dpi = 300, bg = "white", height = 7.5, width = 7)
 ```
 

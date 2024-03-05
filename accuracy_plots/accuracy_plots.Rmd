@@ -172,3 +172,13 @@ ggplot(data = acc_combined, mapping = aes(x = standardized_date, y = percent_err
 ggsave("accuracy_plot_9_7_23.png", width = 7, height = 5)
 ```
 
+Getting medians and ranges
+```{r}
+acc_combined %>% 
+  group_by(model_type, test, season) %>% 
+  summarise(median = median(percent_error)*100, 
+            range_min = min(percent_error)*100,
+            range_max = max(percent_error)*100) %>% 
+  View(title = "summary")
+```
+

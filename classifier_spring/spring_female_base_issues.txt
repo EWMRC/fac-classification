@@ -1,0 +1,30 @@
+Issues spotted:
+
+New changes:
+NJ-2018-09-2019 should start in premig
+NJ-2018-10-2019 should start in premig
+NJ-2019-23-2020 should probably start in premig
+VA-2019-36-2020 should start in premig
+VA-2020-67-2021 might need to start in premig
+VA-2021-92-2021 might need to start in premig
+NY-2018-07-2019 needs a foray loop (probably also needs to be added to the base model)
+RI-2020-44-2021 needs a foray loop (probably also needs to be added to the base model)
+
+Maintaining the following changes from the original:
+NJ-2018-08-2019 need to clip the end of fall mig out of this
+NJ-2018-15-2019 unclear if this one needs a correction and designate the starting state
+NJ-2018-13-2019 maybe clip out the end of fall mig? and designate the starting state
+RI-2020-31-2021 Algorithm catches the tail end of fall migration and pushes it into spring mig too early.
+RI-2021-46-2022 needs a foray loop
+VA-2020-66-2021 needs a foray loop
+ME-2018-13-2019 late fall migration
+NY-2022-40-2022 bird that migrated after nesting starts in stopover state
+NY-2022-42-2022 should start in mig
+RI-2018-11-2019 bird is recaptured and re-transmittered at the last mig location the following Oct, so we know that it is settled here
+NJ-2019-28-2020 false mig
+NS-2019-02-2020 tail end of a fall migration
+RI-2020-42-2021 false mig
+RI-2021-47-2022 migrated in the wrong direction
+RI-2021-52-2022 Fall migration does not terminate
+
+Old changes that didn't make the new cut:

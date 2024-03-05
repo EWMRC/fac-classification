@@ -1,0 +1,237 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(here)
+```
+
+```{r include=FALSE}
+capture_info <- readxl::read_excel(here("capture_sheet.xlsx"), col_types = c("text", "text", "date", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text")) %>%
+  mutate(`Argos_ID` = as.character(`Argos_ID`)) %>%
+  transmute(animal_name = `Movebank_ID`,
+            sex = Sex)
+
+fall_classified <- readRDS(here::here("classifier_fall", "fall_all_4_state_model_base.rds")) %>% 
+  left_join(capture_info)
+spring_male_classified <- readRDS(here::here("classifier_spring", "spring_male_5_state_model_base.rds")) %>% 
+  left_join(capture_info)
+spring_female_classified <- readRDS(here::here("classifier_spring", "spring_female_4_state_model_base.rds")) %>% 
+  left_join(capture_info)
+```
+
+Fall
+```{r}
+fall_results <- fall_classified %>%
+  # filter(sex == "Male") %>% 
+  group_by(ID) %>%
+  group_modify(function(x, ...){
+    starting_point_state <- x %>% 
+      head(n = 1) %>% 
+      pull(point_state)
+    
+    ending_point_state <- x %>% 
+      tail(n = 1) %>% 
+      pull(point_state)
+    
+    if(starting_point_state == 1 & ending_point_state == 4) {
+      total_dist <- x %>% 
+        filter(step_state == 2) %>% #excluding movements during stopover
+        pull(step) %>% 
+        sum() #units: km
+      
+      starting_date <- x %>% 
+        filter(step_state == 2) %>% 
+        head(n = 1) %>% 
+        pull(julian_day)
+      
+      ending_date <- x %>% 
+        filter(step_state == 4) %>% 
+        head(n = 1) %>% 
+        pull(julian_day)
+        
+      tibble(total_dist = total_dist, days_mig = ending_date - starting_date) %>% 
+        return()
+    } else {
+      tibble(total_dist = NA, days_mig = NA) %>% 
+        return()
+    }
+  })
+```
+
+
+```{r}
+#Fall dist- mean
+fall_results %>% 
+  pull(total_dist) %>% 
+  mean(na.rm = T)
+
+#Fall dist- sd
+fall_results %>% 
+  pull(total_dist) %>% 
+  sd(na.rm = T)
+
+#Fall dist- range
+fall_results %>% 
+  pull(total_dist) %>% 
+  range(na.rm = T)
+```
+
+```{r}
+#Fall time- mean
+fall_results %>% 
+  pull(days_mig) %>% 
+  mean(na.rm = T)
+
+#Fall time- sd
+fall_results %>% 
+  pull(days_mig) %>% 
+  sd(na.rm = T)
+
+#Fall time- range
+fall_results %>% 
+  pull(days_mig) %>% 
+  range(na.rm = T)
+```
+
+
+Spring
+```{r}
+spring_male_results <- spring_male_classified %>%
+  group_by(ID) %>%
+  group_modify(function(x, ...){
+    starting_point_state <- x %>% 
+      head(n = 1) %>% 
+      pull(point_state)
+    
+    ending_point_state <- x %>% 
+      tail(n = 1) %>% 
+      pull(point_state)
+    
+    if(starting_point_state == 1 & (ending_point_state == 4 | ending_point_state == 5)) {
+      total_dist <- x %>% 
+        filter(step_state == 2) %>% #excluding movements during stopover
+        pull(step) %>% 
+        sum() #units: km
+      
+      starting_date <- x %>% 
+        filter(step_state == 2) %>% 
+        head(n = 1) %>% 
+        pull(julian_day)
+      
+      ending_date <- x %>% 
+        filter(step_state == 4 | step_state == 5) %>% 
+        head(n = 1) %>% 
+        pull(julian_day)
+        
+      tibble(total_dist = total_dist, days_mig = ending_date - starting_date) %>% 
+        return()
+    } else {
+      tibble(total_dist = NA, days_mig = NA) %>% 
+        return()
+    }
+  })
+
+spring_female_results <- spring_female_classified %>%
+  group_by(ID) %>%
+  group_modify(function(x, ...){
+    starting_point_state <- x %>% 
+      head(n = 1) %>% 
+      pull(point_state)
+    
+    ending_point_state <- x %>% 
+      tail(n = 1) %>% 
+      pull(point_state)
+    
+    if(starting_point_state == 1 & ending_point_state == 4) {
+      total_dist <- x %>% 
+        filter(step_state == 2) %>% #excluding movements during stopover
+        pull(step) %>% 
+        sum() #units: km
+      
+      starting_date <- x %>% 
+        filter(step_state == 2) %>% 
+        head(n = 1) %>% 
+        pull(julian_day)
+      
+      ending_date <- x %>% 
+        filter(step_state == 4) %>% 
+        head(n = 1) %>% 
+        pull(julian_day)
+        
+      tibble(total_dist = total_dist, days_mig = ending_date - starting_date) %>% 
+        return()
+    } else {
+      tibble(total_dist = NA, days_mig = NA) %>% 
+        return()
+    }
+  })
+```
+
+```{r}
+#Spring male dist- mean
+spring_male_results %>% 
+  pull(total_dist) %>% 
+  mean(na.rm = T)
+
+#Spring male dist- sd
+spring_male_results %>% 
+  pull(total_dist) %>% 
+  sd(na.rm = T)
+
+#Spring male dist- range
+spring_male_results %>% 
+  pull(total_dist) %>% 
+  range(na.rm = T)
+
+#Spring female dist- mean
+spring_female_results %>% 
+  pull(total_dist) %>% 
+  mean(na.rm = T)
+
+#Spring female dist- sd
+spring_female_results %>% 
+  pull(total_dist) %>% 
+  sd(na.rm = T)
+
+#Spring female dist- range
+spring_female_results %>% 
+  pull(total_dist) %>% 
+  range(na.rm = T)
+
+```
+
+```{r}
+#Spring male time- mean
+spring_male_results %>% 
+  pull(days_mig) %>% 
+  mean(na.rm = T)
+
+#Spring male time- sd
+spring_male_results %>% 
+  pull(days_mig) %>% 
+  sd(na.rm = T)
+
+#Spring male time- range
+spring_male_results %>% 
+  pull(days_mig) %>% 
+  range(na.rm = T)
+
+#Spring female time- mean
+spring_female_results %>% 
+  pull(days_mig) %>% 
+  mean(na.rm = T)
+
+#Spring female time- sd
+spring_female_results %>% 
+  pull(days_mig) %>% 
+  sd(na.rm = T)
+
+#Spring female time- range
+spring_female_results %>% 
+  pull(days_mig) %>% 
+  range(na.rm = T)
+```
+
