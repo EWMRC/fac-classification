@@ -131,10 +131,12 @@ var_imp <- bind_rows(var_imp_springmale, var_imp_springfemale, var_imp_fall)
 ```
 
 Summarise error by summming over weeks, and adjusting error by subtracting from the full model error
+
+Actually, this is not interpretable as it stands. Running again using a mean error
 ```{r}
 var_imp_summary <- var_imp %>% 
   group_by(season, variable_to_test, test) %>% 
-  summarize(total_error = sum(percent_error)) %>% 
+  summarize(total_error = mean(percent_error)) %>% 
   ungroup()
 
 var_imp_full_model <- var_imp_summary %>% 
@@ -175,14 +177,60 @@ var_imp_summary %>%
   theme_bw() +
   facet_wrap(vars(season), nrow = 3, ncol = 1) +
   xlab("Excluded variable") +
-  ylab("Reduction in accuracy from the full model (% error)") +
-  labs(fill = "Error type")
+  ylab("Reduction in accuracy from the full model") +
+  labs(fill = "Error type") +
+  scale_y_continuous(labels = scales::percent)
 
-ggsave("variable_importance_3_1_24.png", width = 7, height = 4)
+ggsave("variable_importance_3_15_24.png", width = 7.5, height = 4)
 ```
 
 Calculating stats
 ```{r}
-median(var_imp_summary$adjusted_error)*100 #-0.1
+var_imp_summary %>% 
+  filter(variable_to_test != "Base") %>% 
+  pull(adjusted_error) %>% 
+  median(.)*100 #-0.3149074
+
+var_imp_summary %>% 
+  filter(variable_to_test != "Base") %>% 
+  pull(adjusted_error) %>% 
+  min(.)*100 #-17.16539
+
+var_imp_summary %>% 
+  filter(variable_to_test != "Base") %>% 
+  pull(adjusted_error) %>% 
+  max(.)*100 #2.705628
+
+var_imp_summary %>% 
+  filter(variable_to_test == "Residence time", test == "Type II") %>% 
+  pull(adjusted_error) %>% 
+  median(.)*100 #-17.16539
+
+var_imp_summary %>% 
+  filter(variable_to_test == "Residence time", test == "Type II") %>% 
+  pull(adjusted_error) %>% 
+  min(.)*100 #-17.16539
+
+var_imp_summary %>% 
+  filter(variable_to_test == "Residence time", test == "Type II") %>% 
+  pull(adjusted_error) %>% 
+  max(.)*100 #-2.808809
+
+var_imp_summary %>% 
+  filter(variable_to_test == "Base", test == "Type II") %>% 
+  pull(adjusted_error) %>% 
+  min(.)*100 #-42.55136
+
+var_imp_summary %>% 
+  filter(variable_to_test == "Base", test == "Type II") %>% 
+  pull(adjusted_error) %>% 
+  max(.)*100 #-0.7073284
+
+
+# Median reduction in error
+var_imp_summary %>% 
+  filter(variable_to_test == "Base") %>% 
+  pull(adjusted_error) %>% 
+  median(.)*100
 ```
 
