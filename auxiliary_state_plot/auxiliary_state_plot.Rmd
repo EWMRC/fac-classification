@@ -34,7 +34,11 @@ amwo_data_reconstructed <- amwo_data_reconstructed %>%
 
 Load a basemap
 ```{r}
-basemap_ras <- rast(there::here_file("Data", "basemaps", "esri_lightgrey", "esri_lightgrey_36_48_4326.tif")) %>% 
+# basemap_ras <- rast(there::here_file("Data", "basemaps", "esri_lightgrey", "esri_lightgrey_36_48_4326.tif")) %>%
+#   project("EPSG:5070")
+# basemap_ras <- rast("C:/Users/liama/OneDrive - Kansas State University/MaineAnalysis/Data/basemaps/esri_lightgrey/esri_lightgrey_36_48_4326.tif") %>% 
+#   project("EPSG:5070")
+basemap_ras <- rast("D:/OneDrive - Kansas State University/MaineAnalysis/Data/basemaps/esri_lightgrey/esri_lightgrey_36_48_4326.tif") %>% 
   project("EPSG:5070")
 ```
 
@@ -158,7 +162,7 @@ dispersal_map <- template_map +
   theme(legend.position = "bottom",
         legend.margin=margin(t = 10),
         plot.margin = margin(b = 10)) +
-  ggtitle("Dispersal") +
+  ggtitle("Displacement") +
   scale_color_manual(values = colors_dispersal) +
   scale_fill_manual(values = colors_dispersal) +
   theme(legend.position = "none")
@@ -179,7 +183,7 @@ dispersal_timeline <- ggplot(data = dispersal_summary, mapping = aes(x = value, 
         axis.ticks.y=element_blank(),
         legend.position = "none") +
   scale_color_manual(values = colors_dispersal) +
-  ggtitle("Dispersal")
+  ggtitle("Displacement")
 
 # Combining them together
 # blank <- ggplot() + theme_void()
@@ -345,6 +349,6 @@ timelines_combined <- ggarrange(summer_timeline, dispersal_timeline, foray_timel
 
 plots_arranged <- ggarrange(summer_map, dispersal_map, foray_map, timelines_combined, ncol = 2, nrow = 2, common.legend = TRUE, legend = "bottom", legend.grob = legend_desc)
 
-ggsave(filename = here::here("auxiliary_state_plot", "auxiliary_state_plot_2_28_2024.png"), plot = plots_arranged, dpi = 300, bg = "white", height = 7.5, width = 7)
+ggsave(filename = here::here("auxiliary_state_plot", "auxiliary_state_plot_6_27_2024.png"), plot = plots_arranged, dpi = 300, bg = "white", height = 7.5, width = 7)
 ```
 

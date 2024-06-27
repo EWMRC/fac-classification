@@ -151,7 +151,7 @@ dummy <- tibble(standardized_date = ymd(c("2020-10-01", "2020-10-01", "2020-03-0
 ```
 
 ```{r}
-ggplot(data = acc_combined, mapping = aes(x = standardized_date, y = percent_error, col = test)) +
+ggplot(data = acc_combined, mapping = aes(x = standardized_date, y = percent_error, col = model_type)) +
   geom_point(position=position_dodge(width=4)) +
   geom_errorbar(aes(ymin = ymin, ymax = ymax), width = 4, #2
                 position=position_dodge(width=4),) +
@@ -162,14 +162,14 @@ ggplot(data = acc_combined, mapping = aes(x = standardized_date, y = percent_err
                # breaks = c(ymd("2020-01-01"),ymd("2020-02-01"),ymd("2020-03-01"),ymd("2020-04-01"),ymd("2020-05-01"),ymd("2020-06-01"),ymd("2020-07-01"),ymd("2020-08-01"),ymd("2020-09-01"), ymd("2020-10-01"), ymd("2020-11-01"), ymd("2020-12-01"), ymd("2021-1-01"), ymd("2021-2-01"), ymd("2021-3-01"), ymd("2021-4-01")),
                # labels = c('J','F','M','A','M','J','J','A','S','O','N','D', 'J', 'F', 'M', 'A')
   ) +
-  labs(y = "Percent error", col = "Classification error") +
+  labs(y = "Percent error", col = "Model") +
   scale_color_manual(values = c("#07646DFF", "#D4419EFF")) +
   theme(legend.position="bottom") +
-  facet_grid(cols = vars(season), rows = vars(model_type),
+  facet_grid(cols = vars(season), rows = vars(test),
              scales = "free_x") +
   geom_blank(data=dummy)
 
-ggsave("accuracy_plot_9_7_23.png", width = 7, height = 5)
+ggsave("accuracy_plot_6_26_24.png", width = 7, height = 5)
 ```
 
 Getting medians and ranges
