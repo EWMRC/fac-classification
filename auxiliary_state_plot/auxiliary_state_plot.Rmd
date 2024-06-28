@@ -36,10 +36,10 @@ Load a basemap
 ```{r}
 # basemap_ras <- rast(there::here_file("Data", "basemaps", "esri_lightgrey", "esri_lightgrey_36_48_4326.tif")) %>%
 #   project("EPSG:5070")
-# basemap_ras <- rast("C:/Users/liama/OneDrive - Kansas State University/MaineAnalysis/Data/basemaps/esri_lightgrey/esri_lightgrey_36_48_4326.tif") %>% 
-#   project("EPSG:5070")
-basemap_ras <- rast("D:/OneDrive - Kansas State University/MaineAnalysis/Data/basemaps/esri_lightgrey/esri_lightgrey_36_48_4326.tif") %>% 
+basemap_ras <- rast("C:/Users/liama/OneDrive - Kansas State University/MaineAnalysis/Data/basemaps/esri_lightgrey/esri_lightgrey_36_48_4326.tif") %>%
   project("EPSG:5070")
+# basemap_ras <- rast("D:/OneDrive - Kansas State University/MaineAnalysis/Data/basemaps/esri_lightgrey/esri_lightgrey_36_48_4326.tif") %>% 
+#   project("EPSG:5070")
 ```
 
 Load range map and merge fall and spring migratory ranges
@@ -162,7 +162,7 @@ dispersal_map <- template_map +
   theme(legend.position = "bottom",
         legend.margin=margin(t = 10),
         plot.margin = margin(b = 10)) +
-  ggtitle("Displacement") +
+  ggtitle("Directional movement") +
   scale_color_manual(values = colors_dispersal) +
   scale_fill_manual(values = colors_dispersal) +
   theme(legend.position = "none")
@@ -183,7 +183,7 @@ dispersal_timeline <- ggplot(data = dispersal_summary, mapping = aes(x = value, 
         axis.ticks.y=element_blank(),
         legend.position = "none") +
   scale_color_manual(values = colors_dispersal) +
-  ggtitle("Displacement")
+  ggtitle("Directional movement")
 
 # Combining them together
 # blank <- ggplot() + theme_void()
