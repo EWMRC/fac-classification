@@ -1754,27 +1754,10 @@ display: none;
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGAifQ== -->
-<pre class="r"><code>library(tidyverse)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KGhlcmUpXG5gYGAifQ== -->
+<pre class="r"><code>library(tidyverse)
+library(here)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJlZCBTMyBtZXRob2RzIG92ZXJ3cml0dGVuIGJ5ICdkYnBseXInOlxuICBtZXRob2QgICAgICAgICBmcm9tXG4gIHByaW50LnRibF9sYXp5ICAgICBcbiAgcHJpbnQudGJsX3NxbCAgICAgIFxu4pSA4pSAIEF0dGFjaGluZyBwYWNrYWdlcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlIDEuMy4yIOKUgOKUgOKclCBnZ3Bsb3QyIDMuNC4wICAgICAg4pyUIHB1cnJyICAgMS4wLjEgXG7inJQgdGliYmxlICAzLjEuOCAgICAgIOKclCBkcGx5ciAgIDEuMC4xMFxu4pyUIHRpZHlyICAgMS4zLjAgICAgICDinJQgc3RyaW5nciAxLjUuMCBcbuKclCByZWFkciAgIDIuMS4zICAgICAg4pyUIGZvcmNhdHMgMC41LjIgV2FybmluZzogcGFja2FnZSDigJh0aWR5cuKAmSB3YXMgYnVpbHQgdW5kZXIgUiB2ZXJzaW9uIDQuMi4z4pSA4pSAIENvbmZsaWN0cyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlX2NvbmZsaWN0cygpIOKUgOKUgFxu4pyWIGRwbHlyOjpmaWx0ZXIoKSBtYXNrcyBzdGF0czo6ZmlsdGVyKClcbuKcliBkcGx5cjo6bGFnKCkgICAgbWFza3Mgc3RhdHM6OmxhZygpXG4ifQ== -->
-<pre><code>Registered S3 methods overwritten by &#39;dbplyr&#39;:
-  method         from
-  print.tbl_lazy     
-  print.tbl_sql      
-── Attaching packages ──────────────────────────────── tidyverse 1.3.2 ──✔ ggplot2 3.4.0      ✔ purrr   1.0.1 
-✔ tibble  3.1.8      ✔ dplyr   1.0.10
-✔ tidyr   1.3.0      ✔ stringr 1.5.0 
-✔ readr   2.1.3      ✔ forcats 0.5.2 Warning: package ‘tidyr’ was built under R version 4.2.3── Conflicts ─────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShoZXJlKVxuYGBgIn0= -->
-<pre class="r"><code>library(here)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogcGFja2FnZSDigJhoZXJl4oCZIHdhcyBidWlsdCB1bmRlciBSIHZlcnNpb24gNC4yLjNoZXJlKCkgc3RhcnRzIGF0IEM6L1VzZXJzL2xpYW1hL09uZURyaXZlIC0gVW5pdmVyc2l0eSBvZiBNYWluZSBTeXN0ZW0vTWFpbmVBbmFseXNpcy9Qcm9qZWN0cy9mYWMtY2xhc3NpZmljYXRpb25cbiJ9 -->
-<pre><code>Warning: package ‘here’ was built under R version 4.2.3here() starts at C:/Users/liama/OneDrive - University of Maine System/MaineAnalysis/Projects/fac-classification</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <div id="mapping-our-classification-columns---movebank-attributes" class="section level1">
@@ -1792,17 +1775,18 @@ habitat</p>
 <p>flight_ground -&gt; data decoding software</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudHJhbnNtdXRlKGV2ZW50X2lkID0gYXMuY2hhcmFjdGVyKGV2ZW50X2lkKSwgXG4gICAgICAgICAgICBwcmltYXJ5X3N0ZXBfc3RhdGUgPSBwYXN0ZShcIlN0ZXAgc3RhdGU6XCIsIHByaW1hcnlfc3RlcF9zdGF0ZSksIFxuICAgICAgICAgICAgcHJpbWFyeV9wb2ludF9zdGF0ZSA9IHBhc3RlKFwiUG9pbnQgc3RhdGU6XCIsIHByaW1hcnlfcG9pbnRfc3RhdGUpLFxuICAgICAgICAgICAgbmVzdGluZ19hdHRlbXB0ID0gbmVzdGluZ19hdHRlbXB0KVxuXG5gYGAifQ== -->
-<pre class="r"><code>transmute(event_id = as.character(event_id), 
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW13b19kYXRhX3JlY29uc3RydWN0ZWQgPC0gcmVhZFJEUyhoZXJlKFwiY2xhc3NpZmllcl9pbnRlZ3JhdGVkXCIsIFwiZmFjX3ByaW1hcnlfc3RhdGVfZGVsaW5lYXRpb24ucmRzXCIpKVxuXG50IDwtIGFtd29fZGF0YV9yZWNvbnN0cnVjdGVkICU+JVxuICB0cmFuc211dGUoZXZlbnRfaWQgPSBhcy5jaGFyYWN0ZXIoZXZlbnRfaWQpLCBcbiAgICAgICAgICAgIHByaW1hcnlfc3RlcF9zdGF0ZSA9IHBhc3RlKFwiU3RlcCBzdGF0ZTpcIiwgcHJpbWFyeV9zdGVwX3N0YXRlKSwgXG4gICAgICAgICAgICBwcmltYXJ5X3BvaW50X3N0YXRlID0gcGFzdGUoXCJQb2ludCBzdGF0ZTpcIiwgcHJpbWFyeV9wb2ludF9zdGF0ZSksXG4gICAgICAgICAgICBuZXN0aW5nX2F0dGVtcHQgPSBuZXN0aW5nX2F0dGVtcHQpXG5cbnQgJT4lXG4gIHdyaXRlLmNzdihmaWxlID0gXCJmYWNfcHJpbWFyeV9zdGF0ZV9kZWxpbmVhdGlvbi5jc3ZcIiwgcm93Lm5hbWVzID0gRkFMU0UsIHF1b3RlID0gRkFMU0UpXG5gYGAifQ== -->
+<pre class="r"><code>amwo_data_reconstructed &lt;- readRDS(here(&quot;classifier_integrated&quot;, &quot;fac_primary_state_delineation.rds&quot;))
+
+t &lt;- amwo_data_reconstructed %&gt;%
+  transmute(event_id = as.character(event_id), 
             primary_step_state = paste(&quot;Step state:&quot;, primary_step_state), 
             primary_point_state = paste(&quot;Point state:&quot;, primary_point_state),
             nesting_attempt = nesting_attempt)
-</code></pre>
+
+t %&gt;%
+  write.csv(file = &quot;fac_primary_state_delineation.csv&quot;, row.names = FALSE, quote = FALSE)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gdHJhbnNtdXRlKGV2ZW50X2lkID0gYXMuY2hhcmFjdGVyKGV2ZW50X2lkKSwgcHJpbWFyeV9zdGVwX3N0YXRlID0gcGFzdGUoXCJTdGVwIHN0YXRlOlwiLCAgOiBcbiAgb2JqZWN0ICdldmVudF9pZCcgbm90IGZvdW5kXG4ifQ== -->
-<pre><code>Error in transmute(event_id = as.character(event_id), primary_step_state = paste(&quot;Step state:&quot;,  : 
-  object &#39;event_id&#39; not found</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 </div>
 

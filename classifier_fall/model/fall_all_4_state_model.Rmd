@@ -6,6 +6,7 @@ output:
 editor_options:
   chunk_output_type: inline
 ---
+
 ```{r include=FALSE}
 library(tidyverse)
 library(lubridate)

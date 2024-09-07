@@ -30,11 +30,13 @@ amwo_2021 <- getMovebankData(study = "American Woodcock Migration Ecology in Eas
 amwo_2022 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20220105000000000", timestamp_end = "20220630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
 
 amwo_2023 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20230105000000000", timestamp_end = "20230630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
+
+amwo_2024 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20240105000000000", timestamp_end = "20240630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
 ```
 
 Formatting and cleaning, including creating time columns and simplifying to one location per day
 ```{r}
-amwo_spring <- as.data.frame(rbind(amwo_2018, amwo_2019, amwo_2020, amwo_2021, amwo_2022, amwo_2023))
+amwo_spring <- as.data.frame(rbind(amwo_2018, amwo_2019, amwo_2020, amwo_2021, amwo_2022, amwo_2023, amwo_2024))
 
 amwo_spring <- amwo_spring %>%
   filter(mortality_status == 0) %>% 
@@ -122,10 +124,10 @@ Flag individuals tagged after February 15th on the year of observation so that I
 No longer using these in the analysis, but keeping for future reference
 ```{r include = FALSE}
 # Comment this out if running repeatedly; otherwise it will just slow down the code
-# googledrive::as_id("https://drive.google.com/file/d/19JA5OztH3hS4MPfVnH5zswDxSSLcWxL3/view?usp=sharing") %>%
+# googledrive::as_id("https://docs.google.com/spreadsheets/d/1xSZa3wZSHLQ4bbr9WIJzZY3NX9oJRlGPt2zkjFwyors/edit?usp=sharing") %>%
 #         googledrive::drive_download(path = here("capture_sheet.xlsx"), overwrite = TRUE)
 
-capture_dates <- readxl::read_excel(here("capture_sheet.xlsx"), col_types = c("text", "text", "date", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text")) %>%
+capture_dates <- readxl::read_excel(here("capture_sheet.xlsx"), col_types = c("text", "text", "date", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", rep("text", 19))) %>%
         mutate(`Argos_ID` = as.character(`Argos_ID`)) %>%
   transmute(animal_name = `Movebank_ID`,
             capture_date = Date)
@@ -176,7 +178,8 @@ nested_birds <- mutate(nested_birds,
 nested_birds <- mutate(nested_birds,
                 pred = purrr::map(fit, ~{
                   crawl::crwPredict(.x, predTime="24 hours", return.type='flat') %>% # use 24 hours, NOT 1 day (because it rounds to the unit)
-                    crawl::crw_as_tibble()
+                    crawl::crw_as_tibble() %>% 
+                    mutate(locType = if_else(is.na(lon), "p", "o")) # in certain, rare circumstances, the observed/predicted output in crwPredict breaks. This fixes the error
                 }
                 )
 )
@@ -190,7 +193,7 @@ unnested_birds <- dplyr::select(nested_birds, ID, pred) %>% unnest(cols=pred)
 ```{r}
 # amwo_hmm <- amwo_spring_males %>%
 #   rename(x = lon, y = lat) 
-amwo_hmm <- unnested_birds %>%
+amwo_hmm <- unnested_birds %>% 
   rename(x = mu.x, y = mu.y) %>% 
   ungroup()
 
@@ -207,7 +210,7 @@ amwo_hmm <- amwo_hmm %>%
         return()
     } else if(nrow(x) > 1 & !("o" %in% x$locType)){ #if there's more than 1 row and only predicted points, keep the first predicted point
       x %>% 
-        head(n = 1) %>% 
+        head(n = 1) %>%
         return()
     } else{ # if there's only 1 row, just return x
       return(x)
@@ -506,7 +509,7 @@ amwo_hmm <- amwo_hmm %>% #simplify from abundance to breeding range
 
 ```{r}
 save.image(file=here("classifier_spring", "spring_male_data_temp.RData"))
-#load(file=here("classifier_fall", "fall_all_data_temp.RData"))
+# load(file=here("classifier_spring", "spring_male_data_temp.RData"))
 ```
 
 ```{r}

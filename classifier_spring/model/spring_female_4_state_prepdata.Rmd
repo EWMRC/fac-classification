@@ -40,11 +40,13 @@ amwo_2022 <- getMovebankData(study = "American Woodcock Migration Ecology in Eas
   filter(timestamp < if_else(local_identifier == "VA-2022-100", ymd_hms("2022-7-30 00:00:00"), ymd_hms("2022-6-30 00:00:00"))) #include an additional month worth of locations, but only for one bird that settles late
 
 amwo_2023 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20230105000000000", timestamp_end = "20230630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
+
+amwo_2024 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20240105000000000", timestamp_end = "20240630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
 ```
 
 Formatting and cleaning, including creating time columns and simplifying to one location per day
 ```{r}
-amwo_spring <- as.data.frame(rbind(amwo_2018, amwo_2019, amwo_2020, amwo_2021, amwo_2022, amwo_2023))
+amwo_spring <- as.data.frame(rbind(amwo_2018, amwo_2019, amwo_2020, amwo_2021, amwo_2022, amwo_2023, amwo_2024))
 
 amwo_spring <- amwo_spring %>%
   filter(mortality_status == 0) %>% 
@@ -89,7 +91,7 @@ amwo_spring <- amwo_spring %>%
 Filtering to just females and individuals with unknown sex
 ```{r}
 amwo_spring_males <- amwo_spring %>%
-  filter(sex == "f" | sex == "")
+  filter(sex == "f" | sex == "" | sex == "u")
 ```
 
 Account for potential duplicate years by adding a year to the end of the id
@@ -131,11 +133,11 @@ Flag individuals tagged after February 15th on the year of observation so that I
 No longer using these in the analysis, but keeping for future reference
 ```{r include = FALSE}
 # Comment this out if running repeatedly; otherwise it will just slow down the code
-# googledrive::as_id("https://drive.google.com/file/d/19JA5OztH3hS4MPfVnH5zswDxSSLcWxL3/view?usp=sharing") %>%
+# googledrive::as_id("https://docs.google.com/spreadsheets/d/1xSZa3wZSHLQ4bbr9WIJzZY3NX9oJRlGPt2zkjFwyors/edit?usp=sharing") %>%
 #         googledrive::drive_download(path = here("capture_sheet.xlsx"), overwrite = TRUE)
 
-capture_dates <- readxl::read_excel(here("capture_sheet.xlsx"), col_types = c("text", "text", "date", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text")) %>%
-  mutate(`Argos_ID` = as.character(`Argos_ID`)) %>%
+capture_dates <- readxl::read_excel(here("capture_sheet.xlsx"), col_types = c("text", "text", "date", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", rep("text", 19))) %>%
+        mutate(`Argos_ID` = as.character(`Argos_ID`)) %>%
   transmute(animal_name = `Movebank_ID`,
             capture_date = Date)
 
@@ -185,7 +187,8 @@ nested_birds <- mutate(nested_birds,
 nested_birds <- mutate(nested_birds,
                        pred = purrr::map(fit, ~{
                          crawl::crwPredict(.x, predTime="24 hours", return.type='flat') %>% # use 24 hours, NOT 1 day (because it rounds to the unit)
-                           crawl::crw_as_tibble()
+                           crawl::crw_as_tibble() %>% 
+                    mutate(locType = if_else(is.na(lon), "p", "o")) # in certain, rare circumstances, the observed/predicted output in crwPredict breaks. This fixes the error
                        }
                        )
 )

@@ -1,0 +1,21 @@
+
+Fixed?
+
+Done:
+WV-2024-27 needs a summer mig
+WV-2024-41 needs a summer mig
+WV-2024-47 needs a dispersal movement instead of a spring migration
+WV-2024-55 needs a dispersal movement instead of a spring migration
+
+NY-2018-07 foray loop needed to be excluded from mig delineation
+SC-2023-26 missing a fall migration- needs to start on 6-11-2023
+RI-2020-44 doesn't exclude mig movement ending on 2021-02-12 
+NJ-2018-08 spring mig state is being estimated, despite the fact that we know when the prior migration ended. Set initial state to non-estimable
+WV-2024-33 start it in spring mig (known, not estimable)
+LA-2024-62 spring migration starts in early February- exclude fall locations after feb 6 2024 
+
+NY-2023-52 missing a fall migration due to point outside the delineation margins (7/25/23)
+NY-2023-53 missing a fall migration due to point outside the delineation margins (7/31/23)
+WV-2023-06 missing a fall migration due to point outside the delineation margins (7/15/23)
+WV-2023-20 missing a fall migration due to point outside the delineation margins (7/28/23)
+WV-2023-23 missing a fall migration due to point outside the delineation margins (7/31/23)
