@@ -42,11 +42,13 @@ amwo_2022 <- getMovebankData(study = "American Woodcock Migration Ecology in Eas
 amwo_2023 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20230105000000000", timestamp_end = "20230630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
 
 amwo_2024 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20240105000000000", timestamp_end = "20240630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
+
+amwo_2025 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20250105000000000", timestamp_end = "20250630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
 ```
 
 Formatting and cleaning, including creating time columns and simplifying to one location per day
 ```{r}
-amwo_spring <- as.data.frame(rbind(amwo_2018, amwo_2019, amwo_2020, amwo_2021, amwo_2022, amwo_2023, amwo_2024))
+amwo_spring <- as.data.frame(rbind(amwo_2018, amwo_2019, amwo_2020, amwo_2021, amwo_2022, amwo_2023, amwo_2024, amwo_2025))
 
 amwo_spring <- amwo_spring %>%
   filter(mortality_status == 0) %>% 
@@ -133,12 +135,13 @@ Flag individuals tagged after February 15th on the year of observation so that I
 No longer using these in the analysis, but keeping for future reference
 ```{r include = FALSE}
 # Comment this out if running repeatedly; otherwise it will just slow down the code
+
 # googledrive::as_id("https://docs.google.com/spreadsheets/d/1xSZa3wZSHLQ4bbr9WIJzZY3NX9oJRlGPt2zkjFwyors/edit?usp=sharing") %>%
 #         googledrive::drive_download(path = here("capture_sheet.xlsx"), overwrite = TRUE)
 
-capture_dates <- readxl::read_excel(here("capture_sheet.xlsx"), col_types = c("text", "text", "date", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", rep("text", 19))) %>%
-        mutate(`Argos_ID` = as.character(`Argos_ID`)) %>%
-  transmute(animal_name = `Movebank_ID`,
+capture_dates <- readxl::read_excel(here("capture_sheet.xlsx"), col_types = c("text", "text", "date", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "date", "numeric", "text", "date", "date", "text", "numeric", "text", "text", "text", "text", "text", "numeric")) %>% 
+  filter(Recap == "No") %>%
+  transmute(animal_name = Movebank_ID,
             capture_date = Date)
 
 individuals_tagged_too_late <- amwo_spring_males %>%

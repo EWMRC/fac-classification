@@ -133,7 +133,7 @@ server <- function(input, output, session) {
                                      dragging = TRUE)) %>%
       addTiles() %>% # Default base mape
       addProviderTiles("Esri.WorldImagery") %>%  # ortho image
-      addProviderTiles(providers$Stamen.TonerLines) %>% # state lines and roads.
+      #addProviderTiles(providers$Stamen.TonerLines) %>% # state lines and roads.
       #addProviderTiles(providers$Stamen.TonerLabels) %>% # add location and road labels
       addScaleBar() %>%
       addLegend("bottomright", pal = colorFactor(palette = c("darkred", "cadetblue", "cadetblue", "cadetblue", "cadetblue", "pink", "green", "red", "cyan", "orange"), #c("grey", "white", "black", "cyan", "yellow", "red", "green", "pink", "blue", "orange")

@@ -153,7 +153,7 @@ amwo_data <- as.data.frame(amwo_move) %>%
             event_id = event_id,
             lat = location_lat,
             long = location_long) %>%
-  filter(time < lubridate::mdy("8/1/2024"))
+  filter(time < lubridate::mdy("8/1/2025"))
 ```
 
 1) Join in a way that creates a duplicate record for each location and potential mig bout
