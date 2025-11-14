@@ -81,8 +81,10 @@ server <- function(input, output) {
       # dispersal (winter)- white
       # "Unknown- bugged frequent schedule"- orange
       
-      if(states == "Stationary") {
+      if(states == "Winter") {
         "blue"
+      } else if(states == "Summer") {
+        "orange"
       } else if(states == "Migratory (fall)") {
         "pink"
       } else if(states == "Migratory (summer)") {
@@ -94,7 +96,7 @@ server <- function(input, output) {
       } else if(states == "Dispersal"){
         "darkred"
       } else{
-        "orange"
+        "purple"
       } })
   }
   
@@ -115,8 +117,9 @@ server <- function(input, output) {
       #addProviderTiles(providers$Stamen.TonerLines) %>% # state lines and roads.
       #addProviderTiles(providers$Stamen.TonerLabels) %>% # add location and road labels
       addScaleBar() %>%
-      addLegend("bottomright", pal = colorFactor(palette = c("darkred", "cadetblue", "cadetblue", "cadetblue", "cadetblue", "pink", "green", "red", "cyan", "orange"), #c("grey", "white", "black", "cyan", "yellow", "red", "green", "pink", "blue", "orange")
-                                                 domain = c("Stationary", "Migratory (spring)", "Migratory (summer)", "Foray loop (spring)", "Foray loop (summer)", "Migratory (fall)", "Foray loop (winter)", "Dispersal (winter)", "Foray loop (fall)", "Unknown- bugged frequent schedule")), 
+      addLegend("bottomright", pal = colorFactor(palette = c("blue", "orange", "pink", "red", "green", "cadetblue", "darkred"), #c("grey", "white", "black", "cyan", "yellow", "red", "green", "pink", "blue", "orange")
+                                                 domain = c("Winter", "Summer", "Migratory (fall)", "Migratory (summer)", "Migratory (spring)", "Foray loop", "Dispersal"),
+                                                 ordered = TRUE), 
                 values = individual_stepper$amwoDataID$point_state) %>% 
       addAwesomeMarkers(lng=individual_stepper$amwoDataID$x, 
                         lat=individual_stepper$amwoDataID$y, 

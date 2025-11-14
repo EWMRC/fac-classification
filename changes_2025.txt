@@ -5,10 +5,6 @@ LA-2024-49: we're missing a fall migration in 2024 for the same reason
 
 LA-2025-101: 5 locations per day? What's going on here? Classified correctly, but it's weird data
 
-PA-2021-37: foray loop designation is no longer working for some reason
-
-VT-2020-13: no longer settles at the end of its migration. Unfortunate, but I don't know if there's anything I necessarily can/should do to fix it? A big part of it is that its daily step lengths are very, very long, and it only made it to Virginia.
-
 WV-2024-41: extend summer migration to include the rest of July
 
 WV-2024-55: 2024 fall migration is starting way too early, and running into the end of a dispersal movement which occurs at the end of the 2024 summer
@@ -25,3 +21,9 @@ WV-2025-85: should this be a summer migration? Is it too late to be a spring mig
 Fixed?
 
 Done:
+
+Old: 
+
+PA-2021-37: foray loop designation is no longer working for some reason
+
+VT-2020-13: no longer settles at the end of its migration. Unfortunate, but I don't know if there's anything I necessarily can/should do to fix it? A big part of it is that its daily step lengths are very, very long, and it only made it to Virginia.
