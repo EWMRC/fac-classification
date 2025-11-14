@@ -7,6 +7,7 @@ output: html_notebook
 library(tidyverse)
 library(move)
 library(sf)
+library(here)
 ```
 
 ```{r}
@@ -140,7 +141,7 @@ migration_dates <- migration_dates %>%
   mutate(time_termination = if_else(animal_name == "VA-2019-45" & season == "Spring", lubridate::ymd_hms("2020-07-28 19:01:20"), time_termination))
 ```
 
-Download Movebank data, limit to times before Aug 1 2024 (more recent seasons haven't been delineated yet)
+Download Movebank data, limit to times before Aug 1 2025 (more recent seasons haven't been delineated yet)
 ```{r}
 amwo_move <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", 
                              login = readRDS(here::here("movebank_credentials.rds")), 
@@ -152,123 +153,263 @@ amwo_data <- as.data.frame(amwo_move) %>%
             time = timestamp,
             event_id = event_id,
             lat = location_lat,
-            long = location_long) %>%
-  filter(time < lubridate::mdy("8/1/2024"))
+            long = location_long,
+            designated_before = !(migration_stage == "")) %>% #!is.na(migration_stage)
+  filter(time < lubridate::mdy("8/1/2025"))
 ```
+
+NEW
+# Generate a function that takes a day/time, and for any given bird returns the corresponding point/step state
+
+```{r}
+capture_dates <- readxl::read_excel(here("capture_sheet.xlsx"), col_types = c("text", "text", "date", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "date", "numeric", "text", "date", "date", "text", "numeric", "text", "text", "text", "text", "text", "numeric")) %>% 
+  filter(Recap == "No" | is.na(Recap)) %>% # there's an issue here where this is excluding RI birds, but not an issue for this workflow
+  transmute(animal_name = Movebank_ID,
+            capture_date = Date)
+
+amwo_data <- amwo_data %>% 
+  left_join(capture_dates)
+```
+
+Step designation
+```{r}
+# Pay attention to how summer migrations respond to this
+
+amwo_data$primary_step_state <- map2_chr(amwo_data$animal_name, amwo_data$time, function(t_id, t_date){ # iterates through individual woodcock locations
+  tmd <- migration_dates %>% # stands for "temporary migration dates"
+    filter(animal_name == t_id) %>% 
+    arrange(time_initiation)
+  
+  if(nrow(tmd) == 0){
+    #return("Never migrated") # this is going to require reclassification work later = )
+    
+    tmp_nonmig_data <- amwo_data %>% 
+      filter(animal_name == t_id) %>% 
+      mutate(standard_date = mdy(paste0(month(capture_date), "/", day(capture_date), "/2020")))
+    
+    capture_state <- str_split_i(t_id, "-", 1)
+    
+    winter_states <- c("AL", "FL", "GA", "LA", "NC", "SC", "NJ")
+    summer_states <- c("ME", "NS", "NY", "ONT", "PA", "QUE", "VT", "MD", "WI", "RI", "WV")
+    both_states <- c("VA")
+    
+    if(capture_state %in% winter_states) {
+      return("Winter")
+    } else if(capture_state %in% summer_states) {
+      return("Summer")
+    } else if(capture_state %in% both_states & (tmp_nonmig_data$standard_date[1] > mdy("11/1/2020") | tmp_nonmig_data$standard_date[1] < mdy("4/1/2020"))) {
+      return("Winter")
+    } else if(capture_state %in% both_states & (tmp_nonmig_data$standard_date[1] < mdy("11/1/2020") & tmp_nonmig_data$standard_date[1] > mdy("4/1/2020"))) {
+      return("Summer")
+    } else {
+      return("error")
+    }
+  }
+  
+  target <- NA # migration state to be recategorized
+  certain <- 0 # do we know this migration state for certain, or can it be recategorized later?
+  
+  for(i in nrow(tmd):1){ #iterates through migratory bouts. This is a backwards classifier: it looks weird, but I swear it works
+    if(is.na(tmd$time_termination[i]) & t_date >= tmd$time_initiation[i]){ # if after initiation date, and the movement never ceased
+      target <- if_else(tmd$season[i] == "Spring", "Migratory (spring)", "Migratory (fall)")
+      certain <- 1
+    } else if(certain == 0 & t_date >= tmd$time_initiation[i] & t_date < tmd$time_termination[i]) { # between the start and end dates
+      target <- if_else(tmd$season[i] == "Spring", "Migratory (spring)", "Migratory (fall)")
+      certain <- 1
+    } else if(certain == 0 & nrow(tmd) == i & if_else(is.na(tmd$time_termination[i]), FALSE, t_date >= tmd$time_termination[i])) { # if this is the final migratory movement (with an end date), and it occurred on/after the termination date
+      target <- if_else(tmd$season[i] == "Spring", "Summer", "Winter")
+      certain <- 1
+    } else if(certain == 0 & t_date < tmd$time_initiation[i]){ # the "uncertainty" category, prior to initiation of this migratory movement
+      target <- if_else(tmd$season[i] == "Spring", "Winter", "Summer")
+    }
+  }
+  
+  return(target)
+  
+})
+
+```
+
+  Migratory (fall) Migratory (spring)             Summer             Winter 
+              5975               7285              14609              15226
+
+Point designation
+```{r}
+amwo_data$primary_point_state <- map2_chr(amwo_data$animal_name, amwo_data$time, function(t_id, t_date){ # iterates through individual woodcock locations
+  tmd <- migration_dates %>% # stands for "temporary migration dates"
+    filter(animal_name == t_id) %>% 
+    arrange(time_initiation)
+  
+  if(nrow(tmd) == 0){
+    #return("Never migrated") # this is going to require reclassification work later = )
+    
+    tmp_nonmig_data <- amwo_data %>% 
+      filter(animal_name == t_id) %>% 
+      mutate(standard_date = mdy(paste0(month(capture_date), "/", day(capture_date), "/2020")))
+    
+    capture_state <- str_split_i(t_id, "-", 1)
+    
+    winter_states <- c("AL", "FL", "GA", "LA", "NC", "SC", "NJ")
+    summer_states <- c("ME", "NS", "NY", "ONT", "PA", "QUE", "VT", "MD", "WI", "RI", "WV")
+    both_states <- c("VA")
+    
+    if(capture_state %in% winter_states) {
+      return("Winter")
+    } else if(capture_state %in% summer_states) {
+      return("Summer")
+    } else if(capture_state %in% both_states & (tmp_nonmig_data$standard_date[1] > mdy("11/1/2020") | tmp_nonmig_data$standard_date[1] < mdy("4/1/2020"))) {
+      return("Winter")
+    } else if(capture_state %in% both_states & (tmp_nonmig_data$standard_date[1] < mdy("11/1/2020") & tmp_nonmig_data$standard_date[1] > mdy("4/1/2020"))) {
+      return("Summer")
+    } else {
+      return("error")
+    }
+  }
+  
+  target <- NA # migration state to be recategorized
+  certain <- 0 # do we know this migration state for certain, or can it be recategorized later?
+  
+  for(i in nrow(tmd):1){ #iterates through migratory bouts. This is a backwards classifier: it looks weird, but I swear it works
+    if(is.na(tmd$time_termination[i]) & t_date > tmd$time_initiation[i]){ # if after initiation date, and the movement never ceased
+      target <- if_else(tmd$season[i] == "Spring", "Migratory (spring)", "Migratory (fall)")
+      certain <- 1
+    } else if(certain == 0 & t_date > tmd$time_initiation[i] & t_date < tmd$time_termination[i]) { # between the start and end dates
+      target <- if_else(tmd$season[i] == "Spring", "Migratory (spring)", "Migratory (fall)")
+      certain <- 1
+    } else if(t_date == tmd$time_initiation[i]){ # on the start date
+      target <- if_else(tmd$season[i] == "Spring", "Winter", "Summer")
+      certain <- 1
+    } else if(certain == 0 & nrow(tmd) == i & if_else(is.na(tmd$time_termination[i]), FALSE, t_date >= tmd$time_termination[i])) { # if this is the final migratory movement (with an end date), and it occurred on/after the termination date
+      target <- if_else(tmd$season[i] == "Spring", "Summer", "Winter")
+      certain <- 1
+    } else if(certain == 0 & t_date < tmd$time_initiation[i]){ # the "uncertainty" category, prior to initiation of this migratory movement
+      target <- if_else(tmd$season[i] == "Spring", "Winter", "Summer")
+    }
+  }
+  
+  return(target)
+  
+})
+
+```
+
+
+OLD: MOST OF WHAT COMES AFTER THIS POINT WILL BE DELETED
+
 
 1) Join in a way that creates a duplicate record for each location and potential mig bout
 2) Classify each record using the potential mig info
 3) Arrange the states using an ordered factor, with "stationary" on the bottom
 ```{r}
-amwo_data_w_duplicates <- amwo_data %>%
-  left_join(migration_dates) 
-
-birds_w_no_mig_movements <- amwo_data_w_duplicates %>%
-  filter(is.na(time_initiation)) %>% 
-  pull(animal_name)
-
-amwo_data_w_duplicates <- amwo_data_w_duplicates %>% #Fill in dummy dates for the migration so that birds with no migratory movements are always registered as stationary
-  mutate(init_state = if_else(is.na(time_initiation), "Stationary", init_state),
-         time_initiation = if_else(is.na(time_initiation), lubridate::ymd("2035-01-01", tz = "UTC"), time_initiation),
-         time_termination = if_else(is.na(time_initiation), lubridate::ymd("2035-01-01", tz = "UTC"), time_termination),
-         season = if_else(is.na(time_initiation), "None", season))
-
-#step state
-amwo_data_w_duplicates$primary_step_state <- amwo_data_w_duplicates %>%
-  dplyr::select(time, time_initiation, time_termination, season) %>%
-  pmap(.f = function(time, time_initiation, time_termination, season){
-    step_state <- "Stationary"
-    #Silently implied; if both time_initiation and time_termination are NA, remains Stationary
-    
-    if(is.na(time_initiation)){ #error handling: there should always be an initiation date
-      stop("No inititation date")
-    }
-    
-    if(is.na(time_termination)){ #If there is no termination date
-      if(time >= time_initiation){ 
-        step_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
-      }
-    }
-    
-    if(!is.na(time_termination)){ #If there is a termination date
-      if(time >= time_initiation & time < time_termination){ 
-        step_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
-      }
-    }
-    return(step_state)
-  }) %>%
-  unlist() %>%
-  factor(levels = c("Migratory (spring)", "Migratory (fall)", "Stationary"), ordered = TRUE)
-
-#point state
-amwo_data_w_duplicates$primary_point_state <- amwo_data_w_duplicates %>%
-  dplyr::select(time, time_initiation, time_termination, season, init_state) %>%
-  pmap(.f = function(time, time_initiation, time_termination, season, init_state){
-    point_state <- "Stationary"
-    #Silently implied; if both time_initiation and time_termination are NA, remains Stationary
-    
-    if(is.na(time_initiation)){ #error handling: there should always be an initiation date
-      stop("No inititation date")
-    }
-    
-    if(is.na(time_termination)){ #If there is no termination date
-      if(init_state == "Stationary"){
-        if(time > time_initiation){ 
-          point_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
-        }
-      } else { #if the bird starts in a mig state, then the first point is migratory
-        if(time >= time_initiation){ 
-          point_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
-        }
-      }
-    }
-    
-    if(!is.na(time_termination)){ #If there is a termination date
-      if(init_state == "Stationary"){
-        if(time > time_initiation & time < time_termination){
-          point_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
-        }
-      } else { #if the bird starts in a mig state, then the first point is migratory
-        if(time >= time_initiation & time < time_termination){
-          point_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
-        }
-      }
-    }
-    
-    return(point_state)
-  }) %>%
-  unlist() %>%
-  factor(levels = c("Migratory (spring)", "Migratory (fall)", "Stationary"), ordered = TRUE)
+# amwo_data_w_duplicates <- amwo_data %>%
+#   left_join(migration_dates) 
+# 
+# birds_w_no_mig_movements <- amwo_data_w_duplicates %>%
+#   filter(is.na(time_initiation)) %>% 
+#   pull(animal_name)
+# 
+# amwo_data_w_duplicates <- amwo_data_w_duplicates %>% #Fill in dummy dates for the migration so that birds with no migratory movements are always registered as stationary
+#   mutate(init_state = if_else(is.na(time_initiation), "Stationary", init_state),
+#          time_initiation = if_else(is.na(time_initiation), lubridate::ymd("2035-01-01", tz = "UTC"), time_initiation),
+#          time_termination = if_else(is.na(time_initiation), lubridate::ymd("2035-01-01", tz = "UTC"), time_termination),
+#          season = if_else(is.na(time_initiation), "None", season))
+# 
+# #step state
+# amwo_data_w_duplicates$primary_step_state <- amwo_data_w_duplicates %>%
+#   dplyr::select(time, time_initiation, time_termination, season) %>%
+#   pmap(.f = function(time, time_initiation, time_termination, season){
+#     step_state <- "Stationary"
+#     #Silently implied; if both time_initiation and time_termination are NA, remains Stationary
+#     
+#     if(is.na(time_initiation)){ #error handling: there should always be an initiation date
+#       stop("No inititation date")
+#     }
+#     
+#     if(is.na(time_termination)){ #If there is no termination date
+#       if(time >= time_initiation){ 
+#         step_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
+#       }
+#     }
+#     
+#     if(!is.na(time_termination)){ #If there is a termination date
+#       if(time >= time_initiation & time < time_termination){ 
+#         step_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
+#       }
+#     }
+#     return(step_state)
+#   }) %>%
+#   unlist() %>%
+#   factor(levels = c("Migratory (spring)", "Migratory (fall)", "Stationary"), ordered = TRUE)
+# 
+# #point state
+# amwo_data_w_duplicates$primary_point_state <- amwo_data_w_duplicates %>%
+#   dplyr::select(time, time_initiation, time_termination, season, init_state) %>%
+#   pmap(.f = function(time, time_initiation, time_termination, season, init_state){
+#     point_state <- "Stationary"
+#     #Silently implied; if both time_initiation and time_termination are NA, remains Stationary
+#     
+#     if(is.na(time_initiation)){ #error handling: there should always be an initiation date
+#       stop("No inititation date")
+#     }
+#     
+#     if(is.na(time_termination)){ #If there is no termination date
+#       if(init_state == "Stationary"){
+#         if(time > time_initiation){ 
+#           point_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
+#         }
+#       } else { #if the bird starts in a mig state, then the first point is migratory
+#         if(time >= time_initiation){ 
+#           point_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
+#         }
+#       }
+#     }
+#     
+#     if(!is.na(time_termination)){ #If there is a termination date
+#       if(init_state == "Stationary"){
+#         if(time > time_initiation & time < time_termination){
+#           point_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
+#         }
+#       } else { #if the bird starts in a mig state, then the first point is migratory
+#         if(time >= time_initiation & time < time_termination){
+#           point_state <- if_else(season == "Fall", "Migratory (fall)", "Migratory (spring)")
+#         }
+#       }
+#     }
+#     
+#     return(point_state)
+#   }) %>%
+#   unlist() %>%
+#   factor(levels = c("Migratory (spring)", "Migratory (fall)", "Stationary"), ordered = TRUE)
 ```
 
 4) Use head on records, grouped by event_id, to keep only the "top" record from each group. If there was any migratory movement during that time period, the top record will be a migratory state. If not, the top record will be a stationary state
 ```{r}
-amwo_data_reconstructed <- amwo_data_w_duplicates %>%
-  group_by(event_id) %>%
-  arrange(primary_step_state, .by_group = TRUE) %>%
-  group_modify(.f = function(x, ...){head(x, n = 1)}) %>% 
-  dplyr::select(-season, -time_initiation, -time_termination) %>%
-  ungroup()
+# amwo_data_reconstructed <- amwo_data_w_duplicates %>%
+#   group_by(event_id) %>%
+#   arrange(primary_step_state, .by_group = TRUE) %>%
+#   group_modify(.f = function(x, ...){head(x, n = 1)}) %>% 
+#   dplyr::select(-season, -time_initiation, -time_termination) %>%
+#   ungroup()
 ```
 
 Arrange by animal_id and time to ensure that the tracks graph correctly
 ```{r}
-amwo_data_reconstructed <- amwo_data_reconstructed %>%
+amwo_data <- amwo_data %>%
   group_by(animal_name) %>%
   arrange(time, .by_group = TRUE) %>%
   ungroup() %>% 
-  dplyr::select(-init_state)
+  dplyr::select(-capture_date)
 ```
 
 Set any bugged tracks to "Unknown- bugged frequent schedule"
 ```{r}
-amwo_data_reconstructed <- amwo_data_reconstructed %>%
+amwo_data <- amwo_data %>%
   mutate(primary_step_state = if_else(animal_name == "VT-2020-01" | animal_name == "VT-2020-02" | animal_name == "VT-2020-03" | animal_name == "VT-2020-04" | animal_name == "VT-2020-12", "Unknown- bugged frequent schedule", as.character(primary_step_state)),
          primary_point_state = if_else(animal_name == "VT-2020-01" | animal_name == "VT-2020-02" | animal_name == "VT-2020-03" | animal_name == "VT-2020-04" | animal_name == "VT-2020-12", "Unknown- bugged frequent schedule", as.character(primary_point_state)))
 ```
 
 ```{r}
-saveRDS(amwo_data_reconstructed, file = here::here("classifier_integrated", "fac_primary_state_delineation.rds"))
+saveRDS(amwo_data, file = here::here("classifier_integrated", "fac_primary_state_delineation.rds"))
 ```
 
 Run auxiliary state designations
@@ -281,6 +422,11 @@ source(here::here("classifier_integrated", "compile_results", "winter_foray_loop
 source(here::here("classifier_integrated", "compile_results", "winter_dispersal_movements.R"))
 source(here::here("classifier_integrated", "compile_results", "spring_foray_loops.R"))
 source(here::here("classifier_integrated", "compile_results", "fall_foray_loops.R"))
+
+##
+# add a non-migratory classifier here. Base on the results of the nonmig_stats.Rmd script
+##
+
 ```
 
 Run nesting script
