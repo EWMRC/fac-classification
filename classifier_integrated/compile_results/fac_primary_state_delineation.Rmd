@@ -414,6 +414,9 @@ saveRDS(amwo_data, file = here::here("classifier_integrated", "fac_primary_state
 
 Run auxiliary state designations
 ```{r}
+
+source(here::here("classifier_integrated", "compile_results", "nonmigratory_designation.R"))
+
 source(here::here("classifier_integrated", "compile_results", "summer_dispersal_movements.R"))
 source(here::here("classifier_integrated", "compile_results", "summer_migrations.R"))
 #source(here::here("classifier_integrated", "compile_results", "summer_dispersal_movements.R")) # duplicate
@@ -422,14 +425,9 @@ source(here::here("classifier_integrated", "compile_results", "winter_foray_loop
 source(here::here("classifier_integrated", "compile_results", "winter_dispersal_movements.R"))
 source(here::here("classifier_integrated", "compile_results", "spring_foray_loops.R"))
 source(here::here("classifier_integrated", "compile_results", "fall_foray_loops.R"))
-
-##
-# add a non-migratory classifier here. Base on the results of the nonmig_stats.Rmd script
-##
-
 ```
 
 Run nesting script
 ```{r}
-source(here::here("nests", "nest_location_assignment.R"))
+source(here::here("nests", "nest_location_assignment.R")) #disregard the unexpected match warning
 ```

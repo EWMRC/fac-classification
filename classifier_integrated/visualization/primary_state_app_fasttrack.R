@@ -116,6 +116,8 @@ server <- function(input, output, session) {
         "cadetblue"
       } else if(states == "Dispersal"){
         "darkred"
+      } else if(states == "Non-migratory"){
+        "lightgray"
       } else{
         "purple"
       } })
@@ -138,10 +140,10 @@ server <- function(input, output, session) {
       #addProviderTiles(providers$Stamen.TonerLines) %>% # state lines and roads.
       #addProviderTiles(providers$Stamen.TonerLabels) %>% # add location and road labels
       addScaleBar() %>%
-      addLegend("bottomright", pal = colorFactor(palette = c("blue", "orange", "pink", "red", "green", "cadetblue", "darkred"), #c("grey", "white", "black", "cyan", "yellow", "red", "green", "pink", "blue", "orange")
-                                                 domain = c("Winter", "Summer", "Migratory (fall)", "Migratory (summer)", "Migratory (spring)", "Foray loop", "Dispersal"),
+      addLegend("bottomright", pal = colorFactor(palette = c("blue", "orange", "pink", "red", "green", "cadetblue", "darkred", "lightgray"), #c("grey", "white", "black", "cyan", "yellow", "red", "green", "pink", "blue", "orange")
+                                                 domain = c("Winter", "Summer", "Migratory (fall)", "Migratory (summer)", "Migratory (spring)", "Foray loop", "Dispersal", "Non-migratory"),
                                                  ordered = TRUE), 
-                values = individual_stepper$amwoDataID$point_state) %>%  
+                values = individual_stepper$amwoDataID$point_state) %>% 
       addAwesomeMarkers(lng=individual_stepper$amwoDataID$x, 
                         lat=individual_stepper$amwoDataID$y, 
                         icon=individual_stepper$icons,
