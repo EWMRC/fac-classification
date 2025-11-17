@@ -13,7 +13,7 @@ library(here)
 ```{r}
 fall_classified <- readRDS(here::here("classifier_fall", "fall_all_4_state_model.rds"))
 spring_male_classified <- readRDS(here::here("classifier_spring", "spring_male_5_state_model.rds"))
-spring_female_classified <-readRDS(here::here("classifier_spring", "spring_female_4_state_model.rds"))
+spring_female_classified <- readRDS(here::here("classifier_spring", "spring_female_4_state_model.rds"))
 ```
 
 Pulling the migratory initiation and termination date-times
@@ -155,7 +155,7 @@ amwo_data <- as.data.frame(amwo_move) %>%
             lat = location_lat,
             long = location_long,
             designated_before = !(migration_stage == "")) %>% #!is.na(migration_stage)
-  filter(time < lubridate::mdy("8/1/2025"))
+  filter(time < lubridate::mdy("8/1/2024"))
 ```
 
 NEW
@@ -189,8 +189,8 @@ amwo_data$primary_step_state <- map2_chr(amwo_data$animal_name, amwo_data$time, 
     
     capture_state <- str_split_i(t_id, "-", 1)
     
-    winter_states <- c("AL", "FL", "GA", "LA", "NC", "SC", "NJ")
-    summer_states <- c("ME", "NS", "NY", "ONT", "PA", "QUE", "VT", "MD", "WI", "RI", "WV")
+    winter_states <- c("AL", "FL", "GA", "LA", "NC", "SC", "NJ", "MD")
+    summer_states <- c("ME", "NS", "NY", "ONT", "PA", "QUE", "VT", "WI", "RI", "WV")
     both_states <- c("VA")
     
     if(capture_state %in% winter_states) {
@@ -230,9 +230,6 @@ amwo_data$primary_step_state <- map2_chr(amwo_data$animal_name, amwo_data$time, 
 
 ```
 
-  Migratory (fall) Migratory (spring)             Summer             Winter 
-              5975               7285              14609              15226
-
 Point designation
 ```{r}
 amwo_data$primary_point_state <- map2_chr(amwo_data$animal_name, amwo_data$time, function(t_id, t_date){ # iterates through individual woodcock locations
@@ -249,8 +246,8 @@ amwo_data$primary_point_state <- map2_chr(amwo_data$animal_name, amwo_data$time,
     
     capture_state <- str_split_i(t_id, "-", 1)
     
-    winter_states <- c("AL", "FL", "GA", "LA", "NC", "SC", "NJ")
-    summer_states <- c("ME", "NS", "NY", "ONT", "PA", "QUE", "VT", "MD", "WI", "RI", "WV")
+    winter_states <- c("AL", "FL", "GA", "LA", "NC", "SC", "NJ", "MD")
+    summer_states <- c("ME", "NS", "NY", "ONT", "PA", "QUE", "VT", "WI", "RI", "WV")
     both_states <- c("VA")
     
     if(capture_state %in% winter_states) {
@@ -276,8 +273,11 @@ amwo_data$primary_point_state <- map2_chr(amwo_data$animal_name, amwo_data$time,
     } else if(certain == 0 & t_date > tmd$time_initiation[i] & t_date < tmd$time_termination[i]) { # between the start and end dates
       target <- if_else(tmd$season[i] == "Spring", "Migratory (spring)", "Migratory (fall)")
       certain <- 1
-    } else if(t_date == tmd$time_initiation[i]){ # on the start date
+    } else if(t_date == tmd$time_initiation[i] & tmd$init_state[i] == "Stationary"){ # on the start date, and init state is stationary
       target <- if_else(tmd$season[i] == "Spring", "Winter", "Summer")
+      certain <- 1
+    } else if(t_date == tmd$time_initiation[i] & tmd$init_state[i] == "Migratory"){ # on the start date, and init state is migratory
+      target <- if_else(tmd$season[i] == "Spring", "Migratory (spring)", "Migratory (fall)")
       certain <- 1
     } else if(certain == 0 & nrow(tmd) == i & if_else(is.na(tmd$time_termination[i]), FALSE, t_date >= tmd$time_termination[i])) { # if this is the final migratory movement (with an end date), and it occurred on/after the termination date
       target <- if_else(tmd$season[i] == "Spring", "Summer", "Winter")
