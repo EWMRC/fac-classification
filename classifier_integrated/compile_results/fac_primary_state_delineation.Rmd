@@ -163,12 +163,14 @@ NEW
 
 ```{r}
 capture_dates <- readxl::read_excel(here("capture_sheet.xlsx"), col_types = c("text", "text", "date", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "text", "text", "numeric", "numeric", "numeric", "numeric", "numeric", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "date", "numeric", "text", "date", "date", "text", "numeric", "text", "text", "text", "text", "text", "numeric")) %>% 
-  filter(Recap == "No" | is.na(Recap)) %>% # there's an issue here where this is excluding RI birds, but not an issue for this workflow
+  mutate(Recap = if_else(Movebank_ID %in% c("RI-2018-01", "RI-2018-03", "RI-2018-04", "RI-2018-05", "RI-2018-06", "RI-2018-08", "RI-2018-09", "RI-2018-12", "RI-2018-13", "RI-2019-16", "RI-2019-17", "RI-2019-18", "RI-2019-19", "RI-2019-20", "RI-2019-23", "RI-2019-24", "RI-2019-25", "RI-2019-26", "RI-2019-28"), "No", Recap)) %>% ##### BUG: RI birds are not being interpreted correctly due to the Recap clause
+  filter(Recap == "No" | is.na(Recap)) %>% 
   transmute(animal_name = Movebank_ID,
             capture_date = Date)
 
 amwo_data <- amwo_data %>% 
-  left_join(capture_dates)
+  left_join(capture_dates) %>% 
+  mutate(capture_date = if_else(animal_name == "VA-2021-95", mdy("3/1/2021"), capture_date)) #filling in a better estimated capture date for this individual
 ```
 
 Step designation
@@ -190,16 +192,16 @@ amwo_data$primary_step_state <- map2_chr(amwo_data$animal_name, amwo_data$time, 
     capture_state <- str_split_i(t_id, "-", 1)
     
     winter_states <- c("AL", "FL", "GA", "LA", "NC", "SC", "NJ", "MD")
-    summer_states <- c("ME", "NS", "NY", "ONT", "PA", "QUE", "VT", "WI", "RI", "WV")
-    both_states <- c("VA")
+    summer_states <- c("ME", "NS", "NY", "ONT", "PA", "QUE", "VT", "WI", "WV")
+    both_states <- c("VA", "RI")
     
     if(capture_state %in% winter_states) {
       return("Winter")
     } else if(capture_state %in% summer_states) {
       return("Summer")
-    } else if(capture_state %in% both_states & (tmp_nonmig_data$standard_date[1] > mdy("11/1/2020") | tmp_nonmig_data$standard_date[1] < mdy("4/1/2020"))) {
+    } else if(capture_state %in% both_states & (tmp_nonmig_data$standard_date[1] > mdy("10/25/2020") | tmp_nonmig_data$standard_date[1] < mdy("2/25/2020"))) {
       return("Winter")
-    } else if(capture_state %in% both_states & (tmp_nonmig_data$standard_date[1] < mdy("11/1/2020") & tmp_nonmig_data$standard_date[1] > mdy("4/1/2020"))) {
+    } else if(capture_state %in% both_states & (tmp_nonmig_data$standard_date[1] < mdy("10/25/2020") & tmp_nonmig_data$standard_date[1] > mdy("2/25/2020"))) {
       return("Summer")
     } else {
       return("error")
@@ -247,16 +249,16 @@ amwo_data$primary_point_state <- map2_chr(amwo_data$animal_name, amwo_data$time,
     capture_state <- str_split_i(t_id, "-", 1)
     
     winter_states <- c("AL", "FL", "GA", "LA", "NC", "SC", "NJ", "MD")
-    summer_states <- c("ME", "NS", "NY", "ONT", "PA", "QUE", "VT", "WI", "RI", "WV")
-    both_states <- c("VA")
+    summer_states <- c("ME", "NS", "NY", "ONT", "PA", "QUE", "VT", "WI", "WV")
+    both_states <- c("VA", "RI")
     
     if(capture_state %in% winter_states) {
       return("Winter")
     } else if(capture_state %in% summer_states) {
       return("Summer")
-    } else if(capture_state %in% both_states & (tmp_nonmig_data$standard_date[1] > mdy("11/1/2020") | tmp_nonmig_data$standard_date[1] < mdy("4/1/2020"))) {
+    } else if(capture_state %in% both_states & (tmp_nonmig_data$standard_date[1] > mdy("10/25/2020") | tmp_nonmig_data$standard_date[1] < mdy("2/25/2020"))) {
       return("Winter")
-    } else if(capture_state %in% both_states & (tmp_nonmig_data$standard_date[1] < mdy("11/1/2020") & tmp_nonmig_data$standard_date[1] > mdy("4/1/2020"))) {
+    } else if(capture_state %in% both_states & (tmp_nonmig_data$standard_date[1] < mdy("10/25/2020") & tmp_nonmig_data$standard_date[1] > mdy("2/25/2020"))) {
       return("Summer")
     } else {
       return("error")

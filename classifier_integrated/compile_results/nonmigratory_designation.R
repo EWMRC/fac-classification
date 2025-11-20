@@ -1,10 +1,10 @@
 library(tidyverse)
+library(readxl)
 
 amwo_data <- readRDS(file = here::here("classifier_integrated", "fac_primary_state_delineation.rds"))
 
-nonmig_events <- read_csv(here::here("movement_stats", "nonmig_classifications.csv"), 
-                          col_types = cols(normal_before_date = col_datetime(format = "%m/%d/%y %H:%M:%S"), 
-                                           normal_after_date = col_datetime(format = "%m/%d/%y %H:%M:%S"))) %>% 
+nonmig_events <- read_excel(here::here("movement_stats", "nonmig_classifications.xlsx"), 
+                            col_types = c("text", "date", "date", "text")) %>% 
   rename(animal_name = ID) %>% 
   mutate(non_migratory_at_some_point = 1,
          normal_before_date = if_else(is.na(normal_before_date), mdy("1/1/1970"), normal_before_date), # replace NAs with dummy dates
