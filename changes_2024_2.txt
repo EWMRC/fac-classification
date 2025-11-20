@@ -1,13 +1,42 @@
 
 Issues in 2024 designation:
-LA-2023-33 needs to be classified as nonmigratory
-RI-2019-22 should either be classed as nonmig or winter, depending on capture date
-RI-2019-26 same deal
-VA-2019-19 either needs to be non-migratory or summering
-VA-2020-88 either needs to be non-migratory or wintering
-VA-2021-95 either needs to be non-migratory or summering
-WI-2023-01 should be non-migratory on the tail end
+
+
+Needs checking:
+
+COMPLETE
+
+
+*Remember to check: online vs. new categorizations before upload*
+
+
+Done
+QUE-2020-19 is missing two migratory movements… I'm just going to leave it (points are technically classed correctly)
+
 WV-2024-33 stays migratory into july. not great, but will probably be reclassed next year with additional data?
+
+RI-2019-22 should either be classed as nonmig or winter, depending on capture date
+	Capture date is 11-5-2019: classify as winter (changed: included RI in "both states")
+
+RI-2019-26 should either be classed as nonmig or winter, depending on capture date
+	Capture date is 10-31-2019: classify as winter
+
+VA-2019-19 either needs to be non-migratory or summering
+	Capture date is 3-1-2019: classify as summer
+
+VA-2020-88 either needs to be non-migratory or wintering
+	Capture date is 10-28-2020: classify as winter
+
+VA-2021-95 either needs to be non-migratory or summering
+	Capture date is around 3-1-2021 (listed as NA, *fill in in script*): classify as summer
+
+LA-2023-33 needs to be classified as nonmigratory
+	First point is 2-17-2023: classify as non-mig
+
+WI-2023-01 should be non-migratory on the tail end
+
 WV-2024-47 needs to start in summer
+	Capture date is 4/25/2024: classify as summer
+
 WV-2024-55 same
-QUE-2020-19 is missing two migratory movements…
+	Capture date is 5/8/2024: classify as summer

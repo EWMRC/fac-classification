@@ -1,0 +1,70 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+The sole purpose of this script is to check whether the v1.2 changes (breaking stationary state into summer, winter, and nonmig) will affect any of the migratory states. Hence, it shouldn't need to be rerun for annual updates.
+
+```{r}
+library(tidyverse)
+library(move)
+```
+
+```{r}
+amwo_data <- readRDS(file = here::here("classifier_integrated", "fac_primary_state_delineation.rds"))
+```
+
+```{r}
+amwo_move <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", 
+                             login = readRDS(here::here("movebank_credentials.rds")), 
+                             removeDuplicatedTimestamps=TRUE)
+
+move_df <- as.data.frame(amwo_move) %>%
+  transmute(#animal_name = local_identifier, 
+    #time = timestamp,
+    event_id = event_id, # only need event id for a join field
+    #lat = location_lat,
+    #long = location_long,
+    movebank_point_state = case_match(behavioural_classification,
+                                      "Point state: Stationary" ~ "Stationary",
+                                      "Point state: Migratory (spring)" ~ "Migratory (spring)",
+                                      "Point state: Migratory (fall)" ~ "Migratory (fall)",
+                                      "Point state: Migratory (summer)" ~ "Migratory (summer)",
+                                      "Point state: Foray loop" ~ "Foray loop",
+                                      "Point state: Dispersal" ~ "Dispersal",
+                                      "Point state: Unknown- bugged frequent schedule" ~ "UBF"),
+    movebank_step_state = case_match(migration_stage,
+                                     "Step state: Stationary" ~ "Stationary",
+                                     "Step state: Migratory (spring)" ~ "Migratory (spring)",
+                                     "Step state: Migratory (fall)" ~ "Migratory (fall)",
+                                     "Step state: Migratory (summer)" ~ "Migratory (summer)",
+                                     "Step state: Foray loop" ~ "Foray loop",
+                                     "Step state: Dispersal" ~ "Dispersal",
+                                     "Step state: Unknown- bugged frequent schedule" ~ "UBF"),
+    designated_before = !(migration_stage == "")) %>% #!is.na(migration_stage)
+  # filter(time < lubridate::mdy("8/1/2024")) %>% 
+  filter(designated_before == TRUE)
+
+amwo_data <- amwo_data %>% 
+  left_join(move_df)
+```
+
+Here's the test
+```{r}
+t <- amwo_data %>% 
+  mutate(primary_point_state = case_match(primary_point_state,
+                                          "Winter" ~ "Stationary",
+                                          "Summer" ~ "Stationary",
+                                          "Non-migratory" ~ "Stationary",
+                                          "Unknown- bugged frequent schedule" ~ "UBF",
+                                          .default = primary_point_state),
+         primary_step_state = case_match(primary_step_state,
+                                         "Winter" ~ "Stationary",
+                                         "Summer" ~ "Stationary",
+                                         "Non-migratory" ~ "Stationary",
+                                         "Unknown- bugged frequent schedule" ~ "UBF",
+                                         .default = primary_step_state)) %>% 
+  mutate(does_it_match = if_else(primary_point_state == movebank_point_state & primary_step_state == movebank_step_state,1,0)) %>% 
+  filter(does_it_match == 0)
+# and it fails... although not by all that much?
+```
+

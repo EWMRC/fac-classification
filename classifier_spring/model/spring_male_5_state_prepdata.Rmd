@@ -34,6 +34,7 @@ amwo_2023 <- getMovebankData(study = "American Woodcock Migration Ecology in Eas
 amwo_2024 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20240105000000000", timestamp_end = "20240630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
 
 amwo_2025 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20250105000000000", timestamp_end = "20250630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
+
 ```
 
 Formatting and cleaning, including creating time columns and simplifying to one location per day
