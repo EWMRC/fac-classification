@@ -155,7 +155,7 @@ amwo_data <- as.data.frame(amwo_move) %>%
             lat = location_lat,
             long = location_long,
             designated_before = !(migration_stage == "")) %>% #!is.na(migration_stage)
-  filter(time < lubridate::mdy("8/1/2024"))
+  filter(time < lubridate::mdy("8/1/2025"))
 ```
 
 NEW

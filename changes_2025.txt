@@ -3,7 +3,9 @@ LA-2024-45: last point prior to fall mig is on 2024-05-23, which is too early to
 
 LA-2024-49: we're missing a fall migration in 2024 for the same reason
 
-LA-2025-101: 5 locations per day? What's going on here? Classified correctly, but it's weird data
+NS-2024-35: end of fall mig is categorized as a spring mig
+
+NS-2024-36: same
 
 WV-2024-41: extend summer migration to include the rest of July
 
@@ -11,12 +13,9 @@ WV-2024-55: 2024 fall migration is starting way too early, and running into the 
 
 WV-2024-58: the end of fall migration is bleeding into the start of spring migration, in part because there's only one location separating the two migrations
 
-WV-2025-68: turn this spring migration into a dispersal
-
 WV-2025-75: turn this spring migration into a dispersal
 
-WV-2025-85: should this be a summer migration? Is it too late to be a spring migration?
-
+WV-2025-85: this should probably start in a spring mig state.
 
 Fixed?
 
@@ -24,6 +23,7 @@ Done:
 
 Old: 
 
-PA-2021-37: foray loop designation is no longer working for some reason
 
-VT-2020-13: no longer settles at the end of its migration. Unfortunate, but I don't know if there's anything I necessarily can/should do to fix it? A big part of it is that its daily step lengths are very, very long, and it only made it to Virginia.
+
+
+

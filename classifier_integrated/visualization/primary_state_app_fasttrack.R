@@ -60,6 +60,15 @@ server <- function(input, output, session) {
     mutate(mb_point_state = ifelse(is.na(mb_point_state), "Not available", mb_point_state),
            mb_step_state = ifelse(is.na(mb_step_state), "Not available", mb_step_state))
   
+  # let's now exclude all individuals which don't have at least one new (undesignated) point
+  new_animals_to_revise <- amwoData.sm %>% ### reminder to put this in the movebank upload code...
+    filter(designated_before == FALSE) %>% 
+    pull(animal_name) %>% 
+    unique()
+  
+  amwoData.sm <- amwoData.sm %>% 
+    filter(animal_name %in% new_animals_to_revise)
+  
   #test code
   # amwoData.sm[amwoData.sm$event_id == 14074649058, "step_state"] <- "test"
   

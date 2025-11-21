@@ -1823,53 +1823,21 @@ amwo_spring &lt;- amwo_spring %&gt;%
 <p>Filtering to just males</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG48IS0tIHJuYi1zb3VyY2UtYmVnaW4gZXlKa1lYUmhJam9pWUdCZ2NseHVZVzEzYjE5emNISnBibWRmYldGc1pYTWdQQzBnWVcxM2IxOXpjSEpwYm1kZmJXRnNaWE1nSlQ0bFhHNGdJRzExZEdGMFpTaDVaV0Z5SUQwZ2MzUnlablJwYldVb2RHbHRaU3dnWm05eWJXRjBQVndpSlZsY0lpa3BJQ1UrSlZ4dUlDQnRkWFJoZEdVb1lXNXBiV0ZzWDI1aGJXVWdQU0JKUkN4Y2JpQWdJQ0FnSUNBZ0lFbEVJRDBnY0dGemRHVW9TVVFzSUhsbFlYSXNJSE5sY0QxY0lpMWNJaWtwWEc1Z1lHQWlmUT09IC0tPlxuXG5gYGByXG5hbXdvX3NwcmluZ19tYWxlcyA8LSBhbXdvX3NwcmluZ19tYWxlcyAlPiVcbiAgbXV0YXRlKHllYXIgPSBzdHJmdGltZSh0aW1lLCBmb3JtYXQ9XFwlWVxcKSkgJT4lXG4gIG11dGF0ZShhbmltYWxfbmFtZSA9IElELFxuICAgICAgICAgSUQgPSBwYXN0ZShJRCwgeWVhciwgc2VwPVxcLVxcKSlcbmBgYFxuXG48IS0tIHJuYi1zb3VyY2UtZW5kIC0tPlxuIn0= -->
-<pre><code>
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW13b19zcHJpbmdfbWFsZXMgPC0gYW13b19zcHJpbmdfbWFsZXMgJT4lXG4gIG11dGF0ZSh5ZWFyID0gc3RyZnRpbWUodGltZSwgZm9ybWF0PVwiJVlcIikpICU+JVxuICBtdXRhdGUoYW5pbWFsX25hbWUgPSBJRCxcbiAgICAgICAgIElEID0gcGFzdGUoSUQsIHllYXIsIHNlcD1cIi1cIikpXG5gYGAifQ== --&gt;
-
-```r
-amwo_spring_males &lt;- amwo_spring_males %&gt;%
-  mutate(year = strftime(time, format=\%Y\)) %&gt;%
-  mutate(animal_name = ID,
-         ID = paste(ID, year, sep=\-\))
-```
-
-&lt;!-- rnb-source-end --&gt;</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiXG48IS0tIHJuYi1zb3VyY2UtYmVnaW4gZXlKa1lYUmhJam9pWUdCZ2NseHVZVzEzYjE5emNISnBibWRmYldGc1pYTWdQQzBnWVcxM2IxOXpjSEpwYm1jZ0pUNGxYRzRnSUdacGJIUmxjaWh6WlhnZ1BUMGdYQ0p0WENJcFhHNWdZR0FpZlE9PSAtLT5cblxuYGBgclxuYW13b19zcHJpbmdfbWFsZXMgPC0gYW13b19zcHJpbmcgJT4lXG4gIGZpbHRlcihzZXggPT0gXCJtXCIpXG5gYGBcblxuPCEtLSBybmItc291cmNlLWVuZCAtLT5cbiJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW13b19zcHJpbmdfbWFsZXMgPC0gYW13b19zcHJpbmcgJT4lXG4gIGZpbHRlcihzZXggPT0gXCJtXCIpXG5gYGAifQ== -->
+<pre class="r"><code>amwo_spring_males &lt;- amwo_spring %&gt;%
+  filter(sex == &quot;m&quot;)</code></pre>
+<!-- rnb-source-end -->
 <!-- rnb-output-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG48IS0tIHJuYi1zb3VyY2UtYmVnaW4gZXlKa1lYUmhJam9pWUdCZ2NseHVZR0JnY2x4dVlXMTNiMTl6Y0hKcGJtZGZiV0ZzWlhNZ1BDMGdZVzEzYjE5emNISnBibWRmYldGc1pYTWdKVDRsWEc0Z0lHMTFkR0YwWlNoNVpXRnlJRDBnYzNSeVpuUnBiV1VvZEdsdFpTd2dabTl5YldGMFBWeGNKVmxjWENrcElDVStKVnh1SUNCdGRYUmhkR1VvWVc1cGJXRnNYMjVoYldVZ1BTQkpSQ3hjYmlBZ0lDQWdJQ0FnSUVsRUlEMGdjR0Z6ZEdVb1NVUXNJSGxsWVhJc0lITmxjRDFjWEMxY1hDa3BYRzVnWUdCY2JtQmdZQ0o5IC0tPlxuXG5gYGByXG5gYGByXG5hbXdvX3NwcmluZ19tYWxlcyA8LSBhbXdvX3NwcmluZ19tYWxlcyAlPiVcbiAgbXV0YXRlKHllYXIgPSBzdHJmdGltZSh0aW1lLCBmb3JtYXQ9XFwlWVxcKSkgJT4lXG4gIG11dGF0ZShhbmltYWxfbmFtZSA9IElELFxuICAgICAgICAgSUQgPSBwYXN0ZShJRCwgeWVhciwgc2VwPVxcLVxcKSlcbmBgYFxuYGBgXG5cbjwhLS0gcm5iLXNvdXJjZS1lbmQgLS0+XG4ifQ== -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuYW13b19zcHJpbmdfbWFsZXMgPC0gYW13b19zcHJpbmdfbWFsZXMgJT4lXG4gIG11dGF0ZSh5ZWFyID0gc3RyZnRpbWUodGltZSwgZm9ybWF0PVxcJVlcXCkpICU+JVxuICBtdXRhdGUoYW5pbWFsX25hbWUgPSBJRCxcbiAgICAgICAgIElEID0gcGFzdGUoSUQsIHllYXIsIHNlcD1cXC1cXCkpXG5gYGBcbmBgYCJ9 -->
-<pre class="r"><code>```r
-amwo_spring_males &lt;- amwo_spring_males %&gt;%
-  mutate(year = strftime(time, format=\%Y\)) %&gt;%
-  mutate(animal_name = ID,
-         ID = paste(ID, year, sep=\-\))</code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-
-&lt;!-- rnb-output-end --&gt;
-
-&lt;!-- rnb-chunk-end --&gt;
-
-
-&lt;!-- rnb-text-begin --&gt;
-
-
-Account for potential duplicate years by adding a year to the end of the id
-
-&lt;!-- rnb-text-end --&gt;
-
-
-&lt;!-- rnb-chunk-begin --&gt;
-
-
-&lt;!-- rnb-output-begin eyJkYXRhIjoiXG48IS0tIHJuYi1zb3VyY2UtYmVnaW4gZXlKa1lYUmhJam9pWUdCZ2NseHVZVzEzYjE5emNISnBibWRmYldGc1pYTWdQQzBnWVcxM2IxOXpjSEpwYm1kZmJXRnNaWE1nSlQ0bFhHNGdJRzExZEdGMFpTaDVaV0Z5SUQwZ2MzUnlablJwYldVb2RHbHRaU3dnWm05eWJXRjBQVndpSlZsY0lpa3BJQ1UrSlZ4dUlDQnRkWFJoZEdVb1lXNXBiV0ZzWDI1aGJXVWdQU0JKUkN4Y2JpQWdJQ0FnSUNBZ0lFbEVJRDBnY0dGemRHVW9TVVFzSUhsbFlYSXNJSE5sY0QxY0lpMWNJaWtwWEc1Z1lHQWlmUT09IC0tPlxuXG5gYGByXG5hbXdvX3NwcmluZ19tYWxlcyA8LSBhbXdvX3NwcmluZ19tYWxlcyAlPiVcbiAgbXV0YXRlKHllYXIgPSBzdHJmdGltZSh0aW1lLCBmb3JtYXQ9XCIlWVwiKSkgJT4lXG4gIG11dGF0ZShhbmltYWxfbmFtZSA9IElELFxuICAgICAgICAgSUQgPSBwYXN0ZShJRCwgeWVhciwgc2VwPVwiLVwiKSlcbmBgYFxuXG48IS0tIHJuYi1zb3VyY2UtZW5kIC0tPlxuIn0= --&gt;
-
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW13b19zcHJpbmdfbWFsZXMgPC0gYW13b19zcHJpbmdfbWFsZXMgJT4lXG4gIG11dGF0ZSh5ZWFyID0gc3RyZnRpbWUodGltZSwgZm9ybWF0PVwiJVlcIikpICU+JVxuICBtdXRhdGUoYW5pbWFsX25hbWUgPSBJRCxcbiAgICAgICAgIElEID0gcGFzdGUoSUQsIHllYXIsIHNlcD1cIi1cIikpXG5gYGAifQ== --&gt;
-
-```r
-amwo_spring_males &lt;- amwo_spring_males %&gt;%
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Account for potential duplicate years by adding a year to the end of
+the id</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG48IS0tIHJuYi1zb3VyY2UtYmVnaW4gZXlKa1lYUmhJam9pWUdCZ2NseHVZVzEzYjE5emNISnBibWRmYldGc1pYTWdQQzBnWVcxM2IxOXpjSEpwYm1kZmJXRnNaWE1nSlQ0bFhHNGdJRzExZEdGMFpTaDVaV0Z5SUQwZ2MzUnlablJwYldVb2RHbHRaU3dnWm05eWJXRjBQVndpSlZsY0lpa3BJQ1UrSlZ4dUlDQnRkWFJoZEdVb1lXNXBiV0ZzWDI1aGJXVWdQU0JKUkN4Y2JpQWdJQ0FnSUNBZ0lFbEVJRDBnY0dGemRHVW9TVVFzSUhsbFlYSXNJSE5sY0QxY0lpMWNJaWtwWEc1Z1lHQWlmUT09IC0tPlxuXG5gYGByXG5hbXdvX3NwcmluZ19tYWxlcyA8LSBhbXdvX3NwcmluZ19tYWxlcyAlPiVcbiAgbXV0YXRlKHllYXIgPSBzdHJmdGltZSh0aW1lLCBmb3JtYXQ9XCIlWVwiKSkgJT4lXG4gIG11dGF0ZShhbmltYWxfbmFtZSA9IElELFxuICAgICAgICAgSUQgPSBwYXN0ZShJRCwgeWVhciwgc2VwPVwiLVwiKSlcbmBgYFxuXG48IS0tIHJuYi1zb3VyY2UtZW5kIC0tPlxuIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYW13b19zcHJpbmdfbWFsZXMgPC0gYW13b19zcHJpbmdfbWFsZXMgJT4lXG4gIG11dGF0ZSh5ZWFyID0gc3RyZnRpbWUodGltZSwgZm9ybWF0PVwiJVlcIikpICU+JVxuICBtdXRhdGUoYW5pbWFsX25hbWUgPSBJRCxcbiAgICAgICAgIElEID0gcGFzdGUoSUQsIHllYXIsIHNlcD1cIi1cIikpXG5gYGAifQ== -->
+<pre class="r"><code>amwo_spring_males &lt;- amwo_spring_males %&gt;%
   mutate(year = strftime(time, format=&quot;%Y&quot;)) %&gt;%
   mutate(animal_name = ID,
          ID = paste(ID, year, sep=&quot;-&quot;))</code></pre>
