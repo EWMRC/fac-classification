@@ -14,18 +14,27 @@ primary_step_state (Migrating/not migrating) -> migration stage custom
 
 primary_point_state (Migrating/not migrating) -> behavioural classification
 
-secondary_step_state (Within-stage ranging movements) -> comments
+nesting -> study-specific-measurement
 
-secondary_point_state (Within-stage ranging movements) -> habitat
+mortality-status: Binary variable expressing whether a location was recorded after a remotely detected mortality event.
 
-nesting -> receiver ID
+BAS confidence: Binary variable expressing whether a location has a >50% probability of being recorded during a migratory flight.
 
-nocturnal_diurnal -> transmission protocol
+BAS transition 1 : Probability of a given location being recorded during a migratory flight.
 
-flight_ground -> data decoding software
+barometric height: Height of a given location above ground level (processed from height-above-msl).
 
 ```{r}
 amwo_data_reconstructed <- readRDS(here("classifier_integrated", "fac_primary_state_delineation.rds"))
+
+# let's now exclude all individuals which don't have at least one new (undesignated) point
+new_animals_to_revise <- amwo_data_reconstructed %>% ### reminder to put this in the movebank upload code...
+  filter(designated_before == FALSE) %>% 
+  pull(animal_name) %>% 
+  unique()
+
+amwo_data_reconstructed <- amwo_data_reconstructed %>% 
+  filter(animal_name %in% new_animals_to_revise)
 
 t <- amwo_data_reconstructed %>%
   transmute(event_id = as.character(event_id), 
