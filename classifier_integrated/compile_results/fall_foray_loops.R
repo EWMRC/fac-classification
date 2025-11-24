@@ -51,4 +51,9 @@ amwo_data_reconstructed <- amwo_data_reconstructed %>%
   mutate(primary_step_state = if_else(event_id %in% c(20994782599, 20994782602), "Foray loop", primary_step_state),
          primary_point_state = if_else(event_id %in% c(20994782602), "Foray loop", primary_point_state))
 
+#NS-2024-19
+amwo_data_reconstructed <- amwo_data_reconstructed %>% 
+  mutate(primary_step_state = if_else(event_id %in% c(35655214067, 35999780198), "Foray loop", primary_step_state),
+         primary_point_state = if_else(event_id %in% c(35999780198), "Foray loop", primary_point_state))
+
 saveRDS(amwo_data_reconstructed, file = here::here("classifier_integrated", "fac_primary_state_delineation.rds"))

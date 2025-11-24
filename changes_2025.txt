@@ -1,29 +1,77 @@
 Problems:
-LA-2024-45: last point prior to fall mig is on 2024-05-23, which is too early to be picked up by the classifier. This leads to an erroneously-classified fall migration. Unfortunately, the same issue exists in the start of spring migration (last point on 2024-12-21); might need to fix that first.
 
-LA-2024-49: we're missing a fall migration in 2024 for the same reason
+
+
+
+Fixed?
+
+
+Done:
+
+LA-2024-34 missing a fall migration starting on 6/13/24
+
+LA-2024-35 same deal, same date
+
+LA-2024-37 same deal, same date
+
+LA-2024-39 same deal, same date. Additional complications might be occurring here
+
+LA-2024-44 same deal, same date
+
+LA-2024-45: spring migration lasts way too long (into december 2024): why?
+
+LA-2024-49: transitioning from mig spring to winter in 2024
+
+LA-2024-54 same deal, same date
+
+LA-2024-55 same deal, same date
+
+LA-2024-56 same deal, same date
+
+LA-2024-61 same deal, same date
+
+LA-2024-62 same deal, same date
+
+LA-2024-66 same deal, same date
+
+NS-2024-19 add a foray loop on 2024-10-22
 
 NS-2024-35: end of fall mig is categorized as a spring mig
 
 NS-2024-36: same
 
-WV-2024-41: extend summer migration to include the rest of July
+WV-2024-29 needs a fall migration (starting on 2024-07-19)
+
+WV-2024-30 same deal, same date
+
+WV-2024-31 same deal, same date
+
+WV-2024-32 same deal, same date
+
+WV-2024-34 same deal, same date
+
+WV-2024-39 same deal, same date. May encounter complications
+
+WV-2024-41: extend summer migration to include the rest of July (7/11, 7/15, 7/19)
+
+WV-2024-42 same deal, same date
+
+WV-2024-44 same deal, same date
+
+WV-2024-46 same deal, same date
+
+WV-2024-47 same deal, same date
+
+WV-2024-48 same deal, same date
+
+WV-2024-51 same deal, same date
+
+WV-2024-52 same deal, same date
 
 WV-2024-55: 2024 fall migration is starting way too early, and running into the end of a dispersal movement which occurs at the end of the 2024 summer
 
-WV-2024-58: the end of fall migration is bleeding into the start of spring migration, in part because there's only one location separating the two migrations
+WV-2024-58: spring migration is only two points and isn't designated
 
 WV-2025-75: turn this spring migration into a dispersal
 
 WV-2025-85: this should probably start in a spring mig state.
-
-Fixed?
-
-Done:
-
-Old: 
-
-
-
-
-

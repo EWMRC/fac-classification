@@ -29,5 +29,10 @@ amwo_data_reconstructed <- amwo_data_reconstructed %>%
 amwo_data_reconstructed <- amwo_data_reconstructed %>% 
   mutate(primary_step_state = if_else(event_id == 33815123757, "Dispersal", primary_step_state))
 
+#WV-2025-75
+#replacing spring mig with a dispersal
+#40252170694
+amwo_data_reconstructed <- amwo_data_reconstructed %>% 
+  mutate(primary_step_state = if_else(event_id == 40252170694, "Dispersal", primary_step_state))
 
 saveRDS(amwo_data_reconstructed, file = here::here("classifier_integrated", "fac_primary_state_delineation.rds"))

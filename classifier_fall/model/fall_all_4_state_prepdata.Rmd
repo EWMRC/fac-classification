@@ -43,10 +43,22 @@ amwo_2022 <- getMovebankData(study = "American Woodcock Migration Ecology in Eas
 
 amwo_2023 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20230610000000000", timestamp_end = "20240225000000000", removeDuplicatedTimestamps=TRUE) %>% 
   as.data.frame() %>% 
-  filter(timestamp > if_else(local_identifier %in% c("SC-2023-26", "NY-2023-52", "NY-2023-53", "WV-2023-06", "WV-2023-20", "WV-2023-23"), ymd_hms("2023-06-10 00:00:00"), ymd_hms("2023-08-01 00:00:00")))
+  filter(timestamp > if_else(local_identifier %in% c("SC-2023-26", "NY-2023-52", "NY-2023-53", "WV-2023-06", "WV-2023-20", "WV-2023-23"), ymd_hms("2023-06-10 00:00:00"), ymd_hms("2023-08-01 00:00:00"))) %>% 
+  filter(local_identifier != "LA-2024-45") # tagged in winter, causes problems
 
-amwo_2024 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20240610000000000", timestamp_end = "20250225000000000", removeDuplicatedTimestamps=TRUE) %>% 
-  as.data.frame()
+amwo_2024 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20240523000000000", timestamp_end = "20250225000000000", removeDuplicatedTimestamps=TRUE) %>% 
+  as.data.frame() %>% 
+  filter(timestamp > case_match(local_identifier,
+                                "WV-2024-41" ~ ymd_hms("2024-07-11 00:00:00"),
+                                "LA-2024-45" ~ ymd_hms("2024-05-23 00:00:00"),
+                                "LA-2024-49" ~ ymd_hms("2024-05-30 00:00:00"),
+                                c("LA-2024-34", "LA-2024-35", "LA-2024-37", "LA-2024-39", "LA-2024-44", "LA-2024-54", "LA-2024-55", "LA-2024-56", "LA-2024-61", "LA-2024-62", "LA-2024-66") ~ ymd_hms("2024-06-13 00:00:00"),
+                                c("WV-2024-29", "WV-2024-30", "WV-2024-31", "WV-2024-32", "WV-2024-34", "WV-2024-39", "WV-2024-42", "WV-2024-44", "WV-2024-46", "WV-2024-47", "WV-2024-48", "WV-2024-51", "WV-2024-52") ~ ymd_hms("2024-07-19 00:00:00"),
+                                .default = ymd_hms("2024-08-01 00:00:00")))
+  
+  #filter(timestamp > if_else(local_identifier %in% c("WV-2024-41"), ymd_hms("2024-07-11 00:00:00"), ymd_hms("2024-08-01 00:00:00"))) %>% 
+  #filter(timestamp > if_else(local_identifier %in% c("LA-2024-45"), ymd_hms("2024-05-23 00:00:00"), ymd_hms("2024-08-01 00:00:00"))) %>% 
+  #filter(timestamp > if_else(local_identifier %in% c("LA-2024-49"), ymd_hms("2024-05-30 00:00:00"), ymd_hms("2024-08-01 00:00:00")))
 
 ```
 
@@ -158,7 +170,13 @@ male_spring_init_dates <- readRDS(here::here("classifier_spring", "spring_male_5
   group_modify(.f = function(x, ...){head(x, n = 1)}) %>%
   ungroup() %>%
   mutate(ID = paste0(animal_name, "-", (year(time) - 1))) %>% #Create IDs that will match the IDs of the previous fall, if the transmitter had been deployed then. If not, this will create invalid ids that will "come out in the wash"
+  mutate(ID = if_else(ID == "LA-2024-45-2023" & year == "2025", "LA-2024-45-2024", ID)) %>% # bug fix (as first spring mig point is in the previous year)
   transmute(ID = ID, init_time = time)
+
+# add in an initiation time from an "undesignated" spring migration (only two points)
+
+male_spring_init_dates <- male_spring_init_dates %>% 
+  bind_rows(tibble(ID = "WV-2024-58-2024", init_time = ymd_hms("2025-02-01 16:00:00")))
 
 female_spring_init_dates <- readRDS(here::here("classifier_spring", "spring_female_4_state_model.rds")) %>%
   filter(step_state == 2) %>%
@@ -623,7 +641,8 @@ amwo_hmm <- amwo_hmm %>%
   filter(!(ID == "PA-2021-37-2021" & julian_day %in% c(286))) %>% 
   filter(!(ID == "NY-2018-07-2018" & julian_day %in% c(337, 344))) %>%  #remove foray loop
   filter(!(ID == "LA-2024-62-2023" & julian_day %in% c(347:362))) %>% 
-  filter(!(ID == "RI-2020-44-2020" & julian_day %in% c(339:353)))
+  filter(!(ID == "RI-2020-44-2020" & julian_day %in% c(339:353))) %>% 
+  filter(!(ID == "NS-2024-19-2024" & julian_day %in% c(235, 239))) #remove foray loop
   
 ```
 

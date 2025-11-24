@@ -40,7 +40,7 @@ amwo_data_reconstructed <- amwo_data_reconstructed %>%
 # migratory steps: 
 # migratory points: 
 amwo_data_reconstructed <- amwo_data_reconstructed %>% 
-  mutate(primary_step_state = if_else(event_id %in% c(34016350099, 34106450750, 34106450775), "Migratory (summer)", primary_step_state),
-         primary_point_state = if_else(event_id %in% c(34106450750, 34106450775), "Migratory (summer)", primary_point_state))
+  mutate(primary_step_state = if_else(event_id %in% c(34016350099, 34106450750, 34106450775, 37817259652, 37817259662), "Migratory (summer)", primary_step_state),
+         primary_point_state = if_else(event_id %in% c(34106450750, 34106450775, 37817259652, 37817259662), "Migratory (summer)", primary_point_state))
 
 saveRDS(amwo_data_reconstructed, file = here::here("classifier_integrated", "fac_primary_state_delineation.rds"))

@@ -255,12 +255,14 @@ Last bit: remove all of the false migrations
 ```{r}
 amwo_hmm_final <- amwo_hmm_final %>%
   filter(ID != "RI-2019-21-2020", # Clip out the end of the previous fall migration
+         ID != "NS-2024-35-2025", # Clip out the end of the previous fall migration
          #ID != "RI-2019-28-2020", #Currently spring is folded into the tail end of fall. I need to go in and separate them out ##############################################################
          ID != "RI-2019-29-2020", #Dispersal movement caused an apparent migration
          ID != "VA-2018-03-2018", #Foray loop caused an apparent migration
          ID != "FL-2021-01-2021", #Foray loop caused an apparent migration
          ID != "WV-2024-47-2024", #Dispersal movement appears as a migration
-         ID != "WV-2024-55-2024") #Dispersal movement appears as a migration
+         ID != "WV-2024-55-2024", #Dispersal movement appears as a migration
+         ID != "WV-2025-75-2025") #Dispersal movement appears as a migration
 #ID != "RI-2019-18-2020")
 ```
 

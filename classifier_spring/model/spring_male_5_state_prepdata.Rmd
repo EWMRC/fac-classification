@@ -33,7 +33,8 @@ amwo_2023 <- getMovebankData(study = "American Woodcock Migration Ecology in Eas
 
 amwo_2024 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20240105000000000", timestamp_end = "20240630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
 
-amwo_2025 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20250105000000000", timestamp_end = "20250630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame()
+amwo_2025 <- getMovebankData(study = "American Woodcock Migration Ecology in Eastern North America", login = readRDS(here::here("movebank_credentials.rds")), timestamp_start = "20241221000000000", timestamp_end = "20250630000000000", removeDuplicatedTimestamps=TRUE) %>% as.data.frame() %>% 
+  filter(timestamp > if_else(local_identifier == "LA-2024-45", ymd_hms("2024-12-21 00:00:00"), ymd_hms("2025-1-05 00:00:00"))) #last point before migration for this bird is in December
 
 ```
 
@@ -91,6 +92,7 @@ Account for potential duplicate years by adding a year to the end of the id
 ```{r}
 amwo_spring_males <- amwo_spring_males %>%
   mutate(year = strftime(time, format="%Y")) %>%
+  mutate(year = if_else(ID == "LA-2024-45" & date == mdy("12/21/2024"), "2025", year)) %>%  # fixing a bug
   mutate(animal_name = ID,
          ID = paste(ID, year, sep="-"))
 ```
@@ -98,7 +100,7 @@ amwo_spring_males <- amwo_spring_males %>%
 Add a julian day column (new data stream)
 ```{r}
 amwo_spring_males <- amwo_spring_males %>%
-  mutate(julian_day = yday(ymd(date)))
+  mutate(julian_day = yday(ymd(date) + days(15))) # to deal with julian days that start before jan 1
 ```
 
 Remove individuals with fewer than 3 days that have locations, recording which ones were removed
